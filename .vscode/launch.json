@@ -11,7 +11,7 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/FlowProtocol2/bin/Debug/net6.0/FlowProtocol2.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/FlowProtocol2",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

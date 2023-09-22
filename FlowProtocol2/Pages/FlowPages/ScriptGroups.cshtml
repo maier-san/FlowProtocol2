@@ -1,23 +1,23 @@
 ﻿@page
-@model FlowProtocol2.Pages.FlowPages.TemplateGroupsModel
+@model FlowProtocol2.Pages.FlowPages.ScriptGroupsModel
 @{
-    ViewData["Title"] = "Gruppen";
+    ViewData["Title"] = "Skriptgruppen";
 }
-<h2>Anwendergruppen</h2>
-@if (Model.TemplatePathFound && Model.TList != null)
+<h2>Skriptgruppen</h2>
+@if (Model.ScriptPathFound && Model.ScriptGroupList != null)
 {
-    <p>Wählen Sie die Gruppe der Vorlagen aus.</p>
+    <p>Wählen Sie eine Skriptgruppe aus</p>
     <div class="container">
-        @for (int row = 0; row < Model.TList.Rows; row++)
+        @for (int row = 0; row < Model.ScriptGroupList.Rows; row++)
         {
-            @switch (Model.TList.Cols)
+            @switch (Model.ScriptGroupList.Cols)
             {
                 case 1:
                     <div class="row">
                         <div class="col-md-12">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,0]">@Model.TList.Tabarray[row,0]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,0]">@Model.ScriptGroupList.Tabarray[row,0]</a>
                             </h5>
                         </div>
                     </div>
@@ -27,13 +27,13 @@
                         <div class="col-md-6">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,0]">@Model.TList.Tabarray[row,0]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,0]">@Model.ScriptGroupList.Tabarray[row,0]</a>
                             </h5>
                         </div>
                         <div class="col-md-6">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,1]">@Model.TList.Tabarray[row,1]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,1]">@Model.ScriptGroupList.Tabarray[row,1]</a>
                             </h5>
                         </div>
                     </div>
@@ -43,19 +43,19 @@
                         <div class="col-md-4">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,0]">@Model.TList.Tabarray[row,0]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,0]">@Model.ScriptGroupList.Tabarray[row,0]</a>
                             </h5>
                         </div>
                         <div class="col-md-4">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,1]">@Model.TList.Tabarray[row,1]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,1]">@Model.ScriptGroupList.Tabarray[row,1]</a>
                             </h5>
                         </div>
                         <div class="col-md-4">
                             <h5>
                                 <a asp-page="./ListGroup"
-                                    asp-route-userGroup="@Model.TList.Tabarray[row,2]">@Model.TList.Tabarray[row,2]</a>
+                                    asp-route-userGroup="@Model.ScriptGroupList.Tabarray[row,2]">@Model.ScriptGroupList.Tabarray[row,2]</a>
                             </h5>
                         </div>
                     </div>
@@ -66,6 +66,6 @@
 }
 else
 {
-    <p>Das Vorlagenverzeichnis @Model.TemplatePath wurde nicht gefunden. Bitte prüfen Sie die Einstellung TemplatePath in
+    <p>Das Skriptverzeichnis @Model.ScriptPath wurde nicht gefunden. Bitte prüfen Sie die Einstellung ScriptPath in
         der Datei appsettings.json.</p>
 }

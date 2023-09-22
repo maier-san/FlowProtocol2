@@ -1,0 +1,8 @@
+/// Hello Flow 2
+?: Wie möchtest du FlowProtocol 2 grüßen?
+	#: mit "Hallo"
+		>> Hallo FlowProtocol 2
+	#: mit "Aloah"
+		>> Aloah FlowProtocol 2
+	#: mit "Servus"
+		>> Servus FlowProtocol 2

@@ -8,7 +8,7 @@ namespace FlowProtocol2.Pages.FlowPages
     {
         public bool ScriptGroupPathFound { get; set; }
         public string ScriptPath { get; set; }
-        public string? GroupName { get; set; }
+        public string GroupName { get; set; }
         public string ScriptGroupPath => ScriptPath + Path.DirectorySeparatorChar + GroupName;
         public Triplelist<LinkItem>? ScriptList { get; set; }
 
@@ -17,6 +17,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public ScriptsModel(IConfiguration configuration)
         {
             ScriptPath = configuration["ScriptPath"];
+            GroupName = string.Empty;
         }
 
         public void OnGet(string groupname)

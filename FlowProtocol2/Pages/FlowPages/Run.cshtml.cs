@@ -1,3 +1,5 @@
+using FlowProtocol2.Commands;
+using FlowProtocol2.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,7 +9,7 @@ namespace FlowProtocol2.Pages.FlowPages
     {
         public string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
-        public string ScriptName {get; set;}
+        public string ScriptName { get; set; }
         private const string FlowProtocol2Extension = ".fp2";
         public RunModel(IConfiguration configuration)
         {
@@ -22,10 +24,13 @@ namespace FlowProtocol2.Pages.FlowPages
                 + scripttag.Replace('|', Path.DirectorySeparatorChar)
                 + FlowProtocol2Extension;
             System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);
-            if (fi == null || !fi.Exists)
+            if (fi != null && !fi.Exists)
             {
                 return RedirectToPage("./NoScriptfile");
             }
+            ScriptParser sp = new ScriptParser();
+            CmdBaseCommand? startcommand = sp.ReadScript(ScriptFilePath);
+
             return Page();
         }
     }

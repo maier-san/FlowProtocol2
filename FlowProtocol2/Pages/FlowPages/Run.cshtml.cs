@@ -15,12 +15,18 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptFilePath = string.Empty;
             ScriptName = string.Empty;
         }
-        public void OnGet(string scripttag)
+        public IActionResult OnGet(string scripttag)
         {
             ScriptName = scripttag.Split('|').ToList().Last();
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar
                 + scripttag.Replace('|', Path.DirectorySeparatorChar)
                 + FlowProtocol2Extension;
+            System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);
+            if (fi == null || !fi.Exists)
+            {
+                return RedirectToPage("./NoScriptfile");
+            }
+            return Page();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace FlowProtocol2.Core
         {
             CmdParser.Clear();
             CmdParser.Add(CmdInputText.GetComandParser());
+            // Hier weitere Parser hinzufügen
         }
 
         public CmdBaseCommand? ReadScript(string scriptfilepath)
@@ -41,7 +42,7 @@ namespace FlowProtocol2.Core
                             if (cp.LineExpression.IsMatch(codeline))
                             {
                                 Match m = cp.LineExpression.Match(codeline);
-                                ReadingSession rs = new ReadingSession(scriptfilepath, indent, m, currentcommand);
+                                ReadContext rs = new ReadContext(scriptfilepath, indent, m);
                                 CmdBaseCommand nextcommand = cp.CommandCreator(rs);
                                 if (startcommand == null)
                                 {
@@ -49,7 +50,7 @@ namespace FlowProtocol2.Core
                                 }
                                 if (currentcommand != null)
                                 {
-                                    currentcommand.NextCommand = nextcommand;
+                                    currentcommand.SetNextCommand(nextcommand);
                                 }
                                 else
                                 {

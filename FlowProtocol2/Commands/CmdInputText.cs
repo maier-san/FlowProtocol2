@@ -12,22 +12,21 @@ namespace FlowProtocol2.Commands
             return cp;
         }
 
-        public static CmdInputText CreateInputCommand(ReadingSession rs)
+        public static CmdInputText CreateInputCommand(ReadContext rs)
         {
-            CmdInputText cmd = new CmdInputText();            
+            CmdInputText cmd = new CmdInputText(rs);            
             cmd.Key = rs.ExpressionMatch.Groups[1].Value.Trim();
             cmd.QuestionText = rs.ExpressionMatch.Groups[2].Value.Trim();
             return cmd;
         }
 
-        public CmdInputText()
+        public CmdInputText(ReadContext rs) : base(rs)
         {
             Key = "";
             QuestionText = "";
-
         }
 
-        public override void Run(ref RunningSession rsession)
+        public override void Run(ref RunContext rsession)
         {
 
         }

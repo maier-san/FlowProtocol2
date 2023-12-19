@@ -5,5 +5,11 @@ namespace FlowProtocol2.Core
     {
         public string Promt {get; set;}
         public string Key {get; set;}
+
+        public InputBaseElement()
+        {
+            Promt = string.Empty;
+            Key = string.Empty;            
+        }
     }
 }

@@ -6,12 +6,14 @@ namespace FlowProtocol2.Commands
     public class RunContext
     {
         public Dictionary<string, string> BoundVars;
+        public List<string> GivenKeys = new List<string>();
+        public Dictionary<string, string> InternalVars = new Dictionary<string, string>();
+        public List<ErrorElement> ErrorItem = new List<ErrorElement>();
         public List<InputBaseElement> InputItems = new List<InputBaseElement>();
-        //Todo ListOfError
-        //TodO ListOFOutPuts
-        public RunContext(Dictionary<string, string> boundvars)
+        public List<OutputElement> OutputItems = new List<OutputElement>();
+        public RunContext()
         {
-            BoundVars = boundvars;
+            BoundVars = new Dictionary<string, string>();
         }
     }
 }

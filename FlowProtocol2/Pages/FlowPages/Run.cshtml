@@ -1,7 +1,42 @@
-﻿@page
+﻿@page "{scripttag}"
 @model FlowProtocol2.Pages.FlowPages.RunModel
 @{
     ViewData["Title"] = "@Model.ScriptName";
 }
 <h2>Skriptausführung @Model.ScriptName</h2>
 Geladen wird die Datei @Model.ScriptFilePath.
+@if (@Model.RunContext.InputItems.Any())
+{
+    @foreach (var k in Model.RunContext.GivenKeys)
+    {
+        <input type="hidden" asp-for="BoundVars[k]" />
+    }
+    @if (Model.RunContext.InputItems.Any())
+    {
+        <form method="post">
+            @foreach (var inp in Model.RunContext.InputItems)
+            {
+                var tinp = inp as Core.InputTextElement;
+                @if (tinp != null)
+                {
+                    <div class="rendered-form">
+                        <div class="formbuilder-text form-group">
+                            <label for="@tinp.Key" class="formbuilder-text-label">
+                                @tinp.Promt
+                                <br>
+                            </label>
+                            <input type="text" class="form-control" access="false" id="@tinp.Key" asp-for="BoundVars[tinp.Key]"
+                                maxlength="300">
+                        </div>
+                    </div>
+                    <br>
+                }
+            }
+            <button type="submit" class="btn btn-primary">Weiter</button>
+        </form>
+    }
+    else if (Model.RunContext.OutputItems.Any())
+    {
+        <h4>Tralala</h4>
+    }
+}

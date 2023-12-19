@@ -13,6 +13,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
+        public RunContext RunContext{get; set;}
         private const string FlowProtocol2Extension = ".fp2";
         
         public RunModel(IConfiguration configuration)
@@ -20,6 +21,8 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptPath = configuration["ScriptPath"];
             ScriptFilePath = string.Empty;
             ScriptName = string.Empty;
+            BoundVars = new Dictionary<string, string>();
+            RunContext = new RunContext();
         }
         public IActionResult OnGet(string scripttag)
         {
@@ -35,7 +38,8 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptParser sp = new ScriptParser();
             sp.ReadScript(ScriptFilePath);
             ScriptRunner sr = new ScriptRunner();
-            sr.RunScript(sp.StartCommand, BoundVars);
+            RunContext.BoundVars = BoundVars;
+            sr.RunScript(RunContext, sp.StartCommand);
             return Page();
         }
     }

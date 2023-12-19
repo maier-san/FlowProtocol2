@@ -45,7 +45,7 @@ namespace FlowProtocol2.Core
                             if (cp.LineExpression.IsMatch(codeline))
                             {
                                 Match m = cp.LineExpression.Match(codeline);
-                                ReadContext rs = new ReadContext(scriptfilepath, indent, m);
+                                ReadContext rs = new ReadContext(scriptfilepath, indent, linenumber, codeline, m);
                                 currentcommand = cp.CommandCreator(rs);
                                 if (StartCommand == null)
                                 {

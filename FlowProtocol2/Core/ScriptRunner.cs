@@ -3,9 +3,8 @@ namespace FlowProtocol2.Core
     using FlowProtocol2.Commands;
     public class ScriptRunner
     {       
-        public void RunScript(CmdBaseCommand? startcommand, Dictionary<string, string> boundvars)
-        {
-            RunContext rc = new RunContext(boundvars);
+        public void RunScript(RunContext rc, CmdBaseCommand? startcommand)
+        {            
             CmdBaseCommand? cmdNext = startcommand;
             while (cmdNext != null)
             {

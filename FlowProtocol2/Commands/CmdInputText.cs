@@ -17,7 +17,7 @@ namespace FlowProtocol2.Commands
 
         public static CmdInputText CreateInputCommand(ReadContext rc)
         {
-            CmdInputText cmd = new CmdInputText(rc);            
+            CmdInputText cmd = new CmdInputText(rc);
             cmd.Key = rc.ExpressionMatch.Groups[1].Value.Trim();
             cmd.Promt = rc.ExpressionMatch.Groups[2].Value.Trim();
             return cmd;
@@ -25,15 +25,25 @@ namespace FlowProtocol2.Commands
 
         public CmdInputText(ReadContext rs) : base(rs)
         {
-            Key = "";
-            Promt = "";
+            Key = string.Empty;
+            Promt = string.Empty;
         }
 
         public override CmdBaseCommand? Run(ref RunContext rc)
         {
-            InputText = new InputTextElement();
-            InputText.Key = Key;
-            InputText.Promt = Promt;
+            InputText = new InputTextElement()
+            {
+                Key = Key,
+                Promt = Promt
+            };
+            if (rc.BoundVars.ContainsKey(Key))
+            {
+                rc.GivenKeys.Add(Key);
+            }
+            else
+            {
+                rc.BoundVars[Key] = string.Empty;
+            }
             rc.InputItems.Add(InputText);
             return this.NextCommand;
         }

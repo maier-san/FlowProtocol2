@@ -5,8 +5,11 @@ namespace FlowProtocol2.Core
     using System.Text.RegularExpressions;
 
     public class ScriptParser
-    {
-        List<CommandParser> CmdParser;
+    {        
+        private List<CommandParser> CmdParser;
+
+        public CmdBaseCommand? StartCommand {get; set;}
+        public CmdBaseCommand? LastCommand {get; set;}
 
         public ScriptParser()
         {
@@ -21,10 +24,10 @@ namespace FlowProtocol2.Core
             // Hier weitere Parser hinzufügen
         }
 
-        public CmdBaseCommand? ReadScript(string scriptfilepath)
-        {
-            CmdBaseCommand? startcommand = null;
+        public void ReadScript(string scriptfilepath)
+        {            
             CmdBaseCommand? currentcommand = null;
+            CmdBaseCommand? previouscommand = null;
             using (StreamReader sr = new StreamReader(scriptfilepath))
             {
                 int linenumber = 0;
@@ -43,26 +46,23 @@ namespace FlowProtocol2.Core
                             {
                                 Match m = cp.LineExpression.Match(codeline);
                                 ReadContext rs = new ReadContext(scriptfilepath, indent, m);
-                                CmdBaseCommand nextcommand = cp.CommandCreator(rs);
-                                if (startcommand == null)
+                                currentcommand = cp.CommandCreator(rs);
+                                if (StartCommand == null)
                                 {
-                                    startcommand = nextcommand;
+                                    StartCommand = currentcommand;
                                 }
-                                if (currentcommand != null)
+                                if (previouscommand != null)
                                 {
-                                    currentcommand.SetNextCommand(nextcommand);
+                                    previouscommand.SetNextCommand(currentcommand);
                                 }
-                                else
-                                {
-                                    currentcommand = nextcommand;
-                                }
+                                previouscommand = currentcommand;                                
+                                LastCommand = currentcommand;
                                 break;
                             }
                         }
                     }
                 }
             }            
-            return startcommand;
         }
     }
 }

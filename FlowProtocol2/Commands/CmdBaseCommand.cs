@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
         {
             ReadContext = rs;
         }
-        public abstract void Run(ref RunContext rsession); 
+        public abstract CmdBaseCommand? Run(ref RunContext rc); 
         public void SetNextCommand(CmdBaseCommand nextcommand)
         {
             NextCommand = nextcommand;

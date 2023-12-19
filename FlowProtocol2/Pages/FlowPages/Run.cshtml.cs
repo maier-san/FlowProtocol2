@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using FlowProtocol2.Commands;
 using FlowProtocol2.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,13 @@ namespace FlowProtocol2.Pages.FlowPages
 {
     public class RunModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public Dictionary<string, string> BoundVars { get; set; }
         public string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
         private const string FlowProtocol2Extension = ".fp2";
+        
         public RunModel(IConfiguration configuration)
         {
             ScriptPath = configuration["ScriptPath"];
@@ -29,8 +33,9 @@ namespace FlowProtocol2.Pages.FlowPages
                 return RedirectToPage("./NoScriptfile");
             }
             ScriptParser sp = new ScriptParser();
-            CmdBaseCommand? startcommand = sp.ReadScript(ScriptFilePath);
-
+            sp.ReadScript(ScriptFilePath);
+            ScriptRunner sr = new ScriptRunner();
+            sr.RunScript(sp.StartCommand, BoundVars);
             return Page();
         }
     }

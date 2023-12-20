@@ -4,44 +4,44 @@
     ViewData["Title"] = @Model.ScriptName;
 }
 <h2>Skriptausführung @Model.ScriptName</h2>
-@if (@Model.RunContext.InputItems.Any())
+@if (Model.RunContext.InputItems.Any())
 {
-    @foreach (var k in Model.RunContext.GivenKeys)
-    {
-        <input type="hidden" asp-for="BoundVars[k]" />
-    }
-    @if (Model.RunContext.InputItems.Any())
-    {
-        <form method="post">
-            @foreach (var iput in Model.RunContext.InputItems)
+    <form method="post">
+        @foreach (var k in Model.RunContext.GivenKeys)
+        {
+            <input type="hidden" asp-for="BoundVars[k]" />
+        }
+        @foreach (var inidx in Model.RunContext.InputItems)
+        {
+            var tinidx = inidx as Core.InputTextElement;
+            @if (tinidx != null)
             {
-                var tiput = iput as Core.InputTextElement;
-                @if (tiput != null)
-                {
-                    <div class="rendered-form">
-                        <div class="formbuilder-text form-group">
-                            <label for="@tiput.Key" class="formbuilder-text-label">
-                                @tiput.Promt
-                                <br>
-                            </label>
-                            <input type="text" class="form-control" access="false" id="@tiput.Key" asp-for="BoundVars[tiput.Key]"
-                                maxlength="300">
-                        </div>
+                <div class="rendered-form">
+                    <div class="formbuilder-text form-group">
+                        <label for="@inidx.Key" class="formbuilder-text-label">
+                            @inidx.Promt
+                            <br>
+                        </label>
+                        <input type="text" class="form-control" access="false" id="@inidx.Key" asp-for="BoundVars[inidx.Key]"
+                            maxlength="300">
                     </div>
-                    <br>
-                }
+                </div>
+                <br>
             }
-            <button type="submit" class="btn btn-primary">Weiter</button>
-        </form>
-    }
+        }
+        <button type="submit" class="btn btn-primary">Weiter</button>
+    </form>
 }
 else
 {
     <h4>Ausgabe</h4>
-    @foreach (var oput in Model.RunContext.OutputItems)
-    {
-        <li>@oput.Text</li>
-    }
+    <p>Das ist die Adresse: @Model.ScriptBaseURL</p>
+    <ol>
+        @foreach (var oput in Model.RunContext.OutputItems)
+        {
+            <li>@oput.Text</li>
+        }
+    </ol>
     <p>
         <a href=@Model.ScriptBaseURL class="btn btn-primary">Neue Ausführung</a>
         <a asp-page="/Index" class="btn btn-primary">Zurück zur Startseite</a>

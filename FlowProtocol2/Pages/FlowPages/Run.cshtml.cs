@@ -10,13 +10,13 @@ namespace FlowProtocol2.Pages.FlowPages
     {
         [BindProperty(SupportsGet = true)]
         public Dictionary<string, string> BoundVars { get; set; }
-        public string ScriptBaseURL {get; set;}
+        public string ScriptBaseURL { get; set; }
         public string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
-        public RunContext RunContext{get; set;}
+        public RunContext RunContext { get; set; }
         private const string FlowProtocol2Extension = ".fp2";
-        
+
         public RunModel(IConfiguration configuration)
         {
             ScriptPath = configuration["ScriptPath"];
@@ -44,6 +44,15 @@ namespace FlowProtocol2.Pages.FlowPages
             RunContext.BoundVars = BoundVars;
             sr.RunScript(RunContext, sp.StartCommand);
             return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            return RedirectToPage("./Run", BoundVars);
         }
     }
 }

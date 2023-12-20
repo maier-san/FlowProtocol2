@@ -8,7 +8,7 @@ namespace FlowProtocol2.Core
             CmdBaseCommand? cmdNext = startcommand;
             while (cmdNext != null)
             {
-                cmdNext = cmdNext.Run(ref rc);
+                cmdNext = cmdNext.Run(rc);
             }
         }
     }

@@ -27,7 +27,7 @@ namespace FlowProtocol2.Commands
             Promt = string.Empty;
         }
 
-        public override CmdBaseCommand? Run(ref RunContext rc)
+        public override CmdBaseCommand? Run(RunContext rc)
         {
             var inputtext = new InputTextElement()
             {
@@ -41,8 +41,8 @@ namespace FlowProtocol2.Commands
             else
             {
                 rc.BoundVars[Key] = string.Empty;
-            }
-            rc.InputItems.Add(inputtext);
+                rc.InputItems.Add(inputtext);
+            }            
             return this.NextCommand;
         }
     }

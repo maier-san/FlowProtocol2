@@ -5,9 +5,9 @@ namespace FlowProtocol2.Commands
     using FlowProtocol2.Core;
 
     public class CmdOutputText : CmdBaseCommand
-    {        
-        public string TypeKey {get; set;}
-        public string Text {get; set;}
+    {
+        public string TypeKey { get; set; }
+        public string Text { get; set; }
         public static CommandParser GetComandParser()
         {
             return new CommandParser(@"^>([L])>(.*)", rc => CreateOutputTextCommand(rc));
@@ -26,7 +26,7 @@ namespace FlowProtocol2.Commands
             TypeKey = string.Empty;
             Text = string.Empty;
         }
-        public override CmdBaseCommand? Run(ref RunContext rc)
+        public override CmdBaseCommand? Run(RunContext rc)
         {
             OutputType ot = OutputType.None;
             switch (TypeKey)
@@ -37,8 +37,8 @@ namespace FlowProtocol2.Commands
             var outputtext = new OutputElement()
             {
                 Type = ot,
-                Text = Text                
-            };            
+                Text = Text
+            };
             rc.OutputItems.Add(outputtext);
             return this.NextCommand;
         }

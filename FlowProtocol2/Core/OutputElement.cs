@@ -4,7 +4,6 @@ namespace FlowProtocol2.Core
     public class OutputElement
     {
         public string Text {get; set;}
-        public string Section3 {get; set;}
         public string Section4{get; set;}
         public string Link {get; set;}
         public OutputType Type {get; set;}    
@@ -12,7 +11,6 @@ namespace FlowProtocol2.Core
         public OutputElement()
         {
             Text = string.Empty;
-            Section3 = string.Empty;
             Section4 = string.Empty;
             Link = string.Empty;
         }
@@ -21,10 +19,9 @@ namespace FlowProtocol2.Core
     public enum OutputType
     {
         None,
-        FloatingText,
-        Paragraph,
-        FloatingCode,
-        Codeline,
+        Continuation,
+        Paragraph,        
+        Code,
         Enumeration,
         SubEnumeration,
         Listing,

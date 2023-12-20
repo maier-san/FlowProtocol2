@@ -32,7 +32,7 @@ namespace FlowProtocol2.Commands
             switch (TypeKey)
             {
                 case "L": ot = OutputType.Listing; break;
-                case "T": ot = OutputType.FloatingText; break;
+                case "C": ot = OutputType.Continuation; break;
             }
             var outputtext = new OutputElement()
             {

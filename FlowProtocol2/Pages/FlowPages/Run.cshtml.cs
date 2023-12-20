@@ -10,6 +10,7 @@ namespace FlowProtocol2.Pages.FlowPages
     {
         [BindProperty(SupportsGet = true)]
         public Dictionary<string, string> BoundVars { get; set; }
+        public string ScriptBaseURL {get; set;}
         public string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
@@ -21,11 +22,13 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptPath = configuration["ScriptPath"];
             ScriptFilePath = string.Empty;
             ScriptName = string.Empty;
+            ScriptBaseURL = string.Empty;
             BoundVars = new Dictionary<string, string>();
             RunContext = new RunContext();
         }
         public IActionResult OnGet(string scripttag)
         {
+            ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
             ScriptName = scripttag.Split('|').ToList().Last();
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar
                 + scripttag.Replace('|', Path.DirectorySeparatorChar)

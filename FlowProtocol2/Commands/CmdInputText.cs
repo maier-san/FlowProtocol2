@@ -7,12 +7,10 @@ namespace FlowProtocol2.Commands
     {
         public string Key { get; set; }
         public string Promt { get; set; }
-
-        public InputTextElement? InputText;
+        
         public static CommandParser GetComandParser()
         {
-            CommandParser cp = new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", rc => CreateInputTextCommand(rc));
-            return cp;
+            return new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", rc => CreateInputTextCommand(rc));
         }
 
         public static CmdInputText CreateInputTextCommand(ReadContext rc)
@@ -31,7 +29,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(ref RunContext rc)
         {
-            InputText = new InputTextElement()
+            var inputtext = new InputTextElement()
             {
                 Key = Key,
                 Promt = Promt
@@ -44,7 +42,7 @@ namespace FlowProtocol2.Commands
             {
                 rc.BoundVars[Key] = string.Empty;
             }
-            rc.InputItems.Add(InputText);
+            rc.InputItems.Add(inputtext);
             return this.NextCommand;
         }
     }

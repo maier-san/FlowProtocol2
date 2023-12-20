@@ -4,7 +4,6 @@
     ViewData["Title"] = @Model.ScriptName;
 }
 <h2>Skriptausführung @Model.ScriptName</h2>
-Geladen wird die Datei @Model.ScriptFilePath.
 @if (@Model.RunContext.InputItems.Any())
 {
     @foreach (var k in Model.RunContext.GivenKeys)
@@ -14,18 +13,18 @@ Geladen wird die Datei @Model.ScriptFilePath.
     @if (Model.RunContext.InputItems.Any())
     {
         <form method="post">
-            @foreach (var inp in Model.RunContext.InputItems)
+            @foreach (var iput in Model.RunContext.InputItems)
             {
-                var tinp = inp as Core.InputTextElement;
-                @if (tinp != null)
+                var tiput = iput as Core.InputTextElement;
+                @if (tiput != null)
                 {
                     <div class="rendered-form">
                         <div class="formbuilder-text form-group">
-                            <label for="@tinp.Key" class="formbuilder-text-label">
-                                @tinp.Promt
+                            <label for="@tiput.Key" class="formbuilder-text-label">
+                                @tiput.Promt
                                 <br>
                             </label>
-                            <input type="text" class="form-control" access="false" id="@tinp.Key" asp-for="BoundVars[tinp.Key]"
+                            <input type="text" class="form-control" access="false" id="@tiput.Key" asp-for="BoundVars[tiput.Key]"
                                 maxlength="300">
                         </div>
                     </div>
@@ -35,8 +34,16 @@ Geladen wird die Datei @Model.ScriptFilePath.
             <button type="submit" class="btn btn-primary">Weiter</button>
         </form>
     }
-    else if (Model.RunContext.OutputItems.Any())
+}
+else
+{
+    <h4>Ausgabe</h4>
+    @foreach (var oput in Model.RunContext.OutputItems)
     {
-        <h4>Tralala</h4>
+        <li>@oput.Text</li>
     }
+    <p>
+        <a href=@Model.ScriptBaseURL class="btn btn-primary">Neue Ausführung</a>
+        <a asp-page="/Index" class="btn btn-primary">Zurück zur Startseite</a>
+    </p>
 }

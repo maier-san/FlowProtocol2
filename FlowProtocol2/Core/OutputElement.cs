@@ -20,6 +20,7 @@ namespace FlowProtocol2.Core
 
     public enum OutputType
     {
+        None,
         FloatingText,
         Paragraph,
         FloatingCode,

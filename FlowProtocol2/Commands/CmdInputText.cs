@@ -11,11 +11,11 @@ namespace FlowProtocol2.Commands
         public InputTextElement? InputText;
         public static CommandParser GetComandParser()
         {
-            CommandParser cp = new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", rs => CreateInputCommand(rs));
+            CommandParser cp = new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", rc => CreateInputTextCommand(rc));
             return cp;
         }
 
-        public static CmdInputText CreateInputCommand(ReadContext rc)
+        public static CmdInputText CreateInputTextCommand(ReadContext rc)
         {
             CmdInputText cmd = new CmdInputText(rc);
             cmd.Key = rc.ExpressionMatch.Groups[1].Value.Trim();

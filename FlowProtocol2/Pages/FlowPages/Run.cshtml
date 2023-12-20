@@ -1,7 +1,7 @@
 ﻿@page "{scripttag}"
 @model FlowProtocol2.Pages.FlowPages.RunModel
 @{
-    ViewData["Title"] = "@Model.ScriptName";
+    ViewData["Title"] = @Model.ScriptName;
 }
 <h2>Skriptausführung @Model.ScriptName</h2>
 Geladen wird die Datei @Model.ScriptFilePath.

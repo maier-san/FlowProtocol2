@@ -15,16 +15,4 @@ namespace FlowProtocol2.Core
             Link = string.Empty;
         }
     }
-
-    public enum OutputType
-    {
-        None,
-        Continuation,
-        Paragraph,        
-        Code,
-        Enumeration,
-        SubEnumeration,
-        Listing,
-        SubListing        
-    }
 }

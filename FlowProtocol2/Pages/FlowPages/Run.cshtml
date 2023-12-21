@@ -34,14 +34,21 @@
 }
 else
 {
-    <h4>Ausgabe</h4>
-    <p>Das ist die Adresse: @Model.ScriptBaseURL</p>
-    <ol>
-        @foreach (var oput in Model.RunContext.OutputItems)
+    @if (!string.IsNullOrEmpty(Model.Document.Titel))
+    {
+        <h2>@Model.Document.Titel</h2>
+    }
+    @foreach (var sec in Model.Document.Sections)
+    {
+        @if (!string.IsNullOrEmpty(sec.Caption))
         {
-            <li>@oput.Text</li>
+            <h4>@sec.Caption</h4>
         }
-    </ol>
+        @foreach (var bl in sec.Textblocks)
+        {
+            @await Html.PartialAsync("_OMTextBlock", bl)
+        }
+    }
     <p>
         <a href=@Model.ScriptBaseURL class="btn btn-primary">Neue Ausführung</a>
         <a asp-page="/Index" class="btn btn-primary">Zurück zur Startseite</a>

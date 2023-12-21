@@ -1,0 +1,61 @@
+@using FlowProtocol2.Core;
+@model OMTextBlock;
+@if (@Model != null)
+{
+    @if (Model.BlockType == OutputType.Paragraph)
+    {
+        @foreach (var tl in Model.TextLines)
+        {
+            <p>
+                @foreach (var te in tl.TextElements)
+                {
+                    @await Html.PartialAsync("_OMTextElement", te)
+                }
+                @foreach (var sb in tl.Subblocks)
+                {
+                    @await Html.PartialAsync("_OMTextBlock", sb)
+                }
+            </p>
+        }
+    }
+    else if (Model.BlockType == OutputType.Listing)
+    {
+        <ul>
+            @foreach (var tl in Model.TextLines)
+            {
+                <li>
+                    @foreach (var te in tl.TextElements)
+                    {
+                        @await Html.PartialAsync("_OMTextElement", te)
+                    }
+                    @foreach (var sb in tl.Subblocks)
+                    {
+                        @await Html.PartialAsync("_OMTextBlock", sb)
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else if (Model.BlockType == OutputType.Enumeration)
+    {
+        <ol>
+            @foreach (var tl in Model.TextLines)
+            {
+                <li>
+                    @foreach (var te in tl.TextElements)
+                    {
+                        @await Html.PartialAsync("_OMTextElement", te)
+                    }
+                    @foreach (var sb in tl.Subblocks)
+                    {
+                        @await Html.PartialAsync("_OMTextBlock", sb)
+                    }
+                </li>
+            }
+        </ol>
+    }
+    else if (Model.BlockType == OutputType.Code)
+    {
+        <pre><code>@Model.Codeblock</code></pre>
+    }
+}

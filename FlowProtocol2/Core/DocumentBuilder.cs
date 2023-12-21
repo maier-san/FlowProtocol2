@@ -4,6 +4,7 @@ namespace FlowProtocol2.Core
     {
         public OMDocument Document { get; private set; }
         public string CurrentSection { get; set; }
+        private OMTextLine? CurrentTextline { get; set; }
         public DocumentBuilder()
         {
             Document = new OMDocument();
@@ -13,15 +14,22 @@ namespace FlowProtocol2.Core
         {
             Document.Titel = titel;
         }
-        public void AddTextElement(Level l, OutputType t, string text, string link)
+        /// <summary>
+        /// Fügt eine neue Textzeile zum Dokument hinzu
+        /// </summary>
+        /// <param name="l">Level, auf dem die Zeile hinzugefügt werden soll (1 oder 2).</param>
+        /// <param name="t">Typ des Textblocks</param>
+        /// <param name="text">Der Text der dargestellt werden soll.</param>
+        public void AddNewTextLine(Level l, OutputType t, string text)
         {
+            if (t == OutputType.None) return;
             var section = Document.Sections.Find(s => s.Caption == CurrentSection);
             if (section == null)
             {
                 section = new OMSection();
                 Document.Sections.Add(section);
             }
-            var lastBlock = section.Textblocks.Last();
+            var lastBlock = section.Textblocks.LastOrDefault();
             if (l == Level.Level1)
             {
                 if (lastBlock == null || lastBlock.BlockType != t)
@@ -30,40 +38,59 @@ namespace FlowProtocol2.Core
                     lastBlock.BlockType = t;
                     section.Textblocks.Add(lastBlock);
                 }
-                var lastTextline = lastBlock.TextLines.Last();
-                if (lastTextline == null)
-                {
-                    lastTextline = new OMTextLine();
-                    lastBlock.TextLines.Add(lastTextline);
-                }
+                OMTextLine newtextline = new OMTextLine();
+                lastBlock.TextLines.Add(newtextline);
                 OMTextElement newtextelement = new OMTextElement();
                 newtextelement.Text = text;
-                newtextelement.Link = link;
-                lastTextline.TextElements.Add(newtextelement);
+                newtextline.TextElements.Add(newtextelement);
+                CurrentTextline = newtextline;
             }
             else if (l == Level.Level2 && lastBlock != null)
             {
-                var lastTextline = lastBlock.TextLines.Last();
+                var lastTextline = lastBlock.TextLines.LastOrDefault();
                 if (lastTextline != null)
                 {
-                    var lastSubblock = lastTextline.Subblocks.Last();
+                    var lastSubblock = lastTextline.Subblocks.LastOrDefault();
                     if (lastSubblock == null || lastSubblock.BlockType != t)
                     {
                         lastSubblock = new OMTextBlock();
                         lastSubblock.BlockType = t;
                         lastTextline.Subblocks.Add(lastSubblock);
                     }
-                    var lastSubTextline = lastSubblock.TextLines.Last();
-                    if (lastSubTextline == null)
-                    {
-                        lastSubTextline = new OMTextLine();
-                        lastSubblock.TextLines.Add(lastSubTextline);
-                    }
+                    OMTextLine newSubTextline = new OMTextLine();
+                    lastSubblock.TextLines.Add(newSubTextline);
                     OMTextElement newtextelement = new OMTextElement();
                     newtextelement.Text = text;
-                    newtextelement.Link = link;
-                    lastSubTextline.TextElements.Add(newtextelement);
+                    newSubTextline.TextElements.Add(newtextelement);
+                    CurrentTextline = newSubTextline;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Fügt ein Textelement zur letzten Textzeile hinzu.
+        /// </summary>
+        /// <param name="text">Der Text der dargestellt werden soll.</param>
+        /// <param name="link">URL eines Links, falls der Text als Link dargestellt werden soll. string.Empty falls nicht.</param>
+        /// <param name="codeformat">True, wenn das Textelement als Code formatiert werden soll.</param>
+        public void AddNewTextElement(string text, string link, bool codeformat)
+        {
+            if (CurrentTextline != null)
+            {
+                OMTextElement newtextelement;
+                var lasttextelement = CurrentTextline.TextElements.LastOrDefault();                
+                if (lasttextelement != null && string.IsNullOrEmpty(lasttextelement.Text))
+                {
+                    newtextelement = lasttextelement;
+                }
+                else
+                {
+                    newtextelement = new OMTextElement();
+                }            
+                newtextelement.Text = text;
+                newtextelement.Link = link;
+                newtextelement.Codeformat = codeformat;
+                CurrentTextline.TextElements.Add(newtextelement);
             }
         }
     }

@@ -24,6 +24,28 @@ namespace FlowProtocol2.Core
     {
         public OutputType BlockType { get; set; }
         public List<OMTextLine> TextLines { get; set; }
+        /// <summary>
+        /// Gibt den im Block enthaltenen Text als String zurück.
+        /// </summary>
+        public string Codeblock
+        {
+            get
+            {
+                string code=string.Empty;
+                foreach (var tl in TextLines)
+                {
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        code += "\n";                        
+                    }
+                    foreach (var te in tl.TextElements)
+                    {
+                        code += te.Text;
+                    }
+                }
+                return code;
+            }
+        }
         public OMTextBlock()
         {
             BlockType = OutputType.None;
@@ -44,6 +66,7 @@ namespace FlowProtocol2.Core
     {
         public string Text { get; set; }
         public string Link { get; set; }
+        public bool Codeformat { get; set; }
         public OMTextElement()
         {
             Text = string.Empty;

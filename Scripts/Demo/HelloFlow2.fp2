@@ -1,4 +1,7 @@
 ~Input FP1: Wie geht es dir?
 ~Input FP2: Ganz ehrlich?
->L> Es geht mir $FP1
->L> Super!
+>>* Es geht mir $FP1
+>>* Super!
+># und 1
+># und 2
+># und 3

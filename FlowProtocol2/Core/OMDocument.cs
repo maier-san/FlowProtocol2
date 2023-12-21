@@ -33,10 +33,11 @@ namespace FlowProtocol2.Core
     public class OMTextLine
     {
         public List<OMTextElement> TextElements { get; set; }
-        public OMTextBlock? SubBlock { get; set; }
+        public List<OMTextBlock> Subblocks { get; set; }
         public OMTextLine()
         {
             TextElements = new List<OMTextElement>();
+            Subblocks = new List<OMTextBlock>();
         }
     }
     public class OMTextElement

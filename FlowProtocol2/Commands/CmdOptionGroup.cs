@@ -37,7 +37,8 @@ namespace FlowProtocol2.Commands
             CmdOptionValue? firstOptionValue = GetNextCommand<CmdOptionValue>(c => true);
             if (firstOptionValue == null)
             {
-                rc.SetError(ReadContext, "Option ohne Werte", "Für die Optionsgruppe wurde kein Wert angegeben. Die Ausführung wird abgebrochen.");
+                rc.SetError(ReadContext, "Option ohne Werte",
+                    "Für die Optionsgruppe wurde kein Wert angegeben. Die Ausführung wird abgebrochen.");
                 return null;
             }
             InputOptionGroupElement ogroup = new InputOptionGroupElement();
@@ -49,7 +50,7 @@ namespace FlowProtocol2.Commands
             {
                 selectedKey = rc.BoundVars[ogroup.Key];
             }
-            
+
             CmdOptionValue? xOption = null;
             var allOptions = GetNexCommands<CmdOptionValue>(c => c.ReadContext.Indent == firstOptionValue.ReadContext.Indent);
             foreach (var idxo in allOptions)

@@ -61,6 +61,11 @@ namespace FlowProtocol2.Commands
             return null;
         }
 
+        protected CmdBaseCommand? GetNextSameOrHigherLevelCommand()
+        {
+            return GetNextCommand<CmdBaseCommand>(c => c.ReadContext.Indent <= this.ReadContext.Indent);
+        }
+
         protected List<T> GetNexCommands<T>(Func<T, bool> predicate)
             where T : CmdBaseCommand
         {

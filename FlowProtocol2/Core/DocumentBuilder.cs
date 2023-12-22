@@ -23,10 +23,11 @@ namespace FlowProtocol2.Core
         public void AddNewTextLine(Level l, OutputType t, string text)
         {
             if (t == OutputType.None) return;
-            var section = Document.Sections.Find(s => s.Caption == CurrentSection);
+            var section = Document.Sections.Find(s => s.Headline == CurrentSection);
             if (section == null)
             {
                 section = new OMSection();
+                section.Headline = CurrentSection;
                 Document.Sections.Add(section);
             }
             var lastBlock = section.Textblocks.LastOrDefault();

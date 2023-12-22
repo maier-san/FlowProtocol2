@@ -12,11 +12,11 @@ namespace FlowProtocol2.Core
     }
     public class OMSection
     {
-        public string Caption { get; set; }
+        public string Headline { get; set; }
         public List<OMTextBlock> Textblocks { get; set; }
         public OMSection()
         {
-            Caption = string.Empty;
+            Headline = string.Empty;
             Textblocks = new List<OMTextBlock>();
         }
     }

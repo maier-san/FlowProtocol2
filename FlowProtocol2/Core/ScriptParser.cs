@@ -4,11 +4,11 @@ namespace FlowProtocol2.Core
     using System.Text.RegularExpressions;
 
     public class ScriptParser
-    {        
+    {
         private List<CommandParser> CmdParser;
 
-        public CmdBaseCommand? StartCommand {get; set;}
-        public CmdBaseCommand? LastCommand {get; set;}
+        public CmdBaseCommand? StartCommand { get; set; }
+        public CmdBaseCommand? LastCommand { get; set; }
 
         public ScriptParser()
         {
@@ -22,11 +22,13 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdInputText.GetComandParser());
             CmdParser.Add(CmdOutputText.GetComandParser());
             CmdParser.Add(CmdSet.GetComandParser());
+            CmdParser.Add(CmdSetTitel.GetComandParser());
+            CmdParser.Add(CmdSetSection.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 
         public void ReadScript(RunContext rc, string scriptfilepath)
-        {            
+        {
             CmdBaseCommand? currentcommand = null;
             CmdBaseCommand? previouscommand = null;
             using (StreamReader sr = new StreamReader(scriptfilepath))
@@ -39,37 +41,40 @@ namespace FlowProtocol2.Core
                     if (!string.IsNullOrWhiteSpace(line))
                     {
                         line = line.Replace("\t", "    ");
-                        int indent = line.Length - line.TrimStart().Length;                        
+                        int indent = line.Length - line.TrimStart().Length;
                         string codeline = line.Trim();
-                        bool hasmatch = false;
-                        ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
-                        foreach (var cp in CmdParser)
+                        if (!codeline.StartsWith("//"))
                         {
-                            if (cp.LineExpression.IsMatch(codeline))
+                            bool hasmatch = false;
+                            ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
+                            foreach (var cp in CmdParser)
                             {
-                                Match m = cp.LineExpression.Match(codeline);                                
-                                currentcommand = cp.CommandCreator(readcontext, m);
-                                if (StartCommand == null)
+                                if (cp.LineExpression.IsMatch(codeline))
                                 {
-                                    StartCommand = currentcommand;
+                                    Match m = cp.LineExpression.Match(codeline);
+                                    currentcommand = cp.CommandCreator(readcontext, m);
+                                    if (StartCommand == null)
+                                    {
+                                        StartCommand = currentcommand;
+                                    }
+                                    if (previouscommand != null)
+                                    {
+                                        previouscommand.SetNextCommand(currentcommand);
+                                    }
+                                    previouscommand = currentcommand;
+                                    LastCommand = currentcommand;
+                                    hasmatch = true;
+                                    break;
                                 }
-                                if (previouscommand != null)
-                                {
-                                    previouscommand.SetNextCommand(currentcommand);
-                                }
-                                previouscommand = currentcommand;                                
-                                LastCommand = currentcommand;
-                                hasmatch = true;
-                                break;
                             }
-                        }
-                        if (!hasmatch)
-                        {
-                            rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
+                            if (!hasmatch)
+                            {
+                                rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
+                            }
                         }
                     }
                 }
-            }            
+            }
         }
     }
 }

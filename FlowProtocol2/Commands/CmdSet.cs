@@ -2,14 +2,20 @@ namespace FlowProtocol2.Commands
 {
     using System.Text.RegularExpressions;
     using FlowProtocol2.Core;
+    
+    /// <summary>
+    /// Implementiert den Set-Befehl
+    /// </summary>
     public class CmdSet : CmdBaseCommand
     {
         public string VarName { get; set; }
-        public string Text {get; set;}
+        public string Text { get; set; }
+        
         public static CommandParser GetComandParser()
         {
             return new CommandParser(@"^~Set ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
         }
+        
         private static CmdBaseCommand CreateSetCommand(ReadContext rc, Match m)
         {
             CmdSet cmd = new CmdSet(rc);

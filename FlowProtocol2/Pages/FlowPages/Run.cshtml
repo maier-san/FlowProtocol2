@@ -58,9 +58,9 @@ else
     }
     @foreach (var sec in Model.Document.Sections)
     {
-        @if (!string.IsNullOrEmpty(sec.Caption))
+        @if (!string.IsNullOrEmpty(sec.Headline))
         {
-            <h4>@sec.Caption</h4>
+            <h4>@sec.Headline</h4>
         }
         @foreach (var bl in sec.Textblocks)
         {

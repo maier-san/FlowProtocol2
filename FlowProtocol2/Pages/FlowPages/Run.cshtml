@@ -3,7 +3,25 @@
 @{
     ViewData["Title"] = @Model.ScriptName;
 }
-<h2>Skriptausführung @Model.ScriptName</h2>
+<h2>@Model.ScriptName</h2>
+@if (Model.Errors.Any())
+{
+    <hr>
+    <p><strong>Hinweis:</strong> Beim Ausführen des Skriptes sind Fehler aufgetreten.
+        Bitte wenden Sie sich an den Autoren der Vorlage oder einen Administrator, um die Korrekturen zu veranlassen:
+    </p>
+    <ol>
+        @foreach (var eitem in Model.Errors)
+        {
+            <li>
+                <strong>Fehler "@eitem.ErrorCode", @eitem.ErrorText</strong><br />
+                Zeile @eitem.ReadContext.LineNumber in <i>@eitem.ReadContext.ScriptFilePath</i><br />
+                <span style="color: #ff0000;">@eitem.ReadContext.CodeLine</span>
+            </li>
+        }
+    </ol>
+    <hr>
+}
 @if (Model.RunContext.InputItems.Any())
 {
     <form method="post">

@@ -25,7 +25,7 @@ namespace FlowProtocol2.Core
             // Hier weitere Parser hinzufügen
         }
 
-        public void ReadScript(string scriptfilepath)
+        public void ReadScript(RunContext rc, string scriptfilepath)
         {            
             CmdBaseCommand? currentcommand = null;
             CmdBaseCommand? previouscommand = null;
@@ -41,13 +41,14 @@ namespace FlowProtocol2.Core
                         line = line.Replace("\t", "    ");
                         int indent = line.Length - line.TrimStart().Length;                        
                         string codeline = line.Trim();
+                        bool hasmatch = false;
+                        ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
                         foreach (var cp in CmdParser)
                         {
                             if (cp.LineExpression.IsMatch(codeline))
                             {
-                                Match m = cp.LineExpression.Match(codeline);
-                                ReadContext rs = new ReadContext(scriptfilepath, indent, linenumber, codeline, m);
-                                currentcommand = cp.CommandCreator(rs);
+                                Match m = cp.LineExpression.Match(codeline);                                
+                                currentcommand = cp.CommandCreator(readcontext, m);
                                 if (StartCommand == null)
                                 {
                                     StartCommand = currentcommand;
@@ -58,8 +59,13 @@ namespace FlowProtocol2.Core
                                 }
                                 previouscommand = currentcommand;                                
                                 LastCommand = currentcommand;
+                                hasmatch = true;
                                 break;
                             }
+                        }
+                        if (!hasmatch)
+                        {
+                            rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
                         }
                     }
                 }

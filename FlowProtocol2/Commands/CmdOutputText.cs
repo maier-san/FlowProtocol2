@@ -1,5 +1,6 @@
 namespace FlowProtocol2.Commands
 {
+    using System.Text.RegularExpressions;
     using FlowProtocol2.Core;
 
     public class CmdOutputText : CmdBaseCommand
@@ -9,15 +10,15 @@ namespace FlowProtocol2.Commands
         public string Text { get; set; }
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^>(>?)([_\*|#])(.*)", rc => CreateOutputTextCommand(rc));
+            return new CommandParser(@"^>(>?)([_\*|#])(.*)", (rc,m) => CreateOutputTextCommand(rc,m));
         }
 
-        private static CmdBaseCommand CreateOutputTextCommand(ReadContext rc)
+        private static CmdBaseCommand CreateOutputTextCommand(ReadContext rc, Match m)
         {
             CmdOutputText cmd = new CmdOutputText(rc);
-            cmd.LevelKey = rc.ExpressionMatch.Groups[1].Value.Trim();
-            cmd.TypeKey = rc.ExpressionMatch.Groups[2].Value.Trim();
-            cmd.Text = rc.ExpressionMatch.Groups[3].Value;
+            cmd.LevelKey = m.Groups[1].Value.Trim();
+            cmd.TypeKey = m.Groups[2].Value.Trim();
+            cmd.Text = m.Groups[3].Value;
             return cmd;
         }
 

@@ -7,15 +7,14 @@ namespace FlowProtocol2.Commands
         public int Indent {get; set;}
         public int LineNumber {get; set;}
         public string CodeLine {get; set;}
-        public Match ExpressionMatch { get; set; }
+        public Match? ExpressionMatch { get; set; }
 
-        public ReadContext(string scriptfilepath, int indent, int linenumber, string codeline,  Match expressionmatch)
+        public ReadContext(string scriptfilepath, int indent, int linenumber, string codeline)
         {
             ScriptFilePath = scriptfilepath;
             Indent = indent;
             LineNumber = linenumber;
             CodeLine = codeline;
-            ExpressionMatch = expressionmatch;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public string ScriptName { get; set; }
         public RunContext RunContext { get; set; }
         public OMDocument Document => RunContext.DocumentBuilder.Document;
+        public List<ErrorElement> Errors => RunContext.ErrorItems;
         private const string FlowProtocol2Extension = ".fp2";
 
         public RunModel(IConfiguration configuration)
@@ -39,7 +40,7 @@ namespace FlowProtocol2.Pages.FlowPages
                 return RedirectToPage("./NoScriptfile");
             }
             ScriptParser sp = new ScriptParser();
-            sp.ReadScript(ScriptFilePath);
+            sp.ReadScript(RunContext, ScriptFilePath);
             ScriptRunner sr = new ScriptRunner();
             RunContext.BoundVars = BoundVars;
             RunContext.MyBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;

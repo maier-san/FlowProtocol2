@@ -5,8 +5,8 @@ namespace FlowProtocol2.Commands
     public class CommandParser
     {
         public Regex LineExpression;
-        public Func<ReadContext, CmdBaseCommand> CommandCreator;
-        public CommandParser(string lineexpressionstring, Func<ReadContext, CmdBaseCommand> commandcreator)
+        public Func<ReadContext, Match, CmdBaseCommand> CommandCreator;
+        public CommandParser(string lineexpressionstring, Func<ReadContext, Match, CmdBaseCommand> commandcreator)
         {
             LineExpression = new Regex(lineexpressionstring);
             CommandCreator = commandcreator;

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using FlowProtocol2.Core;
 
 namespace FlowProtocol2.Commands
@@ -6,17 +7,17 @@ namespace FlowProtocol2.Commands
     {
         public string Key { get; set; }
         public string Promt { get; set; }
-        
+
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", rc => CreateInputTextCommand(rc));
+            return new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
         }
 
-        public static CmdInputText CreateInputTextCommand(ReadContext rc)
+        public static CmdInputText CreateInputTextCommand(ReadContext rc, Match m)
         {
             CmdInputText cmd = new CmdInputText(rc);
-            cmd.Key = rc.ExpressionMatch.Groups[1].Value.Trim();
-            cmd.Promt = rc.ExpressionMatch.Groups[2].Value.Trim();
+            cmd.Key = m.Groups[1].Value.Trim();
+            cmd.Promt = m.Groups[2].Value.Trim();
             return cmd;
         }
 
@@ -28,9 +29,9 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            var inputtext = new InputTextElement();            
+            var inputtext = new InputTextElement();
             inputtext.Key = Key;
-            inputtext.Promt = ReplaceVars(rc, Promt);            
+            inputtext.Promt = ReplaceVars(rc, Promt);
             if (rc.BoundVars.ContainsKey(Key))
             {
                 rc.GivenKeys.Add(Key);
@@ -39,7 +40,7 @@ namespace FlowProtocol2.Commands
             {
                 rc.BoundVars[Key] = string.Empty;
                 rc.InputItems.Add(inputtext);
-            }            
+            }
             return this.NextCommand;
         }
     }

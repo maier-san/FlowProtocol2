@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
         public List<ErrorElement> ErrorItems { get; set; }
         public DocumentBuilder DocumentBuilder { get; set; }
         public string MyBaseURL { get; set; }
-        public string MyResultURL { get; set; }        
+        public string MyResultURL { get; set; }
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -21,6 +21,10 @@ namespace FlowProtocol2.Commands
             DocumentBuilder = new DocumentBuilder();
             MyBaseURL = string.Empty;
             MyResultURL = string.Empty;
+        }
+        public void SetError(ReadContext readcontext, string errorcode, string errortext)
+        {
+            ErrorItems.Add(new ErrorElement(readcontext, errorcode, errortext));
         }
     }
 }

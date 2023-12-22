@@ -1,5 +1,6 @@
 namespace FlowProtocol2.Commands
 {
+    using System.Text.RegularExpressions;
     using FlowProtocol2.Core;
     public class CmdSet : CmdBaseCommand
     {
@@ -7,13 +8,13 @@ namespace FlowProtocol2.Commands
         public string Text {get; set;}
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Set ([A-Za-z0-9]*)\s*=(.*)", rc => CreateSetCommand(rc));
+            return new CommandParser(@"^~Set ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
         }
-        private static CmdBaseCommand CreateSetCommand(ReadContext rc)
+        private static CmdBaseCommand CreateSetCommand(ReadContext rc, Match m)
         {
             CmdSet cmd = new CmdSet(rc);
-            cmd.VarName = rc.ExpressionMatch.Groups[1].Value.Trim();
-            cmd.Text = rc.ExpressionMatch.Groups[2].Value;
+            cmd.VarName = m.Groups[1].Value.Trim();
+            cmd.Text = m.Groups[2].Value;
             return cmd;
         }
 

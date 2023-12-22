@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using FlowProtocol2.Core;
 
 namespace FlowProtocol2.Commands
@@ -21,7 +20,7 @@ namespace FlowProtocol2.Commands
             return cmd;
         }
 
-        public CmdInputText(ReadContext rs) : base(rs)
+        public CmdInputText(ReadContext readcontext) : base(readcontext)
         {
             Key = string.Empty;
             Promt = string.Empty;
@@ -29,11 +28,9 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            var inputtext = new InputTextElement()
-            {
-                Key = Key,
-                Promt = Promt
-            };
+            var inputtext = new InputTextElement();            
+            inputtext.Key = Key;
+            inputtext.Promt = ReplaceVars(rc, Promt);            
             if (rc.BoundVars.ContainsKey(Key))
             {
                 rc.GivenKeys.Add(Key);

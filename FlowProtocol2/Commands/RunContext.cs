@@ -1,8 +1,6 @@
 namespace FlowProtocol2.Commands
 {
-    using FlowProtocol2.Commands;
     using FlowProtocol2.Core;
-    using System.Text.RegularExpressions;
     public class RunContext
     {
         public Dictionary<string, string> BoundVars;
@@ -11,6 +9,8 @@ namespace FlowProtocol2.Commands
         public List<InputBaseElement> InputItems { get; set; }
         public List<ErrorElement> ErrorItems { get; set; }
         public DocumentBuilder DocumentBuilder { get; set; }
+        public string MyBaseURL { get; set; }
+        public string MyResultURL { get; set; }        
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -19,6 +19,8 @@ namespace FlowProtocol2.Commands
             InputItems = new List<InputBaseElement>();
             ErrorItems = new List<ErrorElement>();
             DocumentBuilder = new DocumentBuilder();
+            MyBaseURL = string.Empty;
+            MyResultURL = string.Empty;
         }
     }
 }

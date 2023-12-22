@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using FlowProtocol2.Commands;
 using FlowProtocol2.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +42,8 @@ namespace FlowProtocol2.Pages.FlowPages
             sp.ReadScript(ScriptFilePath);
             ScriptRunner sr = new ScriptRunner();
             RunContext.BoundVars = BoundVars;
+            RunContext.MyBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
+            RunContext.MyResultURL = RunContext.MyBaseURL + this.HttpContext.Request.QueryString;
             sr.RunScript(RunContext, sp.StartCommand);
             return Page();
         }

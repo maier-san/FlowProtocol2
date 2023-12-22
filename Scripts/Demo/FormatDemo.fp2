@@ -1,0 +1,14 @@
+>>_ Das ist normaler Text
+>>_ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+>>* Erster Punkt einer Itemize-Aufzählung
+>>* Zweiter Punkt einer Itemize-Aufzählung
+>># Erster Punkt einer Enumerate-Aufzählung
+>># Zweiter Punkt einer Enumerate-Aufzählung
+># mach dies
+># mach das
+>|SchreibeCode()
+>|{
+>|   UndErfreueDich(Daran);
+>|}
+># und mach was du willst.
+>># Dritter Punkt einer Enumerate-Aufzählung

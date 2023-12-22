@@ -36,6 +36,7 @@ namespace FlowProtocol2.Core
                 {
                     lastBlock = new OMTextBlock();
                     lastBlock.BlockType = t;
+                    lastBlock.NumerationType = "1";
                     section.Textblocks.Add(lastBlock);
                 }
                 OMTextLine newtextline = new OMTextLine();
@@ -55,6 +56,7 @@ namespace FlowProtocol2.Core
                     {
                         lastSubblock = new OMTextBlock();
                         lastSubblock.BlockType = t;
+                        lastSubblock.NumerationType = "a";
                         lastTextline.Subblocks.Add(lastSubblock);
                     }
                     OMTextLine newSubTextline = new OMTextLine();
@@ -78,7 +80,7 @@ namespace FlowProtocol2.Core
             if (CurrentTextline != null)
             {
                 OMTextElement newtextelement;
-                var lasttextelement = CurrentTextline.TextElements.LastOrDefault();                
+                var lasttextelement = CurrentTextline.TextElements.LastOrDefault();
                 if (lasttextelement != null && string.IsNullOrEmpty(lasttextelement.Text))
                 {
                     newtextelement = lasttextelement;
@@ -86,7 +88,7 @@ namespace FlowProtocol2.Core
                 else
                 {
                     newtextelement = new OMTextElement();
-                }            
+                }
                 newtextelement.Text = text;
                 newtextelement.Link = link;
                 newtextelement.Codeformat = codeformat;

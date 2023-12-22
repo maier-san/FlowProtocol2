@@ -1,7 +1,6 @@
 namespace FlowProtocol2.Core
 {
     using FlowProtocol2.Commands;
-    using System.Net.Http.Headers;
     using System.Text.RegularExpressions;
 
     public class ScriptParser
@@ -22,6 +21,7 @@ namespace FlowProtocol2.Core
             CmdParser.Clear();
             CmdParser.Add(CmdInputText.GetComandParser());
             CmdParser.Add(CmdOutputText.GetComandParser());
+            CmdParser.Add(CmdSet.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 

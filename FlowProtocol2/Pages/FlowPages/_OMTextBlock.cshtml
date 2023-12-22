@@ -38,7 +38,7 @@
     }
     else if (Model.BlockType == OutputType.Enumeration)
     {
-        <ol>
+        <ol type="@Model.NumerationType">
             @foreach (var tl in Model.TextLines)
             {
                 <li>

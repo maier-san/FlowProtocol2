@@ -1,6 +1,5 @@
 namespace FlowProtocol2.Core
 {
-    using FlowProtocol2.Commands;
     public abstract class InputBaseElement
     {
         public string Promt {get; set;}

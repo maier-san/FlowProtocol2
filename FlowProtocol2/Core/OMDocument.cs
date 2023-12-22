@@ -24,7 +24,7 @@ namespace FlowProtocol2.Core
     {
         public OutputType BlockType { get; set; }
         public List<OMTextLine> TextLines { get; set; }
-        public string NumerationType {get; set;}
+        public string NumerationType { get; set; }
 
         /// <summary>
         /// Gibt den im Block enthaltenen Text als String zurück.
@@ -33,12 +33,12 @@ namespace FlowProtocol2.Core
         {
             get
             {
-                string code=string.Empty;
+                string code = string.Empty;
                 foreach (var tl in TextLines)
                 {
                     if (!string.IsNullOrEmpty(code))
                     {
-                        code += "\n";                        
+                        code += "\n";
                     }
                     foreach (var te in tl.TextElements)
                     {
@@ -67,7 +67,16 @@ namespace FlowProtocol2.Core
     }
     public class OMTextElement
     {
+
         public string Text { get; set; }
+        public string TrimText => Text.Trim();
+        public string LeadingSpace
+        {
+            get
+            {
+                if (TrimText.Length < Text.Length) return " "; else return string.Empty;
+            }
+        }
         public string Link { get; set; }
         public bool Codeformat { get; set; }
         public OMTextElement()

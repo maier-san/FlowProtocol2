@@ -2,16 +2,7 @@
 @model OMTextElement;
 @if (@Model != null)
 {
-    @if (Model.Codeformat)
-    {
-        <code>@Model.Text</code>
-    }
-    else if (!string.IsNullOrEmpty(Model.Link))
-    {
-        <a href="@Model.Link" target="_blank">@Model.Text</a>
-    }
-    else
-    {
-        @Model.Text
-    }
+    @if (Model.Codeformat){@Model.LeadingSpace<code>@Model.TrimText</code>}
+    else if (!string.IsNullOrEmpty(Model.Link)){@Model.LeadingSpace<a href="@Model.Link" target="_blank">@Model.TrimText</a>}
+    else {@Model.Text}
 }

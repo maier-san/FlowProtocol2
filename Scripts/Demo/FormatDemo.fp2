@@ -14,6 +14,18 @@
 >|   UndErfreueDich(Daran);
 >|}
 ># und mach was du willst.
+># und nun
+~AddText  kommt noch
+~AddLink https://www.loremipsum.de | Lorem palorum
+~AddText  mit
+~AddCode  Tralala
+~AddText  Code
+># oder auch
+~AddText -kommt noch
+~AddLink https://www.loremipsum.de |-Lorem palorum
+~AddText -mit
+~AddCode -Tralala
+~AddText -Code
 >># Dritter Punkt einer Enumerate-Aufzählung
 ~SetSection Abschnitt 1
 >>* Dritter Punkt einer Itemize-Aufzählung

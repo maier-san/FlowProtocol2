@@ -24,10 +24,7 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements)
-                    {
-                        @await Html.PartialAsync("_OMTextElement", te)
-                    }
+                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
                     @foreach (var sb in tl.Subblocks)
                     {
                         @await Html.PartialAsync("_OMTextBlock", sb)
@@ -42,10 +39,7 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements)
-                    {
-                        @await Html.PartialAsync("_OMTextElement", te)
-                    }
+                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
                     @foreach (var sb in tl.Subblocks)
                     {
                         @await Html.PartialAsync("_OMTextBlock", sb)

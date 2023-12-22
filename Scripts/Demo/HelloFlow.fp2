@@ -1,8 +1,9 @@
-/// Hello Flow 2
-?: Wie möchtest du FlowProtocol 2 grüßen?
-	#: mit "Hallo"
-		>> Hallo FlowProtocol 2
-	#: mit "Aloah"
-		>> Aloah FlowProtocol 2
-	#: mit "Servus"
-		>> Servus FlowProtocol 2
+~SetTitel Hello Flow 2
+?A1: Wie möchtest du FlowProtocol2 grüßen?
+	#C1: mit "Hallo"
+		>>_ Hallo FlowProtocol2
+	#C2: mit "Aloah"
+		>>_ Aloah FlowProtocol2
+	#C3: mit "Servus"
+		>>_ Servus FlowProtocol2
+>>_ Ergebnis = $A1

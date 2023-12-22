@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Input ([A-Za-z0-9]*[']?):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
+            return new CommandParser(@"^~Input ([A-Za-z0-9$]*[']?):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
         }
 
         public static CmdInputText CreateInputTextCommand(ReadContext rc, Match m)
@@ -30,18 +30,18 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             var inputtext = new InputTextElement();
-            inputtext.Key = Key;
+            inputtext.Key = ReplaceVars(rc, Key);
             inputtext.Promt = ReplaceVars(rc, Promt);
-            if (rc.BoundVars.ContainsKey(Key))
+            if (rc.BoundVars.ContainsKey(inputtext.Key))
             {
-                rc.GivenKeys.Add(Key);
+                rc.GivenKeys.Add(inputtext.Key);
             }
             else
             {
-                rc.BoundVars[Key] = string.Empty;
+                rc.BoundVars[inputtext.Key] = string.Empty;
                 rc.InputItems.Add(inputtext);
             }
-            return this.NextCommand;
+            return NextCommand;
         }
     }
 }

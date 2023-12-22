@@ -1,10 +1,10 @@
 namespace FlowProtocol2.Commands
-{    
+{
     public abstract class CmdBaseCommand
     {
-        public CmdBaseCommand? NextCommand {get; set;}
-        public CmdBaseCommand? PreviousCommand {get; set;}
-        protected ReadContext ReadContext {get; set;}        
+        public CmdBaseCommand? NextCommand { get; set; }
+        public CmdBaseCommand? PreviousCommand { get; set; }
+        public ReadContext ReadContext { get; set; }
         protected CmdBaseCommand(ReadContext readcontext)
         {
             ReadContext = readcontext;
@@ -12,8 +12,11 @@ namespace FlowProtocol2.Commands
         public abstract CmdBaseCommand? Run(RunContext rc);
         public void SetNextCommand(CmdBaseCommand nextcommand)
         {
-            NextCommand = nextcommand;
-            nextcommand.PreviousCommand = this;
+            if (nextcommand != this)
+            {
+                NextCommand = nextcommand;
+                nextcommand.PreviousCommand = this;
+            }
         }
         protected static string ReplaceVars(RunContext rc, string input)
         {
@@ -40,6 +43,39 @@ namespace FlowProtocol2.Commands
                 }
             }
             return input;
+        }
+
+        protected T? GetNextCommand<T>(Func<T, bool> predicate)
+            where T : CmdBaseCommand
+        {
+            CmdBaseCommand? cmdidx = NextCommand;
+            while (cmdidx != null)
+            {
+                T? cmdT = cmdidx as T;
+                if (cmdT != null && predicate(cmdT))
+                {
+                    return cmdT;
+                }
+                cmdidx = cmdidx.NextCommand;
+            }
+            return null;
+        }
+
+        protected List<T> GetNexCommands<T>(Func<T, bool> predicate)
+            where T : CmdBaseCommand
+        {
+            List<T> ret = new List<T>();
+            CmdBaseCommand? cmdidx = NextCommand;
+            while (cmdidx != null)
+            {
+                T? cmdT = cmdidx as T;
+                if (cmdT != null && predicate(cmdT))
+                {
+                    ret.Add(cmdT);
+                }
+                cmdidx = cmdidx.NextCommand;
+            }
+            return ret;
         }
     }
 }

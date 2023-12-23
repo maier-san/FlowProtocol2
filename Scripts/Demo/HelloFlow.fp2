@@ -1,9 +1,14 @@
 ~SetTitel Hello Flow 2
 ?A1: Wie möchtest du FlowProtocol2 grüßen?
 	#C1: mit "Hallo"
-		>>_ Hallo FlowProtocol2
+		~Set gruss=Hallo
 	#C2: mit "Aloah"
-		>>_ Aloah FlowProtocol2
+		~Set gruss=Aloah
 	#C3: mit "Servus"
-		>>_ Servus FlowProtocol2
->>_ Ergebnis = $A1
+		~Set gruss=Servus
+>>_ Ergebnis = $gruss FlowProtocol2
+~Execute
+?A2: $gruss Digger! Was ist das beste FlowProtocol
+	#D1: FlowProtocol 1
+	#D2: FlowProtocol 2
+	

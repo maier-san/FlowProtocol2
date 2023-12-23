@@ -52,7 +52,9 @@ namespace FlowProtocol2.Commands
             }
 
             CmdOptionValue? xOption = null;
-            var allOptions = GetNexCommands<CmdOptionValue>(c => c.ReadContext.Indent == firstOptionValue.ReadContext.Indent);
+            var allOptions = GetNexCommands<CmdOptionValue>(
+                    c => c.ReadContext.Indent == firstOptionValue.ReadContext.Indent,
+                    c => c.ReadContext.Indent < firstOptionValue.ReadContext.Indent);
             foreach (var idxo in allOptions)
             {
                 OptionValue ov = new OptionValue();

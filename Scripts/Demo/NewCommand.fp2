@@ -14,6 +14,7 @@
 >|    /// </summary>
 >|    public class Cmd$CmdName : CmdBaseCommand
 >|    {
+>|        public string VarName { get; set; }
 >|        public string Text { get; set; }
 >|        // ToDo: Weitere Eigenschaften deklarieren
 >|
@@ -25,13 +26,15 @@
 >|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)
 >|        {
 >|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
->|            cmd.Text = m.Groups[1].Value.Trim();
+>|            cmd.VarName = m.Groups[1].Value.Trim();
+>|            cmd.Text = m.Groups[2].Value.Trim();
 >|            // ToDo: Weitere Eigenschaften auslesen
 >|            return cmd;
 >|        }
 >|
 >|        public Cmd$CmdName(ReadContext readcontext) : base(readcontext)
 >|        {
+>|            VarName = string.Empty;
 >|            Text = string.Empty;
 >|            // ToDo: Weitere Standardwerte setzen
 >|        }

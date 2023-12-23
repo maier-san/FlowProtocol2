@@ -6,4 +6,6 @@
 	>>_ Das passt
 ~Else
 	>>_ Das passt nicht.
+~CamelCase CCH = Es war äußerst angenehm 123!
+>>_ Camelcase-Test: $CCH
 >>_ Das wars :-)

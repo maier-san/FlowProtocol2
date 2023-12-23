@@ -4,19 +4,16 @@
 {
     @if (Model.BlockType == OutputType.Paragraph)
     {
-        @foreach (var tl in Model.TextLines)
-        {
-            <p>
+        <p>
+            @foreach (var tl in Model.TextLines)
+            {
                 @foreach (var te in tl.TextElements)
-                {
                     @await Html.PartialAsync("_OMTextElement", te)
-                }
+                <br>
                 @foreach (var sb in tl.Subblocks)
-                {
                     @await Html.PartialAsync("_OMTextBlock", sb)
-                }
-            </p>
-        }
+            }
+        </p>
     }
     else if (Model.BlockType == OutputType.Listing)
     {
@@ -24,11 +21,10 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
+                    @foreach (var te in tl.TextElements)
+                        @await Html.PartialAsync("_OMTextElement", te)
                     @foreach (var sb in tl.Subblocks)
-                    {
                         @await Html.PartialAsync("_OMTextBlock", sb)
-                    }
                 </li>
             }
         </ul>
@@ -39,11 +35,10 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
+                    @foreach (var te in tl.TextElements)
+                        @await Html.PartialAsync("_OMTextElement", te)
                     @foreach (var sb in tl.Subblocks)
-                    {
                         @await Html.PartialAsync("_OMTextBlock", sb)
-                    }
                 </li>
             }
         </ol>

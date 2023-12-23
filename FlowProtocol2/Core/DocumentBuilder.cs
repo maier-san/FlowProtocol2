@@ -4,6 +4,7 @@ namespace FlowProtocol2.Core
     {
         public OMDocument Document { get; private set; }
         public string CurrentSection { get; set; }
+        private OMTextBlock? CurrentTextBlock {get; set;}
         private OMTextLine? CurrentTextline { get; set; }
         public DocumentBuilder()
         {
@@ -33,18 +34,19 @@ namespace FlowProtocol2.Core
             var lastBlock = section.Textblocks.LastOrDefault();
             if (l == Level.Level1)
             {
-                if (lastBlock == null || lastBlock.BlockType != t)
+                if (lastBlock == null || lastBlock.BlockType != t || lastBlock.Closed)
                 {
                     lastBlock = new OMTextBlock();
                     lastBlock.BlockType = t;
                     lastBlock.NumerationType = "1";
                     section.Textblocks.Add(lastBlock);
-                }
+                }                
                 OMTextLine newtextline = new OMTextLine();
                 lastBlock.TextLines.Add(newtextline);
                 OMTextElement newtextelement = new OMTextElement();
                 newtextelement.Text = text;
                 newtextline.TextElements.Add(newtextelement);
+                CurrentTextBlock = lastBlock;
                 CurrentTextline = newtextline;
             }
             else if (l == Level.Level2 && lastBlock != null)
@@ -94,6 +96,14 @@ namespace FlowProtocol2.Core
                 newtextelement.Link = link;
                 newtextelement.Codeformat = codeformat;
                 CurrentTextline.TextElements.Add(newtextelement);
+            }
+        }
+
+        public void EndParagraph()
+        {
+            if (CurrentTextBlock != null)
+            {
+                CurrentTextBlock.Closed = true;
             }
         }
     }

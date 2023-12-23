@@ -25,6 +25,7 @@ namespace FlowProtocol2.Core
         public OutputType BlockType { get; set; }
         public List<OMTextLine> TextLines { get; set; }
         public string NumerationType { get; set; }
+        public bool Closed { get; set; }
 
         /// <summary>
         /// Gibt den im Block enthaltenen Text als String zurück.
@@ -53,6 +54,7 @@ namespace FlowProtocol2.Core
             BlockType = OutputType.None;
             NumerationType = "1";
             TextLines = new List<OMTextLine>();
+            Closed = false;
         }
     }
     public class OMTextLine

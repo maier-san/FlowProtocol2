@@ -1,5 +1,9 @@
 ~SetTitel Hello Flow 2
 ~Set A=6
-~If Hallo == Hallo && $A > 5 && 457 ~ $A
-	>>_ Das Passt
+~If V == V
+	>>_ Dummy-Test
+~If Hallo == Hallo && $A > 5 && 4567 ~ $A
+	>>_ Das passt
+~Else
+	>>_ Das passt nicht.
 >>_ Das wars :-)

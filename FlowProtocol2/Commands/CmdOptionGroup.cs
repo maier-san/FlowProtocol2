@@ -34,7 +34,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            CmdOptionValue? firstOptionValue = GetNextCommand<CmdOptionValue>(c => true);
+            CmdOptionValue? firstOptionValue = GetNextCommand<CmdOptionValue>(c => true, c => c.Indent < this.Indent);
             if (firstOptionValue == null)
             {
                 rc.SetError(ReadContext, "Option ohne Werte",
@@ -53,8 +53,8 @@ namespace FlowProtocol2.Commands
 
             CmdOptionValue? xOption = null;
             var allOptions = GetNexCommands<CmdOptionValue>(
-                    c => c.ReadContext.Indent == firstOptionValue.ReadContext.Indent,
-                    c => c.ReadContext.Indent < firstOptionValue.ReadContext.Indent);
+                    c => c.Indent == firstOptionValue.Indent,
+                    c => c.Indent < firstOptionValue.Indent);
             foreach (var idxo in allOptions)
             {
                 OptionValue ov = new OptionValue();

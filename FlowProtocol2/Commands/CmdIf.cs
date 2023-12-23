@@ -9,6 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdIf : CmdBaseCommand
     {
         public string Expression { get; set; }
+        public bool Evaluation { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -29,20 +30,24 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            bool erg = EvaluateExpression(rc, Expression, out ErrorElement? err);
+            Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
             if (err != null)
             {
                 rc.ErrorItems.Add(err);
                 return null;
             }
-            if (erg)
+            CmdElse? associatedElseCommand = GetNextCommand<CmdElse>(
+                c => c.Indent == this.Indent,
+                c => c.Indent < this.Indent || (c.Indent == this.Indent && c is CmdIf));
+            if (associatedElseCommand != null)
+            {
+                associatedElseCommand.ParentIfCommand = this;
+            }
+            if (Evaluation)
             {
                 return NextCommand;
             }
-            else
-            {
-                return GetNextSameOrHigherLevelCommand();
-            }
+            return GetNextSameOrHigherLevelCommand();
         }
     }
 }

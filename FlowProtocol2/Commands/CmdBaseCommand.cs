@@ -8,6 +8,7 @@ namespace FlowProtocol2.Commands
         public CmdBaseCommand? NextCommand { get; set; }
         public CmdBaseCommand? PreviousCommand { get; set; }
         public ReadContext ReadContext { get; set; }
+        public int Indent => ReadContext.Indent;
         protected CmdBaseCommand(ReadContext readcontext)
         {
             ReadContext = readcontext;
@@ -48,11 +49,11 @@ namespace FlowProtocol2.Commands
             return input;
         }
 
-        protected T? GetNextCommand<T>(Func<T, bool> predicate)
+        protected T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand
         {
             CmdBaseCommand? cmdidx = NextCommand;
-            while (cmdidx != null)
+            while (cmdidx != null && !stopcrit(cmdidx))
             {
                 T? cmdT = cmdidx as T;
                 if (cmdT != null && predicate(cmdT))
@@ -66,7 +67,7 @@ namespace FlowProtocol2.Commands
 
         protected CmdBaseCommand? GetNextSameOrHigherLevelCommand()
         {
-            return GetNextCommand<CmdBaseCommand>(c => c.ReadContext.Indent <= this.ReadContext.Indent);
+            return GetNextCommand<CmdBaseCommand>(c => c.Indent <= this.Indent, c => false);
         }
 
         protected List<T> GetNexCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)

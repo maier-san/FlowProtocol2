@@ -40,7 +40,6 @@ namespace FlowProtocol2.Commands
             bool w1OK = double.TryParse(valExpanded, out double dblValue);            
             bool PrecisionOK = Int32.TryParse(precisionExpanded, out int iPrecision);
             double result = 0;
-            bool calculationOK = false;
             if (!w1OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
@@ -54,10 +53,6 @@ namespace FlowProtocol2.Commands
             else
             {
                 result = Math.Round(dblValue, iPrecision, MidpointRounding.AwayFromZero);
-                calculationOK = true;
-            }
-            if (calculationOK)
-            {
                 rc.InternalVars[VarName] = result.ToString();
             }
             return NextCommand;

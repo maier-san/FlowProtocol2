@@ -17,4 +17,6 @@
 >>_ CAL-Test: $CAL
 ~Round ROU = 1,653|1
 >>_ ROU-Test: $ROU
+~Random RAN = 7..11
+>>_ RAN-Test: $RAN
 >>_ Das wars :-)

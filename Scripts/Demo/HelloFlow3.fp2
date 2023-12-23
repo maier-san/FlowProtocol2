@@ -8,4 +8,11 @@
 	>>_ Das passt nicht.
 ~CamelCase CCH = Es war äußerst angenehm 123!
 >>_ Camelcase-Test: $CCH
+~UrlEncode URL = Es war äußerst angenehm 123!
+>>_ URL-Test: $URL
+~Replace REP = Hallo Tralala |Tralala->FlowProtocol
+>>_ REP-Test: $REP
+~Set B=-17
+~Calculate CAL = $A - $B
+>>_ CAL-Test: $CAL
 >>_ Das wars :-)

@@ -28,11 +28,17 @@ namespace FlowProtocol2.Commands
             {
                 foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
                 {
-                    input = input.Replace("$" + v.Key, v.Value);
+                    if (!string.IsNullOrWhiteSpace(v.Key))
+                    {
+                        input = input.Replace("$" + v.Key, v.Value);
+                    }
                 }
                 foreach (var v in rc.BoundVars.OrderByDescending(x => x.Key))
                 {
-                    input = input.Replace("$" + v.Key, v.Value);
+                    if (!string.IsNullOrWhiteSpace(v.Key))
+                    {
+                        input = input.Replace("$" + v.Key, v.Value);
+                    }
                 }
                 // Systemvariablen
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
@@ -117,67 +123,67 @@ namespace FlowProtocol2.Commands
             expression = expression.Trim();
             if (expression == "1" || expression == "true") return true;
             if (expression == "0" || expression == "false") return false;
-            bool erg = false;
-            if (CheckCompSTerm(rc, expression, "==", (x, y) => x == y, out erg, out err)) return erg;
-            if (CheckCompSTerm(rc, expression, "!=", (x, y) => x != y, out erg, out err)) return erg;
-            if (CheckCompDTerm(rc, expression, "<>", (x, y) => x != y, out erg, out err)) return erg;
-            if (CheckCompDTerm(rc, expression, "<=", (x, y) => x <= y, out erg, out err)) return erg;
-            if (CheckCompDTerm(rc, expression, ">=", (x, y) => x >= y, out erg, out err)) return erg;
-            if (CheckCompDTerm(rc, expression, "<", (x, y) => x < y, out erg, out err)) return erg;
-            if (CheckCompDTerm(rc, expression, ">", (x, y) => x > y, out erg, out err)) return erg;
-            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out erg, out err)) return erg;
-            if (CheckCompSTerm(rc, expression, "!~", (x, y) => !x.Contains(y), out erg, out err)) return erg;
+            bool result = false;
+            if (CheckCompSTerm(rc, expression, "==", (x, y) => x == y, out result, out err)) return result;
+            if (CheckCompSTerm(rc, expression, "!=", (x, y) => x != y, out result, out err)) return result;
+            if (CheckCompDTerm(rc, expression, "<>", (x, y) => x != y, out result, out err)) return result;
+            if (CheckCompDTerm(rc, expression, "<=", (x, y) => x <= y, out result, out err)) return result;
+            if (CheckCompDTerm(rc, expression, ">=", (x, y) => x >= y, out result, out err)) return result;
+            if (CheckCompDTerm(rc, expression, "<", (x, y) => x < y, out result, out err)) return result;
+            if (CheckCompDTerm(rc, expression, ">", (x, y) => x > y, out result, out err)) return result;
+            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;
+            if (CheckCompSTerm(rc, expression, "!~", (x, y) => !x.Contains(y), out result, out err)) return result;
             err = new ErrorElement(ReadContext, "Ungültiger Vergleichsterm",
                 $"Der Ausdruck {expression} kann nicht als Vergleichsterm interpretiert werden.");
             return false;
         }
 
         private bool CheckCompSTerm(RunContext rc, string expression, string scop, Func<string, string, bool> lcop,
-            out bool erg, out ErrorElement? err)
+            out bool result, out ErrorElement? err)
         {
             err = null;
             Regex regCompTerm = new Regex(@"(.*)" + scop + "(.*)");
             if (regCompTerm.IsMatch(expression))
             {
                 var m = regCompTerm.Match(expression);
-                string wert1 = ReplaceVars(rc, m.Groups[1].Value.Trim());
-                string wert2 = ReplaceVars(rc, m.Groups[2].Value.Trim());
-                erg = lcop(wert1, wert2);
+                string value1 = ReplaceVars(rc, m.Groups[1].Value.Trim());
+                string value2 = ReplaceVars(rc, m.Groups[2].Value.Trim());
+                result = lcop(value1, value2);
                 return true;
             }
-            erg = false;
+            result = false;
             return false;
         }
         private bool CheckCompDTerm(RunContext rc, string expression, string scop, Func<double, double, bool> lcop,
-            out bool erg, out ErrorElement? err)
+            out bool result, out ErrorElement? err)
         {
             err = null;
             Regex regCompTerm = new Regex(@"(.*)" + scop + "(.*)");
             if (regCompTerm.IsMatch(expression))
             {
                 var m = regCompTerm.Match(expression);
-                string wert1 = ReplaceVars(rc, m.Groups[1].Value.Trim());
-                string wert2 = ReplaceVars(rc, m.Groups[2].Value.Trim());
+                string value1 = ReplaceVars(rc, m.Groups[1].Value.Trim());
+                string value2 = ReplaceVars(rc, m.Groups[2].Value.Trim());
 
-                bool w1OK = double.TryParse(wert1, out double dblwert1);
-                bool w2OK = double.TryParse(wert2, out double dblwert2);
+                bool w1OK = double.TryParse(value1, out double dblvalue1);
+                bool w2OK = double.TryParse(value2, out double dblvalue2);
                 if (!w1OK)
                 {
                     err = new ErrorElement(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {wert1} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck {value1} kann nicht als Gleitkommazahl interpretiert werden.");
                 }
                 else if (!w2OK)
                 {
                     err = new ErrorElement(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {wert2} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck {value2} kann nicht als Gleitkommazahl interpretiert werden.");
                 }
                 else
                 {
-                    erg = lcop(dblwert1, dblwert2);
+                    result = lcop(dblvalue1, dblvalue2);
                     return true;
                 }
             }
-            erg = false;
+            result = false;
             return false;
         }
     }

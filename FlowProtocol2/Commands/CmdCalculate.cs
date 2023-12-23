@@ -40,41 +40,43 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            bool CalculationOK = false;
-            bool w1OK = double.TryParse(ReplaceVars(rc, Value1), out double dblValue1);
-            bool w2OK = double.TryParse(ReplaceVars(rc, Value2), out double dblValue2);
+            bool calculationOK = false;
+            string val1Expanded = ReplaceVars(rc, Value1).Trim();
+            string val2Expanded = ReplaceVars(rc, Value2).Trim();
+            bool w1OK = double.TryParse(val1Expanded, out double dblValue1);
+            bool w2OK = double.TryParse(val2Expanded, out double dblValue2);
             double result = 0;
             if (!w1OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {dblValue1} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck {val1Expanded} kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else if (!w2OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {dblValue2} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck {val2Expanded} kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else if (Operator == "+")
             {
                 result = dblValue1 + dblValue2;
-                CalculationOK = true;
+                calculationOK = true;
             }
             else if (Operator == "-")
             {
                 result = dblValue1 - dblValue2;
-                CalculationOK = true;
+                calculationOK = true;
             }
             else if (Operator == "*")
             {
                 result = dblValue1 * dblValue2;
-                CalculationOK = true;
+                calculationOK = true;
             }
             else if (Operator == "/")
             {
                 if (dblValue2 != 0)
                 {
                     result = dblValue1 / dblValue2;
-                    CalculationOK = true;
+                    calculationOK = true;
                 }
                 else
                 {
@@ -87,7 +89,7 @@ namespace FlowProtocol2.Commands
                 rc.SetError(ReadContext, "Ungültiger Operator",
                         $"Der Operator {Operator} kann nicht interpretiert werden.");
             }
-            if (CalculationOK)
+            if (calculationOK)
             {
                 rc.InternalVars[VarName] = result.ToString();
             }

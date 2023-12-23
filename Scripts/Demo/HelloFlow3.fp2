@@ -15,4 +15,6 @@
 ~Set B=-17
 ~Calculate CAL = $A - $B
 >>_ CAL-Test: $CAL
+~Round ROU = 1,653|1
+>>_ ROU-Test: $ROU
 >>_ Das wars :-)

@@ -30,7 +30,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public IActionResult OnGet(string scripttag)
         {
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
-            ScriptName = scripttag.Split('|').ToList().Last();
+            //ScriptName = scripttag.Split('|').ToList().Last();
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar
                 + scripttag.Replace('|', Path.DirectorySeparatorChar)
                 + FlowProtocol2Extension;
@@ -39,13 +39,18 @@ namespace FlowProtocol2.Pages.FlowPages
             {
                 return RedirectToPage("./NoScriptfile");
             }
+            if (fi != null && fi.Directory != null)
+            {
+                ScriptName = fi.Name;
+                RunContext.ScriptPath = fi.Directory.FullName;
+            }
             ScriptParser sp = new ScriptParser();
-            sp.ReadScript(RunContext, ScriptFilePath);
+            var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);
             ScriptRunner sr = new ScriptRunner();
             RunContext.BoundVars = BoundVars;
             RunContext.MyBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
             RunContext.MyResultURL = RunContext.MyBaseURL + this.HttpContext.Request.QueryString;
-            sr.RunScript(RunContext, sp.StartCommand);
+            sr.RunScript(RunContext, sinfo.StartCommand);
             return Page();
         }
 

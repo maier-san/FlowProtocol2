@@ -11,6 +11,9 @@ namespace FlowProtocol2.Commands
         public DocumentBuilder DocumentBuilder { get; set; }
         public string MyBaseURL { get; set; }
         public string MyResultURL { get; set; }
+        public string ScriptPath { get; set; }
+        public Dictionary<string, ScriptInfo> ScriptRepository { get; set; }
+        public Stack<CmdBaseCommand> ReturnStack { get; set; }
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -21,6 +24,9 @@ namespace FlowProtocol2.Commands
             DocumentBuilder = new DocumentBuilder();
             MyBaseURL = string.Empty;
             MyResultURL = string.Empty;
+            ScriptPath = string.Empty;
+            ScriptRepository = new Dictionary<string, ScriptInfo>();
+            ReturnStack = new Stack<CmdBaseCommand>();
         }
         public void SetError(ReadContext readcontext, string errorcode, string errortext)
         {

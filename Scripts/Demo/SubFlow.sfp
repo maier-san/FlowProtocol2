@@ -1,0 +1,3 @@
+>>* Aktuelle Datei = $TemplateFilePath
+~Input ZZ$KeyIndex: Gib was ein in $TemplateFilePath
+>>* Aktuelle Eingabe: $ZZ$KeyIndex

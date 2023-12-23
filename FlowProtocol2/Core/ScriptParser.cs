@@ -6,10 +6,6 @@ namespace FlowProtocol2.Core
     public class ScriptParser
     {
         private List<CommandParser> CmdParser;
-
-        public CmdBaseCommand? StartCommand { get; set; }
-        public CmdBaseCommand? LastCommand { get; set; }
-
         public ScriptParser()
         {
             CmdParser = new List<CommandParser>();
@@ -39,11 +35,13 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdRound.GetComandParser());
             CmdParser.Add(CmdRandom.GetComandParser());
             CmdParser.Add(CmdEndParagraph.GetComandParser());
+            CmdParser.Add(CmdInclude.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 
-        public void ReadScript(RunContext rc, string scriptfilepath)
+        public ScriptInfo ReadScript(RunContext rc, string scriptfilepath, int startindent)
         {
+            ScriptInfo sinfo = new ScriptInfo();
             CmdBaseCommand? currentcommand = null;
             CmdBaseCommand? previouscommand = null;
             using (StreamReader sr = new StreamReader(scriptfilepath))
@@ -56,7 +54,7 @@ namespace FlowProtocol2.Core
                     if (!string.IsNullOrWhiteSpace(line))
                     {
                         line = line.Replace("\t", "    ");
-                        int indent = line.Length - line.TrimStart().Length;
+                        int indent = startindent + line.Length - line.TrimStart().Length;
                         string codeline = line.Trim();
                         if (!codeline.StartsWith("//"))
                         {
@@ -68,16 +66,15 @@ namespace FlowProtocol2.Core
                                 {
                                     Match m = cp.LineExpression.Match(codeline);
                                     currentcommand = cp.CommandCreator(readcontext, m);
-                                    if (StartCommand == null)
+                                    if (sinfo.StartCommand == null)
                                     {
-                                        StartCommand = currentcommand;
+                                        sinfo.StartCommand = currentcommand;
                                     }
                                     if (previouscommand != null)
                                     {
                                         previouscommand.SetNextCommand(currentcommand);
                                     }
                                     previouscommand = currentcommand;
-                                    LastCommand = currentcommand;
                                     hasmatch = true;
                                     break;
                                 }
@@ -90,6 +87,12 @@ namespace FlowProtocol2.Core
                     }
                 }
             }
+            return sinfo;
         }
+    }
+
+    public class ScriptInfo
+    {
+        public CmdBaseCommand? StartCommand { get; set; }        
     }
 }

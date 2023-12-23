@@ -22,7 +22,7 @@ namespace FlowProtocol2.Commands
                 nextcommand.PreviousCommand = this;
             }
         }
-        protected static string ReplaceVars(RunContext rc, string input)
+        protected string ReplaceVars(RunContext rc, string input)
         {
             if (input.Contains('$'))
             {
@@ -44,6 +44,8 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
+                input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);
+                input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());                
                 if (input.Contains("$Chr"))
                 {
                     for (int i = 1; i < 255; i++)

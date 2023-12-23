@@ -32,7 +32,7 @@ namespace FlowProtocol2.Commands
             var inputtext = new InputTextElement();
             inputtext.Key = ReplaceVars(rc, Key);
             inputtext.Promt = ReplaceVars(rc, Promt);
-            if (rc.BoundVars.ContainsKey(inputtext.Key))
+            if (rc.BoundVars.ContainsKey(inputtext.Key) && !string.IsNullOrEmpty(rc.BoundVars[inputtext.Key]))
             {
                 rc.GivenKeys.Add(inputtext.Key);
             }

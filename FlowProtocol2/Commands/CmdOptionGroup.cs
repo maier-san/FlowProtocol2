@@ -6,11 +6,11 @@ namespace FlowProtocol2.Commands
     /// <summary>
     /// Implementiert den Option-Befehl
     /// </summary>
-    public class CmdOptionGroup : CmdBaseCommand
+    public class CmdOptionGroup : CmdInputBaseCommand
     {
         public string Key { get; set; }
         public string Promt { get; set; }
-        public CmdOptionValue? SelectedOptionCommand { get; set; }
+        public CmdOptionValue? SelectedOptionCommand { get; set; }        
 
         public static CommandParser GetComandParser()
         {
@@ -83,7 +83,9 @@ namespace FlowProtocol2.Commands
             {
                 rc.BoundVars[ogroup.Key] = string.Empty;
                 rc.InputItems.Add(ogroup);
+                AssociatedInputElement = ogroup;
             }
+            LinkAllRelatedCommands();
             return NextCommand;
         }
     }

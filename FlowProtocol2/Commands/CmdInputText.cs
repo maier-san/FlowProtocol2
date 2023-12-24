@@ -3,10 +3,10 @@ using FlowProtocol2.Core;
 
 namespace FlowProtocol2.Commands
 {
-    public class CmdInputText : CmdBaseCommand
+    public class CmdInputText : CmdInputBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }
+        public string Promt { get; set; }        
 
         public static CommandParser GetComandParser()
         {
@@ -40,7 +40,9 @@ namespace FlowProtocol2.Commands
             {
                 rc.BoundVars[inputtext.Key] = string.Empty;
                 rc.FormBuilder.AddInputItem(inputtext);
+                AssociatedInputElement = inputtext;
             }
+            LinkAllRelatedCommands();
             return NextCommand;
         }
     }

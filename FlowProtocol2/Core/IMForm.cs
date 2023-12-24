@@ -1,3 +1,5 @@
+using FlowProtocol2.Commands;
+
 namespace FlowProtocol2.Core
 {
     public class IMForm
@@ -15,23 +17,39 @@ namespace FlowProtocol2.Core
     {
         public string Promt { get; set; }
         public string Key { get; set; }
-        public List<IMHelpInfoLine> HelpInfoLines { get; set; }
-        public IMHelpInfoLine? CurrentHelpInfoLine { get; set; }
+        public IMHelpInfoBlock HelpInfoBlock { get; set; }
+
 
         public IMBaseElement()
         {
             Promt = string.Empty;
             Key = string.Empty;
+            HelpInfoBlock = new IMHelpInfoBlock();
+        }
+    }
+    public class IMHelpInfoBlock
+    {
+        public List<IMHelpInfoLine> HelpInfoLines { get; private set; }
+        private IMHelpInfoLine? CurrentHelpInfoLine { get; set; }
+
+        public IMHelpInfoBlock()
+        {
             HelpInfoLines = new List<IMHelpInfoLine>();
+        }
+        public void AddHelpLine(string text)
+        {
+            CurrentHelpInfoLine = new IMHelpInfoLine();
+            CurrentHelpInfoLine.Text = text;
+            HelpInfoLines.Add(CurrentHelpInfoLine);
         }
     }
 
     public class IMHelpInfoLine
     {
-        public List<OMTextElement> TextElements { get; set; }
+        public string Text { get; set; }
         public IMHelpInfoLine()
         {
-            TextElements = new List<OMTextElement>();
+            Text = string.Empty;
         }
     }
 

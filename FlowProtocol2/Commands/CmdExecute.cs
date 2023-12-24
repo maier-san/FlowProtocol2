@@ -1,7 +1,6 @@
 namespace FlowProtocol2.Commands
 {
     using System.Text.RegularExpressions;
-    using FlowProtocol2.Core;
 
     /// <summary>
     /// Implementiert den Execute-Befehl

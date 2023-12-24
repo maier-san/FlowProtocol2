@@ -65,9 +65,6 @@ namespace FlowProtocol2.Commands
         protected T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.NextCommand);
 
-        protected T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
-            where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.PreviousCommand);
-
         private T? GetCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit,
             Func<CmdBaseCommand, CmdBaseCommand?> searchdirection)
             where T : CmdBaseCommand

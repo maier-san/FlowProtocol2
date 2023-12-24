@@ -2,7 +2,6 @@ namespace FlowProtocol2.Commands
 {
     using System.Text.RegularExpressions;
     using System.Web;
-    using FlowProtocol2.Core;
 
     /// <summary>
     /// Implementiert den UrlEncode-Befehl

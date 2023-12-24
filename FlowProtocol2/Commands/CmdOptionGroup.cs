@@ -41,7 +41,7 @@ namespace FlowProtocol2.Commands
                     "Für die Optionsgruppe wurde kein Wert angegeben. Die Ausführung wird abgebrochen.");
                 return null;
             }
-            InputOptionGroupElement ogroup = new InputOptionGroupElement();
+            IMOptionGroupElement ogroup = new IMOptionGroupElement();
             ogroup.Key = ReplaceVars(rc, Key);
             ogroup.Promt = ReplaceVars(rc, Promt);
 
@@ -57,7 +57,7 @@ namespace FlowProtocol2.Commands
                     c => c.Indent < firstOptionValue.Indent);
             foreach (var idxo in allOptions)
             {
-                OptionValue ov = new OptionValue(ogroup);
+                IMOptionValue ov = new IMOptionValue(ogroup);
                 ov.Key = idxo.Key;
                 ov.Promt = ReplaceVars(rc, idxo.Promt);
                 ogroup.Options.Add(ov);

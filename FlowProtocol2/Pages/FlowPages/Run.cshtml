@@ -35,7 +35,7 @@
         }
         @foreach (var inidx in Model.RunContext.InputItems)
         {
-            var tinidx = inidx as Core.InputTextElement;
+            var tinidx = inidx as Core.IMTextElement;
             @if (tinidx != null)
             {
                 <div class="rendered-form">
@@ -47,7 +47,7 @@
                 </div>
                 <br>
             }
-            var ogidx = inidx as Core.InputOptionGroupElement;
+            var ogidx = inidx as Core.IMOptionGroupElement;
             @if (ogidx != null)
             {
                 <div class="formbuilder-radio-group form-group">

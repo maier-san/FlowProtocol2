@@ -5,10 +5,11 @@ namespace FlowProtocol2.Commands
     {
         public Dictionary<string, string> BoundVars;
         public List<string> GivenKeys { get; set; }
-        public Dictionary<string, string> InternalVars { get; set; }
-        public List<InputBaseElement> InputItems { get; set; }
+        public Dictionary<string, string> InternalVars { get; set; }        
         public List<ErrorElement> ErrorItems { get; set; }
+        public FormBuilder FormBuilder {get; set;}
         public DocumentBuilder DocumentBuilder { get; set; }
+        public List<IMBaseElement> InputItems => FormBuilder.InputForm.InputItems;
         public string MyBaseURL { get; set; }
         public string MyResultURL { get; set; }
         public string ScriptPath { get; set; }
@@ -19,10 +20,10 @@ namespace FlowProtocol2.Commands
         {
             BoundVars = new Dictionary<string, string>();
             GivenKeys = new List<string>();
-            InternalVars = new Dictionary<string, string>();
-            InputItems = new List<InputBaseElement>();
+            InternalVars = new Dictionary<string, string>();            
             ErrorItems = new List<ErrorElement>();
             DocumentBuilder = new DocumentBuilder();
+            FormBuilder = new FormBuilder();
             MyBaseURL = string.Empty;
             MyResultURL = string.Empty;
             ScriptPath = string.Empty;

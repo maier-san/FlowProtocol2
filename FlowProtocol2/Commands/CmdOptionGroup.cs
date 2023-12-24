@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^\?([A-Za-z0-9]*[']?):(.*)", (rc, m) => CreateOptionGroupCommand(rc, m));
+            return new CommandParser(@"^\?([A-Za-z0-9$]*[']?):(.*)", (rc, m) => CreateOptionGroupCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateOptionGroupCommand(ReadContext rc, Match m)
@@ -57,15 +57,15 @@ namespace FlowProtocol2.Commands
                     c => c.Indent < firstOptionValue.Indent);
             foreach (var idxo in allOptions)
             {
-                OptionValue ov = new OptionValue();
+                OptionValue ov = new OptionValue(ogroup);
                 ov.Key = idxo.Key;
                 ov.Promt = ReplaceVars(rc, idxo.Promt);
                 ogroup.Options.Add(ov);
-                if (!string.IsNullOrEmpty(selectedKey) && ov.Key == selectedKey)
+                if (!string.IsNullOrEmpty(selectedKey) && ov.UniqueKey == selectedKey)
                 {
                     SelectedOptionCommand = idxo;
                 }
-                if (ov.Key == "x")
+                if (ov.UniqueKey == "x")
                 {
                     xOption = idxo;
                 }

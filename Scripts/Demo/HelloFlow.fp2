@@ -6,9 +6,15 @@
 		~Set gruss=Aloah
 	#C3: mit "Servus"
 		~Set gruss=Servus
+		~Implies A3=D2
 >>_ Ergebnis = $gruss FlowProtocol2
 ~Execute
 ?A2: $gruss Digger! Was ist das beste FlowProtocol
 	#D1: FlowProtocol 1
 	#D2: FlowProtocol 2
+?A3: $gruss Digger! Was ist das geilste FlowProtocol
+	#D1: FlowProtocol 1
+		>>_ FP1 rules
+	#D2: FlowProtocol 2
+		>>_ FP2 rules
 	

@@ -17,7 +17,7 @@ namespace FlowProtocol2.Core
                     cmdNext = rc.ReturnStack.Pop();
                 }
             }
-            if (stepcount >= _maxStepCount)
+            if (stepcount >= _maxStepCount && cmdNext != null)
             {
                 rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
                     $"Die maximale Schrittzahl von {_maxStepCount} wurde überschritten. Die Ausführung wurde abgebrochen.");

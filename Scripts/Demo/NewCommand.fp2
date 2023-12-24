@@ -1,5 +1,5 @@
 ~Input CmdName: Befehlsname
-~SetTitel $CmdName-Implemntierung
+~SetTitel $CmdName-Implementierung
 >># Klasse erstellen
 >* "New File" im Ordner Commands
 >|Cmd$CmdName.cs

@@ -26,13 +26,18 @@ namespace FlowProtocol2.Commands
         {
             if (input.Contains('$'))
             {
-                foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
+                string compareInput = input;
+                do // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
                 {
-                    if (!string.IsNullOrWhiteSpace(v.Key))
+                    foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
                     {
-                        input = input.Replace("$" + v.Key, v.Value);
+                        compareInput = input;
+                        if (!string.IsNullOrWhiteSpace(v.Key))
+                        {
+                            input = input.Replace("$" + v.Key, v.Value);
+                        }
                     }
-                }
+                } while (compareInput != input);
                 foreach (var v in rc.BoundVars.OrderByDescending(x => x.Key))
                 {
                     if (!string.IsNullOrWhiteSpace(v.Key))
@@ -45,7 +50,7 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
                 input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);
-                input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());                
+                input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());
                 if (input.Contains("$Chr"))
                 {
                     for (int i = 1; i < 255; i++)
@@ -58,9 +63,16 @@ namespace FlowProtocol2.Commands
         }
 
         protected T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+            where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.NextCommand);
+
+        protected T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+            where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.PreviousCommand);
+
+        private T? GetCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit,
+            Func<CmdBaseCommand, CmdBaseCommand?> searchdirection)
             where T : CmdBaseCommand
         {
-            CmdBaseCommand? cmdidx = NextCommand;
+            CmdBaseCommand? cmdidx = searchdirection(this);
             while (cmdidx != null && !stopcrit(cmdidx))
             {
                 T? cmdT = cmdidx as T;
@@ -68,15 +80,13 @@ namespace FlowProtocol2.Commands
                 {
                     return cmdT;
                 }
-                cmdidx = cmdidx.NextCommand;
+                cmdidx = searchdirection(cmdidx);
             }
             return null;
         }
 
         protected CmdBaseCommand? GetNextSameOrHigherLevelCommand()
-        {
-            return GetNextCommand<CmdBaseCommand>(c => c.Indent <= this.Indent, c => false);
-        }
+            => GetCommand<CmdBaseCommand>(c => c.Indent <= this.Indent, c => false, c => c.NextCommand);
 
         protected List<T> GetNexCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand

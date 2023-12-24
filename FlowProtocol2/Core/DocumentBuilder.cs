@@ -4,7 +4,7 @@ namespace FlowProtocol2.Core
     {
         public OMDocument Document { get; private set; }
         public string CurrentSection { get; set; }
-        private OMTextBlock? CurrentTextBlock {get; set;}
+        private OMTextBlock? CurrentTextBlock { get; set; }
         private OMTextLine? CurrentTextline { get; set; }
         public DocumentBuilder()
         {
@@ -32,6 +32,7 @@ namespace FlowProtocol2.Core
                 Document.Sections.Add(section);
             }
             var lastBlock = section.Textblocks.LastOrDefault();
+            CurrentTextline = null;
             if (l == Level.Level1)
             {
                 if (lastBlock == null || lastBlock.BlockType != t || lastBlock.Closed)
@@ -40,14 +41,10 @@ namespace FlowProtocol2.Core
                     lastBlock.BlockType = t;
                     lastBlock.NumerationType = "1";
                     section.Textblocks.Add(lastBlock);
-                }                
-                OMTextLine newtextline = new OMTextLine();
-                lastBlock.TextLines.Add(newtextline);
-                OMTextElement newtextelement = new OMTextElement();
-                newtextelement.Text = text;
-                newtextline.TextElements.Add(newtextelement);
+                }
+                CurrentTextline = new OMTextLine();
+                lastBlock.TextLines.Add(CurrentTextline);
                 CurrentTextBlock = lastBlock;
-                CurrentTextline = newtextline;
             }
             else if (l == Level.Level2 && lastBlock != null)
             {
@@ -62,13 +59,13 @@ namespace FlowProtocol2.Core
                         lastSubblock.NumerationType = "a";
                         lastTextline.Subblocks.Add(lastSubblock);
                     }
-                    OMTextLine newSubTextline = new OMTextLine();
-                    lastSubblock.TextLines.Add(newSubTextline);
-                    OMTextElement newtextelement = new OMTextElement();
-                    newtextelement.Text = text;
-                    newSubTextline.TextElements.Add(newtextelement);
-                    CurrentTextline = newSubTextline;
+                    CurrentTextline = new OMTextLine();
+                    lastSubblock.TextLines.Add(CurrentTextline);
                 }
+            }
+            if (CurrentTextline != null)
+            {
+                AddNewTextElement(text, string.Empty, false);
             }
         }
 

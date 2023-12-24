@@ -14,6 +14,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
         public RunContext RunContext { get; set; }
+        public IMForm InputForm => RunContext.FormBuilder.InputForm;
         public OMDocument Document => RunContext.DocumentBuilder.Document;
         public List<ErrorElement> Errors => RunContext.ErrorItems;
         private const string FlowProtocol2Extension = ".fp2";

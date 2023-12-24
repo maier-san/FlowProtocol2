@@ -22,9 +22,13 @@
     </ol>
     <hr>
 }
-@if (Model.RunContext.InputItems.Any())
+@if (Model.InputForm.InputItems.Any())
 {
-    @if (!Model.Errors.Any())
+    @if (!string.IsNullOrEmpty(Model.InputForm.Titel))
+    {
+        <h2>@Model.InputForm.Titel</h2>
+    }
+    else if (!Model.Errors.Any())
     {
         <h2>@Model.ScriptName</h2>
     }
@@ -33,7 +37,7 @@
         {
             <input type="hidden" asp-for="BoundVars[k]" />
         }
-        @foreach (var inidx in Model.RunContext.InputItems)
+        @foreach (var inidx in Model.InputForm.InputItems)
         {
             var tinidx = inidx as Core.IMTextElement;
             @if (tinidx != null)

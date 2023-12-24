@@ -61,11 +61,11 @@ namespace FlowProtocol2.Commands
                 ov.Key = idxo.Key;
                 ov.Promt = ReplaceVars(rc, idxo.Promt);
                 ogroup.Options.Add(ov);
-                if (!string.IsNullOrEmpty(selectedKey) && ov.UniqueKey == selectedKey)
+                if (!string.IsNullOrEmpty(selectedKey) && ov.Key == selectedKey)
                 {
                     SelectedOptionCommand = idxo;
                 }
-                if (ov.UniqueKey == "x")
+                if (ov.Key == "x")
                 {
                     xOption = idxo;
                 }

@@ -15,10 +15,10 @@ namespace FlowProtocol2.Core
 
     public class OptionValue
     {
-        public string Key { private get; set; }
+        public string Key { get; set; }
         public string UniqueKey => ParentOptionGroup.Key + "_" + Key;
         public string Promt { get; set; }
-        private InputOptionGroupElement ParentOptionGroup {get; set;}
+        private InputOptionGroupElement ParentOptionGroup { get; set; }
         public OptionValue(InputOptionGroupElement parentOptionGroup)
         {
             ParentOptionGroup = parentOptionGroup;

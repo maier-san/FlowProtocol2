@@ -28,7 +28,7 @@ namespace FlowProtocol2.Commands
         {
             if (rc.InputItems.Any())
             {
-                return null;
+                rc.ExecuteNow = true;
             }
             return NextCommand;
         }

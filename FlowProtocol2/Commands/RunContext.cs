@@ -14,6 +14,7 @@ namespace FlowProtocol2.Commands
         public string ScriptPath { get; set; }
         public Dictionary<string, ScriptInfo> ScriptRepository { get; set; }
         public Stack<CmdBaseCommand> ReturnStack { get; set; }
+        public bool ExecuteNow { get; set; }
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -27,6 +28,7 @@ namespace FlowProtocol2.Commands
             ScriptPath = string.Empty;
             ScriptRepository = new Dictionary<string, ScriptInfo>();
             ReturnStack = new Stack<CmdBaseCommand>();
+            ExecuteNow = false;
         }
         public void SetError(ReadContext readcontext, string errorcode, string errortext)
         {

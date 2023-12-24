@@ -8,16 +8,16 @@ namespace FlowProtocol2.Core
             const int _maxStepCount = 20000;
             CmdBaseCommand? cmdNext = startcommand;
             int stepcount = 0;
-            while (cmdNext != null && stepcount < _maxStepCount)
+            while (cmdNext != null && !rc.ExecuteNow && stepcount < _maxStepCount)
             {
                 stepcount++;
                 cmdNext = cmdNext.Run(rc);
-                if (cmdNext == null && rc.ReturnStack.Any())
+                if (cmdNext == null && !rc.ExecuteNow && rc.ReturnStack.Any())
                 {
                     cmdNext = rc.ReturnStack.Pop();
                 }
             }
-            if (cmdNext != null && stepcount >= _maxStepCount)
+            if (stepcount >= _maxStepCount)
             {
                 rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
                     $"Die maximale Schrittzahl von {_maxStepCount} wurde überschritten. Die Ausführung wurde abgebrochen.");

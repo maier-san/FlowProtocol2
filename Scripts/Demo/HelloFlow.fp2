@@ -1,4 +1,6 @@
 ~SetTitel Hello Flow 2
+~SetInputTitel Mister Flow - look at me
+~SetDateTime Wochentag = dddd
 ?A1: Wie möchtest du FlowProtocol2 grüßen?
 	#C1: mit "Hallo"
 		~Set gruss=Hallo
@@ -8,6 +10,7 @@
 		~Set gruss=Servus
 		~Implies A3=D2
 >>_ Ergebnis = $gruss FlowProtocol2
+>>_ Heute ist $Wochentag.
 ~Execute
 ?A2: $gruss Digger! Was ist das beste FlowProtocol
 	>& Das ist eine ganz einfache Frage

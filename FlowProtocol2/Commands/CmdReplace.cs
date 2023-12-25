@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Replace ([A-Za-z0-9]*)\s*=(.*)\|(.*)->(.*)", (rc, m) => CreateReplaceCommand(rc, m));
+            return new CommandParser(@"^~Replace ([A-Za-z0-9$]*)\s*=(.*)\|(.*)->(.*)", (rc, m) => CreateReplaceCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateReplaceCommand(ReadContext rc, Match m)
@@ -37,7 +37,8 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            rc.InternalVars[VarName] = ReplaceVars(rc, Text).Replace(ReplaceVars(rc, SearchFor), ReplaceVars(rc, ReplaceBy));
+            string expandedVarName = ReplaceVars(rc, VarName);
+            rc.InternalVars[expandedVarName] = ReplaceVars(rc, Text).Replace(ReplaceVars(rc, SearchFor), ReplaceVars(rc, ReplaceBy));
             return NextCommand;
         }
     }

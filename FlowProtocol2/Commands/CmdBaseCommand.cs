@@ -29,9 +29,9 @@ namespace FlowProtocol2.Commands
                 string compareInput = input;
                 do // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
                 {
+                    compareInput = input;
                     foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
-                    {
-                        compareInput = input;
+                    {                        
                         if (!string.IsNullOrWhiteSpace(v.Key))
                         {
                             input = input.Replace("$" + v.Key, v.Value);

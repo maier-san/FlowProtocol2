@@ -42,13 +42,14 @@ namespace FlowProtocol2.Commands
                 return null;
             }
             IMOptionGroupElement ogroup = new IMOptionGroupElement();
-            ogroup.Key = ReplaceVars(rc, Key);
-            ogroup.Promt = ReplaceVars(rc, Promt);
+            string expandedKey = ReplaceVars(rc, Key).Trim();
+            ogroup.Key = expandedKey;
+            ogroup.Promt = ReplaceVars(rc, Promt).Trim();
 
             string selectedKey = string.Empty;
-            if (rc.BoundVars.ContainsKey(ogroup.Key))
+            if (rc.BoundVars.ContainsKey(expandedKey))
             {
-                selectedKey = rc.BoundVars[ogroup.Key];
+                selectedKey = rc.BoundVars[expandedKey];
             }
 
             CmdOptionValue? xOption = null;
@@ -77,11 +78,11 @@ namespace FlowProtocol2.Commands
             }
             if (SelectedOptionCommand != null)
             {
-                rc.GivenKeys.Add(ogroup.Key);
+                rc.GivenKeys.Add(expandedKey);
             }
             else
             {
-                rc.BoundVars[ogroup.Key] = string.Empty;
+                rc.BoundVars[expandedKey] = string.Empty;
                 rc.InputItems.Add(ogroup);
                 AssociatedInputElement = ogroup;
             }

@@ -12,7 +12,7 @@ namespace FlowProtocol2.Commands
         
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Set ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
+            return new CommandParser(@"^~Set ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
         }
         
         private static CmdBaseCommand CreateSetCommand(ReadContext rc, Match m)
@@ -31,7 +31,8 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            rc.InternalVars[VarName] = ReplaceVars(rc, Text);
+            string expandedVarName = ReplaceVars(rc, VarName);
+            rc.InternalVars[expandedVarName] = ReplaceVars(rc, Text);
             return NextCommand;
         }
     }

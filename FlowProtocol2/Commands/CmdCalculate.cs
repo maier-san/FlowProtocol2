@@ -15,7 +15,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Calculate ([A-Za-z0-9]*)\s*=\s*(-?[A-Za-z0-9$]*)\s*([\+\-\*/])\s*(-?[A-Za-z0-9$]*)",
+            return new CommandParser(@"^~Calculate ([A-Za-z0-9$]*)\s*=\s*(-?[A-Za-z0-9$]*)\s*([\+\-\*/])\s*(-?[A-Za-z0-9$]*)",
                 (rc, m) => CreateCalculateCommand(rc, m));
         }
 
@@ -90,7 +90,8 @@ namespace FlowProtocol2.Commands
             }
             if (calculationOK)
             {
-                rc.InternalVars[VarName] = result.ToString();
+                string expandedVarName = ReplaceVars(rc, VarName);
+                rc.InternalVars[expandedVarName] = result.ToString();
             }
             return NextCommand;
         }

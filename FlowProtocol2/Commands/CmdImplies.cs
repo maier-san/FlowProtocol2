@@ -7,7 +7,7 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdImplies : CmdBaseCommand
     {
-        public string VarName { get; set; }
+        public string Key { get; set; }
         public string Text { get; set; }
 
         public static CommandParser GetComandParser()
@@ -18,24 +18,23 @@ namespace FlowProtocol2.Commands
         private static CmdBaseCommand CreateImpliesCommand(ReadContext rc, Match m)
         {
             CmdImplies cmd = new CmdImplies(rc);
-            cmd.VarName = m.Groups[1].Value.Trim();
+            cmd.Key = m.Groups[1].Value.Trim();
             cmd.Text = m.Groups[2].Value.Trim();
             return cmd;
         }
 
         public CmdImplies(ReadContext readcontext) : base(readcontext)
         {
-            VarName = string.Empty;
+            Key = string.Empty;
             Text = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string varNameExpanded = ReplaceVars(rc, VarName).Trim();
-            rc.BoundVars[varNameExpanded] = ReplaceVars(rc, Text);
-            rc.GivenKeys.Add(varNameExpanded);
+            string expandedKey = ReplaceVars(rc, Key).Trim();
+            rc.BoundVars[expandedKey] = ReplaceVars(rc, Text);
+            rc.GivenKeys.Add(expandedKey);
             return NextCommand;
-            //passt noch nicht
         }
     }
 }

@@ -20,3 +20,7 @@
 ~Random RAN = 7..11
 >>_ RAN-Test: $RAN
 >>_ Das wars :-)
+~Set Index=17
+~Set Feld$Index=ein Teddybär
+~Set CallIndex=17
+>>_ Es war einmel ein $Feld$CallIndex

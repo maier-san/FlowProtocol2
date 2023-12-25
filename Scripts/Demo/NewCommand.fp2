@@ -1,5 +1,6 @@
 ~Input CmdName: Befehlsname
 ~SetTitel $CmdName-Implementierung
+~SetInputTitel Neue Command-Klasse erstellen
 >># Klasse erstellen
 >* "New File" im Ordner Commands
 >|Cmd$CmdName.cs
@@ -20,7 +21,7 @@
 >|
 >|        public static CommandParser GetComandParser()
 >|        {
->|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
+>|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
 >|        }
 >|
 >|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)
@@ -42,6 +43,8 @@
 >|        public override CmdBaseCommand? Run(RunContext rc)
 >|        {
 >|            // ToDo: Run-Methode ausimplementieren
+>|            string expandedVarName = ReplaceVars(rc, VarName);
+>|            rc.InternalVars[expandedVarName] = "???";
 >|            return NextCommand;
 >|        }
 >|    }
@@ -55,4 +58,4 @@
 >># Befehl in SkriptParser hinzufügen
 ># in ScriptParser.cs
 ># private void LoadCommands()
->|            CmdParser.Add(Cmd$CmdName.GetComandParser());
+>|CmdParser.Add(Cmd$CmdName.GetComandParser());

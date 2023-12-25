@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~UrlEncode ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => CreateUrlEncodeCommand(rc, m));
+            return new CommandParser(@"^~UrlEncode ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateUrlEncodeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateUrlEncodeCommand(ReadContext rc, Match m)
@@ -32,7 +32,8 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            rc.InternalVars[VarName] = HttpUtility.UrlEncode(ReplaceVars(rc, Text.Trim())).Replace("+", "%20");
+            string expandedVarName = ReplaceVars(rc, VarName);
+            rc.InternalVars[expandedVarName] = HttpUtility.UrlEncode(ReplaceVars(rc, Text.Trim())).Replace("+", "%20");
             return NextCommand;
         }
     }

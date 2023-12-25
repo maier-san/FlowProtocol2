@@ -6,7 +6,7 @@ namespace FlowProtocol2.Commands
     public class CmdInputText : CmdInputBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }        
+        public string Promt { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -30,15 +30,16 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             var inputtext = new IMTextInputElement();
-            inputtext.Key = ReplaceVars(rc, Key);
-            inputtext.Promt = ReplaceVars(rc, Promt);
-            if (rc.BoundVars.ContainsKey(inputtext.Key) && !string.IsNullOrEmpty(rc.BoundVars[inputtext.Key]))
+            string expandedKey = ReplaceVars(rc, Key).Trim();
+            inputtext.Key = expandedKey;
+            inputtext.Promt = ReplaceVars(rc, Promt).Trim();
+            if (rc.BoundVars.ContainsKey(expandedKey) && !string.IsNullOrEmpty(rc.BoundVars[expandedKey]))
             {
-                rc.GivenKeys.Add(inputtext.Key);
+                rc.GivenKeys.Add(expandedKey);
             }
             else
             {
-                rc.BoundVars[inputtext.Key] = string.Empty;
+                rc.BoundVars[expandedKey] = string.Empty;
                 rc.InputForm.AddInputItem(inputtext);
                 AssociatedInputElement = inputtext;
             }

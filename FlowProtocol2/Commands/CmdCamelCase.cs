@@ -12,7 +12,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~CamelCase ([A-Za-z0-9]*)\s*=(.*)", (rc, m) => CreateCamelCaseCommand(rc, m));
+            return new CommandParser(@"^~CamelCase ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateCamelCaseCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateCamelCaseCommand(ReadContext rc, Match m)
@@ -53,7 +53,8 @@ namespace FlowProtocol2.Commands
                     ccwert = ccwert.Replace("_", "");
                 }
             }
-            rc.InternalVars[VarName] = ccwert;
+            string expandedVarName = ReplaceVars(rc, VarName);
+            rc.InternalVars[expandedVarName] = ccwert;
             return NextCommand;
         }
     }

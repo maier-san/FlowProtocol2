@@ -11,6 +11,11 @@ namespace FlowProtocol2.Core
             Titel = string.Empty;
             InputItems = new List<IMBaseElement>();
         }
+
+        public void AddInputItem(IMBaseElement inputitem)
+        {
+            InputItems.Add(inputitem);
+        }
     }
 
     public abstract class IMBaseElement

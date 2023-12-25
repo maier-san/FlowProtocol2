@@ -39,7 +39,7 @@ namespace FlowProtocol2.Commands
             else
             {
                 rc.BoundVars[inputtext.Key] = string.Empty;
-                rc.FormBuilder.AddInputItem(inputtext);
+                rc.InputForm.AddInputItem(inputtext);
                 AssociatedInputElement = inputtext;
             }
             return NextCommand;

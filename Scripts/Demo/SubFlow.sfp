@@ -1,3 +1,6 @@
 >>* Aktuelle Datei = $TemplateFilePath
 ~Input ZZ$KeyIndex: Gib was ein in $TemplateFilePath
+?S': Wie geht es?
+	#1: gut
+	#2: sehr gut
 >>* Aktuelle Eingabe: $ZZ$KeyIndex

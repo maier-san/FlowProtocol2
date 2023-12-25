@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
     {
         public string Key { get; set; }
         public string Promt { get; set; }
-        public CmdOptionValue? SelectedOptionCommand { get; set; }        
+        public CmdOptionValue? SelectedOptionCommand { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -43,6 +43,10 @@ namespace FlowProtocol2.Commands
             }
             IMOptionGroupElement ogroup = new IMOptionGroupElement();
             string expandedKey = ReplaceVars(rc, Key).Trim();
+            if (expandedKey.EndsWith("'"))
+            {
+                expandedKey = expandedKey.Replace("'", "_" + ReadContext.LineNumber.ToString());
+            }
             ogroup.Key = expandedKey;
             ogroup.Promt = ReplaceVars(rc, Promt).Trim();
 

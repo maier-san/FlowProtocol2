@@ -31,7 +31,6 @@ namespace FlowProtocol2.Pages.FlowPages
         public IActionResult OnGet(string scripttag)
         {
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
-            //ScriptName = scripttag.Split('|').ToList().Last();
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar
                 + scripttag.Replace('|', Path.DirectorySeparatorChar)
                 + FlowProtocol2Extension;

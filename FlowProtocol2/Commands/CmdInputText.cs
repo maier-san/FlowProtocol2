@@ -42,7 +42,6 @@ namespace FlowProtocol2.Commands
                 rc.FormBuilder.AddInputItem(inputtext);
                 AssociatedInputElement = inputtext;
             }
-            LinkAllRelatedCommands();
             return NextCommand;
         }
     }

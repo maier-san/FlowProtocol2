@@ -5,7 +5,7 @@ namespace FlowProtocol2.Commands
     /// <summary>
     /// Implementiert den AddHelpLine-Befehl
     /// </summary>
-    public class CmdAddHelpLine : CmdInputRelatedCommand
+    public class CmdAddHelpLine : CmdBaseCommand
     {
         public string Text { get; set; }        
 
@@ -28,14 +28,16 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {            
-            if (ParentInputCommand == null)
+            
+            var parentInputCommand = GetPreviousCommand<CmdInputBaseCommand>(c=>true, c=>false);
+            if (parentInputCommand == null)
             {
                 rc.SetError(ReadContext, "Hilfetext ohne Eingabebefehl",
                     "Der Hilfetext-Befehl kann keinem Eingabebefehl zugeordnet werden.");
             }
-            else if (ParentInputCommand.AssociatedInputElement != null)
+            else if (parentInputCommand.AssociatedInputElement != null)
             {
-                ParentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(Text);
+                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(Text);
             }
             return NextCommand;
         }

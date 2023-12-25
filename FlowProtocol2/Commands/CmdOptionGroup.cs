@@ -85,7 +85,6 @@ namespace FlowProtocol2.Commands
                 rc.InputItems.Add(ogroup);
                 AssociatedInputElement = ogroup;
             }
-            LinkAllRelatedCommands();
             return NextCommand;
         }
     }

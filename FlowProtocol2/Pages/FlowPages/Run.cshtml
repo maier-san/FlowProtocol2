@@ -45,6 +45,10 @@
                 <div class="rendered-form">
                     <div class="formbuilder-text form-group">
                         <label for="@inidx.Key" class="formbuilder-text-label">@inidx.Promt<br></label>
+                        @if (tinidx.HelpInfoBlock.HelpInfoLines.Any())
+                        {
+                            @await Html.PartialAsync("_IMHelpInfoBlock", tinidx.HelpInfoBlock)
+                        }
                         <input type="text" class="form-control" access="false" id="@inidx.Key" asp-for="BoundVars[inidx.Key]"
                             maxlength="300">
                     </div>
@@ -56,6 +60,10 @@
             {
                 <div class="formbuilder-radio-group form-group">
                     <label class="formbuilder-radio-group-label">@ogidx.Promt</label>
+                    @if (ogidx.HelpInfoBlock.HelpInfoLines.Any())
+                    {
+                        @await Html.PartialAsync("_IMHelpInfoBlock", ogidx.HelpInfoBlock)
+                    }
                     <div class="radio-group">
                         @foreach (var op in ogidx.Options)
                         {

@@ -2,4 +2,19 @@
 @model IMHelpInfoBlock;
 @if (@Model != null)
 {
+    @if (@Model != null && @Model.HelpInfoLines.Any())
+    {
+        <ul>
+            <i>
+                <span style="color: #993366;">
+                    @foreach (var hl in @Model.HelpInfoLines)
+                    {
+                        <li>
+                            @hl.Text
+                        </li>
+                    }
+                </span>
+            </i>
+        </ul>
+    }
 }

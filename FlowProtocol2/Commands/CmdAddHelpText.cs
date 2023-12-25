@@ -1,27 +1,28 @@
 namespace FlowProtocol2.Commands
 {
     using System.Text.RegularExpressions;
+    using FlowProtocol2.Core;
 
     /// <summary>
-    /// Implementiert den AddHelpLine-Befehl
+    /// Implementiert den AddHelpText-Befehl
     /// </summary>
-    public class CmdAddHelpLine : CmdBaseCommand
-    {
+    public class CmdAddHelpText : CmdBaseCommand
+    {        
         public string Text { get; set; }
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^(>&|~AddHelpLine) (.*)", (rc, m) => CreateAddHelpLineCommand(rc, m));
+            return new CommandParser(@"^~AddHelpText (.*)", (rc, m) => CreateAddHelpTextCommand(rc, m));
         }
 
-        private static CmdBaseCommand CreateAddHelpLineCommand(ReadContext rc, Match m)
+        private static CmdBaseCommand CreateAddHelpTextCommand(ReadContext rc, Match m)
         {
-            CmdAddHelpLine cmd = new CmdAddHelpLine(rc);
-            cmd.Text = m.Groups[2].Value.Trim();
+            CmdAddHelpText cmd = new CmdAddHelpText(rc);
+            cmd.Text = m.Groups[1].Value;
             return cmd;
         }
 
-        public CmdAddHelpLine(ReadContext readcontext) : base(readcontext)
+        public CmdAddHelpText(ReadContext readcontext) : base(readcontext)
         {
             Text = string.Empty;
         }
@@ -36,7 +37,8 @@ namespace FlowProtocol2.Commands
             }
             else if (parentInputCommand.AssociatedInputElement != null)
             {
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(Text);
+                string textexpanded = ReplaceVars(rc, Text);
+                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(textexpanded, string.Empty);
             }
             return NextCommand;
         }

@@ -11,7 +11,12 @@
 ~Execute
 ?A2: $gruss Digger! Was ist das beste FlowProtocol
 	>& Das ist eine ganz einfache Frage
-	>& Was soll ich da noch erklären?
+	>& Hier noch ein Link:
+	~AddHelpLink https://otrkeyfinder.com/de/de | OTR-Key-Finder
+	~AddHelpText  (Ist echt gut!)
+	~AddHelpLine Hier noch was eingebettetes A-
+	~AddHelpLink https://otrkeyfinder.com/de/de |B
+	~AddHelpText -C
 	#D1: FlowProtocol 1
 	#D2: FlowProtocol 2
 ?A3: $gruss Digger! Was ist das geilste FlowProtocol

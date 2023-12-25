@@ -39,48 +39,46 @@ namespace FlowProtocol2.Core
         public void AddHelpLine(string text)
         {
             CurrentHelpInfoLine = new IMHelpInfoLine();
-            CurrentHelpInfoLine.Text = text;
             HelpInfoLines.Add(CurrentHelpInfoLine);
+            AddHelpText(text, string.Empty);
+        }
+        public void AddHelpText(string text, string link)
+        {
+            if (CurrentHelpInfoLine != null && !string.IsNullOrEmpty(text)) 
+            {
+                IMHelpTextElement newTextElement = new IMHelpTextElement();
+                newTextElement.Text = text;
+                newTextElement.Link = link;
+                CurrentHelpInfoLine.TextElements.Add(newTextElement);
+            }
         }
     }
 
     public class IMHelpInfoLine
     {
-        public string Text { get; set; }
+        public List<IMHelpTextElement> TextElements {get; set;}
         public IMHelpInfoLine()
         {
+            TextElements = new List<IMHelpTextElement>();
+        }
+    }
+
+    public class IMHelpTextElement : IMBaseElement
+    {
+        public string Text {get; set;}
+        public string TrimText => Text.Trim();
+        public string LeadingSpace
+        {
+            get
+            {
+                if (TrimText.Length < Text.Length) return " "; else return string.Empty;
+            }
+        }
+        public string Link {get; set;}
+        public IMHelpTextElement() : base()
+        {
             Text = string.Empty;
-        }
-    }
-
-    public class IMTextElement : IMBaseElement
-    {
-        public IMTextElement() : base()
-        {
-        }
-    }
-
-    public class IMOptionGroupElement : IMBaseElement
-    {
-        public List<IMOptionValue> Options { get; set; }
-        public IMOptionValue? SelectedValue { get; set; }
-        public IMOptionGroupElement() : base()
-        {
-            Options = new List<IMOptionValue>();
-        }
-    }
-
-    public class IMOptionValue
-    {
-        public string Key { get; set; }
-        public string UniqueKey => ParentOptionGroup.Key + "_" + Key;
-        public string Promt { get; set; }
-        private IMOptionGroupElement ParentOptionGroup { get; set; }
-        public IMOptionValue(IMOptionGroupElement parentOptionGroup)
-        {
-            ParentOptionGroup = parentOptionGroup;
-            Key = string.Empty;
-            Promt = string.Empty;
+            Link = string.Empty;
         }
     }
 }

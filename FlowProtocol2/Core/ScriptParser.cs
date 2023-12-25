@@ -37,7 +37,9 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdEndParagraph.GetComandParser());
             CmdParser.Add(CmdInclude.GetComandParser());
             CmdParser.Add(CmdImplies.GetComandParser());
-            CmdParser.Add(CmdAddHelpLine.GetComandParser());            
+            CmdParser.Add(CmdAddHelpLine.GetComandParser());
+            CmdParser.Add(CmdAddHelpLink.GetComandParser());
+            CmdParser.Add(CmdAddHelpText.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 
@@ -95,6 +97,6 @@ namespace FlowProtocol2.Core
 
     public class ScriptInfo
     {
-        public CmdBaseCommand? StartCommand { get; set; }        
+        public CmdBaseCommand? StartCommand { get; set; }
     }
 }

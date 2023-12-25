@@ -77,18 +77,9 @@ namespace FlowProtocol2.Core
         /// <param name="codeformat">True, wenn das Textelement als Code formatiert werden soll.</param>
         public void AddNewTextElement(string text, string link, bool codeformat)
         {
-            if (CurrentTextline != null)
+            if (CurrentTextline != null && !string.IsNullOrEmpty(text))
             {
-                OMTextElement newtextelement;
-                var lasttextelement = CurrentTextline.TextElements.LastOrDefault();
-                if (lasttextelement != null && string.IsNullOrEmpty(lasttextelement.Text))
-                {
-                    newtextelement = lasttextelement;
-                }
-                else
-                {
-                    newtextelement = new OMTextElement();
-                }
+                OMTextElement newtextelement = new OMTextElement();
                 newtextelement.Text = text;
                 newtextelement.Link = link;
                 newtextelement.Codeformat = codeformat;

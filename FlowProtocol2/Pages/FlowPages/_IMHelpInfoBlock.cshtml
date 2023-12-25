@@ -7,10 +7,14 @@
         <ul>
             <i>
                 <span style="color: #993366;">
-                    @foreach (var hl in @Model.HelpInfoLines)
+                    @foreach (var hil in @Model.HelpInfoLines)
                     {
                         <li>
-                            @hl.Text
+                            @foreach (var hte in hil.TextElements)
+                            {
+                                @if (!string.IsNullOrEmpty(hte.Link)){@hte.LeadingSpace<a href="@hte.Link" target="_blank">@hte.TrimText</a>}
+                                else {@hte.Text}
+                            }
                         </li>
                     }
                 </span>

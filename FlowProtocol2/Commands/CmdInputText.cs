@@ -29,7 +29,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            var inputtext = new IMTextElement();
+            var inputtext = new IMTextInputElement();
             inputtext.Key = ReplaceVars(rc, Key);
             inputtext.Promt = ReplaceVars(rc, Promt);
             if (rc.BoundVars.ContainsKey(inputtext.Key) && !string.IsNullOrEmpty(rc.BoundVars[inputtext.Key]))

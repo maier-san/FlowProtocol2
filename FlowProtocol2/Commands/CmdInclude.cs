@@ -9,10 +9,15 @@ namespace FlowProtocol2.Commands
     public class CmdInclude : CmdBaseCommand
     {
         public string ScriptName { get; set; }
+        public string BaseKey { get; set; }
 
         public static CommandParser GetComandParser()
         {
             return new CommandParser(@"^~Include ([A-Za-z0-9\.]*)", (rc, m) => CreateIncludeCommand(rc, m));
+        }
+        public static CommandParser GetCommandParserWithBaseKey()
+        {
+            return new CommandParser(@"^~Include ([A-Za-z0-9\.]*)\s*;\s*BaseKey\s*=\s*([A-Za-z0-9$]*)", (rc, m) => CreateIncludeCommandWithBaseKey(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)
@@ -22,9 +27,18 @@ namespace FlowProtocol2.Commands
             return cmd;
         }
 
+        private static CmdBaseCommand CreateIncludeCommandWithBaseKey(ReadContext rc, Match m)
+        {
+            CmdInclude cmd = new CmdInclude(rc);
+            cmd.ScriptName = m.Groups[1].Value.Trim();
+            cmd.BaseKey = m.Groups[2].Value.Trim();
+            return cmd;
+        }
+
         public CmdInclude(ReadContext readcontext) : base(readcontext)
         {
             ScriptName = string.Empty;
+            BaseKey = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
@@ -40,13 +54,16 @@ namespace FlowProtocol2.Commands
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();
+                string extendedBaseKey = ReplaceVars(rc, BaseKey).Trim();
                 var newScriptinfo = sp.ReadScript(rc, scriptFilePath, Indent);
                 rc.ScriptRepository[scriptFilePath] = newScriptinfo;
             }
-            var sinfo = rc.ScriptRepository[scriptFilePath];            
+            var sinfo = rc.ScriptRepository[scriptFilePath];
             if (sinfo.StartCommand != null)
             {
-                if (NextCommand != null) rc.ReturnStack.Push(NextCommand);
+                string expandedBaseKey = ReplaceVars(rc, BaseKey).Trim();
+                if (NextCommand != null) rc.ReturnStack.Push(new EntryPoint(NextCommand, rc.BaseKey));
+                rc.BaseKey = expandedBaseKey;
                 return sinfo.StartCommand;
             }
             return NextCommand;

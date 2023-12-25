@@ -43,6 +43,15 @@ namespace FlowProtocol2.Commands
             }
             IMOptionGroupElement ogroup = new IMOptionGroupElement();
             string expandedKey = ReplaceVars(rc, Key).Trim();
+            string plainKey = expandedKey;
+            if (string.IsNullOrEmpty(expandedKey))
+            {
+                expandedKey = "'";
+            }
+            if (!string.IsNullOrEmpty(rc.BaseKey))
+            {
+                expandedKey = rc.BaseKey + "_" + expandedKey;
+            }
             if (expandedKey.EndsWith("'"))
             {
                 expandedKey = expandedKey.Replace("'", "_" + ReadContext.LineNumber.ToString());
@@ -89,6 +98,10 @@ namespace FlowProtocol2.Commands
                 rc.BoundVars[expandedKey] = string.Empty;
                 rc.InputItems.Add(ogroup);
                 AssociatedInputElement = ogroup;
+            }
+            if (rc.BoundVars.ContainsKey(expandedKey))
+            {
+                rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
             }
             return NextCommand;
         }

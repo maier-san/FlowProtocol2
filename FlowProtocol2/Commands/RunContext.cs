@@ -14,8 +14,9 @@ namespace FlowProtocol2.Commands
         public string MyResultURL { get; set; }
         public string ScriptPath { get; set; }
         public Dictionary<string, ScriptInfo> ScriptRepository { get; set; }
-        public Stack<CmdBaseCommand> ReturnStack { get; set; }
+        public Stack<EntryPoint> ReturnStack { get; set; }
         public bool ExecuteNow { get; set; }
+        public string BaseKey { get; set; }
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -28,12 +29,24 @@ namespace FlowProtocol2.Commands
             MyResultURL = string.Empty;
             ScriptPath = string.Empty;
             ScriptRepository = new Dictionary<string, ScriptInfo>();
-            ReturnStack = new Stack<CmdBaseCommand>();
+            ReturnStack = new Stack<EntryPoint>();
             ExecuteNow = false;
+            BaseKey = string.Empty;
         }
         public void SetError(ReadContext readcontext, string errorcode, string errortext)
         {
             ErrorItems.Add(new ErrorElement(readcontext, errorcode, errortext));
+        }
+    }
+
+    public class EntryPoint
+    {
+        public CmdBaseCommand EntryCommand {get; set;}
+        public string BaseKey {get;set;}
+        public EntryPoint(CmdBaseCommand entrycommand, string basekey)
+        {
+            EntryCommand = entrycommand;
+            BaseKey = basekey;
         }
     }
 }

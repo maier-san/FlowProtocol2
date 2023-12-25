@@ -32,6 +32,10 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedKey = ReplaceVars(rc, Key).Trim();
+            if (!string.IsNullOrEmpty(rc.BaseKey))
+            {
+                expandedKey = rc.BaseKey + "_" + expandedKey;
+            }
             rc.BoundVars[expandedKey] = ReplaceVars(rc, Text);
             rc.GivenKeys.Add(expandedKey);
             return NextCommand;

@@ -31,19 +31,17 @@ namespace FlowProtocol2.Commands
                 {
                     compareInput = input;
                     foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
-                    {                        
+                    {
                         if (!string.IsNullOrWhiteSpace(v.Key))
                         {
                             input = input.Replace("$" + v.Key, v.Value);
                         }
                     }
                 } while (compareInput != input);
-                foreach (var v in rc.BoundVars.OrderByDescending(x => x.Key))
+                string basekeyextension = string.Empty;
+                if (!string.IsNullOrEmpty(rc.BaseKey))
                 {
-                    if (!string.IsNullOrWhiteSpace(v.Key))
-                    {
-                        input = input.Replace("$" + v.Key, v.Value);
-                    }
+                    basekeyextension = rc.BaseKey + "_";
                 }
                 // Systemvariablen
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());

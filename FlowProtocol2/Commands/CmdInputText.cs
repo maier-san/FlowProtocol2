@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Input ([A-Za-z0-9$]*[']?):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
+            return new CommandParser(@"^~Input ([A-Za-z0-9$]*):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
         }
 
         public static CmdInputText CreateInputTextCommand(ReadContext rc, Match m)
@@ -31,6 +31,11 @@ namespace FlowProtocol2.Commands
         {
             var inputtext = new IMTextInputElement();
             string expandedKey = ReplaceVars(rc, Key).Trim();
+            string plainKey = expandedKey;
+            if (!string.IsNullOrEmpty(rc.BaseKey))
+            {
+                expandedKey = rc.BaseKey + "_" + expandedKey;
+            }
             inputtext.Key = expandedKey;
             inputtext.Promt = ReplaceVars(rc, Promt).Trim();
             if (rc.BoundVars.ContainsKey(expandedKey) && !string.IsNullOrEmpty(rc.BoundVars[expandedKey]))
@@ -42,6 +47,10 @@ namespace FlowProtocol2.Commands
                 rc.BoundVars[expandedKey] = string.Empty;
                 rc.InputForm.AddInputItem(inputtext);
                 AssociatedInputElement = inputtext;
+            }
+            if (rc.BoundVars.ContainsKey(expandedKey))
+            {
+                rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
             }
             return NextCommand;
         }

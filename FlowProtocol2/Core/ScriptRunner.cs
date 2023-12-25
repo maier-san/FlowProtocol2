@@ -14,7 +14,9 @@ namespace FlowProtocol2.Core
                 cmdNext = cmdNext.Run(rc);
                 if (cmdNext == null && !rc.ExecuteNow && rc.ReturnStack.Any())
                 {
-                    cmdNext = rc.ReturnStack.Pop();
+                    var ep = rc.ReturnStack.Pop();
+                    cmdNext = ep.EntryCommand;
+                    rc.BaseKey = ep.BaseKey;
                 }
             }
             if (stepcount >= _maxStepCount && cmdNext != null)

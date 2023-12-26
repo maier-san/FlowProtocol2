@@ -45,6 +45,7 @@
     }
     else if (Model.BlockType == OutputType.Code)
     {
-        <pre><code>@Model.Codeblock</code></pre>
+        <pre><code id="@Model.ID">@Model.Codeblock</code></pre>
+        <button onclick="CopyFunction(@Model.ID)">In Zwischenablage kopieren</button>
     }
 }

@@ -38,11 +38,6 @@ namespace FlowProtocol2.Commands
                         }
                     }
                 } while (compareInput != input);
-                string basekeyextension = string.Empty;
-                if (!string.IsNullOrEmpty(rc.BaseKey))
-                {
-                    basekeyextension = rc.BaseKey + "_";
-                }
                 // Systemvariablen
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");

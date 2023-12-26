@@ -2,11 +2,11 @@
 ~SetInputTitel Mister Flow - look at me
 ~SetDateTime Wochentag = dddd
 ?A1: Wie möchtest du FlowProtocol2 grüßen?
-	#C1: mit "Hallo"
+	#: mit "Hallo"
 		~Set gruss=Hallo
-	#C2: mit "Aloah"
+	#: mit "Aloah"
 		~Set gruss=Aloah
-	#C3: mit "Servus"
+	#: mit "Servus"
 		~Set gruss=Servus
 		~Implies A3=D2
 >>_ Ergebnis = $gruss FlowProtocol2

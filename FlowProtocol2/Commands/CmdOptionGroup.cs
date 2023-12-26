@@ -69,10 +69,17 @@ namespace FlowProtocol2.Commands
             var allOptions = GetNexCommands<CmdOptionValue>(
                     c => c.Indent == firstOptionValue.Indent,
                     c => c.Indent < firstOptionValue.Indent);
+            int optioncount = 0;
             foreach (var idxo in allOptions)
             {
                 IMOptionValue ov = new IMOptionValue(ogroup);
-                ov.Key = idxo.Key;
+                string optionkey = idxo.Key;
+                optioncount++;
+                if (string.IsNullOrEmpty(optionkey))
+                {
+                    optionkey = "_" + optioncount.ToString();
+                }
+                ov.Key = optionkey;
                 ov.Promt = ReplaceVars(rc, idxo.Promt);
                 ogroup.Options.Add(ov);
                 if (!string.IsNullOrEmpty(selectedKey) && ov.Key == selectedKey)

@@ -51,4 +51,11 @@
     {
         <p>Die Skript-Gruppe enthält weitere Gruppen noch Skripte.</p>
     }
+    <p>
+        <a asp-page="/FlowPages/SelectMain" class="btn btn-primary">Start</a>
+        @if(!string.IsNullOrEmpty(Model.RelativeBackPath))
+        {
+            <a asp-page="./Select" asp-route-relativepath="@Model.RelativeBackPath" class="btn btn-primary">Zurück</a>
+        }
+    </p>    
 }

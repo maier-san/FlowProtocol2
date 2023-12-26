@@ -1,0 +1,8 @@
+~Input FP1: Wie geht es dir?
+~Input FP2: Ganz ehrlich?
+~Set gruss=Hallo
+>>* Es geht mir $FP1
+>>* Super!
+># $gruss Wolfgang
+># und 2
+># und 3

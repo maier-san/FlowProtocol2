@@ -7,11 +7,9 @@
         <p>
             @foreach (var tl in Model.TextLines)
             {
-                @foreach (var te in tl.TextElements)
-                    @await Html.PartialAsync("_OMTextElement", te)
+                @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
                 <br>
-                @foreach (var sb in tl.Subblocks)
-                    @await Html.PartialAsync("_OMTextBlock", sb)
+                @foreach (var sb in tl.Subblocks) @await Html.PartialAsync("_OMTextBlock", sb)
             }
         </p>
     }
@@ -21,10 +19,8 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements)
-                        @await Html.PartialAsync("_OMTextElement", te)
-                    @foreach (var sb in tl.Subblocks)
-                        @await Html.PartialAsync("_OMTextBlock", sb)
+                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
+                    @foreach (var sb in tl.Subblocks) @await Html.PartialAsync("_OMTextBlock", sb)
                 </li>
             }
         </ul>
@@ -35,33 +31,17 @@
             @foreach (var tl in Model.TextLines)
             {
                 <li>
-                    @foreach (var te in tl.TextElements)
-                        @await Html.PartialAsync("_OMTextElement", te)
-                    @foreach (var sb in tl.Subblocks)
-                        @await Html.PartialAsync("_OMTextBlock", sb)
+                    @foreach (var te in tl.TextElements) @await Html.PartialAsync("_OMTextElement", te)
+                    @foreach (var sb in tl.Subblocks) @await Html.PartialAsync("_OMTextBlock", sb)
                 </li>
             }
         </ol>
     }
     else if (Model.BlockType == OutputType.Code)
-    {
-        <pre><code id="example1">@Model.Codeblock</code></pre>
-        <button onclick="CopyFunction()">In Zwischenablage kopieren</button>
-        <script>
-        function CopyFunction() {
-            // get the container
-            const element = document.querySelector('#example1');
-            // Create a fake `textarea` and set the contents to the text
-            // you want to copy
-            const storage = document.createElement('textarea');
-            storage.value = element.innerHTML;
-            element.appendChild(storage);
-            // Copy the text in the fake `textarea` and remove the `textarea`
-            storage.select();
-            storage.setSelectionRange(0, 99999);
-            document.execCommand('copy');
-            element.removeChild(storage);
-            }
-        </script>
+    {                
+        <pre style="margin-bottom: 4px;"><code id="@Model.ID">@Model.Codeblock</code></pre>
+        <div class="col-md-12 bg-light text-right">
+            <button class="btn btn-secondary" onclick="CopyFunction('@Model.ID')">In Zwischenablage kopieren</button>
+        </div>
     }
 }

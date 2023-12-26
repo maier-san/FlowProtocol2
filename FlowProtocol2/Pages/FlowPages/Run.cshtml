@@ -106,5 +106,17 @@ else
     <p>
         <a href=@Model.ScriptBaseURL class="btn btn-primary">Neue Ausführung</a>
         <a asp-page="/FlowPages/SelectMain" class="btn btn-primary">Zurück zur Startseite</a>
-    </p>    
+    </p>
+    <script>
+        function CopyFunction(blockID) {
+            const element = document.querySelector('#' + blockID);
+            const storage = document.createElement('textarea');
+            storage.value = element.innerHTML;
+            element.appendChild(storage);
+            storage.select();
+            storage.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            element.removeChild(storage);
+        }
+    </script>
 }

@@ -6,7 +6,7 @@ namespace FlowProtocol2.Core
         public string CurrentSection { get; set; }
         private OMTextBlock? CurrentTextBlock { get; set; }
         private OMTextLine? CurrentTextline { get; set; }
-        private int IDCounter {get; set;}
+        private int IDCounter { get; set; }
 
         public DocumentBuilder()
         {
@@ -41,7 +41,7 @@ namespace FlowProtocol2.Core
                 if (lastBlock == null || lastBlock.BlockType != t || lastBlock.Closed)
                 {
                     lastBlock = new OMTextBlock();
-                    lastBlock.ID = (++IDCounter).ToString();
+                    lastBlock.ID = "B" + (++IDCounter).ToString();
                     lastBlock.BlockType = t;
                     lastBlock.NumerationType = "1";
                     section.Textblocks.Add(lastBlock);
@@ -59,7 +59,7 @@ namespace FlowProtocol2.Core
                     if (lastSubblock == null || lastSubblock.BlockType != t)
                     {
                         lastSubblock = new OMTextBlock();
-                        lastSubblock.ID = (++IDCounter).ToString();
+                        lastSubblock.ID = "B" + (++IDCounter).ToString();
                         lastSubblock.BlockType = t;
                         lastSubblock.NumerationType = "a";
                         lastTextline.Subblocks.Add(lastSubblock);

@@ -19,13 +19,14 @@ body {
 
 table.cinereousTable {
   font-family: Verdana, Geneva, sans-serif;
-  border: 6px solid #948473;
-  background-color: #FFE3C6;
+  border: 6px solid #6875f1;
+  background-color: #a6ebe7;
   width: 100%;
   text-align: center;
+  margin-bottom: 14px;
 }
 table.cinereousTable td, table.cinereousTable th {
-  border: 3px solid #948473;
+  border: 3px solid #6875f1;
   padding: 6px 2px;
 }
 table.cinereousTable tbody td {
@@ -48,7 +49,7 @@ pre code {
   float: left;
   width: 20px;
   margin-left: -20px;
-  margin-top: 6px;
+  margin-top: 6px;  
   padding: 0;
 }
 .formbuilder-radio label {

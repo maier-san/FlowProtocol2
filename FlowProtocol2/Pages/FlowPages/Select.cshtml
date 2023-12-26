@@ -1,0 +1,54 @@
+﻿@page "{relativepath}"
+@model FlowProtocol2.Pages.FlowPages.SelectModel
+@{
+    @if (Model.ScriptGroups.Any())
+    {
+        <h4>Skriptgruppen in @Model.BreadcrumbPath</h4>
+        <table class="cinereousTable">
+            <tbody>
+                @for (int row = 0; row < Model.ScriptGroups.Rows; row++)
+                {
+                    <tr>
+                        @for (int col = 0; col < Model.ScriptGroups.Cols; col++)
+                        {
+                            @if (Model.ScriptGroups.Array?[row, col] != null)
+                            {
+                                <td>
+                                    <a asp-page="./Select"
+                                        asp-route-relativepath="@Model.ScriptGroups.Array?[row,col].RelativePath">@Model.ScriptGroups.Array?[row, col]?.ShowText</a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (Model.Scripts.Any())
+    {
+        <h4>Skripte in @Model.BreadcrumbPath</h4>
+        <table class="cinereousTable">
+            <tbody>
+                @for (int row = 0; row < Model.Scripts.Rows; row++)
+                {
+                    <tr>
+                        @for (int col = 0; col < Model.Scripts.Cols; col++)
+                        {
+                            @if (Model.Scripts.Array?[row, col] != null)
+                            {
+                                <td>
+                                    <a asp-page="./Run"
+                                        asp-route-relativepath="@Model.Scripts.Array?[row,col].RelativePath">@Model.Scripts.Array?[row, col]?.ShowText</a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (!Model.ScriptGroups.Any() && !Model.Scripts.Any())
+    {
+        <p>Die Skript-Gruppe enthält weitere Gruppen noch Skripte.</p>
+    }
+}

@@ -1,0 +1,31 @@
+﻿@page
+@model FlowProtocol2.Pages.FlowPages.SelectMainModel
+@{
+    @if (Model.ScriptGroups.Any())
+    {
+        <h4>Skript-Hauptgruppen</h4>
+        <table class="cinereousTable">
+            <tbody>
+                @for (int row = 0; row < Model.ScriptGroups.Rows; row++)
+                {
+                    <tr>
+                        @for (int col = 0; col < Model.ScriptGroups.Cols; col++)
+                        {
+                            @if (Model.ScriptGroups.Array?[row, col] != null)
+                            {
+                                <td>
+                                    <a asp-page="./Select"
+                                        asp-route-relativepath="@Model.ScriptGroups.Array?[row,col].RelativePath">@Model.ScriptGroups.Array?[row, col]?.ShowText</a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Es wurden keine Hauptgruppen-Verzeichnisse angelegt.</p>
+    }
+}

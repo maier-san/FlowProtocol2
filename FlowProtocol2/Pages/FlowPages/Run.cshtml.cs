@@ -28,12 +28,10 @@ namespace FlowProtocol2.Pages.FlowPages
             BoundVars = new Dictionary<string, string>();
             RunContext = new RunContext();
         }
-        public IActionResult OnGet(string scripttag)
+        public IActionResult OnGet(string relativepath)
         {
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
-            ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar
-                + scripttag.Replace('|', Path.DirectorySeparatorChar)
-                + FlowProtocol2Extension;
+            ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar + relativepath + FlowProtocol2Extension;
             System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);
             if (fi != null && !fi.Exists)
             {

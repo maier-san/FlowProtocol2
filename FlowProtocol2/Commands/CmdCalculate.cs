@@ -48,12 +48,12 @@ namespace FlowProtocol2.Commands
             if (!w1OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {val1Expanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{val1Expanded}' kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else if (!w2OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {val2Expanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{val2Expanded}' kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else if (Operator == "+")
             {
@@ -80,13 +80,13 @@ namespace FlowProtocol2.Commands
                 else
                 {
                     rc.SetError(ReadContext, "Division durch 0",
-                        $"Der Divisor {Value2} im Berechnungsausdruck ist 0.");
+                        $"Der Divisor '{Value2}' im Berechnungsausdruck ist 0.");
                 }
             }
             else
             {
                 rc.SetError(ReadContext, "Ungültiger Operator",
-                        $"Der Operator {Operator} kann nicht interpretiert werden.");
+                    $"Der Operator '{Operator}' kann nicht interpretiert werden.");
             }
             if (calculationOK)
             {

@@ -42,17 +42,17 @@ namespace FlowProtocol2.Commands
             if (!bRangeAOK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {rangeFromExpanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{rangeFromExpanded}' kann nicht als ganze Zahl interpretiert werden.");
             }
             else if (!bRangeBOK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {rangeToExpanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{rangeToExpanded}' kann nicht als ganze Zahl interpretiert werden.");
             }
             else if (iRangeA > iRangeB)
             {
                 rc.SetError(ReadContext, "Ungültiger Wertebereich",
-                        $"Der Ausdruck {rangeFromExpanded}..{rangeToExpanded} beschreibt keinen gültigen Wertebereich.");
+                        $"Der Ausdruck '{rangeFromExpanded}..{rangeToExpanded}' beschreibt keinen gültigen Wertebereich.");
             }
             else
             {

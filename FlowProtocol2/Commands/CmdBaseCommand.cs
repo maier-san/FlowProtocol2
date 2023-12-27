@@ -138,7 +138,7 @@ namespace FlowProtocol2.Commands
             if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;
             if (CheckCompSTerm(rc, expression, "!~", (x, y) => !x.Contains(y), out result, out err)) return result;
             err = new ErrorElement(ReadContext, "Ungültiger Vergleichsterm",
-                $"Der Ausdruck {expression} kann nicht als Vergleichsterm interpretiert werden.");
+                $"Der Ausdruck '{expression}' kann nicht als Vergleichsterm interpretiert werden.");
             return false;
         }
 
@@ -174,12 +174,12 @@ namespace FlowProtocol2.Commands
                 if (!w1OK)
                 {
                     err = new ErrorElement(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {value1} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{value1}' kann nicht als Gleitkommazahl interpretiert werden.");
                 }
                 else if (!w2OK)
                 {
                     err = new ErrorElement(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {value2} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{value2}' kann nicht als Gleitkommazahl interpretiert werden.");
                 }
                 else
                 {

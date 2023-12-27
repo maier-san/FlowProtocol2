@@ -42,12 +42,12 @@ namespace FlowProtocol2.Commands
             if (!w1OK)
             {
                 rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck {valExpanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{valExpanded}' kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else if (!PrecisionOK || iPrecision < 0)
             {
                 rc.SetError(ReadContext, "Ungültige Rundungsgenauigkeit",
-                        $"Der Ausdruck {precisionExpanded} kann nicht als Gleitkommazahl interpretiert werden.");
+                        $"Der Ausdruck '{precisionExpanded}' kann nicht als Gleitkommazahl interpretiert werden.");
             }
             else
             {

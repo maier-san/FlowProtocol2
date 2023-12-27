@@ -24,3 +24,7 @@
 ~Set Feld$Index=ein Teddybär
 ~Set CallIndex=17
 >>_ Es war einmel ein $Feld$CallIndex
+~Set W1=16
+~Set W2=17
+~AddTo W1+=3
+>>_ AddTo-Test: $W1

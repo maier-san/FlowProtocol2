@@ -50,7 +50,7 @@ namespace FlowProtocol2.Commands
                 if (fi != null && !fi.Exists)
                 {
                     rc.SetError(ReadContext, "Skriptdatei nicht gefunden",
-                        $"Die Skriptdatei {scriptFilePath} konnte nicht gefunden werden. Das Skript wird abgebrochen.");
+                        $"Die Skriptdatei '{scriptFilePath}' konnte nicht gefunden werden. Das Skript wird abgebrochen.");
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();

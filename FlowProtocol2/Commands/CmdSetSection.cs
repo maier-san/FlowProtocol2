@@ -7,7 +7,7 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdSetSection : CmdBaseCommand
     {
-        public string Headline { get; set; }
+        public string Section { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -17,18 +17,19 @@ namespace FlowProtocol2.Commands
         private static CmdBaseCommand CreateSetSectionCommand(ReadContext rc, Match m)
         {
             CmdSetSection cmd = new CmdSetSection(rc);
-            cmd.Headline = m.Groups[1].Value.Trim();
+            cmd.Section = m.Groups[1].Value.Trim();
             return cmd;
         }
 
         public CmdSetSection(ReadContext readcontext) : base(readcontext)
         {
-            Headline = string.Empty;
+            Section = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            rc.DocumentBuilder.CurrentSection = Headline;
+            string expandedSection = ReplaceVars(rc, Section).Trim();
+            rc.DocumentBuilder.CurrentSection = expandedSection;
             return NextCommand;
         }
     }

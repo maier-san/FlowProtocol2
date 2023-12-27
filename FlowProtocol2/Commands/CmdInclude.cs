@@ -10,28 +10,19 @@ namespace FlowProtocol2.Commands
     {
         public string ScriptName { get; set; }
         public string BaseKey { get; set; }
+        public string Ignore { get; set; }
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Include ([A-Za-z0-9\.]*)", (rc, m) => CreateIncludeCommand(rc, m));
-        }
-        public static CommandParser GetCommandParserWithBaseKey()
-        {
-            return new CommandParser(@"^~Include ([A-Za-z0-9\.]*)\s*;\s*BaseKey\s*=\s*([A-Za-z0-9$]*)", (rc, m) => CreateIncludeCommandWithBaseKey(rc, m));
+            return new CommandParser(@"^~Include ([A-Za-z0-9$]*\.fps)\s*(BaseKey=[A-Za-z0-9$]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)
         {
             CmdInclude cmd = new CmdInclude(rc);
             cmd.ScriptName = m.Groups[1].Value.Trim();
-            return cmd;
-        }
-
-        private static CmdBaseCommand CreateIncludeCommandWithBaseKey(ReadContext rc, Match m)
-        {
-            CmdInclude cmd = new CmdInclude(rc);
-            cmd.ScriptName = m.Groups[1].Value.Trim();
             cmd.BaseKey = m.Groups[2].Value.Trim();
+            cmd.Ignore = m.Groups[3].Value.Trim();
             return cmd;
         }
 
@@ -39,26 +30,32 @@ namespace FlowProtocol2.Commands
         {
             ScriptName = string.Empty;
             BaseKey = string.Empty;
+            Ignore = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string scriptFilePath = rc.ScriptPath + Path.DirectorySeparatorChar + ReplaceVars(rc, ScriptName);
-            if (!rc.ScriptRepository.ContainsKey(scriptFilePath))
+            if (!string.IsNullOrEmpty(Ignore))
             {
-                System.IO.FileInfo fi = new System.IO.FileInfo(scriptFilePath);
+                rc.SetError(ReadContext, "Unerwartete Sequenz gefunden",
+                    $"Die Sequenz '{Ignore}' kann an dieser Stelle nicht interpretiert werden und wird ignoriert.");
+            }
+            string expandedscriptfilepath = rc.ScriptPath + Path.DirectorySeparatorChar + ReplaceVars(rc, ScriptName);
+            if (!rc.ScriptRepository.ContainsKey(expandedscriptfilepath))
+            {
+                System.IO.FileInfo fi = new System.IO.FileInfo(expandedscriptfilepath);
                 if (fi != null && !fi.Exists)
                 {
                     rc.SetError(ReadContext, "Skriptdatei nicht gefunden",
-                        $"Die Skriptdatei '{scriptFilePath}' konnte nicht gefunden werden. Das Skript wird abgebrochen.");
+                        $"Die Skriptdatei '{expandedscriptfilepath}' konnte nicht gefunden werden. Das Skript wird abgebrochen.");
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();
-                string extendedBaseKey = ReplaceVars(rc, BaseKey).Trim();
-                var newScriptinfo = sp.ReadScript(rc, scriptFilePath, Indent);
-                rc.ScriptRepository[scriptFilePath] = newScriptinfo;
+                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("BaseKey=", string.Empty)).Trim();
+                var newScriptinfo = sp.ReadScript(rc, expandedscriptfilepath, Indent);
+                rc.ScriptRepository[expandedscriptfilepath] = newScriptinfo;
             }
-            var sinfo = rc.ScriptRepository[scriptFilePath];
+            var sinfo = rc.ScriptRepository[expandedscriptfilepath];
             if (sinfo.StartCommand != null)
             {
                 string expandedBaseKey = ReplaceVars(rc, BaseKey).Trim();

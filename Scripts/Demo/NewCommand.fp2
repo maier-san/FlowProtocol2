@@ -21,7 +21,7 @@
 >|
 >|        public static CommandParser GetComandParser()
 >|        {
->|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
+>|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
 >|        }
 >|
 >|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)

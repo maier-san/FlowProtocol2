@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~UrlEncode ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateUrlEncodeCommand(rc, m));
+            return new CommandParser(@"^~UrlEncode ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => CreateUrlEncodeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateUrlEncodeCommand(ReadContext rc, Match m)

@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
         public string Text { get; set; }
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^>(>?)([_\*|#])(.*)", (rc,m) => CreateOutputTextCommand(rc,m));
+            return new CommandParser(@"^>(>?)([_\*\|\#\s])(.*)", (rc, m) => CreateOutputTextCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateOutputTextCommand(ReadContext rc, Match m)
@@ -28,15 +28,16 @@ namespace FlowProtocol2.Commands
             TypeKey = string.Empty;
             Text = string.Empty;
         }
-        
+
         public override CmdBaseCommand? Run(RunContext rc)
         {
             Level l = Level.Level1;
+            OutputType ot = OutputType.Enumeration;
             if (string.IsNullOrEmpty(LevelKey))
             {
                 l = Level.Level2;
+                ot = OutputType.Listing;
             }
-            OutputType ot = OutputType.None;
             switch (TypeKey)
             {
                 case "*": ot = OutputType.Listing; break;
@@ -44,9 +45,9 @@ namespace FlowProtocol2.Commands
                 case "|": ot = OutputType.Code; break;
                 case "_": ot = OutputType.Paragraph; break;
             }
-            if (ot != OutputType.Code) Text = Text.Trim(); else Text = Text.TrimEnd();
-            string texex = ReplaceVars(rc, Text);
-            rc.DocumentBuilder.AddNewTextLine(l, ot, texex);
+            string expandedtext = ReplaceVars(rc, Text);
+            if (ot != OutputType.Code) expandedtext = expandedtext.Trim(); else expandedtext = expandedtext.TrimEnd();
+            rc.DocumentBuilder.AddNewTextLine(l, ot, expandedtext);
             return this.NextCommand;
         }
     }

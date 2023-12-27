@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~AddTo ([A-Za-z0-9$]*)\s*\+=\s*(-?[A-Za-z0-9$]*)", (rc, m) => CreateAddToCommand(rc, m));
+            return new CommandParser(@"^~AddTo ([A-Za-z0-9\$]*)\s*\+=\s*(-?[A-Za-z0-9\$]*)", (rc, m) => CreateAddToCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateAddToCommand(ReadContext rc, Match m)

@@ -8,10 +8,10 @@
 >>* Erster Punkt einer Itemize-Aufzählung
 >>* Zweiter Punkt einer Itemize-Aufzählung
 ~SetSection Abschnitt 2
->># Erster Punkt einer Enumerate-Aufzählung
->># Zweiter Punkt einer Enumerate-Aufzählung
-># mach dies
-># mach das
+>> Erster Punkt einer Enumerate-Aufzählung
+>> Zweiter Punkt einer Enumerate-Aufzählung
+	> mach dies
+	> mach das
 >|SchreibeCode()
 >|{
 >|   UndErfreueDich(Daran);

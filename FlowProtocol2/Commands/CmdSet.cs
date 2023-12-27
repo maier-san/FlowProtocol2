@@ -12,7 +12,7 @@ namespace FlowProtocol2.Commands
         
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Set ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
+            return new CommandParser(@"^~Set ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => CreateSetCommand(rc, m));
         }
         
         private static CmdBaseCommand CreateSetCommand(ReadContext rc, Match m)

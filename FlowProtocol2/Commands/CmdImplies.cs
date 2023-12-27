@@ -12,7 +12,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Implies ([A-Za-z0-9$]*)\s*=(.*)", (rc, m) => CreateImpliesCommand(rc, m));
+            return new CommandParser(@"^~Implies ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => CreateImpliesCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateImpliesCommand(ReadContext rc, Match m)

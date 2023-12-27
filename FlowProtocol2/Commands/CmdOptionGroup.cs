@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^\?([A-Za-z0-9$]*[']?):(.*)", (rc, m) => CreateOptionGroupCommand(rc, m));
+            return new CommandParser(@"^\?([A-Za-z0-9\$]*[']?):(.*)", (rc, m) => CreateOptionGroupCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateOptionGroupCommand(ReadContext rc, Match m)

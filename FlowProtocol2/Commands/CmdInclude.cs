@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Include ([A-Za-z0-9$]*\.fps)\s*(BaseKey=[A-Za-z0-9$]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
+            return new CommandParser(@"^~Include ([A-Za-z0-9\$]*\.fps)\s*(BaseKey=[A-Za-z0-9\$]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)

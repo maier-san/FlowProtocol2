@@ -112,10 +112,10 @@ else
             const element = document.querySelector('#' + blockID);
             const storage = document.createElement('textarea');
             var cc = element.innerHTML;
-            cc = cc.replaceAll('&lt;', "<");
-            cc = cc.replaceAll('&gt;', '>');
-            cc = cc.replaceAll('&quot;', '"');
-            cc = cc.replaceAll('&amp;', '&');
+            cc = cc.replaceAll('&lt;', String.fromCharCode(60));
+            cc = cc.replaceAll('&gt;', String.fromCharCode(62));
+            cc = cc.replaceAll('&quot;', String.fromCharCode(34));
+            cc = cc.replaceAll('&amp;', String.fromCharCode(38));
             storage.value = cc;
             element.appendChild(storage);
             storage.select();

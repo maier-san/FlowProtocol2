@@ -1,0 +1,10 @@
+﻿@page
+@model FlowProtocol2.Pages.FlowPages.NoBaseDirectoryModel
+@{
+    <h3>Skript-Basisverzeichnis nicht gefunden</h3>
+    <p>Auf das Skript-Basisverzeichnis @Model.ScriptPath konnte nicht zugegriffen werden. Bitte wenden Sie sich an den Administrator des
+        Systems. Die Einstellung erfolgt über die Eigenschaft ScriptPath in der Datei FlowProtocol2\appsettings.json.</p>
+    <p>
+        <a asp-page="/FlowPages/SelectMain" class="btn btn-primary">Start</a>
+    </p>
+}

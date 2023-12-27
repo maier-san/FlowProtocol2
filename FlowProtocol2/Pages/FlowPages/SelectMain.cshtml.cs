@@ -19,7 +19,7 @@ namespace FlowProtocol2.Pages.FlowPages
             string resultPath = ScriptPath;
             if (!Directory.Exists(resultPath))
             {
-                return RedirectToPage("./NoScriptfile");
+                return RedirectToPage("./NoBaseDirectory");
             }
             DirectoryInfo di = new DirectoryInfo(resultPath);
             List<NavLink> scriptgrouplist = di.GetDirectories()

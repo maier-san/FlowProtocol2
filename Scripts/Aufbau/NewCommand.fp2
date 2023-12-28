@@ -1,0 +1,93 @@
+~Input CmdName: Befehlsname
+~SetTitel $CmdName-Implementierung
+~SetInputTitel Neue Command-Klasse erstellen
+~Set VarIndex=1
+~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein.
+~Split VarName = $Varliste|;
+~Execute
+@Implementierung >> Klasse erstellen
+	>* "New File" im Ordner Commands
+	>|Cmd$CmdName.cs
+	>> Code einfügen
+	>|namespace FlowProtocol2.Commands
+	>|{
+	>|    using System.Text.RegularExpressions;
+	>|    using FlowProtocol2.Core;
+	>|
+	>|    /// <summary>
+	>|    /// Implementiert den $CmdName-Befehl
+	>|    /// </summary>
+	>|    public class Cmd$CmdName : CmdBaseCommand
+	>|    {
+	~Set VarIndex=1
+	~DoWhile $VarName$VarIndex !=
+		>|        public string $VarName$VarIndex { get; set; }	
+		~AddTo VarIndex+=1	
+	~Loop
+	>|        // ToDo: Weitere Eigenschaften deklarieren
+	>|
+	>|        public static CommandParser GetComandParser()
+	>|        {
+	>|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
+	>|        }
+	>|
+	>|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)
+	>|        {
+	>|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
+	~Set VarIndex=1
+	~DoWhile $VarName$VarIndex !=
+		>|            cmd.$VarName$VarIndex = m.Groups[$VarIndex].Value.Trim();
+		~AddTo VarIndex+=1	
+	~Loop
+	>|            // ToDo: Weitere Eigenschaften auslesen
+	>|            return cmd;
+	>|        }
+	>|
+	>|        public Cmd$CmdName(ReadContext readcontext) : base(readcontext)
+	>|        {
+	~Set VarIndex=1
+	~DoWhile $VarName$VarIndex !=
+		>|            $VarName$VarIndex = string.Empty;
+		~AddTo VarIndex+=1	
+	~Loop
+	>|            // ToDo: Weitere Standardwerte setzen
+	>|        }
+	>|
+	>|        public override CmdBaseCommand? Run(RunContext rc)
+	>|        {
+	>|            // ToDo: Run-Methode ausimplementieren
+	~Set VarIndex=1
+	~DoWhile $VarName$VarIndex !=
+		>|            string expanded$VarName$VarIndex = ReplaceVars(rc, $VarName$VarIndex);
+		~AddTo VarIndex+=1	
+	~Loop
+	>|            return NextCommand;
+	>|        }
+	>|    }
+	>|}
+>> Weitere Eigenschaften implementieren
+	># ToDo: Weitere Eigenschaften deklarieren
+	># ToDo: Weitere Eigenschaften auslesen
+	># ToDo: Weitere Standardwerte setzen
+>> Rum-Methode ausimplementieren
+	># ToDo: Run-Methode ausimplementieren
+>> Befehl in SkriptParser hinzufügen
+	># in ScriptParser.cs
+	># private void LoadCommands()
+	>|CmdParser.Add(Cmd$CmdName.GetComandParser());
+@Dokumentation >> Neue Flow-DokuDatei anlegen
+>> Code einfügen
+	>|~SetTitel $CmdName-Befehl
+	>|@Beschreibung >>_ Der Befehl ~$CmdName ...
+	>|@Ausnahmen >>* Ausnahme 1
+	>|>>* Ausnahme 2
+	>|@Codebeispiel >>_ Das nachfolgende Beispiel ...
+	>|>>|@Ausgabe >> Testausgabe
+>> Vervollständigen
+	># Beschreibung
+	># Ausnahmen
+	># Beispielcode
+>> Fertiges Beispiel in Codeblock übernehmen
+>> Speichern unter
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
+

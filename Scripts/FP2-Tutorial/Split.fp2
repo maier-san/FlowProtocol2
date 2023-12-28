@@ -1,0 +1,24 @@
+~SetTitel Split-Befehl
+@Beschreibung >>_ Der Befehl ~Split <Variablenname> = <Text>|<Trennzeichen> teilt einen Text anhand eines Trennzeichens auf.
+>>_ Das Ergebis wird in den Variablen mit Zusatz 1, 2, 3 usw. gespeichert und mit einer Variablen abgeschlossen, die den leeren Wert enthält.
+>>_ Whitespace als Trennzeichen muss maskiert werden.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel zerlegt eine Liste in drei einzelne Elemente.
+>>|~Set VListe = Sonne; Mond; Sterne
+>>|~Split ErgListe = $VListe|;
+>>|@Ausgabe >> Liste als Aufzählung
+>>|~Set Index=1
+>>|~DoWhile $ErgListe$Index!=
+>>|	> $ErgListe$Index
+>>|	~AddTo Index+=1
+>>|~Loop
+>>|>> Fertig
+~Set VListe = Sonne; Mond; Sterne
+~Split ErgListe = $VListe|;
+@Ausgabe >> Liste als Aufzählung
+~Set Index=1
+~DoWhile $ErgListe$Index!=
+	> $ErgListe$Index
+	~AddTo Index+=1
+~Loop
+>> Fertig

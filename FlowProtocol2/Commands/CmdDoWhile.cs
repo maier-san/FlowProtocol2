@@ -51,8 +51,8 @@ namespace FlowProtocol2.Commands
                     return AssociatedLoopCommand.NextCommand;
                 }
             }
-            rc.SetError(ReadContext, "WhileDo ohne Loop",
-                "Dem WhileDo-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+            rc.SetError(ReadContext, "DoWhile ohne Loop",
+                "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
             return null;
         }
     }

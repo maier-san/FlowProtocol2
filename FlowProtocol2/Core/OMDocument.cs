@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace FlowProtocol2.Core
 {
     public class OMDocument
@@ -35,19 +37,18 @@ namespace FlowProtocol2.Core
         {
             get
             {
-                string code = string.Empty;
+                bool notfirstline = false;
+                StringBuilder codegenerator = new StringBuilder(string.Empty);
                 foreach (var tl in TextLines)
                 {
-                    if (!string.IsNullOrEmpty(code))
-                    {
-                        code += "\n";
-                    }
+                    if (notfirstline) codegenerator.Append('\n');
                     foreach (var te in tl.TextElements)
                     {
-                        code += te.Text;
+                        codegenerator.Append(te.Text);
+                        notfirstline = true;
                     }
                 }
-                return code;
+                return codegenerator.ToString();
             }
         }
         public OMTextBlock()

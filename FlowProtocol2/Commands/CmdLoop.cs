@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdLoop : CmdBaseCommand
     {
-        public CmdDoWhile? ParentDoWhileCommand { get; set; }
+        public CmdLoopBaseCommand? ParentDoWhileCommand { get; set; }
         private int StopCounter { get; set; }
         private const int MaximalLoopCount = 1000;
 

@@ -6,11 +6,10 @@ namespace FlowProtocol2.Commands
     /// <summary>
     /// Implementiert den DoWhile-Befehl
     /// </summary>
-    public class CmdDoWhile : CmdBaseCommand
+    public class CmdDoWhile : CmdLoopBaseCommand
     {
         public string Expression { get; set; }
         public bool Evaluation { get; set; }
-        public CmdLoop? AssociatedLoopCommand { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -39,15 +38,10 @@ namespace FlowProtocol2.Commands
                 rc.ErrorItems.Add(err);
                 return null;
             }
-            if (AssociatedLoopCommand == null)
-            {
-                AssociatedLoopCommand = GetNextCommand<CmdLoop>(
-                    c => c.Indent == this.Indent,
-                    c => c.Indent < this.Indent);
-            }
+            LinkAssociatedLoopCommand(rc, "DoWhile");
             if (AssociatedLoopCommand != null)
             {
-                AssociatedLoopCommand.ParentDoWhileCommand = this;
+                
                 if (Evaluation)
                 {
                     return NextCommand;

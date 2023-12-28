@@ -26,6 +26,7 @@ namespace FlowProtocol2.Commands
         public CmdIf(ReadContext readcontext) : base(readcontext)
         {
             Expression = string.Empty;
+            Evaluation = false;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)

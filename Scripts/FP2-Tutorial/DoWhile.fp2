@@ -1,0 +1,21 @@
+~SetTitel DoWhile-Loop-Schleife
+@Beschreibung >>_ Durch Umschließen mit den Befehlen "~DoWhile <Bedingung>" und "~Loop" werde die dazwischen liegenden Befehlszeilen so lange wiederholt ausgeführt, wie die Bedingung im DoWhile-Befehl erfüllt ist.
+>>_ Beide Befehle müssen sich auf gleicher Ebene befinden.
+@Ausnahmen >>* WhileDo ohne Loop: Dem WhileDo-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
+>>* Loop ohne WhileDo: Dem Loop-Befehl kann kein DoWhile-Befehl auf gleicher Ebene zugeordnet werden.
+>>* Maximale Anzahl Schleifendurchläufe erreicht: Die maximale Anzahl von ... direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.
+@Codebeispiel >>_ Das nachfolgende Beispiel zählt eine Variable a wiederholt hoch und gibt sie aus, bis sie den Wert von 5 überschreitet.
+>>|~Set a=1
+>>|@Ausgabe >> Die Zahlen von 1 bis 5
+>>|~DoWhile $a<=5
+>>|	>$a
+>>|	~AddTo a+=1
+>>|~Loop
+>>|>> Bitte nachprüfen, dass keine vergessen wurde.
+~Set a=1
+@Ausgabe >> Die Zahlen von 1 bis 5
+~DoWhile $a<=5
+	>$a
+	~AddTo a+=1
+~Loop
+>> Bitte nachprüfen, dass keine vergessen wurde.

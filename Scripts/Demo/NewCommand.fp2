@@ -1,6 +1,14 @@
 ~Input CmdName: Befehlsname
 ~SetTitel $CmdName-Implementierung
 ~SetInputTitel Neue Command-Klasse erstellen
+~Set VarIndex=1
+~Input InpV$VarIndex: Gib den Namen der ersten Variablen ein. ("??" für Abbruch)
+~Execute
+~DoWhile $InpV$VarIndex != ??
+	~AddTo VarIndex+=1
+	~Input InpV$VarIndex: Gib den Namen der $VarIndexten Variablen ein. ("??" für Abbruch)	
+	~Execute
+~Loop
 >># Klasse erstellen
 >* "New File" im Ordner Commands
 >|Cmd$CmdName.cs
@@ -15,8 +23,11 @@
 >|    /// </summary>
 >|    public class Cmd$CmdName : CmdBaseCommand
 >|    {
->|        public string VarName { get; set; }
->|        public string Text { get; set; }
+~Set VarIndex=1
+~DoWhile $InpV$VarIndex != ??
+	>|        public string $InpV$VarIndex { get; set; }	
+	~AddTo VarIndex+=1	
+~Loop
 >|        // ToDo: Weitere Eigenschaften deklarieren
 >|
 >|        public static CommandParser GetComandParser()
@@ -27,24 +38,33 @@
 >|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)
 >|        {
 >|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
->|            cmd.VarName = m.Groups[1].Value.Trim();
->|            cmd.Text = m.Groups[2].Value.Trim();
+~Set VarIndex=1
+~DoWhile $InpV$VarIndex != ??
+	>|            cmd.$InpV$VarIndex = m.Groups[$VarIndex].Value.Trim();
+	~AddTo VarIndex+=1	
+~Loop
 >|            // ToDo: Weitere Eigenschaften auslesen
 >|            return cmd;
 >|        }
 >|
 >|        public Cmd$CmdName(ReadContext readcontext) : base(readcontext)
 >|        {
->|            VarName = string.Empty;
->|            Text = string.Empty;
+~Set VarIndex=1
+~DoWhile $InpV$VarIndex != ??
+	>|            $InpV$VarIndex = string.Empty;
+	~AddTo VarIndex+=1	
+~Loop
 >|            // ToDo: Weitere Standardwerte setzen
 >|        }
 >|
 >|        public override CmdBaseCommand? Run(RunContext rc)
 >|        {
 >|            // ToDo: Run-Methode ausimplementieren
->|            string expandedVarName = ReplaceVars(rc, VarName);
->|            rc.InternalVars[expandedVarName] = "???";
+~Set VarIndex=1
+~DoWhile $InpV$VarIndex != ??
+	>|            string expanded$InpV$VarIndex = ReplaceVars(rc, $InpV$VarIndex);
+	~AddTo VarIndex+=1	
+~Loop
 >|            return NextCommand;
 >|        }
 >|    }

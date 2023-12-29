@@ -11,11 +11,14 @@ namespace FlowProtocol2.Commands
         public string VarName { get; set; }
         public string FileNameOrPath { get; set; }
         public string Take { get; set; }
+        public string IndexVar { get; set; }
         public string SectionVar { get; set; }
         private bool Initialized { get; set; }
         private List<LineItem> LineItems { get; set; }
         private string ExpandedVarName { get; set; }
+        private string ExpandedIndexVar { get; set; }
         private string ExpandedSectionVar { get; set; }
+        private int Index { get; set; }
         private int RSeed { get; set; }
 
         private class LineItem
@@ -31,7 +34,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)\s*(; Take=[A-Za-z0-9\$\(\)]*)?\s*(; SectionVar=[A-Za-z0-9\$\(\)]*)?",
+            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)\s*(; Take=[A-Za-z0-9\$\(\)]*)?\s*(; IndexVar=[A-Za-z0-9\$\(\)]*)?\s*(; SectionVar=[A-Za-z0-9\$\(\)]*)?",
                 (rc, m) => CreateForEachLineCommand(rc, m));
         }
 
@@ -41,7 +44,8 @@ namespace FlowProtocol2.Commands
             cmd.VarName = m.Groups[1].Value.Trim();
             cmd.FileNameOrPath = m.Groups[2].Value.Trim();
             cmd.Take = m.Groups[3].Value.Trim();
-            cmd.SectionVar = m.Groups[4].Value.Trim();
+            cmd.IndexVar = m.Groups[4].Value.Trim();
+            cmd.SectionVar = m.Groups[5].Value.Trim();
             return cmd;
         }
 
@@ -50,12 +54,15 @@ namespace FlowProtocol2.Commands
             VarName = string.Empty;
             FileNameOrPath = string.Empty;
             Take = string.Empty;
+            IndexVar = string.Empty;
             SectionVar = string.Empty;
             Initialized = false;
             LineItems = new List<LineItem>();
             ExpandedVarName = string.Empty;
+            ExpandedIndexVar = string.Empty;
             ExpandedSectionVar = string.Empty;
             RSeed = 100;
+            Index = 0;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
@@ -85,7 +92,9 @@ namespace FlowProtocol2.Commands
                 RSeed = GetRSeed(rc);
                 ReadLineItems(absoluteFileName, take);
                 ExpandedVarName = ReplaceVars(rc, VarName);
+                ExpandedIndexVar = ReplaceVars(rc, IndexVar.Replace("; IndexVar=", string.Empty)).Trim();
                 ExpandedSectionVar = ReplaceVars(rc, SectionVar.Replace("; SectionVar=", string.Empty)).Trim();
+                Index = 0;
                 Initialized = true;
             }
 
@@ -97,7 +106,15 @@ namespace FlowProtocol2.Commands
                     var ret = LineItems.First();
                     LineItems.RemoveAt(0);
                     rc.InternalVars[ExpandedVarName] = ret.LineContend;
-                    rc.InternalVars[ExpandedSectionVar] = ret.Section;
+                    if (!string.IsNullOrEmpty(ExpandedSectionVar))
+                    {
+                        rc.InternalVars[ExpandedSectionVar] = ret.Section;
+                    }
+                    if (!string.IsNullOrEmpty(ExpandedIndexVar))
+                    {
+                        Index++;
+                        rc.InternalVars[ExpandedIndexVar] = Index.ToString();
+                    }
                     return NextCommand;
                 }
                 else

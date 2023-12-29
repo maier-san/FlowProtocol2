@@ -1,22 +1,40 @@
 ~SetTitel ForEachLine-Befehl
-@Beschreibung >>_ Der Befehl ~ForEachLine ...
-@Ausnahmen >>* Ausnahme 1
->>* Ausnahme 2
-@Codebeispiel >>_ Das nachfolgende Beispiel ...
->>|@Ausgabe >> Testausgabe
-@Ausgabe >> Drei Zeilen aus Quelldaten.txt
-//~ForEachLine Zeile in Quelldaten.txt; Take=3; SectionVar=Abschnitt
-//	> $Zeile in $Abschnitt
-//~Loop
->> Meine Bewertung:
-~Set IndexVar=0
-~ForEachLine Zeile in Quelldaten.txt; Take=4; SectionVar=Abschnitt
-	~AddTo IndexVar+=1
-	?A$IndexVar: Gefällt dir $Zeile?
+@Beschreibung >>_ Der Befehl ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>] liest Zeilen aus einer Datei in eine Variable und führt damit die nachfolgend eingerückten Befehle aus.
+>>_ Mit dem optionalen Take-Parameter kann die Anzahl der zufällig ausgewählten Zeilen vorgegeben werden.
+>>_ Die laufende Nummer wird in der optionalen Indexvariablen zurückgegeben.
+>>_ Wird nur ein Dateiname angegeben, so wird dieser im gleichen Verzeichnis gesucht. Wir ein Pfad beginnend mit ".\" angegeben, so wird dieser unterhalb des Skript-Hauptverzeichnisses gesucht.
+>>_ Die Datei kann mit "[" und "]" markierte Abschnitte enthalten. Diese werden in der optionalen Abschnittsvariablen übergeben. Mit "//" beginnende Kommentarzeilen und Leerzeilen werden ignoriert.
+@Ausnahmen >>* Datei nicht gefunden: Die Datei ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
+>>* Ungültiger Take-Parameter: Der Ausdruck ... kann nicht als Take-Parameter interpretiert werden. Die Skriptausführung wird abgebrochen.
+>>* ForEachLine ohne Loop: Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
+>>* ForEachLine ohne Loop: Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden.
+@Codebeispiel >>_ Das nachfolgende Beispiel liest vier Zeilen aus der Datei Quelldaten.txt und führt darauf eine Abfrage durch und gibt das Ergebnis aus.
+>>_ Nach der zweiten Abfrage wird das Skript ausgeführt.
+>>|~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=Idx; SectionVar=Abschnitt
+>>|	?A$Idx: Gefällt dir $Zeile in $Abschnitt?
+>>|		#j: Ja
+>>|			> $Zeile gefällt mir.
+>>|		#n: Nein
+>>|			> $Zeile gefällt mir nicht.	
+>>|	~If $Idx==2
+>>|		~Execute
+>>|~Loop
+>>_ Die Datei Quelldaten.txt hat folgenden Inhalt:
+>>|[Abschnitt 1]
+>>|Zeile 1
+>>|Zeile 2
+>>|Zeile 3
+>>|[Abschnitt 2]
+>>|Zeile 4
+>>|Zeile 5
+>>|Zeile 6
+@Ausgabe >> Meine Bewertung:
+~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=Idx; SectionVar=Abschnitt
+	?A$Idx: Gefällt dir $Zeile in $Abschnitt?
 		#j: Ja
 			> $Zeile gefällt mir.
 		#n: Nein
 			> $Zeile gefällt mir nicht.	
-	~If $IndexVar==2
+	~If $Idx==2
 		~Execute
 ~Loop

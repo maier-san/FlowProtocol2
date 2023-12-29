@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Split ([A-Za-z0-9\$]*)\s*=(.*)\|(.*)", (rc, m) => CreateSplitCommand(rc, m));
+            return new CommandParser(@"^~Split ([A-Za-z0-9\$\(\)]*)\s*=(.*)\|(.*)", (rc, m) => CreateSplitCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateSplitCommand(ReadContext rc, Match m)
@@ -45,10 +45,10 @@ namespace FlowProtocol2.Commands
                 foreach (var idx in splitlist)
                 {
                     index++;
-                    rc.InternalVars[expandedVarName + index.ToString()] = idx.Trim();
+                    rc.InternalVars[$"{expandedVarName}({index})"] = idx.Trim();
                 }
                 index++;
-                rc.InternalVars[expandedVarName + index.ToString()] = string.Empty;
+                rc.InternalVars.Remove($"{expandedVarName}({index})");
             }
             return NextCommand;
         }

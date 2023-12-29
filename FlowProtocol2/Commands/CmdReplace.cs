@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Replace ([A-Za-z0-9\$]*)\s*=(.*)\|(.*)->(.*)", (rc, m) => CreateReplaceCommand(rc, m));
+            return new CommandParser(@"^~Replace ([A-Za-z0-9\$\(\)]*)\s*=(.*)\|(.*)->(.*)", (rc, m) => CreateReplaceCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateReplaceCommand(ReadContext rc, Match m)

@@ -10,7 +10,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Input ([A-Za-z0-9\$]*):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
+            return new CommandParser(@"^~Input ([A-Za-z0-9\$\(\)]*):(.*)", (rc, m) => CreateInputTextCommand(rc, m));
         }
 
         public static CmdInputText CreateInputTextCommand(ReadContext rc, Match m)

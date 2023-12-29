@@ -1,6 +1,6 @@
 ~SetTitel Include-Befehl
-@Beschreibung >>_ Der Befehl ~Include <Dateiname/-pfad>.fps [BaseKey=<Basisschlüssel>] liest eine Skript-Funktionsdatei ein.
->>_ Die Dateiendung ist auf ".fps" festgelegt.
+@Beschreibung >>_ Der Befehl ~Include <Dateiname/-pfad>.fps [BaseKey=<Basisschlüssel>] liest eine Funktionsdatei ein.
+>>_ Die Dateiendung ist auf ".fps" festgelegt. Die Syntax ist diesselbe wie in den Skripten mit Dateiendung ".fp2".
 >>_ Wird nur ein Dateiname angegeben, so wird dieser im gleichen Verzeichnis gesucht. Wir ein Pfad beginnend mit ".\" angegeben, so wird dieser unterhalb des Skript-Hauptverzeichnisses gesucht.
 >>_ Der optionale Parameter [BaseKey=<Basisschlüssel>] ermöglicht es, die Schlüssel für die Eingabebefehle in der Skriptdatei für den jeweiligen Aufruf zu individualisieren, so dass eine Funktionsdatei mehrfach verwendet werden kann.
 @Ausnahmen >>* Unerwartete Sequenz gefunden: Die Sequenz ... kann an dieser Stelle nicht interpretiert werden und wird ignoriert.

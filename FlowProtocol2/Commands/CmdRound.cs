@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Round ([A-Za-z0-9\$]*)\s*=(.*)\|\s*([A-Za-z0-9\$]*)", (rc, m) => CreateRoundCommand(rc, m));
+            return new CommandParser(@"^~Round ([A-Za-z0-9\$\(\)]*)\s*=(.*)\|\s*([A-Za-z0-9\$\(\)]*)", (rc, m) => CreateRoundCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateRoundCommand(ReadContext rc, Match m)

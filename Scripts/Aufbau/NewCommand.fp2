@@ -20,23 +20,23 @@
 	>|    public class Cmd$CmdName : CmdBaseCommand
 	>|    {
 	~Set VarIndex=1
-	~DoWhile $VarName$VarIndex !=
-		>|        public string $VarName$VarIndex { get; set; }	
+	~DoWhile ?$VarName($VarIndex)
+		>|        public string $VarName($VarIndex) { get; set; }	
 		~AddTo VarIndex+=1	
 	~Loop
 	>|        // ToDo: Weitere Eigenschaften deklarieren
 	>|
 	>|        public static CommandParser GetComandParser()
 	>|        {
-	>|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9\$]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
+	>|            return new CommandParser(@"^~$CmdName ([A-Za-z0-9\$\(\)]*)\s*=(.*)", (rc, m) => Create$CmdNameCommand(rc, m));
 	>|        }
 	>|
 	>|        private static CmdBaseCommand Create$CmdNameCommand(ReadContext rc, Match m)
 	>|        {
 	>|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
 	~Set VarIndex=1
-	~DoWhile $VarName$VarIndex !=
-		>|            cmd.$VarName$VarIndex = m.Groups[$VarIndex].Value.Trim();
+	~DoWhile ?$VarName($VarIndex)
+		>|            cmd.$VarName($VarIndex) = m.Groups[$VarIndex].Value.Trim();
 		~AddTo VarIndex+=1	
 	~Loop
 	>|            // ToDo: Weitere Eigenschaften auslesen
@@ -46,8 +46,8 @@
 	>|        public Cmd$CmdName(ReadContext readcontext) : base(readcontext)
 	>|        {
 	~Set VarIndex=1
-	~DoWhile $VarName$VarIndex !=
-		>|            $VarName$VarIndex = string.Empty;
+	~DoWhile ?$VarName($VarIndex)
+		>|            $VarName($VarIndex) = string.Empty;
 		~AddTo VarIndex+=1	
 	~Loop
 	>|            // ToDo: Weitere Standardwerte setzen
@@ -57,8 +57,8 @@
 	>|        {
 	>|            // ToDo: Run-Methode ausimplementieren
 	~Set VarIndex=1
-	~DoWhile $VarName$VarIndex !=
-		>|            string expanded$VarName$VarIndex = ReplaceVars(rc, $VarName$VarIndex);
+	~DoWhile ?$VarName($VarIndex)
+		>|            string expanded$VarName($VarIndex) = ReplaceVars(rc, $VarName($VarIndex));
 		~AddTo VarIndex+=1	
 	~Loop
 	>|            return NextCommand;
@@ -83,6 +83,7 @@
 	>|>>* Ausnahme 2
 	>|@Codebeispiel >>_ Das nachfolgende Beispiel ...
 	>|>>|@Ausgabe >> Testausgabe
+	>|@Ausgabe >> Testausgabe
 >> Vervollständigen
 	># Beschreibung
 	># Ausnahmen

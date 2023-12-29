@@ -1,0 +1,16 @@
+~SetTitel If-Befehl
+@Beschreibung >>_ Der Befehl ~If <Bedinung> führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist.
+>>_ Ist die Bedingung nicht erfüllt, wird der nächste Befehl auf gleicher Ebene ausgeführt.
+>>_ Der If-Befehl kann mit dem Else-Befehl kombiniert werden, der die nachfolgend eingerückten Befehle genau dann ausführt, wenn die If-Bedingung nicht erfüllt ist.
+@Ausnahmen >>* siehe Bedingungen
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~If 3==5 && Auto!=Motorad || 3>2 && 17<>4
+>>|	@Ausgabe >> Aussage stimmt
+>>|~Else
+>>|	@Ausgabe >> Aussage stimmt nicht
+>>|@Ausgabe >> Prüfung abgeschlossen
+~If 3==5 && Auto!=Motorad || 3>2 && 17<>4
+	@Ausgabe >> Aussage stimmt
+~Else
+	@Ausgabe >> Aussage stimmt nicht
+@Ausgabe >> Prüfung abgeschlossen

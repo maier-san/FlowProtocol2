@@ -127,6 +127,7 @@ namespace FlowProtocol2.Commands
             expression = expression.Trim();
             if (expression == "1" || expression == "true") return true;
             if (expression == "0" || expression == "false") return false;
+            if (expression.StartsWith("?$")) return rc.InternalVars.ContainsKey(ReplaceVars(rc, expression[2..]));            
             bool result = false;
             if (CheckCompSTerm(rc, expression, "==", (x, y) => x == y, out result, out err)) return result;
             if (CheckCompSTerm(rc, expression, "!=", (x, y) => x != y, out result, out err)) return result;

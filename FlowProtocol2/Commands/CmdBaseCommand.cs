@@ -128,7 +128,7 @@ namespace FlowProtocol2.Commands
             string expandedexpression = ReplaceVars(rc, expression).Trim();
             if (expandedexpression == "1" || expandedexpression == "true") return true;
             if (expandedexpression == "0" || expandedexpression == "false") return false;
-            if (expression.StartsWith("?$")) return rc.InternalVars.ContainsKey(ReplaceVars(rc, expression[2..]));            
+            if (expression.StartsWith("?$")) return rc.InternalVars.ContainsKey(ReplaceVars(rc, expression[2..]));
             bool result = false;
             if (CheckCompSTerm(rc, expression, "==", (x, y) => x == y, out result, out err)) return result;
             if (CheckCompSTerm(rc, expression, "!=", (x, y) => x != y, out result, out err)) return result;
@@ -198,14 +198,39 @@ namespace FlowProtocol2.Commands
         /// </summary>
         /// <param name="rc">RunContext</param>
         /// <param name="pathorname">Ein Dateiname oder ein mit ".\" beginnender Teilpfad</param>
+        /// <param name="fileexists">Gibt zurück, ob die Datein existiert.</param>
         /// <returns>Der expandierte Pfad</returns>
-        protected string ExpandPath(RunContext rc, string pathorname)
-        {            
+        protected string ExpandPath(RunContext rc, string pathorname, out bool fileexists)
+        {
+            string ret = string.Empty;
             if (pathorname.StartsWith("." + Path.DirectorySeparatorChar))
             {
-                return $"{rc.ScriptPath}{pathorname[1..]}";
+                ret = $"{rc.ScriptPath}{pathorname[1..]}";
             }
-            return $"{rc.CurrentScriptPath}{Path.DirectorySeparatorChar}{pathorname}";
+            else
+            {
+                ret = $"{rc.CurrentScriptPath}{Path.DirectorySeparatorChar}{pathorname}";
+            }
+            fileexists = false;
+            System.IO.FileInfo fi = new System.IO.FileInfo(ret);
+            if (fi != null && fi.Exists) fileexists = true;
+            return ret;
+        }
+
+        protected int GetRSeed(RunContext rc)
+        {
+            int rseed = 100;
+            if (rc.BoundVars.ContainsKey("_rseed"))
+            {
+                bool ok = Int32.TryParse(rc.BoundVars["_rseed"], out rseed);
+            }
+            else
+            {
+                rseed = new Random().Next();                
+                rc.BoundVars["_rseed"] = rseed.ToString();                
+            }
+            rc.GivenKeys.Add("_rseed");
+            return rseed;
         }
     }
 }

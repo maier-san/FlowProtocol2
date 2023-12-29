@@ -9,7 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdOptionGroup : CmdInputBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }
+        public string Promt { get; set; }        
         public CmdOptionValue? SelectedOptionCommand { get; set; }
 
         public static CommandParser GetComandParser()
@@ -66,6 +66,7 @@ namespace FlowProtocol2.Commands
             }
 
             CmdOptionValue? xOption = null;
+            SelectedOptionCommand = null;
             var allOptions = GetNexCommands<CmdOptionValue>(
                     c => c.Indent == firstOptionValue.Indent,
                     c => c.Indent < firstOptionValue.Indent);

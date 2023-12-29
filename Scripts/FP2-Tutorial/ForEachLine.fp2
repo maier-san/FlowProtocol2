@@ -1,0 +1,22 @@
+~SetTitel ForEachLine-Befehl
+@Beschreibung >>_ Der Befehl ~ForEachLine ...
+@Ausnahmen >>* Ausnahme 1
+>>* Ausnahme 2
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|@Ausgabe >> Testausgabe
+@Ausgabe >> Drei Zeilen aus Quelldaten.txt
+//~ForEachLine Zeile in Quelldaten.txt; Take=3; SectionVar=Abschnitt
+//	> $Zeile in $Abschnitt
+//~Loop
+>> Meine Bewertung:
+~Set IndexVar=0
+~ForEachLine Zeile in Quelldaten.txt; Take=4; SectionVar=Abschnitt
+	~AddTo IndexVar+=1
+	?A$IndexVar: Gefällt dir $Zeile?
+		#j: Ja
+			> $Zeile gefällt mir.
+		#n: Nein
+			> $Zeile gefällt mir nicht.	
+	~If $IndexVar==2
+		~Execute
+~Loop

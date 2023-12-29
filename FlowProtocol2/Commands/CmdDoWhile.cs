@@ -40,8 +40,7 @@ namespace FlowProtocol2.Commands
             }
             LinkAssociatedLoopCommand(rc, "DoWhile");
             if (AssociatedLoopCommand != null)
-            {
-                
+            {                
                 if (Evaluation)
                 {
                     return NextCommand;

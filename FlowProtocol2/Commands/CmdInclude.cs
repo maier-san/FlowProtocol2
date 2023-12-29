@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Include (.*\.fps)\s*(BaseKey=[A-Za-z0-9\$\(\)]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
+            return new CommandParser(@"^~Include ([^;]*\.fps)\s*(; BaseKey=[A-Za-z0-9\$\(\)]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)
@@ -41,18 +41,17 @@ namespace FlowProtocol2.Commands
                     $"Die Sequenz '{Ignore}' kann an dieser Stelle nicht interpretiert werden und wird ignoriert.");
             }
             string expandedScriptNameOrPath = ReplaceVars(rc, ScriptNameOrPath);
-            string absolutescriptfilepath = ExpandPath(rc, expandedScriptNameOrPath);
+            string absolutescriptfilepath = ExpandPath(rc, expandedScriptNameOrPath, out bool fileexists);
             if (!rc.ScriptRepository.ContainsKey(absolutescriptfilepath))
             {
-                System.IO.FileInfo fi = new System.IO.FileInfo(absolutescriptfilepath);
-                if (fi != null && !fi.Exists)
+                if (!fileexists)
                 {
                     rc.SetError(ReadContext, "Skriptdatei nicht gefunden",
                         $"Die Skriptdatei '{absolutescriptfilepath}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();
-                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("BaseKey=", string.Empty)).Trim();
+                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("; BaseKey=", string.Empty)).Trim();
                 var newScriptinfo = sp.ReadScript(rc, absolutescriptfilepath, Indent);
                 rc.ScriptRepository[absolutescriptfilepath] = newScriptinfo;
             }

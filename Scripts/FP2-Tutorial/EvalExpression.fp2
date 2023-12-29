@@ -1,0 +1,17 @@
+~SetTitel EvalExpression-Befehl
+@Beschreibung >>_ Der Befehl ~EvalExpression <Variable> [!]= <Ausdruck> wertet einen Ausdruck als Wahrheitswert aus und speichert das Ergebnis in der angegebenen Variablen.
+>>_ Der Ergebniswert ist "true" oder "false".
+>>_ Mit "=" wird der Wert direkt zugewiesen, mit "!=" wird der Wert bei der Zuweisung negiert.
+>>_ Die Ergebniswerte solcher Auswertungen können in anderen Ausdrücken weiterverwendet werden.
+@Ausnahmen >>* siehe Bedingung
+@Codebeispiel >>_ Das nachfolgende Beispiel wertet zwei Ausdrücke aus und gibt die Werte aus, einmal ohne und einmal mit Negation.
+>>|~EvalExpression x = 2<3 && 5>=5
+>>|~EvalExpression y != 2<3
+>>|@Ausgabe >> x = $x und y = $y
+>>|~If $x
+>>|	> Genau!
+~EvalExpression x = 2<3 && 5>=5
+~EvalExpression y != 2<3
+@Ausgabe >> x = $x und y = $y
+~If $x
+	> Genau!

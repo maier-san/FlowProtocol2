@@ -24,7 +24,6 @@
 		>|        public string $VarName($VarIndex) { get; set; }	
 		~AddTo VarIndex+=1	
 	~Loop
-	>|        // ToDo: Weitere Eigenschaften deklarieren
 	>|
 	>|        public static CommandParser GetComandParser()
 	>|        {
@@ -39,7 +38,6 @@
 		>|            cmd.$VarName($VarIndex) = m.Groups[$VarIndex].Value.Trim();
 		~AddTo VarIndex+=1	
 	~Loop
-	>|            // ToDo: Weitere Eigenschaften auslesen
 	>|            return cmd;
 	>|        }
 	>|
@@ -50,27 +48,25 @@
 		>|            $VarName($VarIndex) = string.Empty;
 		~AddTo VarIndex+=1	
 	~Loop
-	>|            // ToDo: Weitere Standardwerte setzen
 	>|        }
 	>|
 	>|        public override CmdBaseCommand? Run(RunContext rc)
 	>|        {
-	>|            // ToDo: Run-Methode ausimplementieren
 	~Set VarIndex=1
 	~DoWhile ?$VarName($VarIndex)
 		>|            string expanded$VarName($VarIndex) = ReplaceVars(rc, $VarName($VarIndex));
 		~AddTo VarIndex+=1	
 	~Loop
+	>|            // ToDo: Run-Methode ausimplementieren
 	>|            return NextCommand;
 	>|        }
 	>|    }
 	>|}
->> Weitere Eigenschaften implementieren
-	># ToDo: Weitere Eigenschaften deklarieren
-	># ToDo: Weitere Eigenschaften auslesen
-	># ToDo: Weitere Standardwerte setzen
->> Rum-Methode ausimplementieren
-	># ToDo: Run-Methode ausimplementieren
+>> Run-Methode ausimplementieren
+	>* ToDo: Run-Methode ausimplementieren
+	>* Regel 1: Die eingelesenen Eigenschaften bleiben unverändert, so dass der Befehl wiederholt ausgeführt werden kann.
+	>* Regel 2: Die Variablenersetzung erfolgt so tief wie möglich, so dass die Syntax unabhängig von Werten ist.
+	>* Regel 3: Die Verkettung der Befehle mit NextCommand und PreviousCommand bleibt unverändert.
 >> Befehl in SkriptParser hinzufügen
 	># in ScriptParser.cs
 	># private void LoadCommands()

@@ -41,27 +41,22 @@ namespace FlowProtocol2.Commands
                     $"Die Sequenz '{Ignore}' kann an dieser Stelle nicht interpretiert werden und wird ignoriert.");
             }
             string expandedScriptNameOrPath = ReplaceVars(rc, ScriptNameOrPath);
-            string expandedscriptfilepath = rc.CurrentScriptPath + Path.DirectorySeparatorChar + expandedScriptNameOrPath;
-            if (expandedScriptNameOrPath.StartsWith("." + Path.DirectorySeparatorChar))
+            string absolutescriptfilepath = ExpandPath(rc, expandedScriptNameOrPath);
+            if (!rc.ScriptRepository.ContainsKey(absolutescriptfilepath))
             {
-                expandedscriptfilepath = $"{rc.ScriptPath}{expandedScriptNameOrPath[1..]}";
-
-            }
-            if (!rc.ScriptRepository.ContainsKey(expandedscriptfilepath))
-            {
-                System.IO.FileInfo fi = new System.IO.FileInfo(expandedscriptfilepath);
+                System.IO.FileInfo fi = new System.IO.FileInfo(absolutescriptfilepath);
                 if (fi != null && !fi.Exists)
                 {
                     rc.SetError(ReadContext, "Skriptdatei nicht gefunden",
-                        $"Die Skriptdatei '{expandedscriptfilepath}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
+                        $"Die Skriptdatei '{absolutescriptfilepath}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();
                 string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("BaseKey=", string.Empty)).Trim();
-                var newScriptinfo = sp.ReadScript(rc, expandedscriptfilepath, Indent);
-                rc.ScriptRepository[expandedscriptfilepath] = newScriptinfo;
+                var newScriptinfo = sp.ReadScript(rc, absolutescriptfilepath, Indent);
+                rc.ScriptRepository[absolutescriptfilepath] = newScriptinfo;
             }
-            var sinfo = rc.ScriptRepository[expandedscriptfilepath];
+            var sinfo = rc.ScriptRepository[absolutescriptfilepath];
             if (sinfo.StartCommand != null)
             {
                 string expandedBaseKey = ReplaceVars(rc, BaseKey).Trim();

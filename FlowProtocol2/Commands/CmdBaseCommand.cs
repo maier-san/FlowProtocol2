@@ -192,5 +192,20 @@ namespace FlowProtocol2.Commands
             result = false;
             return false;
         }
+
+        /// <summary>
+        /// Expandiert einen Dateinamen oder Teilpfad zu einem absoluten Pfad.
+        /// </summary>
+        /// <param name="rc">RunContext</param>
+        /// <param name="pathorname">Ein Dateiname oder ein mit ".\" beginnender Teilpfad</param>
+        /// <returns>Der expandierte Pfad</returns>
+        protected string ExpandPath(RunContext rc, string pathorname)
+        {            
+            if (pathorname.StartsWith("." + Path.DirectorySeparatorChar))
+            {
+                return $"{rc.ScriptPath}{pathorname[1..]}";
+            }
+            return $"{rc.CurrentScriptPath}{Path.DirectorySeparatorChar}{pathorname}";
+        }
     }
 }

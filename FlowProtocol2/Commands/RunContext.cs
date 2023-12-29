@@ -12,7 +12,8 @@ namespace FlowProtocol2.Commands
         public List<IMBaseElement> InputItems => InputForm.InputItems;
         public string MyBaseURL { get; set; }
         public string MyResultURL { get; set; }
-        public string ScriptPath { get; set; }
+        public string ScriptPath {get; set;}
+        public string CurrentScriptPath { get; set; }
         public Dictionary<string, ScriptInfo> ScriptRepository { get; set; }
         public Stack<EntryPoint> ReturnStack { get; set; }
         public bool ExecuteNow { get; set; }
@@ -28,6 +29,7 @@ namespace FlowProtocol2.Commands
             MyBaseURL = string.Empty;
             MyResultURL = string.Empty;
             ScriptPath = string.Empty;
+            CurrentScriptPath = string.Empty;
             ScriptRepository = new Dictionary<string, ScriptInfo>();
             ReturnStack = new Stack<EntryPoint>();
             ExecuteNow = false;

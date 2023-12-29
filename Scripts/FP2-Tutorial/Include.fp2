@@ -1,0 +1,16 @@
+~SetTitel Include-Befehl
+@Beschreibung >>_ Der Befehl ~Include <Dateiname/-pfad>.fps [BaseKey=<Basisschlüssel>] liest eine Skript-Funktionsdatei ein.
+>>_ Die Dateiendung ist auf ".fps" festgelegt.
+>>_ Wird nur ein Dateiname angegeben, so wird dieser im gleichen Verzeichnis gesucht. Wir ein Pfad beginnend mit ".\" angegeben, so wird dieser unterhalb des Skript-Hauptverzeichnisses gesucht.
+>>_ Der optionale Parameter [BaseKey=<Basisschlüssel>] ermöglicht es, die Schlüssel für die Eingabebefehle in der Skriptdatei für den jeweiligen Aufruf zu individualisieren, so dass eine Funktionsdatei mehrfach verwendet werden kann.
+@Ausnahmen >>* Unerwartete Sequenz gefunden: Die Sequenz ... kann an dieser Stelle nicht interpretiert werden und wird ignoriert.
+>>* Skriptdatei nicht gefunden: Die Skriptdatei ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel ruft die Funktionsdatei "TutorialDemo.fps" auf:
+>>|@Ausgabe >> Erster Befehl in der Hauptdatei $TemplateFilePath
+>>|~Include .\_Functions\TutorialDemo.fps
+>>|>> Zweiter Befehl in der Hauptdatei $TemplateFilePath
+>>_ Die Funktionsdatei "TutorialDemo.fps" hat folgenden Inhalt:
+>>|>> Befehl in $TemplateFilePath
+@Ausgabe >> Erster Befehl in der Hauptdatei $TemplateFilePath
+~Include .\_Functions\TutorialDemo.fps
+>> Zweiter Befehl in der Hauptdatei $TemplateFilePath

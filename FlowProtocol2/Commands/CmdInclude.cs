@@ -8,19 +8,19 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdInclude : CmdBaseCommand
     {
-        public string ScriptName { get; set; }
+        public string ScriptNameOrPath { get; set; }
         public string BaseKey { get; set; }
         public string Ignore { get; set; }
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Include ([A-Za-z0-9\$]*\.fps)\s*(BaseKey=[A-Za-z0-9\$]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
+            return new CommandParser(@"^~Include (.*\.fps)\s*(BaseKey=[A-Za-z0-9\$]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)
         {
             CmdInclude cmd = new CmdInclude(rc);
-            cmd.ScriptName = m.Groups[1].Value.Trim();
+            cmd.ScriptNameOrPath = m.Groups[1].Value.Trim();
             cmd.BaseKey = m.Groups[2].Value.Trim();
             cmd.Ignore = m.Groups[3].Value.Trim();
             return cmd;
@@ -28,7 +28,7 @@ namespace FlowProtocol2.Commands
 
         public CmdInclude(ReadContext readcontext) : base(readcontext)
         {
-            ScriptName = string.Empty;
+            ScriptNameOrPath = string.Empty;
             BaseKey = string.Empty;
             Ignore = string.Empty;
         }
@@ -40,14 +40,20 @@ namespace FlowProtocol2.Commands
                 rc.SetError(ReadContext, "Unerwartete Sequenz gefunden",
                     $"Die Sequenz '{Ignore}' kann an dieser Stelle nicht interpretiert werden und wird ignoriert.");
             }
-            string expandedscriptfilepath = rc.ScriptPath + Path.DirectorySeparatorChar + ReplaceVars(rc, ScriptName);
+            string expandedScriptNameOrPath = ReplaceVars(rc, ScriptNameOrPath);
+            string expandedscriptfilepath = rc.CurrentScriptPath + Path.DirectorySeparatorChar + expandedScriptNameOrPath;
+            if (expandedScriptNameOrPath.StartsWith("." + Path.DirectorySeparatorChar))
+            {
+                expandedscriptfilepath = $"{rc.ScriptPath}{expandedScriptNameOrPath[1..]}";
+
+            }
             if (!rc.ScriptRepository.ContainsKey(expandedscriptfilepath))
             {
                 System.IO.FileInfo fi = new System.IO.FileInfo(expandedscriptfilepath);
                 if (fi != null && !fi.Exists)
                 {
                     rc.SetError(ReadContext, "Skriptdatei nicht gefunden",
-                        $"Die Skriptdatei '{expandedscriptfilepath}' konnte nicht gefunden werden. Das Skript wird abgebrochen.");
+                        $"Die Skriptdatei '{expandedscriptfilepath}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();

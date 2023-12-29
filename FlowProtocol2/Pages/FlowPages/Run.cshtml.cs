@@ -40,7 +40,8 @@ namespace FlowProtocol2.Pages.FlowPages
             if (fi != null && fi.Directory != null)
             {
                 ScriptName = fi.Name;
-                RunContext.ScriptPath = fi.Directory.FullName;
+                RunContext.CurrentScriptPath = fi.Directory.FullName;
+                RunContext.ScriptPath = ScriptPath;
             }
             ScriptParser sp = new ScriptParser();
             var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);

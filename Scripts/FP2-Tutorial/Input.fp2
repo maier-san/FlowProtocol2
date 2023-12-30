@@ -1,0 +1,19 @@
+~SetTitel Input-Befehl
+@Beschreibung >>_ Der Befehl ~Input <Schlüssel>:<Anzeigetext> fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel.
+>>_ Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
+>>_ Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des '-Zeichens automatisch durchnummeriert werden.
+>>_ Zusätzlich können mit den Befehlen ~AddHelpLine, ~AddHelpLink und ~AddHelpText noch erklärende Hilfstexte und auch Links angegeben werden.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel fragt dein Liebliengsprojekt an und gibt eine kleine Anregung:
+>>|~Input Inp:Gib den Namen deines Lieblingsprojektes an:
+>>|~AddHelpLine Schwierige Wahl, ich weiß.
+>>|~AddHelpLine Wenn dir keines einfällt, wie wäre es mit
+>>|~AddHelpLink https://github.com/maier-san/FlowProtocol2 | FlowProtocol 2
+>>|~AddHelpText ?
+>>|@Ausgabe >> Du hast dich für $Inp entschieden.
+~Input Inp:Gib den Namen deines Lieblingsprojektes an:
+~AddHelpLine Schwierige Wahl, ich weiß.
+~AddHelpLine Wenn dir keines einfällt, wie wäre es mit
+~AddHelpLink https://github.com/maier-san/FlowProtocol2 | FlowProtocol 2
+~AddHelpText ?
+@Ausgabe >> Du hast dich für $Inp entschieden.

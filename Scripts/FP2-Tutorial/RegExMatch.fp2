@@ -1,0 +1,20 @@
+~SetTitel RegExMatch-Befehl
+@Beschreibung >>_ Der Befehl ~RegExMatch <Variable> = <Text>|<Regulärer Ausdruck> wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einem Variablenfeld.
+>>_ In der Variablen mit Index "(0)" wir "true" zurückgegeben, wenn der Text dem Ausdruck entspricht, ansonsten "false".
+>>_ In den nachfolgenden Variablen mit Index "(1)", "(2)", usw. werden die Werte der Gruppen angegeben, die im Ausdruck enthalten sind.
+@Ausnahmen >>* RegEx-Ausnahme: Beim Verarbeiten des regulären Ausdrucks ... kam es zur Ausnahme .... Die Skriptausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel zerlegt einen Summationsterm in seine Bestandteile:
+>>|~Set Aufgabe = 17 + 4
+>>|~RegExMatch erg = $Aufgabe|([0-9]*)\s*([+|-])\s*([0-9]*)
+>>|@Ausgabe >> Auswertung:
+>>|	> Treffer = $erg(0)
+>>|	> Erster Wert = $erg(1)
+>>|	> Operator = $erg(2)
+>>|	> Zweiter Wert = $erg(3)
+~Set Aufgabe = 17 + 4
+~RegExMatch erg = $Aufgabe|([0-9]*)\s*([+|-])\s*([0-9]*)
+@Ausgabe >> Auswertung:
+	> Treffer = $erg(0)
+	> Erster Wert = $erg(1)
+	> Operator = $erg(2)
+	> Zweiter Wert = $erg(3)

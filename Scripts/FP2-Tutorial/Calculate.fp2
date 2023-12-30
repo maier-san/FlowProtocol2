@@ -1,0 +1,18 @@
+~SetTitel Calculate-Befehl
+@Beschreibung >>_ Der Befehl ~Calculate <Variable> = <Operand 1> <Operator> <Operand 2> führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen.
+@Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.
+>>* Division durch 0: Der Divisor ... im Berechnungsausdruck ist 0.
+>>* Ungültiger Operator: Der Operator ... kann nicht interpretiert werden.
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~Calculate A1 = 17 + 4
+>>|~Calculate A2 = 17 - 4
+>>|~Calculate A3 = 17 * 4
+>>|~Calculate A4 = 17 / 4
+>>|~Calculate A5 = 17 % 4
+>>|@Ausgabe >> Die Ergebnisse lauten $A1, $A2, $A3, $A4 und $A5.
+~Calculate A1 = 17 + 4
+~Calculate A2 = 17 - 4
+~Calculate A3 = 17 * 4
+~Calculate A4 = 17 / 4
+~Calculate A5 = 17 % 4
+@Ausgabe >> Die Ergebnisse lauten $A1, $A2, $A3, $A4 und $A5.

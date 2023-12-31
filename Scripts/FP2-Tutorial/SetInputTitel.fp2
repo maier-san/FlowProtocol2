@@ -1,0 +1,10 @@
+~SetTitel SetInputTitel-Befehl
+@Beschreibung >>_ Der Befehl ~SetInputTitel <Titel> setzt den Titel für die Eingabeseiten. Auf die Ausgabe hat dies keine Auswirkungen.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel setzet den Titel "Lieblingszahl":
+>>|~SetInputTitel Lieblingszahl
+>>|~Input z:Gib deine Lieblingszahl ein:
+>>|@Ausgabe >> Deine Lieblingszahl lautet $z.
+~SetInputTitel Lieblingszahl
+~Input z:Gib deine Lieblingszahl ein:
+@Ausgabe >> Deine Lieblingszahl lautet $z.

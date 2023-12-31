@@ -43,12 +43,33 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
                 input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);
+                input = input.Replace("$BaseURL", rc.MyBaseURL);
+                input = input.Replace("$ResultURL", rc.MyResultURL);
+                input = input.Replace("$ScriptPath", rc.ScriptPath);
+                input = input.Replace("$CurrentScriptPath", rc.CurrentScriptPath);
+                if (input.Contains("$LineNumber-"))
+                {
+                    Regex lnm = new Regex(@"\$LineNumber-([0-9]*)");
+                    while (lnm.IsMatch(input))
+                    {
+                        Match m = lnm.Match(input);
+                        bool subOK = Int32.TryParse(m.Groups[1].Value, out int sub);
+                        if (subOK)
+                        {
+                            input = input.Replace(m.Groups[0].Value, (ReadContext.LineNumber - sub).ToString());
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
                 input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());
                 if (input.Contains("$Chr"))
                 {
                     for (int i = 1; i < 255; i++)
                     {
-                        input = input.Replace($"$Chr{i:000}", Convert.ToChar(i).ToString());
+                        input = input.Replace($"$Chr({i})", Convert.ToChar(i).ToString());
                     }
                 }
             }
@@ -227,8 +248,8 @@ namespace FlowProtocol2.Commands
             }
             else
             {
-                rseed = new Random().Next();                
-                rc.BoundVars["_rseed"] = rseed.ToString();                
+                rseed = new Random().Next();
+                rc.BoundVars["_rseed"] = rseed.ToString();
             }
             rc.GivenKeys.Add("_rseed");
             return rseed;

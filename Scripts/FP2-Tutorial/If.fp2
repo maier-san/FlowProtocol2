@@ -1,16 +1,22 @@
 ~SetTitel If-Befehl
 @Beschreibung >>_ Der Befehl ~If <Bedinung> führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist.
 >>_ Ist die Bedingung nicht erfüllt, wird der nächste Befehl auf gleicher Ebene ausgeführt.
->>_ Der If-Befehl kann mit dem Else-Befehl kombiniert werden, der die nachfolgend eingerückten Befehle genau dann ausführt, wenn die If-Bedingung nicht erfüllt ist.
+>>_ Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen imd einem Else-Befehl kombiniert werden, die jeweils die nachfolgend eingerückten Befehle genau dann ausführt, wenn (im Falles eines ElseIf-Befehls) die Bedingung erfüllt ist und alle vorherigen Bedingungen nicht erfüllt waren.
 @Ausnahmen >>* siehe Bedingungen
-@Codebeispiel >>_ Das nachfolgende Beispiel ...
->>|~If 3==5 && Auto!=Motorad || 3>2 && 17<>4
->>|	@Ausgabe >> Aussage stimmt
+>>* Else ohne If: Dem Elseif-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.
+>>* ElseIf ohne If: Dem Elseif-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.
+@Codebeispiel >>_ Das nachfolgende Beispiel kombiniert eine If-Bedingung mit einer ElseIf-Bedingung und einem Else-Zweig.
+>>|~If 2==2 && 7<6 || Auto==Motorad && 2<>8
+>>|	@Ausgabe >> Die erste Bedingung stimmt.
+>>|~ElseIf 7<8
+>>|	@Ausgabe >> Die erste Bedingung stimmt nicht, aber die zweite.
 >>|~Else
->>|	@Ausgabe >> Aussage stimmt nicht
+>>|	@Ausgabe >> Die ersten beiden Bedingungen stimmen nicht.
 >>|@Ausgabe >> Prüfung abgeschlossen
-~If 3==5 && Auto!=Motorad || 3>2 && 17<>4
-	@Ausgabe >> Aussage stimmt
+~If 2==2 && 7<6 || Auto==Motorad && 2<>8
+	@Ausgabe >> Die erste Bedingung stimmt.
+~ElseIf 7<8
+	@Ausgabe >> Die erste Bedingung stimmt nicht, aber die zweite.
 ~Else
-	@Ausgabe >> Aussage stimmt nicht
+	@Ausgabe >> Die ersten beiden Bedingungen stimmen nicht.
 @Ausgabe >> Prüfung abgeschlossen

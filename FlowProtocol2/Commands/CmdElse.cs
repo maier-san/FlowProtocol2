@@ -7,7 +7,7 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdElse : CmdBaseCommand
     {
-        public CmdIf? ParentIfCommand {get; set;}
+        public CmdIf? ParentIfCommand { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -33,7 +33,7 @@ namespace FlowProtocol2.Commands
                     "Dem Else-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.");
                 return GetNextSameOrHigherLevelCommand();
             }
-            if (!ParentIfCommand.Evaluation)
+            if (!ParentIfCommand.Handled)
             {
                 return NextCommand;
             }

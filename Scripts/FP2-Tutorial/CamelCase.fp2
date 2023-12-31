@@ -1,0 +1,12 @@
+~SetTitel CamelCase-Befehl
+@Beschreibung >>_ Der Befehl ~CamelCase <Variable> = <Text> wandelt einen Text in CamelCase-Schreibweise um und speichert das Ergebnis in einer Variablen.
+>>_ Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauffolgenden Buchstaben gekennzeichnet.
+@Ausnahmen >>* keine
+>>* Ausnahme 2
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt aus einem Ausdruck einen möglichen Klassennamen.
+>>|~CamelCase ClassName = Weißwein und Likör
+>>|@Ausgabe >> Klassenname:
+>>|~AddCode  $ClassName
+~CamelCase ClassName = Weißwein und Likör
+@Ausgabe >> Klassenname:
+~AddCode  $ClassName

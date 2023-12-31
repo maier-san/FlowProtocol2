@@ -1,0 +1,10 @@
+~SetTitel UrlEncode-Befehl
+@Beschreibung >>_ Der Befehl ~UrlEncode <Variable> = <Text> wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variable.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt eine URL für eine Goole-Suche nach "C# %-Operator":
+>>|~UrlEncode SQuery=C# %-Operator
+>>|@Ausgabe >> Google-Suche: 
+>>|~AddLink https://www.google.com/search?q=$SQuery | https://www.google.com/search?q=$SQuery
+~UrlEncode SQuery=C# %-Operator
+@Ausgabe >> Google-Suche: 
+~AddLink https://www.google.com/search?q=$SQuery | https://www.google.com/search?q=$SQuery

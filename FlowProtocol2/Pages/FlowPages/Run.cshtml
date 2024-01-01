@@ -24,15 +24,19 @@
 }
 @if (Model.InputForm.InputItems.Any())
 {
-    @if (!string.IsNullOrEmpty(Model.InputForm.Titel))
-    {
-        <h2>@Model.InputForm.Titel</h2>
-    }
-    else if (!Model.Errors.Any())
-    {
-        <h2>@Model.ScriptName</h2>
-    }
     <form method="post">
+        @if (!string.IsNullOrEmpty(Model.InputForm.Titel))
+        {
+            <h2>@Model.InputForm.Titel</h2>
+        }
+        else if (!Model.Errors.Any())
+        {
+            <h2>@Model.ScriptName</h2>
+        }
+        @if (!string.IsNullOrEmpty(Model.InputForm.Description))
+        {
+            <p>@Model.InputForm.Description</p>
+        }    
         @foreach (var k in Model.RunContext.GivenKeys)
         {
             <input type="hidden" asp-for="BoundVars[k]" />

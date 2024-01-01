@@ -1,0 +1,18 @@
+~SetTitel SetInputDescription-Befehl
+@Beschreibung >>_ Der Befehl ~SetInputDescription <Beschreibung> setzt die Beschreibung für die Eingabeseiten. Auf die Ausgabe hat dies keine Auswirkungen.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel gibt eine ausführliche Beschreibung:
+>>|~SetInputDescription Die nachfolgende Zusammenstellung von Fragen dient zur Bewertung eines noch ausstehenden Projektes und soll dazu verwendet werden, die Priorität des Projektes in der Gesamtmenge festzulegen.
+>>|?W: Das Projekt ist...
+>>|	#: wichtig
+>>|		~Set wert=10
+>>|	#: nicht so wichtig
+>>|		~Set wert=3
+>>|@Ausgabe >> Für das Projekt können $wert Punkte eingetragen werden.
+~SetInputDescription Die nachfolgende Zusammenstellung von Fragen dient zur Bewertung eines noch ausstehenden Projektes und soll dazu verwendet werden, die Priorität des Projektes in der Gesamtmenge festzulegen.
+?W: Das Projekt ist...
+	#: wichtig
+		~Set wert=10
+	#: nicht so wichtig
+		~Set wert=3
+@Ausgabe >> Für das Projekt können $wert Punkte eingetragen werden.

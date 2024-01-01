@@ -1,0 +1,9 @@
+~SetTitel ElseIf-Befehl
+@Beschreibung >>_ Der Befehl ~ElseIf <Bedingung> prüft eine alternative Bedingung nach einer If-Abfrage. Er führt die nachfolgend eingerückten Befehle aus, wenn alle vorherigen Bedingungen nicht erfüllt waren.
+@Ausnahmen >>* ElseIf ohne If: Dem ElseIf-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.
+>>* und siehe 
+~Replace EvalExpressionURL = $BaseURL|If->EvalExpression
+~AddLink $EvalExpressionURL | EvalExpression
+@Codebeispiel >>_ siehe 
+~Replace IfURL = $BaseURL|ElseIf->If
+~AddLink $IfURL | ~If

@@ -1,0 +1,11 @@
+~SetTitel Set-Befehl
+@Beschreibung >>_ Der Befehl ~Set <Variable> = <Ausdruck> speichert einen Ausdruck in einer Variablen. Diese kann mit $<Variable> in anderen Ausdrücke abgerufen werden.
+>>_ Variable können aus Buchstaben, Ziffern und runden Klammern bestehen. Letztere haben keine syntaktische Bedeutung, können aber die Lesbarkeit von Variablen verbessern.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel setzt zwei Werte und ruft sie ab:
+>>|~Set A=Hallo
+>>|~Set B=2024
+>>|@Ausgabe >> $A Welt, es ist das Jahr $B!
+~Set A=Hallo
+~Set B=2024
+@Ausgabe >> $A Welt, es ist das Jahr $B!

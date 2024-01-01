@@ -1,0 +1,6 @@
+~SetTitel AddText-Befehl
+@Beschreibung >>_ Der Befehl ~AddText <Text> fügt Text in der Ausgabe an die aktuelle Zeile an.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ siehe
+~Replace OutputTextURL = $BaseURL|AddText->OutputText
+~AddLink $OutputTextURL | ~OutputText

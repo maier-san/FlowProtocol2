@@ -4,6 +4,12 @@
 ~Set VarIndex=1
 ~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein.
 ~Split VarName = $Varliste|;
+?ACB: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
+#j: Ja
+	~Input RefCB: Auf welches Codebeispiel soll verwiesen werden?
+	~Set MitCB=ja
+#n: Nein
+	~Set MitCB=nein
 ~Execute
 @Implementierung >> Klasse erstellen
 	>* "New File" im Ordner Commands
@@ -75,10 +81,14 @@
 >> Code einfügen
 	>|~SetTitel $CmdName-Befehl
 	>|@Beschreibung >>_ Der Befehl ~$CmdName ...
-	>|@Ausnahmen >>* Ausnahme 1
-	>|>>* Ausnahme 2
+	>|@Ausnahmen >>* keine
+~If $MitCB==ja
+	>|@Codebeispiel >>_ siehe 
+	>|~Replace $RefCBURL = $Chr(36)BaseURL|$CmdName->$RefCB
+	>|~AddLink $Chr(36)$RefCBURL | ~$RefCB
+~Else
 	>|@Codebeispiel >>_ Das nachfolgende Beispiel ...
-	>|>>|@Ausgabe >> Testausgabe
+	>|>>|...
 	>|@Ausgabe >> Testausgabe
 >> Vervollständigen
 	># Beschreibung

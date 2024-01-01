@@ -35,7 +35,7 @@ namespace FlowProtocol2.Commands
             if (ParentIfCommand == null)
             {
                 rc.SetError(ReadContext, "ElseIf ohne If",
-                    "Dem Elseif-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.");
+                    "Dem ElseIf-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.");
                 return GetNextSameOrHigherLevelCommand();
             }
             if (!ParentIfCommand.Handled)

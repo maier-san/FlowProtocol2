@@ -1,0 +1,7 @@
+~SetTitel Loop-Befehl
+@Beschreibung >>_ Der Befehl ~Loop beendet einen Schleifendurchlauf und beginnt den nächsten Schleifendurchlauf. Eine Schleife kann durch verschiedene Befehle initiiert werden, z.B. DoWhile.
+@Ausnahmen >>* Loop ohne Schleifenbeginn: Dem Loop-Befehl kann kein Schleifenbeginn-Befehl auf gleicher Ebene zugeordnet werden.
+>>* Maximale Anzahl Schleifendurchläufe erreicht: Die maximale Anzahl von ... direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.
+@Codebeispiel >>_ siehe
+~Replace DoWhileURL = $BaseURL|Loop->DoWhile
+~AddLink $DoWhileURL | ~DoWhile

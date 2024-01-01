@@ -4,6 +4,9 @@
 @Ausnahmen >>* WhileDo ohne Loop: Dem WhileDo-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
 >>* Loop ohne WhileDo: Dem Loop-Befehl kann kein DoWhile-Befehl auf gleicher Ebene zugeordnet werden.
 >>* Maximale Anzahl Schleifendurchläufe erreicht: Die maximale Anzahl von ... direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.
+>>* und siehe 
+~Replace EvalExpressionURL = $BaseURL|If->EvalExpression
+~AddLink $EvalExpressionURL | EvalExpression
 @Codebeispiel >>_ Das nachfolgende Beispiel zählt eine Variable a wiederholt hoch und gibt sie aus, bis sie den Wert von 5 überschreitet.
 >>|~Set a=1
 >>|@Ausgabe >> Die Zahlen von 1 bis 5

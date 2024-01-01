@@ -1,0 +1,7 @@
+~SetTitel OptionValue-Befehl
+@Beschreibung >>_ Der Befehl #[<Optionsschlüssel>]:<Optionstext> erzeugt eine Option innerhalb einer Optionsgruppe.
+>>_ Der Optionsschlüssel wird zum verwalten der gewählten Option in der URL verwendet. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
+@Ausnahmen >>* Optionswert ohne Optionsgruppe: Dem Optionswert konnte keine übergeordnete Gruppe zugeordnet werden.
+@Codebeispiel >>_ siehe
+~Replace OptionGroupURL = $BaseURL|OptionValue->OptionGroup
+~AddLink $OptionGroupURL | ~OptionGroup

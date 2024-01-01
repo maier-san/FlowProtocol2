@@ -1,8 +1,8 @@
+using System.Text.RegularExpressions;
+using FlowProtocol2.Core;
+
 namespace FlowProtocol2.Commands
 {
-    using System.Text.RegularExpressions;
-    using FlowProtocol2.Core;
-
     /// <summary>
     /// Implementiert den Loop-Befehl
     /// </summary>
@@ -34,8 +34,8 @@ namespace FlowProtocol2.Commands
             StopCounter++;
             if (ParentDoWhileCommand == null)
             {
-                rc.SetError(ReadContext, "Loop ohne WhileDo",
-                    "Dem Loop-Befehl kann kein DoWhile-Befehl auf gleicher Ebene zugeordnet werden.");
+                rc.SetError(ReadContext, "Loop ohne Schleifenbeginn",
+                    "Dem Loop-Befehl kann kein Schleifenbeginn-Befehl auf gleicher Ebene zugeordnet werden.");
             }
             if (StopCounter > MaximalLoopCount)
             {

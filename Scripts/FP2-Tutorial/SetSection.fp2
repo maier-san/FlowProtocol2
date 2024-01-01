@@ -1,0 +1,8 @@
+~SetTitel SetSection-Befehl
+@Beschreibung >>_ Der Befehl ~SetSection <Abschnitt> setzt den akuellen Abschnitt für die nachfolgenden Ausgabes. Der Befehl ist eine alternative zu der @-Syntax des Ausgabebebefehls.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel setzt den Abschnitt "Ausgabe" und erzeugt einen Aufzählungspunkt:
+>>|~SetSection Ausgabe
+>>|>> Dieser Aufzählungspunkt wird im Abschnitt "Ausgabe" eingegliedert.
+~SetSection Ausgabe
+>> Dieser Aufzählungspunkt wird im Abschnitt "Ausgabe" eingegliedert.

@@ -1,0 +1,6 @@
+~SetTitel AddHelpLine-Befehl
+@Beschreibung >>_ Der Befehl ~AddHelpLine <Text> erzeugt eine erklärende Hilfszeile unterhalb der letzten Eingabeaufforerung.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ siehe
+~Replace InputURL = $BaseURL|AddHelpLine->Input
+~AddLink $InputURL | ~Input

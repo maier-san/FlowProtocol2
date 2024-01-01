@@ -1,0 +1,10 @@
+~SetTitel Random-Befehl
+@Beschreibung >>_ Der Befehl ~Random <Variable> = <Bereich von>..<Bereich bis> erzeugt eine ganze Zufallszahl im angegebenen Bereich und speichert diese in einer Variable.
+>>_ Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.
+@Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden.
+>>* Ungültiger Wertebereich: Der Ausdruck ... beschreibt keinen gültigen Wertebereich.
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt eine Zahl von 1 bis 49:
+>>|~Random z = 1..49
+>>|@Ausgabe >> Die Zahl lautet $z.
+~Random z = 1..49
+@Ausgabe >> Die Zahl lautet $z.

@@ -1,0 +1,10 @@
+~SetTitel End-Befehl
+@Beschreibung >>_ Der Befehl ~End beendet die Skriptausführung.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel hört mittendrin auf:
+>>|@Ausgabe >> Erste Zeile
+>>|~End
+>>|@Ausgabe >> Zweite Zeile
+@Ausgabe >> Erste Zeile
+~End
+@Ausgabe >> Zweite Zeile

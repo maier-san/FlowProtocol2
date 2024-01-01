@@ -1,0 +1,7 @@
+~SetTitel GoSub-Befehl
+@Beschreibung >>_ Der Befehl ~GoSub <Sprungmarke> springt zur angegebenen Sprungmarke.
+>>_ mit Return wird wieder zurückgesprungen.
+@Ausnahmen >>* Sprungziel nicht gefunden: Das Sprungziel ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
+@Codebeispiel >>_ siehe 
+~Replace DefineURL = $BaseURL|GoSub->DefineSub
+~AddLink $DefineURL | ~DefineSub

@@ -1,0 +1,6 @@
+~SetTitel Return-Befehl
+@Beschreibung >>_ Der Befehl ~Return springt zur nächsten Zeile des letzten Absprungpunktes.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ siehe 
+~Replace DefineURL = $BaseURL|Return->DefineSub
+~AddLink $DefineURL | ~DefineSub

@@ -39,6 +39,10 @@
         }
         @foreach (var inidx in Model.InputForm.InputItems)
         {
+            @if (!string.IsNullOrEmpty(inidx.Section))
+            {
+                <h4>@inidx.Section</h4>
+            }
             var tinidx = inidx as Core.IMTextInputElement;
             @if (tinidx != null)
             {

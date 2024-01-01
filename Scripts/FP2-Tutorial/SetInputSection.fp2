@@ -1,0 +1,26 @@
+~SetTitel SetInputSection-Befehl
+@Beschreibung >>_ Der Befehl ~SetInputSection <Abschnitt> setzt eine Abschnittsüberschrift für das Eingabeformular. Auf die Ausgabe hat dies keine Auswirkungen.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel macht vier Abfragen in zwei Abschnitten.
+>>|~SetInputSection Smalltalk
+>>|~Input A1: Wer gewinnt die nächste Tour de France?
+>>|?A2: Wie wird das Wetter?
+>>|	#: gut
+>>|	#: schlecht
+>>|~SetInputSection Belangloses
+>>|~Input A3: Wann fährt der Fünfuhrzug?
+>>|?A4: Was gibts zum Essen?
+>>|	#: Pizza Hawaii
+>>|	#: Fischbrötchen
+>>|@Ausgabe >> Die Antworten müssen nicht in die Ausgabe.
+~SetInputSection Smalltalk
+~Input A1: Wer gewinnt die nächste Tour de France?
+?A2: Wie wird das Wetter?
+	#: gut
+	#: schlecht
+~SetInputSection Belangloses
+~Input A3: Wann fährt der Fünfuhrzug?
+?A4: Was gibts zum Essen?
+	#: Pizza Hawaii
+	#: Fischbrötchen
+@Ausgabe >> Die Antworten müssen nicht in die Ausgabe.

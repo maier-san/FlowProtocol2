@@ -6,14 +6,23 @@ namespace FlowProtocol2.Core
     {
         public string Titel { get; set; }
         public List<IMBaseElement> InputItems { get; set; }
+        public string CurrentSection { get; set; }
+        private string LastSection { get; set; }
         public IMForm()
         {
             Titel = string.Empty;
             InputItems = new List<IMBaseElement>();
+            CurrentSection = string.Empty;
+            LastSection = string.Empty;
         }
 
         public void AddInputItem(IMBaseElement inputitem)
         {
+            if (CurrentSection != LastSection)
+            {
+                inputitem.Section = CurrentSection;
+                LastSection = CurrentSection;
+            }
             InputItems.Add(inputitem);
         }
     }
@@ -22,6 +31,7 @@ namespace FlowProtocol2.Core
     {
         public string Promt { get; set; }
         public string Key { get; set; }
+        public string Section { get; set; }
         public IMHelpInfoBlock HelpInfoBlock { get; set; }
 
 
@@ -29,6 +39,7 @@ namespace FlowProtocol2.Core
         {
             Promt = string.Empty;
             Key = string.Empty;
+            Section = string.Empty;
             HelpInfoBlock = new IMHelpInfoBlock();
         }
     }
@@ -49,7 +60,7 @@ namespace FlowProtocol2.Core
         }
         public void AddHelpText(string text, string link)
         {
-            if (CurrentHelpInfoLine != null && !string.IsNullOrEmpty(text)) 
+            if (CurrentHelpInfoLine != null && !string.IsNullOrEmpty(text))
             {
                 IMHelpTextElement newTextElement = new IMHelpTextElement();
                 newTextElement.Text = text;
@@ -61,7 +72,7 @@ namespace FlowProtocol2.Core
 
     public class IMHelpInfoLine
     {
-        public List<IMHelpTextElement> TextElements {get; set;}
+        public List<IMHelpTextElement> TextElements { get; set; }
         public IMHelpInfoLine()
         {
             TextElements = new List<IMHelpTextElement>();
@@ -70,7 +81,7 @@ namespace FlowProtocol2.Core
 
     public class IMHelpTextElement : IMBaseElement
     {
-        public string Text {get; set;}
+        public string Text { get; set; }
         public string TrimText => Text.Trim();
         public string LeadingSpace
         {
@@ -79,7 +90,7 @@ namespace FlowProtocol2.Core
                 if (TrimText.Length < Text.Length) return " "; else return string.Empty;
             }
         }
-        public string Link {get; set;}
+        public string Link { get; set; }
         public IMHelpTextElement() : base()
         {
             Text = string.Empty;

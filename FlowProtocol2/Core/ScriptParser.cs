@@ -28,7 +28,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdExecute.GetComandParser());
             CmdParser.Add(CmdIf.GetComandParser());
             CmdParser.Add(CmdElseIf.GetComandParser());
-            CmdParser.Add(CmdElse.GetComandParser());            
+            CmdParser.Add(CmdElse.GetComandParser());
             CmdParser.Add(CmdCamelCase.GetComandParser());
             CmdParser.Add(CmdUrlEncode.GetComandParser());
             CmdParser.Add(CmdReplace.GetComandParser());
@@ -68,38 +68,35 @@ namespace FlowProtocol2.Core
                 {
                     string? line = sr.ReadLine();
                     linenumber++;
-                    if (!string.IsNullOrWhiteSpace(line))
+                    if (!string.IsNullOrWhiteSpace(line) && !line.TrimStart().StartsWith("//"))
                     {
                         line = line.Replace("\t", "    ");
                         int indent = startindent + line.Length - line.TrimStart().Length;
                         string codeline = line.Trim();
-                        if (!codeline.StartsWith("//"))
+                        bool hasmatch = false;
+                        ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
+                        foreach (var cp in CmdParser)
                         {
-                            bool hasmatch = false;
-                            ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
-                            foreach (var cp in CmdParser)
+                            if (cp.LineExpression.IsMatch(codeline))
                             {
-                                if (cp.LineExpression.IsMatch(codeline))
+                                Match m = cp.LineExpression.Match(codeline);
+                                currentcommand = cp.CommandCreator(readcontext, m);
+                                if (sinfo.StartCommand == null)
                                 {
-                                    Match m = cp.LineExpression.Match(codeline);
-                                    currentcommand = cp.CommandCreator(readcontext, m);
-                                    if (sinfo.StartCommand == null)
-                                    {
-                                        sinfo.StartCommand = currentcommand;
-                                    }
-                                    if (previouscommand != null)
-                                    {
-                                        previouscommand.SetNextCommand(currentcommand);
-                                    }
-                                    previouscommand = currentcommand;
-                                    hasmatch = true;
-                                    break;
+                                    sinfo.StartCommand = currentcommand;
                                 }
+                                if (previouscommand != null)
+                                {
+                                    previouscommand.SetNextCommand(currentcommand);
+                                }
+                                previouscommand = currentcommand;
+                                hasmatch = true;
+                                break;
                             }
-                            if (!hasmatch)
-                            {
-                                rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
-                            }
+                        }
+                        if (!hasmatch)
+                        {
+                            rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
                         }
                     }
                 }

@@ -1,0 +1,6 @@
+~SetTitel JumpMark-Befehl
+@Beschreibung >>_ Der Befehl ~JumpMark <Marke> setzt eine Sprungmarke, die mit dem GoTo-Befehl angesprungen werden kann.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ siehe
+~Replace GoToURL = $BaseURL|JumpMark->GoTo
+~AddLink $GoToURL | ~GoTo

@@ -2,18 +2,28 @@
 @Beschreibung >>_ Der Befehl ~DefineSub definiert eine Funktionssprungmarke, die mit dem GoSub-Befehl angesprungen werden kann. Die Funktion muss mit Return abgeschlossen werden.
 >>_ Die Funktionsblöcke sollten nach dem End-Befehl stehen, so dass sie bei der normalen Ausführung von oben nach unten nicht erreicht werden.
 @Ausnahmen >>* keine
-@Codebeispiel >>_ Das nachfolgende Beispiel definiert die Routine HalloWelt und ruft diese auf:
+@Codebeispiel >>_ Das nachfolgende Beispiel definiert die Routinen HalloWelt und HalloWelt2 und ruft diese auf:
 >>|@Ausgabe >> Start
 >>|~GoSub HalloWelt
->>|@Ausgabe >> Ende
+>>|>> Ende
 >>|~End
+>>|~DefineSub HalloWelt2
+>>|	>> Hallo Welt2!
+>>|~Return
 >>|~DefineSub HalloWelt
->>|	@Ausgabe >> Hallo Welt!
+>>|	>> Hallo Welt!
+>>|	~GoSub HalloWelt2
+>>|	>> Tschüs!
 >>|~Return
 @Ausgabe >> Start
 ~GoSub HalloWelt
-@Ausgabe >> Ende
+>> Ende
 ~End
+~DefineSub HalloWelt2
+	>> Hallo Welt2!
+~Return
 ~DefineSub HalloWelt
-	@Ausgabe >> Hallo Welt!
+	>> Hallo Welt!
+	~GoSub HalloWelt2
+	>> Tschüs!
 ~Return

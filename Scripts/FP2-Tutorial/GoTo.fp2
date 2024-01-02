@@ -1,0 +1,24 @@
+~SetTitel GoTo-Befehl
+@Beschreibung >>_ Der Befehl ~GoTo <Sprungmarke> setzt die Skriptausführung an der angegebenen Sprungmarke fort.
+@Ausnahmen >>* Sprungziel nicht gefunden: Das Sprungziel ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel springt mehrfach hin und her:
+>>|@Ausgabe >> Start
+>>|~GoTo Marke2
+>>|~JumpMark Marke1
+>>|>> Weiter bei Marke 1
+>>|~GoTo Marke3
+>>|~JumpMark Marke2
+>>|>> Weiter bei Marke 2
+>>|~GoTo Marke1
+>>|~JumpMark Marke3
+>>|>> Ende bei Marke 3
+@Ausgabe >> Start
+~GoTo Marke2
+~JumpMark Marke1
+>> Weiter bei Marke 1
+~GoTo Marke3
+~JumpMark Marke2
+>> Weiter bei Marke 2
+~GoTo Marke1
+~JumpMark Marke3
+>> Ende bei Marke 3

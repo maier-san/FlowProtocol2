@@ -29,8 +29,8 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string expandedSubName = ReplaceVars(rc, SubName);
-            CmdDefineSub? sub = GetNextCommand<CmdDefineSub>(c => true, c => false);
+            string expandedSubName = ReplaceVars(rc, SubName);            
+            CmdDefineSub? sub = GetFirstCommand<CmdDefineSub>(c => c.Name == expandedSubName, c => false);
             if (sub == null)
             {
                 rc.SetError(ReadContext, "Sprungziel nicht gefunden",

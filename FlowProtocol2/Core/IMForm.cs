@@ -6,7 +6,7 @@ namespace FlowProtocol2.Core
     {
         public string Titel { get; set; }
         public string Description { get; set; }
-        public List<IMBaseElement> InputItems { get; set; }
+        public List<IMBaseElement> InputItems { get; private set; }
         public string CurrentSection { get; set; }
         private string LastSection { get; set; }
         public IMForm()

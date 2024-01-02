@@ -76,10 +76,17 @@ namespace FlowProtocol2.Commands
             return input;
         }
 
-        protected T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+        public T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.NextCommand);
-        protected T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+        public T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.PreviousCommand);
+
+        public T? GetFirstCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+            where T : CmdBaseCommand
+        {
+            CmdBaseCommand top = GetPreviousCommand<CmdBaseCommand>(c => c.PreviousCommand == null, c => false) ?? this;
+            return top.GetNextCommand<T>(predicate, stopcrit);
+        }
 
         private T? GetCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit,
             Func<CmdBaseCommand, CmdBaseCommand?> searchdirection)
@@ -98,10 +105,10 @@ namespace FlowProtocol2.Commands
             return null;
         }
 
-        protected CmdBaseCommand? GetNextSameOrHigherLevelCommand()
+        public CmdBaseCommand? GetNextSameOrHigherLevelCommand()
             => GetCommand<CmdBaseCommand>(c => c.Indent <= this.Indent, c => false, c => c.NextCommand);
 
-        protected List<T> GetNexCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+        public List<T> GetNexCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand
         {
             List<T> ret = new List<T>();

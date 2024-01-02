@@ -1,9 +1,19 @@
 ~SetTitel OptionGroup-Befehl
-@Beschreibung >>_ Der Befehl ?<Schlüssel>:<Anzeigetext> erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.
+@Beschreibung >>_ Der Befehl
+~AddCode  ?<Schlüssel>:<Anzeigetext>
+~AddText  erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.
 >>_ Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
 >>_ Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des '-Zeichens automatisch durchnummeriert werden.
->>_ Zusätzlich können mit den Befehlen ~AddHelpLine, ~AddHelpLink und ~AddHelpText noch erklärende Hilfstexte und auch Links angegeben werden.
->>_ Die Optionen werden darunter in der Form #[<Optionsschlüssel>]:<Optionstext> angegeben. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
+>>_ Zusätzlich können mit den Befehlen
+~AddCode  ~AddHelpLine
+~AddText ,
+~AddCode  ~AddHelpLink
+~AddText  und
+~AddCode  ~AddHelpText
+~AddText  noch erklärende Hilfstexte und auch Links angegeben werden.
+>>_ Die Optionen werden darunter in der Form
+~AddCode  #[<Optionsschlüssel>]:<Optionstext>
+~AddText  angegeben. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
 >>_ Für die gewählte Option werden die darunter eingerückten Befehle ausgeführt, für die anderen nicht.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt dein Lieblingsprojekt ab und macht eine entsprechende Ausgabe:
@@ -14,10 +24,10 @@
 >>|~AddHelpText  inspiriert dich vielleicht ;-)
 >>|#: FlowProtocol
 >>|	@Ausgabe >> Ich mag FlowProtocol
->>|#: FlowProtocol2
->>|	@Ausgabe >> Ich mag FlowProtocol2
+>>|#: FlowProtocol2 
+>>|	@Ausgabe >> Ich mag FlowProtocol2 
 >>|#: Was anderes
->>|	@Ausgabe >> Ich mag ws anderes
+>>|	@Ausgabe >> Ich mag was anderes
 >>|@Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!
 ?Erg: Was ist dein Lieblingsprojekt?
 ~AddHelpLine Schwierige Wahl, ich weiß.
@@ -29,5 +39,5 @@
 #: FlowProtocol2
 	@Ausgabe >> Ich mag FlowProtocol2
 #: Was anderes
-	@Ausgabe >> Ich mag ws anderes
+	@Ausgabe >> Ich mag was anderes
 @Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!

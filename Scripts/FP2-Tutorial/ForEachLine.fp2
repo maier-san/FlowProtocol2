@@ -1,5 +1,7 @@
 ~SetTitel ForEachLine-Befehl
-@Beschreibung >>_ Der Befehl ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>] liest Zeilen aus einer Datei in eine Variable und führt damit die nachfolgend eingerückten Befehle aus.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>]
+~AddText  liest Zeilen aus einer Datei in eine Variable und führt damit die nachfolgend eingerückten Befehle aus.
 >>_ Mit dem optionalen Take-Parameter kann die Anzahl der zufällig ausgewählten Zeilen vorgegeben werden.
 >>_ Die laufende Nummer wird in der optionalen Indexvariablen zurückgegeben.
 >>_ Wird nur ein Dateiname angegeben, so wird dieser im gleichen Verzeichnis gesucht. Wir ein Pfad beginnend mit ".\" angegeben, so wird dieser unterhalb des Skript-Hauptverzeichnisses gesucht.

@@ -1,5 +1,7 @@
 ~SetTitel Replace-Befehl
-@Beschreibung >>_ Der Befehl ~Replace <Variable> = <Text>|<Suche nach>-><Ersetze durch> ersetzt alle Vorkommen einer Zeichenfolge in einem Text und ersetzt diese durch eine andere. Das Ergebnis wird in einer Variablen gespeichert.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Replace <Variable> = <Text>|<Suche nach>-><Ersetze durch>
+~AddText  ersetzt alle Vorkommen einer Zeichenfolge in einem Text und ersetzt diese durch eine andere. Das Ergebnis wird in einer Variablen gespeichert.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel ersetzt Äpfel durch Schokolade:
 >>|~Replace neuerText = Ich mag Äpfel und Birnen|Äpfel->Schokolade

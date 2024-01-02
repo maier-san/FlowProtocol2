@@ -1,5 +1,7 @@
 ~SetTitel AddHelpText-Befehl
-@Beschreibung >>_ Der Befehl ~AddHelpText <Text> ergänzt einen Text in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddHelpText <Text>
+~AddText  ergänzt einen Text in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace InputURL = $BaseURL|AddHelpText->Input

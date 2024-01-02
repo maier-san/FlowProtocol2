@@ -1,5 +1,7 @@
 ~SetTitel Calculate-Befehl
-@Beschreibung >>_ Der Befehl ~Calculate <Variable> = <Operand 1> <Operator> <Operand 2> führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Calculate <Variable> = <Operand 1> <Operator> <Operand 2>
+~AddText  führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen.
 >>_ Als Operator stehen zur Auswahl + - * / und % (Modulo)
 @Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.
 >>* Division durch 0: Der Divisor ... im Berechnungsausdruck ist 0.

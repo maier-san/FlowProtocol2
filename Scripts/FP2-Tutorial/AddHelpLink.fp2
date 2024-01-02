@@ -1,5 +1,7 @@
 ~SetTitel AddHelpLink-Befehl
-@Beschreibung >>_ Der Befehl ~AddHelpLink <URL> | <Anzeigezext> ergänzt einen Link in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddHelpLink <URL> | <Anzeigezext>
+~AddText  ergänzt einen Link in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace InputURL = $BaseURL|AddHelpLink->Input

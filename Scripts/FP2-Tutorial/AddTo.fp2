@@ -1,5 +1,7 @@
 ~SetTitel AddTo-Befehl
-@Beschreibung >>_ Der Befehl ~AddTo <Variable> += <Wert> addiert einen Wert zu einer Variablen. Hat die Variable noch keinen Wert, so wird der Wert 0 impliziert.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddTo <Variable> += <Wert>
+~AddText  addiert einen Wert zu einer Variablen. Hat die Variable noch keinen Wert, so wird der Wert 0 impliziert.
 @Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden.
 @Codebeispiel >>_ Das nachfolgende Beispiel addiert zwei Werte:
 >>|~AddTo W += 33

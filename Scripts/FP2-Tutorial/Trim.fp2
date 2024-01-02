@@ -1,5 +1,7 @@
 ~SetTitel Trim-Befehl
-@Beschreibung >>_ Der Befehl ~Trim <Variable> = <Text> entfernt umschließenden Whitespace aus Text und speichert das Ergebnis in der angegebenen Variablen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Trim <Variable> = <Text>
+~AddText  entfernt umschließenden Whitespace aus Text und speichert das Ergebnis in der angegebenen Variablen.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel erzeugt einen Text mit Leerzeichen vorne und hinten und entfernt diese.
 >||~Replace a = x hallo x|x->

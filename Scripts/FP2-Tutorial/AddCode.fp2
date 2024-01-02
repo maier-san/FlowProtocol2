@@ -1,5 +1,7 @@
 ~SetTitel AddCode-Befehl
-@Beschreibung >>_ Der Befehl ~AddCode <Code> fügt ein Inline-Code-Textelement in der Ausgabe an die aktuelle Zeile an.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddCode <Code>
+~AddText  fügt ein Inline-Code-Textelement in der Ausgabe an die aktuelle Zeile an.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace OutputTextURL = $BaseURL|AddCode->OutputText

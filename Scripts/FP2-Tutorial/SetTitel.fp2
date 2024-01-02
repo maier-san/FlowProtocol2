@@ -1,5 +1,7 @@
 ~SetTitel SetTitel-Befehl
-@Beschreibung >>_ Der Befehl ~SetTitel <Titel> setzt den Titel für die Ausgabe.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~SetTitel <Titel>
+~AddText  setzt den Titel für die Ausgabe.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel setzt den Titel "SetTitel-Befehl":
 >>|~SetTitel SetTitel-Befehl

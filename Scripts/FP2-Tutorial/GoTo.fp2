@@ -1,5 +1,7 @@
 ~SetTitel GoTo-Befehl
-@Beschreibung >>_ Der Befehl ~GoTo <Sprungmarke> setzt die Skriptausführung an der angegebenen Sprungmarke fort.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~GoTo <Sprungmarke>
+~AddText  setzt die Skriptausführung an der angegebenen Sprungmarke fort.
 @Ausnahmen >>* Sprungziel nicht gefunden: Das Sprungziel ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
 @Codebeispiel >>_ Das nachfolgende Beispiel springt mehrfach hin und her:
 >>|@Ausgabe >> Start

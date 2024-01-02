@@ -1,5 +1,7 @@
 ~SetTitel EvalExpression-Befehl
-@Beschreibung >>_ Der Befehl ~EvalExpression <Variable> [!]= <Ausdruck> wertet einen Ausdruck als Wahrheitswert aus und speichert das Ergebnis in der angegebenen Variablen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~EvalExpression <Variable> [!]= <Ausdruck>
+~AddText  wertet einen Ausdruck als Wahrheitswert aus und speichert das Ergebnis in der angegebenen Variablen.
 >>_ Der Ergebniswert ist "true" oder "false".
 >>_ Mit "=" wird der Wert direkt zugewiesen, mit "!=" wird der Wert bei der Zuweisung negiert.
 >>_ Die Ergebniswerte solcher Auswertungen können in anderen Ausdrücken weiterverwendet werden.

@@ -1,9 +1,11 @@
 ~SetTitel DoWhile-Loop-Schleife
-@Beschreibung >>_ Durch Umschließen mit den Befehlen "~DoWhile <Bedingung>" und "~Loop" werde die dazwischen liegenden Befehlszeilen so lange wiederholt ausgeführt, wie die Bedingung im DoWhile-Befehl erfüllt ist.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DoWhile <Bedingung>
+~AddText  führt die nachfolgenden eingerückten Befehle wiederholt aus, solange die Bedingung erfüllt ist. Die Schleife wird mit dem Befehl
+~AddCode  ~Loop
+~AddText  abgeschlossen.
 >>_ Beide Befehle müssen sich auf gleicher Ebene befinden.
-@Ausnahmen >>* WhileDo ohne Loop: Dem WhileDo-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
->>* Loop ohne WhileDo: Dem Loop-Befehl kann kein DoWhile-Befehl auf gleicher Ebene zugeordnet werden.
->>* Maximale Anzahl Schleifendurchläufe erreicht: Die maximale Anzahl von ... direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.
+@Ausnahmen >>* DoWhile ohne Loop: Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
 >>* und siehe 
 ~Replace EvalExpressionURL = $BaseURL|If->EvalExpression
 ~AddLink $EvalExpressionURL | EvalExpression

@@ -1,5 +1,7 @@
 ~SetTitel SetInputSection-Befehl
-@Beschreibung >>_ Der Befehl ~SetInputSection <Abschnitt> setzt eine Abschnittsüberschrift für das Eingabeformular. Auf die Ausgabe hat dies keine Auswirkungen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~SetInputSection <Abschnitt>
+~AddText  setzt eine Abschnittsüberschrift für das Eingabeformular. Auf die Ausgabe hat dies keine Auswirkungen.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel macht vier Abfragen in zwei Abschnitten.
 >>|~SetInputSection Smalltalk

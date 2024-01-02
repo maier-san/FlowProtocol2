@@ -1,5 +1,7 @@
 ~SetTitel Execute-Befehl
-@Beschreibung >>_ Der Befehl ~Execute führt alle davor stehenden Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Sind alle Eingaben vorhanden, läuft das Skript weiter.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Execute
+~AddText  führt alle davor stehenden Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Sind alle Eingaben vorhanden, läuft das Skript weiter.
 >>_ Auf diese Weise kann die Menge der gleichzeitig abgefragten Eingaben reduziert werden, und es kann sichergestellt werden, dass notwendige Eingaben an einer Stelle im Skriptcode vorhanden sind.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt zwei Werte in zwei Schritten ab:

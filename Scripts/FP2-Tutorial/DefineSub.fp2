@@ -1,6 +1,12 @@
 ~SetTitel DefineSub-Befehl
-@Beschreibung >>_ Der Befehl ~DefineSub definiert eine Funktionssprungmarke, die mit dem GoSub-Befehl angesprungen werden kann. Die Funktion muss mit Return abgeschlossen werden.
->>_ Die Funktionsblöcke sollten nach dem End-Befehl stehen, so dass sie bei der normalen Ausführung von oben nach unten nicht erreicht werden.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DefineSub <Funktionsname>
+~AddText  definiert eine Funktion, die mit dem GoSub-Befehl angesprungen werden kann. Die Funktion muss mit
+~AddCode  ~Return
+~AddText  abgeschlossen werden.
+>>_ Die Funktionsblöcke sollten nach dem
+~AddCode  ~End
+~AddText -Befehl stehen, so dass sie bei der normalen Ausführung von oben nach unten nicht erreicht werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel definiert die Routinen HalloWelt und HalloWelt2 und ruft diese auf:
 >>|@Ausgabe >> Start

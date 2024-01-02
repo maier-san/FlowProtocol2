@@ -1,8 +1,16 @@
 ~SetTitel Input-Befehl
-@Beschreibung >>_ Der Befehl ~Input <Schlüssel>:<Anzeigetext> fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Input <Schlüssel>:<Anzeigetext>
+~AddText  fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel.
 >>_ Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
 >>_ Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des '-Zeichens automatisch durchnummeriert werden.
->>_ Zusätzlich können mit den Befehlen ~AddHelpLine, ~AddHelpLink und ~AddHelpText noch erklärende Hilfstexte und auch Links angegeben werden.
+>>_ Zusätzlich können mit den Befehlen
+~AddCode  ~AddHelpLine
+~AddText ,
+~AddCode  ~AddHelpLink
+~AddText  und
+~AddCode  ~AddHelpText
+~AddText  noch erklärende Hilfstexte und auch Links angegeben werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt dein Liebliengsprojekt an und gibt eine kleine Anregung:
 >>|~Input Inp:Gib den Namen deines Lieblingsprojektes an:

@@ -1,5 +1,7 @@
 ~SetTitel End-Befehl
-@Beschreibung >>_ Der Befehl ~End beendet die Skriptausführung.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~End
+~AddText  beendet die Skriptausführung.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel hört mittendrin auf:
 >>|@Ausgabe >> Erste Zeile

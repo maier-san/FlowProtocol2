@@ -1,5 +1,7 @@
 ~SetTitel Split-Befehl
-@Beschreibung >>_ Der Befehl ~Split <Variablenname> = <Text>|<Trennzeichen> teilt einen Text anhand eines Trennzeichens auf.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Split <Variablenname> = <Text>|<Trennzeichen>
+~AddText  teilt einen Text anhand eines Trennzeichens auf.
 >>_ Das Ergebis wird in den Variablen mit Zusatz (1), (2), (3) usw. gespeichert. Die darauf folgende Variable wird entfernt, so dass die Werte in einer DoWhile-Schleife mit ?$<Variablenname> durchlaufen werden können.
 >>_ Whitespace als Trennzeichen muss maskiert werden.
 @Ausnahmen >>* keine

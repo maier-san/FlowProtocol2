@@ -1,6 +1,13 @@
 ~SetTitel GoSub-Befehl
-@Beschreibung >>_ Der Befehl ~GoSub <Sprungmarke> springt zur angegebenen Sprungmarke.
->>_ mit Return wird wieder zurückgesprungen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~GoSub <Funktionsname>
+~AddText  springt zur angegebenen Funktion, die mit dem
+~AddCode  ~Define
+~AddText -Befehl definiert wurde.
+>>_ Als Funktionsparameter können Variablen genutzt werden, wobei diese globale Gültigkeit haben.
+>>_ Mit dem Befehl
+~AddCode  ~Return
+~AddText  wird wieder zurückgesprungen.
 @Ausnahmen >>* Sprungziel nicht gefunden: Das Sprungziel ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
 @Codebeispiel >>_ siehe 
 ~Replace DefineURL = $BaseURL|GoSub->DefineSub

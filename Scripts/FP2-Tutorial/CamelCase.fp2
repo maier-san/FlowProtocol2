@@ -1,5 +1,7 @@
 ~SetTitel CamelCase-Befehl
-@Beschreibung >>_ Der Befehl ~CamelCase <Variable> = <Text> wandelt einen Text in CamelCase-Schreibweise um und speichert das Ergebnis in einer Variablen.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~CamelCase <Variable> = <Text>
+~AddText  wandelt einen Text in CamelCase-Schreibweise um und speichert das Ergebnis in einer Variablen.
 >>_ Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauffolgenden Buchstaben gekennzeichnet.
 @Ausnahmen >>* keine
 >>* Ausnahme 2

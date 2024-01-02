@@ -1,5 +1,7 @@
 ~SetTitel RegExMatch-Befehl
-@Beschreibung >>_ Der Befehl ~RegExMatch <Variable> = <Text>|<Regulärer Ausdruck> wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einem Variablenfeld.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~RegExMatch <Variable> = <Text>|<Regulärer Ausdruck>
+~AddText  wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einem Variablenfeld.
 >>_ In der Variablen mit Index "(0)" wir "true" zurückgegeben, wenn der Text dem Ausdruck entspricht, ansonsten "false".
 >>_ In den nachfolgenden Variablen mit Index "(1)", "(2)", usw. werden die Werte der Gruppen angegeben, die im Ausdruck enthalten sind.
 @Ausnahmen >>* RegEx-Ausnahme: Beim Verarbeiten des regulären Ausdrucks ... kam es zur Ausnahme .... Die Skriptausführung wird abgebrochen.

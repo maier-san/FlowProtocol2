@@ -1,5 +1,7 @@
 ~SetTitel Random-Befehl
-@Beschreibung >>_ Der Befehl ~Random <Variable> = <Bereich von>..<Bereich bis> erzeugt eine ganze Zufallszahl im angegebenen Bereich und speichert diese in einer Variable.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Random <Variable> = <Bereich von>..<Bereich bis>
+~AddText  erzeugt eine ganze Zufallszahl im angegebenen Bereich und speichert diese in einer Variable.
 >>_ Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.
 @Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden.
 >>* Ungültiger Wertebereich: Der Ausdruck ... beschreibt keinen gültigen Wertebereich.

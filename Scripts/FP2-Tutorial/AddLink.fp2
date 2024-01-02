@@ -1,5 +1,7 @@
 ~SetTitel AddLink-Befehl
-@Beschreibung >>_ Der Befehl ~AddLink <URL>|<Anzeigetext> fügt einen Link mit der gegebenen URL und einem Anzeigetext in der Ausgabe an die aktuelle Zeile an.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddLink <URL>|<Anzeigetext>
+~AddText  fügt einen Link mit der gegebenen URL und einem Anzeigetext in der Ausgabe an die aktuelle Zeile an.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace OutputTextURL = $BaseURL|AddLink->OutputText

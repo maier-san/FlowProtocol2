@@ -1,5 +1,7 @@
 ~SetTitel EndParagraph-Befehl
-@Beschreibung >>_ Der Befehl ~EndParagraph beendet den aktuellen Absatz im aktuellen Textblock der Ausgabe. Das Hinzufügen der nächsten Zeile beginnt damit automatisch einen neuen Absatz mit einem entsprechenden Abstand.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~EndParagraph
+~AddText  beendet den aktuellen Absatz im aktuellen Textblock der Ausgabe. Das Hinzufügen der nächsten Zeile beginnt damit automatisch einen neuen Absatz mit einem entsprechenden Abstand.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace OutputTextURL = $BaseURL|EndParagraph->OutputText

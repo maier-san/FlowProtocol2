@@ -1,5 +1,7 @@
 ~SetTitel Implies-Befehl
-@Beschreibung >>_ Der Befehl ~Implies <Schlüssel> = <Wert> setzt einen Abfrageschlüssel auf einen bestimmten Wert. Damit können Antworten weiterer Abfragen impliziert werden.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Implies <Schlüssel> = <Wert>
+~AddText  setzt einen Abfrageschlüssel auf einen bestimmten Wert. Damit können Antworten weiterer Abfragen impliziert werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel impliziert bei Antwort "Rennrad" den Rennlenker:
 >>|?F1: Was für ein Rad willst du?

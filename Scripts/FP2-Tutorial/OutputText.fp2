@@ -1,13 +1,25 @@
 ~SetTitel OutputText-Befehl
-@Beschreibung >>_ Der Befehl [@<Abschnitt> ]>[>][<Format>] <Text> gibt Text aus.
+@Beschreibung >>_ Der Befehl
+~AddCode  [@<Abschnitt> ]>[>][<Format>] <Text>
+~AddText  gibt Text aus.
 >>_ Die Varianten mit ">>" geben Text in der ersten Ebene aus, die Varianten mit ">" geben Text in der zweiten Ebene aus.
 >>_ Es stehen die Formate "_" für normale Textzeilen, "*" für unnumerierte Auflistungen, "#" für numerierte Auflistungen und "|" für Codezeilen zur Auswahl.
 >>_ Das Standardformat der ersten Ebene ist "#", das der zweiten Ebene "*". Die Nummerierung auf Ebene 1 erfolgt mit Zahlen, die auf Ebene 2 mit Kleinbuchstaben.
->>_ Optional kann ein Abschnitt angegeben werden. Diesem werden alle nachfolgenden Eingaben zugeordnet, bis ein anderer Abschnitt angegeben wird. Auf diese Weise können verschiedene Abschnitte eines Dokuments parallel aufgebaut werden. Der aktive Abschnitt kann auch unabhängig über den Befehel ~SetSection <Abschnitt> gesetzt werden.
+>>_ Optional kann ein Abschnitt angegeben werden. Diesem werden alle nachfolgenden Eingaben zugeordnet, bis ein anderer Abschnitt angegeben wird. Auf diese Weise können verschiedene Abschnitte eines Dokuments parallel aufgebaut werden. Der aktive Abschnitt kann auch unabhängig über den Befehl
+~AddCode  ~SetSection <Abschnitt>
+~AddText  gesetzt werden.
 >>_ Einhaben der zweiten Ebene werden der jeweils letzten Zeile der ersten Ebene im aktiven Abschnitt untergeordnet.
 >>_ Ein Wechsel des Formats erzeugt einen neuen Textblock.
->>_ Mit den Befehlen ~AddText, ~AddLink und ~AddCode können entsprechende Formaierte Textelement zur letzten Zeile hinzugefügt werden.
->>_ Mit dem Befehl ~EndParagraph kann der aktuelle Absatz beendet werden.
+>>_ Mit den Befehlen
+~AddCode  ~AddText
+~AddText ,
+~AddCode  ~AddLink
+~AddText  und
+~AddCode  ~AddCode
+~AddText  können entsprechende Formaierte Textelement zur letzten Zeile hinzugefügt werden.
+>>_ Mit dem Befehl
+~AddCode  ~EndParagraph
+~AddText  kann der aktuelle Absatz beendet werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel zweigt die Möglichkeiten der Formatierung:
 >>|@Ausgabe >> Diese Zeile erzeugt eine numerierte Auflistung auf erster Ebene im Abschnitt "Ausgabe".

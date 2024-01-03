@@ -71,44 +71,76 @@ namespace FlowProtocol2.Core
             using (StreamReader sr = new StreamReader(scriptfilepath))
             {
                 int linenumber = 0;
+                string lastline = string.Empty;
                 while (sr.Peek() != -1)
                 {
                     string? line = sr.ReadLine();
                     linenumber++;
-                    if (!string.IsNullOrWhiteSpace(line) && !line.TrimStart().StartsWith("//"))
+                    if (!string.IsNullOrWhiteSpace(line))
                     {
-                        line = line.Replace("\t", "    ");
-                        int indent = startindent + line.Length - line.TrimStart().Length;
-                        string codeline = line.Trim();
-                        bool hasmatch = false;
-                        ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
-                        foreach (var cp in CmdParser)
+                        string trline = line.TrimStart();
+                        if (trline.StartsWith("//"))
                         {
-                            if (cp.LineExpression.IsMatch(codeline))
-                            {
-                                Match m = cp.LineExpression.Match(codeline);
-                                currentcommand = cp.CommandCreator(readcontext, m);
-                                if (sinfo.StartCommand == null)
-                                {
-                                    sinfo.StartCommand = currentcommand;
-                                }
-                                if (previouscommand != null)
-                                {
-                                    previouscommand.SetNextCommand(currentcommand);
-                                }
-                                previouscommand = currentcommand;
-                                hasmatch = true;
-                                break;
-                            }
+                            // Kommentar, ignorieren.
                         }
-                        if (!hasmatch)
+                        else if (trline.StartsWith("__"))
                         {
-                            rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
+                            // Umgebrochene Zeile: Füge diese wieder aneinander
+                            lastline += trline[2..];
+                        }
+                        else
+                        {
+                            // Keine weiteren Umbrüche mehr: Interpretiere die letzte Zeile
+                            if (lastline != string.Empty)
+                            {
+                                ParseLine(rc, scriptfilepath, startindent, sinfo, ref currentcommand, ref previouscommand,
+                                    linenumber, lastline);
+                            }
+                            lastline = line;
                         }
                     }
                 }
+                if (lastline != string.Empty)
+                {
+                    // Interpretiere abschließend noch die letzte Zeile
+                    ParseLine(rc, scriptfilepath, startindent, sinfo, ref currentcommand, ref previouscommand,
+                        linenumber, lastline);
+                }
             }
             return sinfo;
+        }
+
+        private void ParseLine(RunContext rc, string scriptfilepath, int startindent, ScriptInfo sinfo,
+            ref CmdBaseCommand? currentcommand, ref CmdBaseCommand? previouscommand, int linenumber, string line)
+        {
+            line = line.Replace("\t", "    ");
+            int indent = startindent + line.Length - line.TrimStart().Length;
+            string codeline = line.Trim();
+            bool hasmatch = false;
+            ReadContext readcontext = new ReadContext(scriptfilepath, indent, linenumber, codeline);
+            foreach (var cp in CmdParser)
+            {
+                if (cp.LineExpression.IsMatch(codeline))
+                {
+                    Match m = cp.LineExpression.Match(codeline);
+                    currentcommand = cp.CommandCreator(readcontext, m);
+                    if (sinfo.StartCommand == null)
+                    {
+                        sinfo.StartCommand = currentcommand;
+                    }
+                    if (previouscommand != null)
+                    {
+                        previouscommand.SetNextCommand(currentcommand);
+                    }
+                    previouscommand = currentcommand;
+                    hasmatch = true;
+                    break;
+                }
+            }
+            if (!hasmatch)
+            {
+                rc.SetError(readcontext, "Parsing Exception", "Die Zeile kann nicht interpretiert werden.");
+            }
         }
     }
 

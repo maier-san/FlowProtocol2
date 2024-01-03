@@ -1,9 +1,0 @@
-~SetSection Mein Multiflow
->>* Hauptdatei = $TemplateFilePath
-~Set KeyIndex=1
-~Include SubFlow.fps
->>* Intermezzo mit ZZ1 = $ZZ1
-~Set KeyIndex=2
-~Set BB=Q2
-~Include SubFlow.fps BaseKey=C$BB
->>* Finale mit ZZ2 = $ZZ2

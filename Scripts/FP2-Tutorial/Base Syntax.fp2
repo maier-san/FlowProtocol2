@@ -1,0 +1,19 @@
+~SetTitel Base Syntax
+@Beschreibung >>_ Die Zeichenfolge 
+~AddCode  //
+~AddText  am Beginn einer Zeile leitet eine Kommentarzeile ein. Diese wird von der Anwendung ignoriert, ebenso wie Zeilen, die nur aus Whitespace bestehen.
+>>_ Die Zeichenfolge 
+~AddCode  __
+~AddText  am beginn einer Zeile setzt die letzte Zeile fort. Sie setzt den Rest der Zeile an das Ende der vorherigen Zeile.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel zweigt die Wirkung von Kommentaren, Leerzeilen und Umbrüchen:
+>>|// Dieser Kommentar wird ignoriert, die nachfolgende Leerzeile auch.
+>>|
+>>|@Ausgabe >> Diese Zeile wird
+>>|	__ auf mehrere Zeilen
+>>|	__ umgebrochen.
+// Dieser Kommentar wird ignoriert, die nachfolgende Leerzeile auch.
+
+@Ausgabe >> Diese Zeile wird
+	__ auf mehrere Zeilen
+	__ umgebrochen.

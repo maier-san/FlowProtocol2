@@ -1,0 +1,19 @@
+~SetTitel MoveSection-Befehl
+@Beschreibung >>_ Der Befehl 
+~AddCode  ~MoveSection <Ausgangsabschnitt>-><Zielabschnitt>
+~AddText  überträgt den Inhalt eines Ausgangsabschnitts in einen Zielabschnitt. Der Ausgangsabschnitt wird gelöscht.
+>>_ Ist der Zielabschnitt noch nicht vorhanden, so wird dieser am Ende angelegt. Ist der Ausgangsabschnitt nicht vorhanden, so bleibt der Aufruf ohne Wirkung.
+>>_ Die Funktion kann genutzt werden, um Inhalte eines Abschnitts zunächst parallel in zwei Abschnitten aufzubauen.
+>>_ Eine Zusammenführung von Textblöcken, auch bei gleicher Formatierung, findet nicht statt.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt abwechselnd Zeilen für die Ausgabe und einen Dummy-Abschnitt, und fügt diesen dann zur Ausgabe hinzu:
+>>|@Ausgabe >> Zeile 1
+>>|@Dummy >>* Zeile 1 (Dummy)
+>>|@Ausgabe >> Zeile 2
+>>|@Dummy >>* Zeile 2 (Dummy)
+>>|~MoveSection Dummy->Ausgabe
+@Ausgabe >> Zeile 1
+@Dummy >>* Zeile 1 (Dummy)
+@Ausgabe >> Zeile 2
+@Dummy >>* Zeile 2 (Dummy)
+~MoveSection Dummy->Ausgabe

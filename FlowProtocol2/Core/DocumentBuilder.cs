@@ -99,5 +99,22 @@ namespace FlowProtocol2.Core
                 CurrentTextBlock.Closed = true;
             }
         }
+
+        public void MoveSection(string fromsection, string tosection)
+        {
+            var fsec = Document.Sections.Find(s => s.Headline == fromsection);
+            if (fsec != null)
+            {
+                var tsec = Document.Sections.Find(s => s.Headline == tosection);
+                if (tsec == null)
+                {
+                    tsec = new OMSection();
+                    tsec.Headline = tosection;
+                    Document.Sections.Add(tsec);
+                }
+                tsec.Textblocks.AddRange(fsec.Textblocks);
+                Document.Sections.Remove(fsec);
+            }
+        }
     }
 }

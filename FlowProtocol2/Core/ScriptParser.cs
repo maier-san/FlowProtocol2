@@ -59,6 +59,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdGoSub.GetComandParser());
             CmdParser.Add(CmdJumpMark.GetComandParser());
             CmdParser.Add(CmdGoTo.GetComandParser());
+            CmdParser.Add(CmdMoveSection.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 

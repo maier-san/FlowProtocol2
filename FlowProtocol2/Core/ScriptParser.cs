@@ -74,8 +74,7 @@ namespace FlowProtocol2.Core
                 string lastline = string.Empty;
                 while (sr.Peek() != -1)
                 {
-                    string? line = sr.ReadLine();
-                    linenumber++;
+                    string? line = sr.ReadLine();                    
                     if (!string.IsNullOrWhiteSpace(line))
                     {
                         string trline = line.TrimStart();
@@ -99,6 +98,7 @@ namespace FlowProtocol2.Core
                             lastline = line;
                         }
                     }
+                    linenumber++;
                 }
                 if (lastline != string.Empty)
                 {

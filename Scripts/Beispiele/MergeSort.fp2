@@ -1,0 +1,59 @@
+~Input Liste: Gib mehrere Projekte strichpunktgetrennt an:
+~Split S=$Liste|;
+~Set VarInput=S
+~Set Frage=Was ist höher einzustufen?
+~GoSub Sortiere
+@Ausgabe >> Sortierte Liste
+~Set idx=1
+~DoWhile ?$S($idx)
+	> $S($idx)
+	~AddTo idx+=1
+~Loop
+~End
+~DefineSub Sortiere
+	// Übergeben wird die Variablenbezeichnung $VarInput eines Feldes von zu sortierenden Elementen 
+	~AddTo Rek+=1
+	~Set VIStack($Rek)=$VarInput
+	~Set idx=1
+	~Set hidx=0
+	~DoWhile ?$$VarInput($idx)		
+		~AddTo hidx+=1
+		~Set $VarInputC($hidx)=$$VarInput($idx)
+		~AddTo idx+=1
+		~If ?$$VarInput($idx)			
+			~Set $VarInputD($hidx)=$$VarInput($idx)
+			~AddTo idx+=1
+	~Loop
+	~If $idx>2
+		~Set VarInput=$VIStack($Rek)C
+		~GoSub Sortiere
+		~Set VarInput=$VIStack($Rek)D
+		~GoSub Sortiere
+	~Set VarInput=$VIStack($Rek)
+	~Set idxC=1
+	~Set idxD=1
+	~Set idx=0
+	~DoWhile ?$$VarInputC($idxC) && ?$$VarInputD($idxD)				
+		?Q$VarInput($idx): $Frage
+			#C: $$VarInputC($idxC)
+				~AddTo idx+=1
+				~Set $VarInput($idx)=$$VarInputC($idxC)
+				~AddTo idxC+=1
+			#D: $$VarInputD($idxD)
+				~AddTo idx+=1
+				~Set $VarInput($idx)=$$VarInputD($idxD)		
+				~AddTo idxD+=1
+		~Execute		
+	~Loop
+	~DoWhile ?$$VarInputC($idxC)
+		~AddTo idx+=1
+		~Set $VarInput($idx)=$$VarInputC($idxC)
+		~AddTo idxC+=1
+	~Loop
+	~DoWhile ?$$VarInputD($idxD)
+		~AddTo idx+=1		
+		~Set $VarInput($idx)=$$VarInputD($idxD)
+		~AddTo idxD+=1
+	~Loop	
+	~AddTo Rek+=-1
+~Return

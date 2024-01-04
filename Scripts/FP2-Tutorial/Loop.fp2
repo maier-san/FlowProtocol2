@@ -1,4 +1,4 @@
-~SetTitel Loop-Befehl
+~SetTitle Loop-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Loop
 ~AddText  beendet einen Schleifendurchlauf und beginnt den nächsten Schleifendurchlauf. Eine Schleife kann durch verschiedene Befehle initiiert werden, z.B. DoWhile.

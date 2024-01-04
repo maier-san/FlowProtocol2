@@ -4,14 +4,14 @@ namespace FlowProtocol2.Core
 {
     public class IMForm
     {
-        public string Titel { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public List<IMBaseElement> InputItems { get; private set; }
         public string CurrentSection { get; set; }
         private string LastSection { get; set; }
         public IMForm()
         {
-            Titel = string.Empty;
+            Title = string.Empty;
             Description = string.Empty;
             InputItems = new List<IMBaseElement>();
             CurrentSection = string.Empty;

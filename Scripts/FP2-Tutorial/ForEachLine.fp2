@@ -1,4 +1,4 @@
-~SetTitel ForEachLine-Befehl
+~SetTitle ForEachLine-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>]
 ~AddText  liest Zeilen aus einer Datei in eine Variable und führt damit die nachfolgend eingerückten Befehle aus.

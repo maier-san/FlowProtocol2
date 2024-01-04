@@ -1,4 +1,4 @@
-~SetTitel AddHelpText-Befehl
+~SetTitle AddHelpText-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~AddHelpText <Text>
 ~AddText  ergänzt einen Text in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.

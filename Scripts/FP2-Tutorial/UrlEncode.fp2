@@ -1,4 +1,4 @@
-~SetTitel UrlEncode-Befehl
+~SetTitle UrlEncode-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~UrlEncode <Variable> = <Text>
 ~AddText  wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variable.

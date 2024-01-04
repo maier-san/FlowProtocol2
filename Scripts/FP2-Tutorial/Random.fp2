@@ -1,4 +1,4 @@
-~SetTitel Random-Befehl
+~SetTitle Random-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Random <Variable> = <Bereich von>..<Bereich bis>
 ~AddText  erzeugt eine ganze Zufallszahl im angegebenen Bereich und speichert diese in einer Variable.

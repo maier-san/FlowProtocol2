@@ -14,9 +14,9 @@ namespace FlowProtocol2.Core
             CurrentSection = string.Empty;
             IDCounter = 0;
         }
-        public void SetTitel(string titel)
+        public void SetTitle(string title)
         {
-            Document.Titel = titel;
+            Document.Title = title;
         }
         /// <summary>
         /// Fügt eine neue Textzeile zum Dokument hinzu

@@ -1,4 +1,4 @@
-~SetTitel Split-Befehl
+~SetTitle Split-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Split <Variablenname> = <Text>|<Trennzeichen>
 ~AddText  teilt einen Text anhand eines Trennzeichens auf.

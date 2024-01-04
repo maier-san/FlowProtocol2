@@ -1,4 +1,4 @@
-~SetTitel RegExMatch-Befehl
+~SetTitle RegExMatch-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~RegExMatch <Variable> = <Text>|<Regulärer Ausdruck>
 ~AddText  wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einem Variablenfeld.

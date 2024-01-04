@@ -1,59 +1,132 @@
-~Input Liste: Gib mehrere Projekte strichpunktgetrennt an:
-~Split S=$Liste|;
-~Set VarInput=S
-~Set Frage=Was ist höher einzustufen?
+~SetTitle MergeSort
+@Beschreibung >>_ Über ein Eingabefeld wird eine strichpunktgetrennt Liste von Tätigkeiten abgefragt.
+>>_ Die Eingabe wird mit dem ~Split-Befehl in eine Liste umgewandelt, anschließend wird die Funktion "Sortiere" aufgerufen, die die Liste sortiert. Am Ende wird die sortierte Liste ausgegeben.
+>>_ Die Funktion "Sortiere" ist eine Implementierung des Mergesort-Algorithmus. Dieser teilt die Liste rekursiv in zwei halb so große Listen auf, und ruft sich damit zwei mal rekursiv auf. Die beiden sortierten Listen werden dann über einzelne Abfragen wieder zu einer sortierten Gesamtliste zusammengesetzt.
+>>_ Technisch werden die Listen der verschiedenen iterierten Aufrufe durch wiederholtes Erweitern des Variablennames mit Hilfe der BaseKey-Eigenschaft getrennt, ebenso die Schlüssel für die Abfragen, bei denen dies intern umgesetzt wird.
+~SetSection Implementierung
+>>|~SetInputTitle MergeSort-Implementierung
+>>|~SetInputDescription Das Beispiel zeigt, wie man in FlowProtocol 2 sowohl mit Listen, als auch mit Rekursionen arbeiten kann.
+>>|~Input Liste: Gib mehrere ausstehende Tätigkeiten strichpunktgetrennt ein:
+>>|~AddHelpLine z.B. Holz hacken;Wäsche waschen;Fahrrad putzen;Altglas wegbringen;Straße fegen
+>>|~Split FF=$Liste|;
+>>|~Set Frage=Was ist aus jetziger Sicht dringender?
+>>|~GoSub Sortiere
+>>|@Ausgabe >> Sortierte Liste der Tätigkeiten
+>>|~Set idx=1
+>>|~DoWhile ?$FF($idx)
+>>|	>* Platz $idx: $FF($idx)
+>>|	~AddTo idx+=1
+>>|~Loop
+>>|~End
+>>|// Mergesort-Implementierung
+>>|// Eingabe: FF<BaseKey> Feld mit Elementen, die sortiert werden sollen.
+>>|// Eingabe: Frage Fragestellung für jeden Vergleich.
+>>|// Ausgabe: FF<BaseKey> Feld mit sortierten Elementen
+>>|~DefineSub Sortiere	
+>>|	// Zerteile die Eingabeliste FF$BaseKey in zwei neue Listen FF$BaseKeyC und FF$BaseKeyD
+>>|	~Set idx=1
+>>|	~Set hidx=0
+>>|	~DoWhile ?$FF$BaseKey($idx)
+>>|		~AddTo hidx+=1
+>>|		~Set FF$BaseKeyC($hidx)=$FF$BaseKey($idx)
+>>|		~AddTo idx+=1
+>>|		~If ?$FF$BaseKey($idx)			
+>>|			~Set FF$BaseKeyD($hidx)=$FF$BaseKey($idx)
+>>|			~AddTo idx+=1
+>>|	~Loop
+>>|	// Wenn mindestens eine der neuen Listen mehr als 1 Element hat, sortiere beide.
+>>|	~If $hidx>=2
+>>|		~GoSub Sortiere; BaseKey=$BaseKeyC
+>>|		~GoSub Sortiere; BaseKey=$BaseKeyD
+>>|	~Set idxC=1
+>>|	~Set idxD=1
+>>|	~Set idx=0
+>>|	// Füge beide Listen wieder zu einer zusammen. 
+>>|	// Wähle aus den jeweils beiden ersten, bis eine Liste vollständig übertragen ist.
+>>|	~DoWhile ?$FF$BaseKeyC($idxC) && ?$FF$BaseKeyD($idxD)				
+>>|		?Q($idx): $Frage
+>>|			#C: $FF$BaseKeyC($idxC)
+>>|				~AddTo idx+=1
+>>|				~Set FF$BaseKey($idx)=$FF$BaseKeyC($idxC)
+>>|				~AddTo idxC+=1
+>>|			#D: $FF$BaseKeyD($idxD)
+>>|				~AddTo idx+=1
+>>|				~Set FF$BaseKey($idx)=$FF$BaseKeyD($idxD)		
+>>|				~AddTo idxD+=1
+>>|		~Execute		
+>>|	~Loop
+>>|	// Übertrage nun den Rest der anderen Liste.
+>>|	~DoWhile ?$FF$BaseKeyC($idxC)
+>>|		~AddTo idx+=1
+>>|		~Set FF$BaseKey($idx)=$FF$BaseKeyC($idxC)
+>>|		~AddTo idxC+=1
+>>|	~Loop
+>>|	~DoWhile ?$FF$BaseKeyD($idxD)
+>>|		~AddTo idx+=1		
+>>|		~Set FF$BaseKey($idx)=$FF$BaseKeyD($idxD)
+>>|		~AddTo idxD+=1
+>>|	~Loop	
+>>|~Return
+~SetInputTitle MergeSort-Implementierung
+~SetInputDescription Das Beispiel zeigt, wie man in FlowProtocol 2 sowohl mit Listen, als auch mit Rekursionen arbeiten kann.
+~Input Liste: Gib mehrere ausstehende Tätigkeiten strichpunktgetrennt ein:
+~AddHelpLine z.B. Holz hacken;Wäsche waschen;Fahrrad putzen;Altglas wegbringen;Straße fegen
+~Split FF=$Liste|;
+~Set Frage=Was ist aus jetziger Sicht dringender?
 ~GoSub Sortiere
-@Ausgabe >> Sortierte Liste
+@Ausgabe >> Sortierte Liste der Tätigkeiten
 ~Set idx=1
-~DoWhile ?$S($idx)
-	> $S($idx)
+~DoWhile ?$FF($idx)
+	>* Platz $idx: $FF($idx)
 	~AddTo idx+=1
 ~Loop
 ~End
-~DefineSub Sortiere
-	// Übergeben wird die Variablenbezeichnung $VarInput eines Feldes von zu sortierenden Elementen 
-	~AddTo Rek+=1
-	~Set VIStack($Rek)=$VarInput
+// Mergesort-Implementierung
+// Eingabe: FF<BaseKey> Feld mit Elementen, die sortiert werden sollen.
+// Eingabe: Frage Fragestellung für jeden Vergleich.
+// Ausgabe: FF<BaseKey> Feld mit sortierten Elementen
+~DefineSub Sortiere	
+	// Zerteile die Eingabeliste FF$BaseKey in zwei neue Listen FF$BaseKeyC und FF$BaseKeyD
 	~Set idx=1
 	~Set hidx=0
-	~DoWhile ?$$VarInput($idx)		
+	~DoWhile ?$FF$BaseKey($idx)
 		~AddTo hidx+=1
-		~Set $VarInputC($hidx)=$$VarInput($idx)
+		~Set FF$BaseKeyC($hidx)=$FF$BaseKey($idx)
 		~AddTo idx+=1
-		~If ?$$VarInput($idx)			
-			~Set $VarInputD($hidx)=$$VarInput($idx)
+		~If ?$FF$BaseKey($idx)			
+			~Set FF$BaseKeyD($hidx)=$FF$BaseKey($idx)
 			~AddTo idx+=1
 	~Loop
-	~If $idx>2
-		~Set VarInput=$VIStack($Rek)C
-		~GoSub Sortiere
-		~Set VarInput=$VIStack($Rek)D
-		~GoSub Sortiere
-	~Set VarInput=$VIStack($Rek)
+	// Wenn mindestens eine der neuen Listen mehr als 1 Element hat, sortiere beide.
+	~If $hidx>=2
+		~GoSub Sortiere; BaseKey=$BaseKeyC
+		~GoSub Sortiere; BaseKey=$BaseKeyD
 	~Set idxC=1
 	~Set idxD=1
 	~Set idx=0
-	~DoWhile ?$$VarInputC($idxC) && ?$$VarInputD($idxD)				
-		?Q$VarInput($idx): $Frage
-			#C: $$VarInputC($idxC)
+	// Füge beide Listen wieder zu einer zusammen. 
+	// Wähle aus den jeweils beiden ersten, bis eine Liste vollständig übertragen ist.
+	~DoWhile ?$FF$BaseKeyC($idxC) && ?$FF$BaseKeyD($idxD)				
+		?Q($idx): $Frage
+			#C: $FF$BaseKeyC($idxC)
 				~AddTo idx+=1
-				~Set $VarInput($idx)=$$VarInputC($idxC)
+				~Set FF$BaseKey($idx)=$FF$BaseKeyC($idxC)
 				~AddTo idxC+=1
-			#D: $$VarInputD($idxD)
+			#D: $FF$BaseKeyD($idxD)
 				~AddTo idx+=1
-				~Set $VarInput($idx)=$$VarInputD($idxD)		
+				~Set FF$BaseKey($idx)=$FF$BaseKeyD($idxD)		
 				~AddTo idxD+=1
 		~Execute		
 	~Loop
-	~DoWhile ?$$VarInputC($idxC)
+	// Übertrage nun den Rest der anderen Liste.
+	~DoWhile ?$FF$BaseKeyC($idxC)
 		~AddTo idx+=1
-		~Set $VarInput($idx)=$$VarInputC($idxC)
+		~Set FF$BaseKey($idx)=$FF$BaseKeyC($idxC)
 		~AddTo idxC+=1
 	~Loop
-	~DoWhile ?$$VarInputD($idxD)
+	~DoWhile ?$FF$BaseKeyD($idxD)
 		~AddTo idx+=1		
-		~Set $VarInput($idx)=$$VarInputD($idxD)
+		~Set FF$BaseKey($idx)=$FF$BaseKeyD($idxD)
 		~AddTo idxD+=1
 	~Loop	
-	~AddTo Rek+=-1
 ~Return

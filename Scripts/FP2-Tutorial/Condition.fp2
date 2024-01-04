@@ -1,4 +1,4 @@
-~SetTitel Conditions
+~SetTitle Conditions
 @Beschreibung >>_ Bedingungen werden bei verschiedenen Befehlen verwendet, z.B in While-Schleifen oder If-Bedingungen.
 >>_ Eine Bedingung muss dabei in der disjunktiven Normalform angegeben werden, also als Oder-Verknüpfung ("||") von Und-Verknüpfungen ("&&"), wobei keine Klammerung notwendig ist.
 >>_ Als Literale sind die Konstanten 1 (wahr), "true" (wahr), 0 (falsch) und "false" verwendbar, sowie für Zeichenketten s und t, Zahlen x und y und Variablen v die folgenden Ausdrücke zulässig: s==t (s ist gleich t), s!=t (s ist ungleich t), x<>y (x ist ungleich y), x<y (x ist kleiner als y), x<=y (x ist kleiner oder gleich y), x>y (x ist größer als y), x>=y (x ist größer oder gleich y), s~t (s enthält t), s!~t (s enthält t nicht), ?v (v ist gesetzt), !?v (v ist nicht gesetzt).

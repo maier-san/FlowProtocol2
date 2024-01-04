@@ -26,10 +26,11 @@ namespace FlowProtocol2.Commands
         {
             if (input.Contains('$'))
             {
+                input = input.Replace("$BaseKey", rc.BaseKey);
                 string compareInput = input;
                 do // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
                 {
-                    compareInput = input;
+                    compareInput = input;                    
                     foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
                     {
                         if (!string.IsNullOrWhiteSpace(v.Key))
@@ -37,12 +38,12 @@ namespace FlowProtocol2.Commands
                             input = input.Replace("$" + v.Key, v.Value);
                         }
                     }
-                } while (compareInput != input);
-                // Systemvariablen
+                } while (compareInput != input && input.Contains('$'));
+                // Systemvariablen                
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
-                input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);
+                input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);                
                 input = input.Replace("$BaseURL", rc.MyBaseURL);
                 input = input.Replace("$ResultURL", rc.MyResultURL);
                 input = input.Replace("$ScriptPath", rc.ScriptPath);

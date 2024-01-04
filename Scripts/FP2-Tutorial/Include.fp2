@@ -1,4 +1,4 @@
-~SetTitel Include-Befehl
+~SetTitle Include-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Include <Dateiname/-pfad>.fps [; BaseKey=<Basisschlüssel>]
 ~AddText  liest eine Funktionsdatei ein.

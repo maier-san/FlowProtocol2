@@ -1,4 +1,4 @@
-~SetTitel Calculate-Befehl
+~SetTitle Calculate-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Calculate <Variable> = <Operand 1> <Operator> <Operand 2>
 ~AddText  führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen.

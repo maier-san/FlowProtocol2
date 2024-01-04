@@ -1,4 +1,4 @@
-~SetTitel SetInputSection-Befehl
+~SetTitle SetInputSection-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~SetInputSection <Abschnitt>
 ~AddText  setzt eine Abschnittsüberschrift für das Eingabeformular. Auf die Ausgabe hat dies keine Auswirkungen.

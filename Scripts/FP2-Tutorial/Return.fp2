@@ -1,4 +1,4 @@
-~SetTitel Return-Befehl
+~SetTitle Return-Befehl
 @Beschreibung >>_ Der Befehl ~Return springt zur nächsten Zeile des letzten Absprungpunktes.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe 

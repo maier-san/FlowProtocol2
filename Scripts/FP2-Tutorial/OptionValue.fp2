@@ -1,4 +1,4 @@
-~SetTitel OptionValue-Befehl
+~SetTitle OptionValue-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  #[<Optionsschlüssel>]:<Optionstext>
 ~AddText  erzeugt eine Option innerhalb einer Optionsgruppe.

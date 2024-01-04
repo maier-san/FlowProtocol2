@@ -1,4 +1,4 @@
-~SetTitel AddHelpLine-Befehl
+~SetTitle AddHelpLine-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~AddHelpLine <Text>
 ~AddText  erzeugt eine erklärende Hilfszeile unterhalb der letzten Eingabeaufforerung.

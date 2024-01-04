@@ -1,4 +1,4 @@
-~SetTitel If-Befehl
+~SetTitle If-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~If <Bedinung>
 ~AddText  führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist.

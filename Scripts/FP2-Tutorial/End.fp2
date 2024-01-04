@@ -1,4 +1,4 @@
-~SetTitel End-Befehl
+~SetTitle End-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~End
 ~AddText  beendet die Skriptausführung.

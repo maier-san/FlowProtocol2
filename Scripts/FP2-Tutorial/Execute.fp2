@@ -1,4 +1,4 @@
-~SetTitel Execute-Befehl
+~SetTitle Execute-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Execute
 ~AddText  führt alle davor stehenden Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Sind alle Eingaben vorhanden, läuft das Skript weiter.

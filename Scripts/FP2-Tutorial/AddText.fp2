@@ -1,4 +1,4 @@
-~SetTitel AddText-Befehl
+~SetTitle AddText-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~AddText <Text>
 ~AddText  fügt Text in der Ausgabe an die aktuelle Zeile an.

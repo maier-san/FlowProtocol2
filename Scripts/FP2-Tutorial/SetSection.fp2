@@ -1,4 +1,4 @@
-~SetTitel SetSection-Befehl
+~SetTitle SetSection-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~SetSection <Abschnitt>
 ~AddText  setzt den akuellen Abschnitt für die nachfolgenden Ausgabes. Der Befehl ist eine alternative zu der @-Syntax des Ausgabebebefehls.

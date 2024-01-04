@@ -1,4 +1,4 @@
-~SetTitel Base Syntax
+~SetTitle Base Syntax
 @Beschreibung >>_ Die Zeichenfolge 
 ~AddCode  //
 ~AddText  am Beginn einer Zeile leitet eine Kommentarzeile ein. Diese wird von der Anwendung ignoriert, ebenso wie Zeilen, die nur aus Whitespace bestehen.

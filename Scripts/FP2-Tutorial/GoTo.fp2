@@ -1,4 +1,4 @@
-~SetTitel GoTo-Befehl
+~SetTitle GoTo-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~GoTo <Sprungmarke>
 ~AddText  setzt die Skriptausführung an der angegebenen Sprungmarke fort.

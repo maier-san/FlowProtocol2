@@ -1,4 +1,4 @@
-~SetTitel Else-Befehl
+~SetTitle Else-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Else
 ~AddText  ist die Ergänzung zu einer If-Abfrage mit ElseIf-Ergänzungen. Er führt die nachfolgend eingerückten Befehle aus, wenn alle vorherigen Bedingungen nicht erfüllt waren.

@@ -1,4 +1,4 @@
-~SetTitel SystemVars
+~SetTitle SystemVars
 @Beschreibung >>_ Auf die Systemvariablen kann in gleicher Weise lesend zugegriffen werden, wie auf die normalen Variablen.
 >>_ Folgende Variablen sind verfügbar: NewGuid, CRLF, LF, TemplateFilePath, LineNumber, BaseURL, ResultURL, ScriptPath, CurrentScriptPath.
 >>_ Mit LineNumber-<Anzahl> kann direkt eine Zahl von der Zeilennummer abgezogen werden.

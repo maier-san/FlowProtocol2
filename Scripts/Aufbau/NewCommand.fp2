@@ -1,6 +1,6 @@
 ~Input CmdName: Befehlsname
-~SetTitel $CmdName-Implementierung
-~SetInputTitel Neue Command-Klasse erstellen
+~SetTitle $CmdName-Implementierung
+~SetInputTitle Neue Command-Klasse erstellen
 ~Set VarIndex=1
 ~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein.
 ~Split VarName = $Varliste|;
@@ -79,7 +79,7 @@
 	>|CmdParser.Add(Cmd$CmdName.GetComandParser());
 @Dokumentation >> Neue Flow-DokuDatei anlegen
 >> Code einfügen
-	>|~SetTitel $CmdName-Befehl
+	>|~SetTitle $CmdName-Befehl
 	>|@Beschreibung >>_ Der Befehl ~$CmdName ...
 	>|@Ausnahmen >>* keine
 ~If $MitCB==ja

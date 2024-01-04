@@ -1,4 +1,4 @@
-~SetTitel SetDateTime-Befehl
+~SetTitle SetDateTime-Befehl
 @Beschreibung >>_ Der Befehl ~SetDateTime <Variable> = <Format> speichert das aktuelle Datum oder den aktuellen Zeitpunkt in einer vorgegebenen Formatierung in einer Variablen.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel wendet zwei Formate an:

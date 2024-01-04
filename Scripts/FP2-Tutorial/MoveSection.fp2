@@ -1,4 +1,4 @@
-~SetTitel MoveSection-Befehl
+~SetTitle MoveSection-Befehl
 @Beschreibung >>_ Der Befehl 
 ~AddCode  ~MoveSection <Ausgangsabschnitt>-><Zielabschnitt>
 ~AddText  überträgt den Inhalt eines Ausgangsabschnitts in einen Zielabschnitt. Der Ausgangsabschnitt wird gelöscht.

@@ -1,4 +1,4 @@
-~SetTitel OptionGroup-Befehl
+~SetTitle OptionGroup-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ?<Schlüssel>:<Anzeigetext>
 ~AddText  erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.

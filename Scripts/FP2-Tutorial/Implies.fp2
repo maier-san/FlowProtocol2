@@ -1,4 +1,4 @@
-~SetTitel Implies-Befehl
+~SetTitle Implies-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Implies <Schlüssel> = <Wert>
 ~AddText  setzt einen Abfrageschlüssel auf einen bestimmten Wert. Damit können Antworten weiterer Abfragen impliziert werden.

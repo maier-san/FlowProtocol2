@@ -1,4 +1,4 @@
-~SetTitel DefineSub-Befehl
+~SetTitle DefineSub-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~DefineSub <Funktionsname>
 ~AddText  definiert eine Funktion, die mit dem GoSub-Befehl angesprungen werden kann. Die Funktion muss mit
@@ -10,26 +10,26 @@
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel definiert die Routinen HalloWelt und HalloWelt2 und ruft diese auf:
 >>|@Ausgabe >> Start
->>|~GoSub HalloWelt
+>>|~GoSub HalloWelt; BaseKey=A
 >>|>> Ende
 >>|~End
 >>|~DefineSub HalloWelt2
->>|	>> Hallo Welt2!
+>>|	>> Hallo Welt2! (BaseKey ist $BaseKey)
 >>|~Return
 >>|~DefineSub HalloWelt
->>|	>> Hallo Welt!
->>|	~GoSub HalloWelt2
->>|	>> Tschüs!
+>>|	>> Hallo Welt! (BaseKey ist $BaseKey)
+>>|	~GoSub HalloWelt2; BaseKey=$BaseKeyB
+>>|	>> Tschüs! (BaseKey ist wieder $BaseKey)
 >>|~Return
 @Ausgabe >> Start
-~GoSub HalloWelt
+~GoSub HalloWelt; BaseKey=A
 >> Ende
 ~End
 ~DefineSub HalloWelt2
-	>> Hallo Welt2!
+	>> Hallo Welt2! (BaseKey ist $BaseKey)
 ~Return
 ~DefineSub HalloWelt
-	>> Hallo Welt!
-	~GoSub HalloWelt2
-	>> Tschüs!
+	>> Hallo Welt! (BaseKey ist $BaseKey)
+	~GoSub HalloWelt2; BaseKey=$BaseKeyB
+	>> Tschüs! (BaseKey ist wieder $BaseKey)
 ~Return

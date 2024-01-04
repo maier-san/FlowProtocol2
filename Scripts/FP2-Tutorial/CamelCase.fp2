@@ -1,4 +1,4 @@
-~SetTitel CamelCase-Befehl
+~SetTitle CamelCase-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~CamelCase <Variable> = <Text>
 ~AddText  wandelt einen Text in CamelCase-Schreibweise um und speichert das Ergebnis in einer Variablen.

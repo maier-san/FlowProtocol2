@@ -25,9 +25,9 @@
 @if (Model.InputForm.InputItems.Any())
 {
     <form method="post">
-        @if (!string.IsNullOrEmpty(Model.InputForm.Titel))
+        @if (!string.IsNullOrEmpty(Model.InputForm.Title))
         {
-            <h2>@Model.InputForm.Titel</h2>
+            <h2>@Model.InputForm.Title</h2>
         }
         else if (!Model.Errors.Any())
         {
@@ -92,9 +92,9 @@
 }
 else
 {
-    @if (!string.IsNullOrEmpty(Model.Document.Titel))
+    @if (!string.IsNullOrEmpty(Model.Document.Title))
     {
-        <h2>@Model.Document.Titel</h2>
+        <h2>@Model.Document.Title</h2>
     }
     else
     {

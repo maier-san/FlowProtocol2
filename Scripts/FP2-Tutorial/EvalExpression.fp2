@@ -1,4 +1,4 @@
-~SetTitel EvalExpression-Befehl
+~SetTitle EvalExpression-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~EvalExpression <Variable> [!]= <Ausdruck>
 ~AddText  wertet einen Ausdruck als Wahrheitswert aus und speichert das Ergebnis in der angegebenen Variablen.

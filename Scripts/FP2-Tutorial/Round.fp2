@@ -1,4 +1,4 @@
-~SetTitel Round-Befehl
+~SetTitle Round-Befehl
 @Beschreibung >>_ Der Befehl ~Round <Variable> = <Zahl>|<Anzahl Stellen> rundet eine Dezimalzahl auf die angegebene Anzahl an Stellen und speichert das Ergebnis in einer Variable.
 @Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.
 >>* Ungültige Rundungsgenauigkeit: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.

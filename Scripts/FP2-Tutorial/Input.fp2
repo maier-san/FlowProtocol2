@@ -1,4 +1,4 @@
-~SetTitel Input-Befehl
+~SetTitle Input-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Input <Schlüssel>:<Anzeigetext>
 ~AddText  fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel.

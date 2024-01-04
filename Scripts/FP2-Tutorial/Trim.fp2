@@ -1,4 +1,4 @@
-~SetTitel Trim-Befehl
+~SetTitle Trim-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Trim <Variable> = <Text>
 ~AddText  entfernt umschließenden Whitespace aus Text und speichert das Ergebnis in der angegebenen Variablen.

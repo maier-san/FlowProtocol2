@@ -1,4 +1,4 @@
-~SetTitel AddHelpLink-Befehl
+~SetTitle AddHelpLink-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~AddHelpLink <URL> | <Anzeigezext>
 ~AddText  ergänzt einen Link in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.

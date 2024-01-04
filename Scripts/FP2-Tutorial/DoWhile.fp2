@@ -1,4 +1,4 @@
-~SetTitel DoWhile-Loop-Schleife
+~SetTitle DoWhile-Loop-Schleife
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~DoWhile <Bedingung>
 ~AddText  führt die nachfolgenden eingerückten Befehle wiederholt aus, solange die Bedingung erfüllt ist. Die Schleife wird mit dem Befehl

@@ -1,4 +1,4 @@
-~SetTitel OutputText-Befehl
+~SetTitle OutputText-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  [@<Abschnitt> ]>[>][<Format>] <Text>
 ~AddText  gibt Text aus.

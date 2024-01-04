@@ -1,9 +1,10 @@
-~SetTitel GoSub-Befehl
+~SetTitle GoSub-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~GoSub <Funktionsname>
+~AddCode  ~GoSub <Funktionsname> [; BaseKey=<Basisschlüssel>]
 ~AddText  springt zur angegebenen Funktion, die mit dem
 ~AddCode  ~Define
 ~AddText -Befehl definiert wurde.
+>>_ Der optionale Parameter [BaseKey=<Basisschlüssel>] ermöglicht es, die Schlüssel für die Eingabebefehle in der Funktion für den jeweiligen Aufruf zu individualisieren, so dass eine Funktion mehrfach verwendet werden kann.
 >>_ Als Funktionsparameter können Variablen genutzt werden, wobei diese globale Gültigkeit haben.
 >>_ Mit dem Befehl
 ~AddCode  ~Return

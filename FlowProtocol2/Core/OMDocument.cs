@@ -4,11 +4,11 @@ namespace FlowProtocol2.Core
 {
     public class OMDocument
     {
-        public string Titel { get; set; }
+        public string Title { get; set; }
         public List<OMSection> Sections { get; set; }
         public OMDocument()
         {
-            Titel = string.Empty;
+            Title = string.Empty;
             Sections = new List<OMSection>();
         }
     }

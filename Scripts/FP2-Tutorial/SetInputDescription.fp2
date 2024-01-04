@@ -1,4 +1,4 @@
-~SetTitel SetInputDescription-Befehl
+~SetTitle SetInputDescription-Befehl
 @Beschreibung >>_ Der Befehl ~SetInputDescription <Beschreibung> setzt die Beschreibung für die Eingabeseiten. Auf die Ausgabe hat dies keine Auswirkungen.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel gibt eine ausführliche Beschreibung:

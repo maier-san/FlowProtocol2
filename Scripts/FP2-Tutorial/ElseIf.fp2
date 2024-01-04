@@ -1,4 +1,4 @@
-~SetTitel ElseIf-Befehl
+~SetTitle ElseIf-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~ElseIf <Bedingung>
 ~AddText  prüft eine alternative Bedingung nach einer If-Abfrage. Er führt die nachfolgend eingerückten Befehle aus, wenn alle vorherigen Bedingungen nicht erfüllt waren.

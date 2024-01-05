@@ -1,5 +1,7 @@
 ~SetTitle AddNewKey-Befehl
-@Beschreibung >>_ Der Befehl ~AddNewKey <Schlüssel> = <Wert> speichert einen Wert in der URL, wenn dieser dort noch nicht enthalten ist.
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddNewKey <Schlüssel> = <Wert>
+~AddText  speichert einen Wert in der URL, wenn dieser dort noch nicht enthalten ist.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt einen Wert ab und Merkt sich die Uhrzeit:
 >>|~Input W: Gib einen Wert ein.

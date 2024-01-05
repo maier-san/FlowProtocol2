@@ -1,0 +1,25 @@
+~SetTitle SetStopCounter-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~SetStopCounter <Schleifengrenze>; <Befehlsgrenze>
+~AddText  setzt die Obergrenzen für die Anzahl der Schleifendurchläufe und der durchlaufenenen Befehle pro Seitenaufruf.
+>>_ Beim Überschreiten der Grenzen bricht das Programm mit einer Fehlermeldung ab.
+>>_ Die Grenzen dienen zur Verhinderung von Endlosschleifen und Endlosrekursionen und stehen Werksseitig auf 1000 und 20000, was für normale Zwecke ausreichen sollte.
+>>_ Ist für ein komplexes Skript absehbar, dass diese Grenzen im regulären Betrieb überschritten werden, können die Grenzen mit dem o.g. Befehl hochgesetzt werden.
+@Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden.
+@Codebeispiel >>_ Das nachfolgende Beispiel setzt die Schleifengrenze auf 3 und versucht danach 5 Schleifendurchläufe:
+>>|~SetStopCounter 3; 500
+>>|@Ausgabe >> Fünf Schleifendurchläufe bei einer Begrenzung auf drei
+>>|~Set i=0
+>>|~DoWhile $i<=5
+>>|	~AddTo i+=1
+>>|	> Durchlauf $i
+>>|~Loop
+>>|>> Nächster Befehl
+~SetStopCounter 3; 500
+@Ausgabe >> Fünf Schleifendurchläufe bei einer Begrenzung auf drei
+~Set i=0
+~DoWhile $i<=5
+	~AddTo i+=1
+	> Durchlauf $i
+~Loop
+>> Nächster Befehl

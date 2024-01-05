@@ -5,10 +5,9 @@ namespace FlowProtocol2.Core
     {
         public void RunScript(RunContext rc, CmdBaseCommand? startcommand)
         {
-            const int _maxStepCount = 20000;
             CmdBaseCommand? cmdNext = startcommand;
             int stepcount = 0;
-            while (cmdNext != null && !rc.ExecuteNow && stepcount < _maxStepCount)
+            while (cmdNext != null && !rc.ExecuteNow && stepcount < rc.CommandStopCounter)
             {
                 stepcount++;
                 cmdNext = cmdNext.Run(rc);
@@ -19,10 +18,10 @@ namespace FlowProtocol2.Core
                     rc.BaseKey = ep.BaseKey;
                 }
             }
-            if (stepcount >= _maxStepCount && cmdNext != null)
+            if (stepcount >= rc.CommandStopCounter && cmdNext != null)
             {
                 rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
-                    $"Die maximale Schrittzahl von {_maxStepCount} wurde überschritten. Die Ausführung wurde abgebrochen.");
+                    $"Die maximale Schrittzahl von {rc.CommandStopCounter} wurde überschritten. Die Ausführung wurde abgebrochen.");
             }
         }
     }

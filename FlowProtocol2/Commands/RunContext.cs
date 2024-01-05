@@ -12,12 +12,14 @@ namespace FlowProtocol2.Commands
         public List<IMBaseElement> InputItems => InputForm.InputItems;
         public string MyBaseURL { get; set; }
         public string MyResultURL { get; set; }
-        public string ScriptPath {get; set;}
+        public string ScriptPath { get; set; }
         public string CurrentScriptPath { get; set; }
         public Dictionary<string, ScriptInfo> ScriptRepository { get; set; }
         public Stack<EntryPoint> ReturnStack { get; set; }
         public bool ExecuteNow { get; set; }
         public string BaseKey { get; set; }
+        public int LoopStopCounter { get; set; }
+        public int CommandStopCounter { get; set; }
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -34,6 +36,8 @@ namespace FlowProtocol2.Commands
             ReturnStack = new Stack<EntryPoint>();
             ExecuteNow = false;
             BaseKey = string.Empty;
+            LoopStopCounter = 1000;
+            CommandStopCounter = 20000;
         }
         public void SetError(ReadContext readcontext, string errorcode, string errortext)
         {
@@ -43,8 +47,8 @@ namespace FlowProtocol2.Commands
 
     public class EntryPoint
     {
-        public CmdBaseCommand EntryCommand {get; set;}
-        public string BaseKey {get;set;}
+        public CmdBaseCommand EntryCommand { get; set; }
+        public string BaseKey { get; set; }
         public EntryPoint(CmdBaseCommand entrycommand, string basekey)
         {
             EntryCommand = entrycommand;

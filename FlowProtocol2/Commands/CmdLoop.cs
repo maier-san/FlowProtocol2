@@ -9,8 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdLoop : CmdBaseCommand
     {
         public CmdLoopBaseCommand? ParentDoWhileCommand { get; set; }
-        private int StopCounter { get; set; }
-        private const int MaximalLoopCount = 1000;
+        private int LoopCounter { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -26,21 +25,21 @@ namespace FlowProtocol2.Commands
         public CmdLoop(ReadContext readcontext) : base(readcontext)
         {
             ParentDoWhileCommand = null;
-            StopCounter = 0;
+            LoopCounter = 0;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            StopCounter++;
+            LoopCounter++;
             if (ParentDoWhileCommand == null)
             {
                 rc.SetError(ReadContext, "Loop ohne Schleifenbeginn",
                     "Dem Loop-Befehl kann kein Schleifenbeginn-Befehl auf gleicher Ebene zugeordnet werden.");
             }
-            if (StopCounter > MaximalLoopCount)
+            if (LoopCounter >= rc.LoopStopCounter)
             {
                 rc.SetError(ReadContext, "Maximale Anzahl Schleifendurchläufe erreicht",
-                    $"Die maximale Anzahl von {MaximalLoopCount} direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.");
+                    $"Die maximale Anzahl von {rc.LoopStopCounter} direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.");
                 return NextCommand;
             }
             return ParentDoWhileCommand;

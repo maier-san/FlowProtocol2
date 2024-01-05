@@ -1,27 +1,109 @@
 ~SetTitle Zeitmesser
-~Set tvvv=0
-~Set tidx=0
-~GoSub LapTime
-~AddNewKey Z($tidx) = $SekGes
-~DoWhile $T($tidx)!=Fertig
-	~AddTo tidx+=1		
-	~Input T($tidx): Tätigkeit (Beenden mit "Fertig")
-	~Set ggg=1
-	~DoWhile ?$Z($ggg)
-		~AddHelpLine $T($ggg) ($Z($ggg))
-		~AddTo ggg+=1
+@Beschreibung >>_ Es werden nach und nach die gerade abgeschlossenen Tätigkeiten abgefragt und Zusammen mit den Eingabezeitpunkten in der URL notiert. Nach Eingabe von "Fertig" wird die Liste der Tätigkeiten mit den Zeitdifferenzen ausgegeben. Zusätzlich werden die Zeiten noch pro Tätigkeit summiert ausgegeben.
+>>_ Der Zeitstempel wird in der Funktion BerechneZeitstempel mit Hilfe der Funktionen
+~AddCode  ~SetDateTime
+~AddText  und
+~AddCode  ~Calculate
+~AddText  berechnet.
+>>_ Das Notieren der Zeitstempel in der URL erfolgt mit dem Befehl
+~AddCode  ~AddNewKey
+~AddText .
+>>_ Für die Gruppierung wird für jede Tätigkeit mit Hilfe der
+~AddCode  ~CamelCase
+~AddText -Funktion eine Variable angelegt, auf deren Existenz einfach geprüft werden kann. Diese wird in einem Feld "TV" verwaltet. Auf Basis dieser Variablen können weitere Variablen für die Tätigkeit im Klartext und die Summierung der Zeiten abgleitet werden.
+>>_ Als Feedback wärend der Eingabe werden die bereits erfassten Einträge als Hinweiszeilen des Eingabefeldes dargestellt.
+~SetSection Implementierung
+>>|~SetInputTitle Zeitmesser
+>>|~SetInputDescription Der vorliegende Zeitmesser erfasst eine Folge von Tätigkeiten und misst
+>>|	__ und summiert die dazwischen liegenden Zeitdifferenzen.
+>>|~Set taa=0
+>>|~Set tbb=0
+>>|~GoSub BerechneZeitstempel
+>>|~AddNewKey Z($taa) = $SekGes
+>>|@Ausgabe >> Liste der Tätigkeiten:
+>>|~DoWhile $T($taa)!=Fertig
+>>|	~AddTo taa+=1		
+>>|	~Input T($taa): Gibt ein, woran du bis jetzt gearbeitet hast und bestätige mit Weiter. (Beenden mit "Fertig")
+>>|	~Set hidx=1
+>>|	~DoWhile ?$Z($hidx)
+>>|		~AddHelpLine $T($hidx) (Zeitstempel: $Z($hidx))
+>>|		~AddTo hidx+=1
+>>|	~Loop
+>>|	~Execute
+>>|	~If $T($taa)!=Fertig
+>>|		~GoSub BerechneZeitstempel		
+>>|		~AddNewKey Z($taa) = $SekGes
+>>|		~Calculate Diff = $Z($taa) - $Z($tbb)
+>>|		> $T($taa): $Diff Sekunden
+>>|		~CamelCase vt=$T($taa)
+>>|		~If !?$TZ$vt
+>>|			~AddTo Tidx+=1
+>>|			~Set TV($Tidx)=$vt
+>>|			~Set TT$vt=$T($taa)
+>>|		~AddTo TZ$vt+=$Diff
+>>|	~AddTo tbb+=1	
+>>|~Loop
+>>|@Ausgabe >> Zeitsumme pro Tätigkeit:
+>>|~Set Tidx=1
+>>|~DoWhile ?$TV($Tidx)
+>>|	~Set vt=$TV($Tidx)
+>>|	> Summe $TT$vt: $TZ$vt Sekunden
+>>|	~AddTo Tidx+=1
+>>|~Loop
+>>|~End
+>>|~DefineSub BerechneZeitstempel
+>>|	~SetDateTime Stunden=HH
+>>|	~SetDateTime Minuten=mm
+>>|	~SetDateTime Sekunden=ss
+>>|	~Calculate StdInMin = $Stunden * 60
+>>|	~Calculate MinGes = $StdInMin + $Minuten
+>>|	~Calculate MinInSec = $MinGes * 60
+>>|	~Calculate SekGes = $MinInSec + $Sekunden
+>>|~Return
+~SetInputTitle Zeitmesser
+~SetInputDescription Der vorliegende Zeitmesser erfasst eine Folge von Tätigkeiten und misst
+	__ und summiert die dazwischen liegenden Zeitdifferenzen.
+~Set taa=0
+~Set tbb=0
+~GoSub BerechneZeitstempel
+~AddNewKey Z($taa) = $SekGes
+@Ausgabe >> Liste der Tätigkeiten:
+~DoWhile $T($taa)!=Fertig
+	~AddTo taa+=1		
+	~Input T($taa): Gibt ein, woran du bis jetzt gearbeitet hast und bestätige mit Weiter. (Beenden mit "Fertig")
+	~Set hidx=1
+	~DoWhile ?$Z($hidx)
+		~AddHelpLine $T($hidx) (Zeitstempel: $Z($hidx))
+		~AddTo hidx+=1
 	~Loop
-	~GoSub LapTime		
-	~AddNewKey Z($tidx) = $SekGes
-	~Calculate Diff = $Z($tidx) - $Z($tvvv)
-	@Zeitprotokoll >> $T($tidx): $Diff Sekunden
-	~AddTo tvvv+=1	
-	~Execute	
+	~Execute
+	~If $T($taa)!=Fertig
+		~GoSub BerechneZeitstempel		
+		~AddNewKey Z($taa) = $SekGes
+		~Calculate Diff = $Z($taa) - $Z($tbb)
+		> $T($taa): $Diff Sekunden
+		~CamelCase vt=$T($taa)
+		~If !?$TZ$vt
+			~AddTo Tidx+=1
+			~Set TV($Tidx)=$vt
+			~Set TT$vt=$T($taa)
+		~AddTo TZ$vt+=$Diff
+	~AddTo tbb+=1	
+~Loop
+@Ausgabe >> Zeitsumme pro Tätigkeit:
+~Set Tidx=1
+~DoWhile ?$TV($Tidx)
+	~Set vt=$TV($Tidx)
+	> Summe $TT$vt: $TZ$vt Sekunden
+	~AddTo Tidx+=1
 ~Loop
 ~End
-~DefineSub LapTime
+~DefineSub BerechneZeitstempel
+	~SetDateTime Stunden=HH
 	~SetDateTime Minuten=mm
 	~SetDateTime Sekunden=ss
-	~Calculate MinInSec = $Minuten * 60
+	~Calculate StdInMin = $Stunden * 60
+	~Calculate MinGes = $StdInMin + $Minuten
+	~Calculate MinInSec = $MinGes * 60
 	~Calculate SekGes = $MinInSec + $Sekunden
 ~Return

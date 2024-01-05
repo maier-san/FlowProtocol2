@@ -1,6 +1,6 @@
 # FlowProtocol 2
 
-<div align="center"><img src="FlowProtocol 2\wwwroot\Images\FlowProtocol 2Logo40.jpg" alt="FlowProtocol 2 Logo" title="FlowProtocol 2" /></div>
+<div align="center"><img src="FlowProtocol2\wwwroot\Images\FlowProtocol2Logo40.jpg" alt="FlowProtocol 2 Logo" title="FlowProtocol 2" /></div>
 
 ## Zusammenfassung
 *FlowProtocol 2* ist eine kleine überschaubare Anwendung für das Intranet, die einfache Skripte im Browser ausführen kann.

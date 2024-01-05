@@ -1,0 +1,27 @@
+~SetTitle Zeitmesser
+~Set tvvv=0
+~Set tidx=0
+~GoSub LapTime
+~AddNewKey Z($tidx) = $SekGes
+~DoWhile $T($tidx)!=Fertig
+	~AddTo tidx+=1		
+	~Input T($tidx): Tätigkeit (Beenden mit "Fertig")
+	~Set ggg=1
+	~DoWhile ?$Z($ggg)
+		~AddHelpLine $T($ggg) ($Z($ggg))
+		~AddTo ggg+=1
+	~Loop
+	~GoSub LapTime		
+	~AddNewKey Z($tidx) = $SekGes
+	~Calculate Diff = $Z($tidx) - $Z($tvvv)
+	@Zeitprotokoll >> $T($tidx): $Diff Sekunden
+	~AddTo tvvv+=1	
+	~Execute	
+~Loop
+~End
+~DefineSub LapTime
+	~SetDateTime Minuten=mm
+	~SetDateTime Sekunden=ss
+	~Calculate MinInSec = $Minuten * 60
+	~Calculate SekGes = $MinInSec + $Sekunden
+~Return

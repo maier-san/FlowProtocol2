@@ -36,7 +36,8 @@ namespace FlowProtocol2.Commands
             }
             else if (parentInputCommand.AssociatedInputElement != null)
             {
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(Text);
+                string textexpanded = ReplaceVars(rc, Text);
+                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(textexpanded);
             }
             return NextCommand;
         }

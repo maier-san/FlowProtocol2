@@ -1,12 +1,12 @@
 ~SetTitle SystemVars
 @Beschreibung >>_ Auf die Systemvariablen kann in gleicher Weise lesend zugegriffen werden, wie auf die normalen Variablen.
->>_ Folgende Variablen sind verfügbar: NewGuid, CRLF, LF, TemplateFilePath, LineNumber, BaseURL, ResultURL, ScriptPath, CurrentScriptPath.
+>>_ Folgende Variablen sind verfügbar: NewGuid, CRLF, LF, ScriptFilePath, LineNumber, BaseURL, ResultURL, ScriptPath, CurrentScriptPath.
 >>_ Mit LineNumber-<Anzahl> kann direkt eine Zahl von der Zeilennummer abgezogen werden.
 >>_ Chr(1) bis Chr(255) geben die entsprechenden Zeichen zurück.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel gibt die verschiedenen Systemvariablen aus:
 >>|@Ausgabe >> $Chr(36)Chr(36)NewGuid = $Chr(36)NewGuid
->>|>> $Chr(36)Chr(36)TemplateFilePath = $Chr(36)TemplateFilePath
+>>|>> $Chr(36)Chr(36)ScriptFilePath = $Chr(36)ScriptFilePath
 >>|>> $Chr(36)Chr(36)BaseURL = $Chr(36)BaseURL
 >>|>> $Chr(36)Chr(36)ResultURL = $Chr(36)ResultURL
 >>|>> $Chr(36)Chr(36)ScriptPath = $Chr(36)ScriptPath
@@ -16,7 +16,7 @@
 >>|>> $Chr(36)Chr(36)Chr(35) = $Chr(36)Chr(35)
 >>|>>|Zeile 1$Chr(36)CRLFZeile 2$Chr(36)CRLFZeile 3
 @Ausgabe >> $Chr(36)NewGuid = $NewGuid
->> $Chr(36)TemplateFilePath = $TemplateFilePath
+>> $Chr(36)ScriptFilePath = $ScriptFilePath
 >> $Chr(36)BaseURL = $BaseURL
 >> $Chr(36)ResultURL = $ResultURL
 >> $Chr(36)ScriptPath = $ScriptPath

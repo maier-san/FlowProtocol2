@@ -43,7 +43,7 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
-                input = input.Replace("$TemplateFilePath", ReadContext.ScriptFilePath);                
+                input = input.Replace("$ScriptFilePath", ReadContext.ScriptFilePath);                
                 input = input.Replace("$BaseURL", rc.MyBaseURL);
                 input = input.Replace("$ResultURL", rc.MyResultURL);
                 input = input.Replace("$ScriptPath", rc.ScriptPath);

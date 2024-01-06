@@ -8,11 +8,11 @@
 @Ausnahmen >>* Unerwartete Sequenz gefunden: Die Sequenz ... kann an dieser Stelle nicht interpretiert werden und wird ignoriert.
 >>* Skriptdatei nicht gefunden: Die Skriptdatei ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
 @Codebeispiel >>_ Das nachfolgende Beispiel ruft die Funktionsdatei "TutorialDemo.fps" auf:
->>|@Ausgabe >> Erster Befehl in der Hauptdatei $TemplateFilePath
+>>|@Ausgabe >> Erster Befehl in der Hauptdatei $ScriptFilePath
 >>|~Include .\_Functions\TutorialDemo.fps
->>|>> Zweiter Befehl in der Hauptdatei $TemplateFilePath
+>>|>> Zweiter Befehl in der Hauptdatei $ScriptFilePath
 >>_ Die Funktionsdatei "TutorialDemo.fps" hat folgenden Inhalt:
->>|>> Befehl in $TemplateFilePath
-@Ausgabe >> Erster Befehl in der Hauptdatei $TemplateFilePath
+>>|>> Befehl in $ScriptFilePath
+@Ausgabe >> Erster Befehl in der Hauptdatei $ScriptFilePath
 ~Include .\_Functions\TutorialDemo.fps
->> Zweiter Befehl in der Hauptdatei $TemplateFilePath
+>> Zweiter Befehl in der Hauptdatei $ScriptFilePath

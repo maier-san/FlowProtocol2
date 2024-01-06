@@ -1,0 +1,6 @@
+~SetInputTitle Dynamische Erweiterung
+?W: Wähle eine Buch-Kategorie aus.
+	#: Roman
+		~Set Kategorie=Roman
+		~Set Kennung=R
+@Ausgabe >> Kategorie $Kategorie (Kennung $Kennung)

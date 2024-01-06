@@ -93,7 +93,7 @@ namespace FlowProtocol2.Commands
                 }
                 idxo.ParentOptionGroupCommand = this;
             }
-            if (SelectedOptionCommand == null)
+            if (!string.IsNullOrEmpty(selectedKey) && SelectedOptionCommand == null)
             {
                 SelectedOptionCommand = xOption;
             }

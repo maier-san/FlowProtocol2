@@ -1,0 +1,52 @@
+~SetTitle Dynamische Skripterweiterung
+@Beschreibung >>_ Es wird nach einer Buchkategorie gefragt, die zusammen mit der dazugehörenden Kennung ausgegeben wird.
+>>_ Als zusätzliche Option wird "Nicht in Liste" angeboten. Wählt man diese aus, kann man die noch nicht erfasste Kategorie samt Kennung eingeben. Zusätzlich zur Ausgabe erhält man dann eine Anleitung, wie man das Skript um die neue Kategorie erweitern kann.
+>>_ Dieses Beispiel zeigt, wie sehr man den Anwender bei der Erweiterung der Skripte unterstützen kann, so dass diese auch tatsächlich betrieben wird.
+>>_ Da die Aufgabe der meisten Skripte ja nur darin besteht, die in der Arbeitswelt vorkommenden Fälle abzubilden, und mit diesen bestimmte Informationen zu verknüpfen, bietet sich eine solche Vorgehensweise in vielen Fällen an.
+>>_ Als Reaktion auf den "Nicht in Liste"-Fall kann man auch zuerst Fragen, ob der Anwender über die nötigen Informationen überhaupt verfügt und anderenfalls über einen mailto-Link die Möglichkeit bieten, den Autor des Skriptes um eine entsprechende Erweiterung zu bitten.
+>>_ Technisch sind hier vor allem die beiden Systemvariablen
+~AddCode  $Chr(36)LineNumber-n
+~AddText  und
+~AddCode  $Chr(36)ScriptFilePath
+~AddText  hilfreich, weil sie eine Beschreibung der Einbaustelle ermöglichen, die unabhängig von Verschiebungen und Erweiterungen ist.
+~SetSection Implementierung
+>>|~SetInputTitle Dynamische Skripterweiterung
+>>|~SetInputTitle Dynamische Skripterweiterung
+>>|?W: Wähle eine Buch-Kategorie aus.
+>>|	#: Roman
+>>|		~Set Kategorie=Roman
+>>|		~Set Kennung=R
+>>|	// Oberhalb von hier neue Kategorieren einfügen
+>>|	#x: Nicht in Liste
+>>|		~Input KatNeu: Gib die neue Kategorie ein.
+>>|		~Input KenNeu: Gib die dazugehörende Kennung ein.
+>>|		@Skript-Erweiterung >>_ Es wird empfohlen, das Skript um die nicht vorhandene Kategorie zu erweitern. Gehe dazu wie folgt vor:
+>>|		>> Öffne die Skriptdatei in einem Texteditor:
+>>|			>|$Chr(36)ScriptFilePath
+>>|		>> Füge oberhalb von Zeile $Chr(36)LineNumber-7 folgenden Codeblock ein:
+>>|			>|$Chr(36)Chr(9)#: $KatNeu
+>>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kategorie=$KatNeu
+>>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kennung=$KenNeu
+>>|		>> Speichere die Datei ab.
+>>|		~Set Kategorie=$KatNeu
+>>|		~Set Kennung=$KenNeu
+>>|@Ausgabe >> Kategorie $Kategorie (Kennung $Kennung)
+?W: Wähle eine Buch-Kategorie aus.
+	#: Roman
+		~Set Kategorie=Roman
+		~Set Kennung=R
+	// Oberhalb von hier neue Kategorieren einfügen
+	#x: Nicht in Liste
+		~Input KatNeu: Gib die neue Kategorie ein.
+		~Input KenNeu: Gib die dazugehörende Kennung ein.
+		@Skript-Erweiterung >>_ Es wird empfohlen, das Skript um die nicht vorhandene Kategorie zu erweitern. Gehe dazu wie folgt vor:
+		>> Öffne die Skriptdatei in einem Texteditor:
+			>|$ScriptFilePath
+		>> Füge oberhalb von Zeile $LineNumber-7 folgenden Codeblock ein:
+			>|$Chr(9)#: $KatNeu
+			>|$Chr(9)$Chr(9)~Set Kategorie=$KatNeu
+			>|$Chr(9)$Chr(9)~Set Kennung=$KenNeu
+		>> Speichere die Datei ab.
+		~Set Kategorie=$KatNeu
+		~Set Kennung=$KenNeu
+@Ausgabe >> Kategorie $Kategorie (Kennung $Kennung)

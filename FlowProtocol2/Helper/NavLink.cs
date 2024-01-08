@@ -7,7 +7,7 @@ namespace FlowProtocol2.Helper
         public NavLink(string showtext, string relativpath)
         {
             ShowText = showtext;
-            RelativePath = relativpath;
+            RelativePath = relativpath.Replace('/','|');
         }
     }
 }

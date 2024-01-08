@@ -25,7 +25,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public IActionResult OnGet(string relativepath)
         {
             if (relativepath == "x") relativepath = string.Empty;
-            RelativePath = relativepath;
+            RelativePath = relativepath.Replace('|','/');
             string resultPath = ScriptPath + Path.DirectorySeparatorChar + RelativePath;
             if (!Directory.Exists(resultPath))
             {

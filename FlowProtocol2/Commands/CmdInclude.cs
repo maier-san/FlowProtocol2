@@ -40,7 +40,7 @@ namespace FlowProtocol2.Commands
                 rc.SetError(ReadContext, "Unerwartete Sequenz gefunden",
                     $"Die Sequenz '{Ignore}' kann an dieser Stelle nicht interpretiert werden und wird ignoriert.");
             }
-            string expandedScriptNameOrPath = ReplaceVars(rc, ScriptNameOrPath);
+            string expandedScriptNameOrPath = ReplaceVars(rc, ScriptNameOrPath).Replace('|', Path.DirectorySeparatorChar);
             string absolutescriptfilepath = ExpandPath(rc, expandedScriptNameOrPath, out bool fileexists);
             if (!rc.ScriptRepository.ContainsKey(absolutescriptfilepath))
             {
@@ -51,14 +51,13 @@ namespace FlowProtocol2.Commands
                     return null;
                 }
                 ScriptParser sp = new ScriptParser();
-                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("; BaseKey=", string.Empty)).Trim();
                 var newScriptinfo = sp.ReadScript(rc, absolutescriptfilepath, Indent);
                 rc.ScriptRepository[absolutescriptfilepath] = newScriptinfo;
             }
             var sinfo = rc.ScriptRepository[absolutescriptfilepath];
             if (sinfo.StartCommand != null)
             {
-                string expandedBaseKey = ReplaceVars(rc, BaseKey).Trim();
+                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("; BaseKey=", string.Empty)).Trim();
                 if (NextCommand != null) rc.ReturnStack.Push(new EntryPoint(NextCommand, rc.BaseKey));
                 rc.BaseKey = expandedBaseKey;
                 return sinfo.StartCommand;

@@ -33,6 +33,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
+            Handled = false;
             Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
             if (err != null)
             {

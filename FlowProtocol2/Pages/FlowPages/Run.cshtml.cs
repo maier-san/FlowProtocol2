@@ -40,7 +40,7 @@ namespace FlowProtocol2.Pages.FlowPages
             }
             if (fi != null && fi.Directory != null)
             {
-                ScriptName = fi.Name;
+                ScriptName = fi.Name.Replace(".fp2", string.Empty);
                 RunContext.CurrentScriptPath = fi.Directory.FullName;
                 RunContext.ScriptPath = ScriptPath;
             }

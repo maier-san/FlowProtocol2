@@ -25,7 +25,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public IActionResult OnGet(string relativepath)
         {
             if (relativepath == "x") relativepath = string.Empty;
-            RelativePath = relativepath.Replace('|','/');
+            RelativePath = relativepath.Replace('|', Path.DirectorySeparatorChar);
             string resultPath = ScriptPath + Path.DirectorySeparatorChar + RelativePath;
             if (!Directory.Exists(resultPath))
             {
@@ -34,7 +34,7 @@ namespace FlowProtocol2.Pages.FlowPages
             DirectoryInfo di = new DirectoryInfo(resultPath);
             if (di.Parent != null)
             {
-                RelativeBackPath = di.Parent.FullName.Replace(ScriptPath, string.Empty).Trim();
+                RelativeBackPath = di.Parent.FullName.Replace(ScriptPath, string.Empty).Replace(Path.DirectorySeparatorChar, '|').Trim();
             }
             List<NavLink> scriptgrouplist = di.GetDirectories()
                 .Select(x => x.Name)

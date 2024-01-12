@@ -30,7 +30,7 @@ namespace FlowProtocol2.Pages.FlowPages
         }
         public IActionResult OnGet(string relativepath)
         {
-            relativepath = relativepath.Replace('|','/');
+            relativepath = relativepath.Replace('|', Path.DirectorySeparatorChar);
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar + relativepath + FlowProtocol2Extension;
             System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);

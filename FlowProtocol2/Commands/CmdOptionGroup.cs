@@ -9,8 +9,9 @@ namespace FlowProtocol2.Commands
     public class CmdOptionGroup : CmdInputBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }        
+        public string Promt { get; set; }
         public CmdOptionValue? SelectedOptionCommand { get; set; }
+        private int InputIndex { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -30,6 +31,7 @@ namespace FlowProtocol2.Commands
             Key = string.Empty;
             Promt = string.Empty;
             SelectedOptionCommand = null;
+            InputIndex = 0;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
@@ -54,7 +56,11 @@ namespace FlowProtocol2.Commands
             }
             if (expandedKey.EndsWith("'"))
             {
-                expandedKey = expandedKey.Replace("'", "_" + ReadContext.LineNumber.ToString());
+                if (InputIndex == 0)
+                {
+                    InputIndex = GetPreviousCommands<CmdOptionGroup>(c => true, c => false).Count() + 1;
+                }
+                expandedKey = expandedKey.Replace("'", "_" + InputIndex.ToString());
             }
             ogroup.Key = expandedKey;
             ogroup.Promt = ReplaceVars(rc, Promt).Trim();
@@ -67,7 +73,7 @@ namespace FlowProtocol2.Commands
 
             CmdOptionValue? xOption = null;
             SelectedOptionCommand = null;
-            var allOptions = GetNexCommands<CmdOptionValue>(
+            var allOptions = GetNextCommands<CmdOptionValue>(
                     c => c.Indent == firstOptionValue.Indent,
                     c => c.Indent < firstOptionValue.Indent);
             int optioncount = 0;

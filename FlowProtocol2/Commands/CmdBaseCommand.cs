@@ -30,7 +30,7 @@ namespace FlowProtocol2.Commands
                 string compareInput = input;
                 do // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
                 {
-                    compareInput = input;                    
+                    compareInput = input;
                     foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
                     {
                         if (!string.IsNullOrWhiteSpace(v.Key))
@@ -43,7 +43,7 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");
                 input = input.Replace("$LF", "\n");
-                input = input.Replace("$ScriptFilePath", ReadContext.ScriptFilePath);                
+                input = input.Replace("$ScriptFilePath", ReadContext.ScriptFilePath);
                 input = input.Replace("$BaseURL", rc.MyBaseURL);
                 input = input.Replace("$ResultURL", rc.MyResultURL);
                 input = input.Replace("$ScriptPath", rc.ScriptPath);
@@ -109,11 +109,18 @@ namespace FlowProtocol2.Commands
         public CmdBaseCommand? GetNextSameOrHigherLevelCommand()
             => GetCommand<CmdBaseCommand>(c => c.Indent <= this.Indent, c => false, c => c.NextCommand);
 
-        public List<T> GetNexCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+        public List<T> GetNextCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+            where T : CmdBaseCommand => GetCommands<T>(predicate, stopcrit, c => c.NextCommand);
+
+        public List<T> GetPreviousCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+            where T : CmdBaseCommand => GetCommands<T>(predicate, stopcrit, c => c.PreviousCommand);
+
+        public List<T> GetCommands<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit,
+            Func<CmdBaseCommand, CmdBaseCommand?> searchdirection)
             where T : CmdBaseCommand
         {
             List<T> ret = new List<T>();
-            CmdBaseCommand? cmdidx = NextCommand;
+            CmdBaseCommand? cmdidx = searchdirection(this);
             while (cmdidx != null && !stopcrit(cmdidx))
             {
                 T? cmdT = cmdidx as T;
@@ -121,7 +128,7 @@ namespace FlowProtocol2.Commands
                 {
                     ret.Add(cmdT);
                 }
-                cmdidx = cmdidx.NextCommand;
+                cmdidx = searchdirection(cmdidx);
             }
             return ret;
         }

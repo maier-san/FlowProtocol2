@@ -32,6 +32,9 @@ jobs:
             docker push --all-tags ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2
 
         - name: 'Deploy to Azure Container Instances'
+          env: 
+            env_secret: ${{ secrets.REGISTRY_PASSWORD }}
+          if: ${{ env.env_secret != '' }}
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: ${{ secrets.RESOURCE_GROUP }}

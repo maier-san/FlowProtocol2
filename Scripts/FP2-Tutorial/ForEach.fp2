@@ -1,0 +1,14 @@
+~SetTitle ForEach-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ForEach <Variable> in <Feld>
+~AddText  führt die nachfolgenden eingerückten Befehle für jedes Element im Feld aus, das jeweils der Variablen zugewiesen wird. Das Feld muss mit Indices in runden Klammern durchnummeriert sein und beginnt mit 1.
+@Ausnahmen >>* ForEach ohne Loop: Dem ForEach-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt ein Feld mit dem Split-Befehl und durchläuft diese mit dem ForEach-Befehl.
+>>|~Split Fahrraeder=Crosser;Gravelbike;MTB;E-MTB;Rennrad|;
+>>|~ForEach rad in Fahrraeder
+>>|	@Ausgabe >> $rad
+>>|~Loop
+~Split Fahrraeder=Crosser;Gravelbike;MTB;E-MTB;Rennrad|;
+~ForEach rad in Fahrraeder
+	@Ausgabe >> $rad
+~Loop

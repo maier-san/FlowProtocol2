@@ -47,7 +47,7 @@ namespace FlowProtocol2.Commands
             {
                 associatedElseCommand.ParentIfCommand = this;
             }
-            var associatedElseIfCommands = GetNexCommands<CmdElseIf>(
+            var associatedElseIfCommands = GetNextCommands<CmdElseIf>(
                 c => c.Indent == this.Indent,
                 c => c.Indent < this.Indent || (c.Indent == this.Indent && (c is CmdIf || c is CmdElse)));            
             foreach (var c in associatedElseIfCommands)

@@ -167,8 +167,8 @@ namespace FlowProtocol2.Commands
             if (CheckCompDTerm(rc, expression, ">=", (x, y) => x >= y, out result, out err)) return result;
             if (CheckCompDTerm(rc, expression, "<", (x, y) => x < y, out result, out err)) return result;
             if (CheckCompDTerm(rc, expression, ">", (x, y) => x > y, out result, out err)) return result;
-            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;
             if (CheckCompSTerm(rc, expression, "!~", (x, y) => !x.Contains(y), out result, out err)) return result;
+            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;            
             err = new ErrorElement(ReadContext, "Ungültiger Vergleichsterm",
                 $"Der Ausdruck '{expression}' kann nicht als Vergleichsterm interpretiert werden.");
             return false;

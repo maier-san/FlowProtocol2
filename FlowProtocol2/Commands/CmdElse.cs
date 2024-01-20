@@ -33,7 +33,13 @@ namespace FlowProtocol2.Commands
                     "Dem Else-Befehl kann kein If-Befehl zugeordnet werden. Prüfen Sie die Einrückung.");
                 return GetNextSameOrHigherLevelCommand();
             }
-            if (!ParentIfCommand.Handled)
+            if (!ParentIfCommand.Handled.ContainsKey(rc.BaseKey))
+            {
+                rc.SetError(ReadContext, "Else ohne bestimmbare If-Bedingung",
+                    "Für den zum Else-Befehl gehörenden If-Befehl kann kein Bedingungswert ermittelt werden.");
+                return GetNextSameOrHigherLevelCommand();
+            }
+            if (!ParentIfCommand.Handled[rc.BaseKey])
             {
                 return NextCommand;
             }

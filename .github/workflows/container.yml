@@ -18,6 +18,7 @@ jobs:
             docker build -f ./docker/flowprotocol2.dockerfile -t es_flowprotocol2:${{ github.sha }} .
             docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/easysoft-gmbh/es_flowprotocol2:latest
             docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/easysoft-gmbh/es_flowprotocol2:${{ github.sha }}
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
             docker push --all-tags ghcr.io/easysoft-gmbh/es_flowprotocol2
 
         - name: 'Login via Azure CLI'

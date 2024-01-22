@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         # checkout the repo
-        - name: 'Build image'
+        - name: 'Build and push image'
           uses: actions/checkout@main
         - run: |
             docker build -f ./docker/flowprotocol2.dockerfile -t es_flowprotocol2:${{ github.sha }} .

@@ -16,7 +16,9 @@ jobs:
           uses: actions/checkout@main
         - run: |
             docker build -f ./docker/flowprotocol2.dockerfile -t es_flowprotocol2:${{ github.sha }} .
+            docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/easysoft-gmbh/es_flowprotocol2:latest
             docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/easysoft-gmbh/es_flowprotocol2:${{ github.sha }}
+            docker push --all-tags ghcr.io/easysoft-gmbh/es_flowprotocol2
 
         - name: 'Login via Azure CLI'
           env: 

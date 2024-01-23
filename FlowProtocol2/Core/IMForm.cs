@@ -62,8 +62,13 @@ namespace FlowProtocol2.Core
         }
         public void AddHelpText(string text, string link)
         {
-            if (CurrentHelpInfoLine != null && !string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
+                if (CurrentHelpInfoLine == null)
+                {
+                    CurrentHelpInfoLine = new IMHelpInfoLine();
+                    HelpInfoLines.Add(CurrentHelpInfoLine);
+                }
                 IMHelpTextElement newTextElement = new IMHelpTextElement();
                 newTextElement.Text = text;
                 newTextElement.Link = link;

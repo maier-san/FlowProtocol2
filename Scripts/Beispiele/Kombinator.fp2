@@ -1,0 +1,260 @@
+~SetTitle Auflistung von Kombinationen
+~SetInputTitle Kombinator
+@Beschreibung >>_ Es werden beliebig viele Attribute mit Werten abgefragt, sowie auszuschließende Kombinationen. Als Ergebnis werden alle Kombinationen ausgegeben oder wahlweise eine Menge von Stichproben.
+~SetSection Implementierung
+>>|~SetInputDescription Bildet alle Kombinationen aus verschiedenen Attributwerten
+>>|~Set idx=1
+>>|~Set NE($idx)=j
+>>|~DoWhile $NE($idx)==j
+>>|	~Input AT($idx): Attribut $idx
+>>|	~Input WL($idx): Werteliste für Attribut $idx (kommagetrennt)
+>>|	@Ausgangsattribute >> Attribut: $AT($idx)
+>>|		> $WL($idx)
+>>|	~Split WE($idx)=$WL($idx)|,
+>>|	~AddTo idx+=1
+>>|	?NE($idx): Soll noch ein weiteres Attribut erfasst werden?
+>>|		#j: Ja
+>>|		#n: Nein
+>>|	~Execute	
+>>|~Loop
+>>|?AS: Sollen bestimmte Kombinationen ausgeschlossen werden?
+>>|	#j: Ja
+>>|		~Input AKL: Ausschlusskombinationen
+>>|		~AddHelpLine Zähle Kombinationen von Begriffen auf, die bei der Auflistung ausgeschlossen werden sollen, z.B.
+>>|		~AddHelpLine "Pizza + Ananas, Weiße Socken + Sandalen"			
+>>|		~Split AFL=$AKL|,
+>>|		~Set AFIdx=1
+>>|		~DoWhile ?$AFL($AFIdx)
+>>|			@Ausschlusskriterien >> $AFL($AFIdx)
+>>|			~Split AKrit($AFIdx)=$AFL($AFIdx)|+
+>>|			~AddTo AFIdx+=1
+>>|		~Loop
+>>|	#n: Nein	
+>>|~Execute
+>>|
+>>|// Berechne
+>>|~Set Ebene(Q)=1
+>>|~Set ErgIndex=0
+>>|~GoSub Kombiniere; BaseKey=Q
+>>|~Set Anzahl=0
+>>|~Set Eidx=1
+>>|~DoWhile ?$Erg(Q)($Eidx)
+>>|	~AddTo Anzahl+=1
+>>|	~AddTo Eidx+=1
+>>|~Loop
+>>|~Set ReduzierteAnzahl=$Anzahl
+>>|?SP: Soll die Ergebnismenge von $Anzahl Kombinationen auf eine Menge von Stichproben reduziert werden?
+>>|	#ja: Ja, absolut
+>>|		~Input SZA: Größe der Ergebnismenge (absolut)?
+>>|		~Set ReduzierteAnzahl=$SZA
+>>|		@Reduzierung >>_ Reduzierung auf $ReduzierteAnzahl Stichproben
+>>|	#jp: Ja, prozentual
+>>|		~Input SZP: Größe der Ergebnismenge (prozentual)?
+>>|		~Execute
+>>|		~Replace Prozentwert=$SZP|%->
+>>|		~Calculate Anteil=$Prozentwert/100
+>>|		~Calculate RedAnzUngerundet=$Anzahl*$Anteil
+>>|		~Round ReduzierteAnzahl=$RedAnzUngerundet|0
+>>|		~If $ReduzierteAnzahl>$Anzahl
+>>|			~Set ReduzierteAnzahl=$Anzahl
+>>|		@Reduzierung >>_ Reduzierung auf $Prozentwert%, also $ReduzierteAnzahl Stichproben
+>>|	#n: Nein
+>>|~Execute
+>>|
+>>|// Reduzierung ausführen
+>>|~Set AktuelleAnzahl=$Anzahl
+>>|~DoWhile $AktuelleAnzahl>$ReduzierteAnzahl
+>>|	~Random WegMit=1..$AktuelleAnzahl
+>>|	~Set Eidx=$WegMit	
+>>|	~DoWhile $Eidx<$AktuelleAnzahl
+>>|		~Set Nidx=$Eidx
+>>|		~AddTo Nidx+=1
+>>|		~Set Erg(Q)($Eidx)=$Erg(Q)($Nidx)
+>>|		~AddTo Eidx+=1
+>>|	~Loop
+>>|	~AddTo AktuelleAnzahl+=-1
+>>|~Loop
+>>|
+>>|// Ergebnis ausgeben
+>>|~Set Eidx=1
+>>|~DoWhile $Eidx<=$ReduzierteAnzahl
+>>|	@Kombinationen >> $Erg(Q)($Eidx)
+>>|	~AddTo Eidx+=1
+>>|~Loop
+>>|~End
+>>|
+>>|// Berechnet rekursiv die Menge der Kombinationen
+>>|// Eingabe: Ebene($BaseKey) = Die Ebene, ab der kombiniert werden soll.
+>>|// Ausgabe: Erg($BaseKey)(..) = Die Liste der Kombinationen
+>>|~DefineSub Kombiniere	
+>>|	~If !?$AT($Ebene($BaseKey))		
+>>|		~Set Erg($BaseKey)(1)=#Ende#
+>>|	~Else
+>>|		~Set NextBK($BaseKey)=$BaseKeyQ
+>>|		~Set Ebene($NextBK($BaseKey))=$Ebene($BaseKey)
+>>|		~AddTo Ebene($NextBK($BaseKey))+=1
+>>|		~GoSub Kombiniere; BaseKey=$NextBK($BaseKey)		
+>>|		~Set WIdx=1
+>>|		~Set OIdx=0
+>>|		~DoWhile ?$WE($Ebene($BaseKey))($WIdx)
+>>|			~Set EIdx=1
+>>|			~DoWhile ?$Erg($NextBK($BaseKey))($EIdx)
+>>|				~Replace NeueKombi=$AT($Ebene($BaseKey)): $WE($Ebene($BaseKey))($WIdx) - $Erg($NextBK($BaseKey))($EIdx)| - #Ende#->
+>>|				~GoSub PruefeAusschlusskriterien
+>>|				~If $SchliesseAus!=1
+>>|					~AddTo OIdx+=1
+>>|					~Set Erg($BaseKey)($OIdx)=$NeueKombi
+>>|				~AddTo EIdx+=1
+>>|			~Loop
+>>|			~AddTo WIdx+=1
+>>|		~Loop	
+>>|~Return
+>>|
+>>|// Prüft, ob eine Kombination augeschlossen werden soll
+>>|// Eingabe: NeueKombi = Die Kombination
+>>|// Ausgabe: SchliesseAus = 0 wenn ausgeschlossen werden soll)
+>>|~DefineSub PruefeAusschlusskriterien
+>>|	~Set SchliesseAus=0
+>>|	~Set AFIdx=1
+>>|	~DoWhile ?$AFL($AFIdx)
+>>|		~Set AKIdx=1
+>>|		~Set KritOK=1
+>>|		~DoWhile ?$AKrit($AFIdx)($AKIdx)
+>>|			~If $NeueKombi!~$AKrit($AFIdx)($AKIdx)
+>>|				~Set KritOK=0
+>>|			~AddTo AKIdx+=1
+>>|		~Loop
+>>|		~If $KritOK==1
+>>|			~Set SchliesseAus=1
+>>|		~AddTo AFIdx+=1
+>>|	~Loop
+>>|~Return
+
+
+~SetInputDescription Bildet alle Kombinationen aus verschiedenen Attributwerten
+~Set idx=1
+~Set NE($idx)=j
+~DoWhile $NE($idx)==j
+	~Input AT($idx): Attribut $idx
+	~Input WL($idx): Werteliste für Attribut $idx (kommagetrennt)
+	@Ausgangsattribute >> Attribut: $AT($idx)
+		> $WL($idx)
+	~Split WE($idx)=$WL($idx)|,
+	~AddTo idx+=1
+	?NE($idx): Soll noch ein weiteres Attribut erfasst werden?
+		#j: Ja
+		#n: Nein
+	~Execute	
+~Loop
+?AS: Sollen bestimmte Kombinationen ausgeschlossen werden?
+	#j: Ja
+		~Input AKL: Ausschlusskombinationen
+		~AddHelpLine Zähle Kombinationen von Begriffen auf, die bei der Auflistung ausgeschlossen werden sollen, z.B.
+		~AddHelpLine "Pizza + Ananas, Weiße Socken + Sandalen"			
+		~Split AFL=$AKL|,
+		~Set AFIdx=1
+		~DoWhile ?$AFL($AFIdx)
+			@Ausschlusskriterien >> $AFL($AFIdx)
+			~Split AKrit($AFIdx)=$AFL($AFIdx)|+
+			~AddTo AFIdx+=1
+		~Loop
+	#n: Nein	
+~Execute
+
+// Berechne
+~Set Ebene(Q)=1
+~Set ErgIndex=0
+~GoSub Kombiniere; BaseKey=Q
+~Set Anzahl=0
+~Set Eidx=1
+~DoWhile ?$Erg(Q)($Eidx)
+	~AddTo Anzahl+=1
+	~AddTo Eidx+=1
+~Loop
+~Set ReduzierteAnzahl=$Anzahl
+?SP: Soll die Ergebnismenge von $Anzahl Kombinationen auf eine Menge von Stichproben reduziert werden?
+	#ja: Ja, absolut
+		~Input SZA: Größe der Ergebnismenge (absolut)?
+		~Set ReduzierteAnzahl=$SZA
+		@Reduzierung >>_ Reduzierung auf $ReduzierteAnzahl Stichproben
+	#jp: Ja, prozentual
+		~Input SZP: Größe der Ergebnismenge (prozentual)?
+		~Execute
+		~Replace Prozentwert=$SZP|%->
+		~Calculate Anteil=$Prozentwert/100
+		~Calculate RedAnzUngerundet=$Anzahl*$Anteil
+		~Round ReduzierteAnzahl=$RedAnzUngerundet|0
+		~If $ReduzierteAnzahl>$Anzahl
+			~Set ReduzierteAnzahl=$Anzahl
+		@Reduzierung >>_ Reduzierung auf $Prozentwert%, also $ReduzierteAnzahl Stichproben
+	#n: Nein
+~Execute
+
+// Reduzierung ausführen
+~Set AktuelleAnzahl=$Anzahl
+~DoWhile $AktuelleAnzahl>$ReduzierteAnzahl
+	~Random WegMit=1..$AktuelleAnzahl
+	~Set Eidx=$WegMit	
+	~DoWhile $Eidx<$AktuelleAnzahl
+		~Set Nidx=$Eidx
+		~AddTo Nidx+=1
+		~Set Erg(Q)($Eidx)=$Erg(Q)($Nidx)
+		~AddTo Eidx+=1
+	~Loop
+	~AddTo AktuelleAnzahl+=-1
+~Loop
+
+// Ergebnis ausgeben
+~Set Eidx=1
+~DoWhile $Eidx<=$ReduzierteAnzahl
+	@Kombinationen >> $Erg(Q)($Eidx)
+	~AddTo Eidx+=1
+~Loop
+~End
+
+// Berechnet rekursiv die Menge der Kombinationen
+// Eingabe: Ebene($BaseKey) = Die Ebene, ab der kombiniert werden soll.
+// Ausgabe: Erg($BaseKey)(..) = Die Liste der Kombinationen
+~DefineSub Kombiniere	
+	~If !?$AT($Ebene($BaseKey))		
+		~Set Erg($BaseKey)(1)=#Ende#
+	~Else
+		~Set NextBK($BaseKey)=$BaseKeyQ
+		~Set Ebene($NextBK($BaseKey))=$Ebene($BaseKey)
+		~AddTo Ebene($NextBK($BaseKey))+=1
+		~GoSub Kombiniere; BaseKey=$NextBK($BaseKey)		
+		~Set WIdx=1
+		~Set OIdx=0
+		~DoWhile ?$WE($Ebene($BaseKey))($WIdx)
+			~Set EIdx=1
+			~DoWhile ?$Erg($NextBK($BaseKey))($EIdx)
+				~Replace NeueKombi=$AT($Ebene($BaseKey)): $WE($Ebene($BaseKey))($WIdx) - $Erg($NextBK($BaseKey))($EIdx)| - #Ende#->
+				~GoSub PruefeAusschlusskriterien
+				~If $SchliesseAus!=1
+					~AddTo OIdx+=1
+					~Set Erg($BaseKey)($OIdx)=$NeueKombi
+				~AddTo EIdx+=1
+			~Loop
+			~AddTo WIdx+=1
+		~Loop	
+~Return
+
+// Prüft, ob eine Kombination augeschlossen werden soll
+// Eingabe: NeueKombi = Die Kombination
+// Ausgabe: SchliesseAus = 0 wenn ausgeschlossen werden soll)
+~DefineSub PruefeAusschlusskriterien
+	~Set SchliesseAus=0
+	~Set AFIdx=1
+	~DoWhile ?$AFL($AFIdx)
+		~Set AKIdx=1
+		~Set KritOK=1
+		~DoWhile ?$AKrit($AFIdx)($AKIdx)
+			~If $NeueKombi!~$AKrit($AFIdx)($AKIdx)
+				~Set KritOK=0
+			~AddTo AKIdx+=1
+		~Loop
+		~If $KritOK==1
+			~Set SchliesseAus=1
+		~AddTo AFIdx+=1
+	~Loop
+~Return

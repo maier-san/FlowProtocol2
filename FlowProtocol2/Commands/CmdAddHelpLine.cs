@@ -11,7 +11,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^(>&|~AddHelpLine) (.*)", (rc, m) => CreateAddHelpLineCommand(rc, m));
+            return new CommandParser(@"^(&>|~AddHelpLine)(.*)", (rc, m) => CreateAddHelpLineCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateAddHelpLineCommand(ReadContext rc, Match m)

@@ -1,9 +1,9 @@
 ~Input CmdName: Befehlsname
 ~SetTitle $CmdName-Implementierung
 ~SetInputTitle Neue Command-Klasse erstellen
-~Set VarIndex=1
 ~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein.
 ~Split VarName = $Varliste|;
+~SetStopCounter 6; 500
 ?ACB: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja
 	~Input RefCB: Auf welches Codebeispiel soll verwiesen werden?
@@ -25,10 +25,8 @@
 	>|    /// </summary>
 	>|    public class Cmd$CmdName : CmdBaseCommand
 	>|    {
-	~Set VarIndex=1
-	~DoWhile ?$VarName($VarIndex)
-		>|        public string $VarName($VarIndex) { get; set; }	
-		~AddTo VarIndex+=1	
+	~ForEach vn in VarName
+		>|        public string $vn { get; set; }	
 	~Loop
 	>|
 	>|        public static CommandParser GetComandParser()
@@ -40,8 +38,8 @@
 	>|        {
 	>|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
 	~Set VarIndex=1
-	~DoWhile ?$VarName($VarIndex)
-		>|            cmd.$VarName($VarIndex) = m.Groups[$VarIndex].Value.Trim();
+	~ForEach vn in VarName
+		>|            cmd.$vn = m.Groups[$VarIndex].Value.Trim();
 		~AddTo VarIndex+=1	
 	~Loop
 	>|            return cmd;
@@ -49,21 +47,31 @@
 	>|
 	>|        public Cmd$CmdName(ReadContext readcontext) : base(readcontext)
 	>|        {
-	~Set VarIndex=1
-	~DoWhile ?$VarName($VarIndex)
-		>|            $VarName($VarIndex) = string.Empty;
-		~AddTo VarIndex+=1	
+	~ForEach vn in VarName
+		>|            $vn = string.Empty;
 	~Loop
 	>|        }
 	>|
 	>|        public override CmdBaseCommand? Run(RunContext rc)
 	>|        {
-	~Set VarIndex=1
-	~DoWhile ?$VarName($VarIndex)
-		>|            string expanded$VarName($VarIndex) = ReplaceVars(rc, $VarName($VarIndex));
-		~AddTo VarIndex+=1	
+	~ForEach vn in VarName
+		>|            string expanded$vn = ReplaceVars(rc, $vn);
 	~Loop
-	>|            // ToDo: Run-Methode ausimplementieren
+	>|            try
+	>|            {
+	>|                // ToDo: Run-Methode ausimplementieren
+	>|            }
+	>|            catch (Exception ex)
+	>|            {
+	>|                rc.SetError(ReadContext, "Verarbeitungfehler",
+	>|                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Dies Ausführung wird abgebrochen."
+	>|                    + $"Variablenwerte:
+	~ForEach vn in VarName
+		~AddText  expanded$vn='{expanded$vn}'
+	~Loop
+	~AddText ");
+	>|                return null;
+	>|            }
 	>|            return NextCommand;
 	>|        }
 	>|    }

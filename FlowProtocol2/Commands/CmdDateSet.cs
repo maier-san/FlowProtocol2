@@ -46,16 +46,16 @@ namespace FlowProtocol2.Commands
                 if (!bOK)
                 {
                     rc.SetError(ReadContext, "Falsches Datumsformat",
-                        $"Die Zeichenkette {expandedValue} konnte nicht als Datum im Format {expandedFormat} interpretiert werden. Dies Ausführung wird abgebrochen.");
+                        $"Die Zeichenkette '{expandedValue}' kann nicht als Datum im Format '{expandedFormat}' interpretiert werden. Die Ausführung wird abgebrochen.");
                     return null;
                 }
-                rc.InternalVars[expandedVarName] = result.ToString("yyyy-MM-dd");
+                rc.InternalVars[expandedVarName] = result.ToString("yyyy-MM-dd HH:mm:ss");
             }
             catch (Exception ex)
             {
                 rc.SetError(ReadContext, "Verarbeitungfehler",
-                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten: {ex.Message}. Dies Ausführung wird abgebrochen. "
-                    + $"Variablenwerte: expandedValue={expandedValue}, expandedFormat={expandedFormat}");
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten: '{ex.Message}'. Die Ausführung wird abgebrochen. "
+                    + $"Variablenwerte: expandedValue='{expandedValue}', expandedFormat='{expandedFormat}'");
                 return null;
             }
             return NextCommand;

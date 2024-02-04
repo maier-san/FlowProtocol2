@@ -2,8 +2,8 @@
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~DateSet <Variable> = <Wert> | <Format>
 ~AddText  interpretiert einen Wert als Datum in einem vorgegebenen Format.
-@Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... konnte nicht als Datum im Format ... interpretiert werden. Dies Ausführung wird abgebrochen.
->>* Verarbeitungfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten: ... . Dies Ausführung wird abgebrochen. Variablenwerte: expandedValue=... expandedFormat=."
+@Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... konnte nicht als Datum im Format ... interpretiert werden. Die Ausführung wird abgebrochen.
+>>* Verarbeitungfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten: ... . Die Ausführung wird abgebrochen. Variablenwerte: expandedValue=... expandedFormat=."
 @Codebeispiel >>_ Das nachfolgende Beispiel Setz einen Wert und addiert zwei mal zwei Wochen drauf.
 >>|...
 ~DateSet gg = 14.02.2024|dd.MM.yyyy

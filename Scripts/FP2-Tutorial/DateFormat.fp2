@@ -1,0 +1,9 @@
+~SetTitle DateFormat-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DateFormat <Variable> = <Wert> | <Format>
+~AddText  gibt einen Datumswert in einem bestimmten Format aus.
+>>_ Der Datumswert muss im internen Format yyyy-MM-dd HH:mm:ss vorliegen.
+@Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ siehe
+~Replace DateSetURL = $BaseURL|DateFormat->DateSet
+~AddLink $DateSetURL | ~DateSet

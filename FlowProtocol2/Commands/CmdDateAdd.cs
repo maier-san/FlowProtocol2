@@ -61,7 +61,7 @@ namespace FlowProtocol2.Commands
                     return null;
                 }
                 DateTime result = baseDate;
-                switch(expandedInterval)
+                switch (expandedInterval)
                 {
                     case "y": result = baseDate.AddYears(ival); break;
                     case "M": result = baseDate.AddMonths(ival); break;

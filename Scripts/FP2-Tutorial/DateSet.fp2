@@ -1,0 +1,18 @@
+~SetTitle DateSet-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DateSet <Variable> = <Wert> | <Format>
+~AddText  interpretiert einen Wert als Datum in einem vorgegebenen Format.
+@Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... kann nicht als Datum im Format ... interpretiert werden. Dies Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel Setz einen Wert, addiert 3 Monate drauf und gibt den Wochentag aus:
+>>|~DateSet d1 = 14.02.2024|dd.MM.yyyy
+>>|@Ausgabe >> d1 = $d1
+>>|~DateAdd d2 = $d1|3|M
+>>|@Ausgabe >> Drei Monate später: d2 = $d2
+>>|~DateFormat d3 = $d2|dddd
+>>|@Ausgabe >> Das ist ein $d3.
+~DateSet d1 = 14.02.2024|dd.MM.yyyy
+@Ausgabe >> d1 = $d1
+~DateAdd d2 = $d1|3|M
+@Ausgabe >> Drei Monate später: d2 = $d2
+~DateFormat d3 = $d2|dddd
+@Ausgabe >> Das ist ein $d3.

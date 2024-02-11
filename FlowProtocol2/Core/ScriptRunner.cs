@@ -7,21 +7,31 @@ namespace FlowProtocol2.Core
         {
             CmdBaseCommand? cmdNext = startcommand;
             int stepcount = 0;
-            while (cmdNext != null && !rc.ExecuteNow && stepcount < rc.CommandStopCounter)
+            ReadContext lastReadContext = new ReadContext("nosourcefile", 0, 0, "nocodeline");
+            try
             {
-                stepcount++;
-                cmdNext = cmdNext.Run(rc);
-                if (cmdNext == null && !rc.ExecuteNow && rc.ReturnStack.Any())
+                while (cmdNext != null && !rc.ExecuteNow && stepcount < rc.CommandStopCounter)
                 {
-                    var ep = rc.ReturnStack.Pop();
-                    cmdNext = ep.EntryCommand;
-                    rc.BaseKey = ep.BaseKey;
+                    stepcount++;
+                    lastReadContext = cmdNext.ReadContext;
+                    cmdNext = cmdNext.Run(rc);
+                    if (cmdNext == null && !rc.ExecuteNow && rc.ReturnStack.Any())
+                    {
+                        var ep = rc.ReturnStack.Pop();
+                        cmdNext = ep.EntryCommand;
+                        rc.BaseKey = ep.BaseKey;
+                    }
+                }
+                if (stepcount >= rc.CommandStopCounter && cmdNext != null)
+                {
+                    rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
+                        $"Die maximale Schrittzahl von {rc.CommandStopCounter} wurde überschritten. Die Ausführung wurde abgebrochen.");
                 }
             }
-            if (stepcount >= rc.CommandStopCounter && cmdNext != null)
+            catch (Exception ex)
             {
-                rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
-                    $"Die maximale Schrittzahl von {rc.CommandStopCounter} wurde überschritten. Die Ausführung wurde abgebrochen.");
+                rc.SetError(lastReadContext, "Unbehandelte Ausnahme bei der Ausführung",
+                    $"Bei der Ausführung trat eine unbehandelte Ausnahme auf: {ex.Message}. Die Ausführung wurde abgebrochen.");
             }
         }
     }

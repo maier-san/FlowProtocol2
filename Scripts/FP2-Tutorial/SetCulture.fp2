@@ -4,8 +4,11 @@
 ~AddText  setzt Kultureinstellungen passend zu dem Länderkürzel, z.B. "de-DE".
 >>_ Diese werden z.B. bei Formatierten Datumsausgaben angewendet, etwa beim Wochentag.
 @Ausnahmen >>* keine
-@Codebeispiel >>_ Das nachfolgende Beispiel ...
->>|...
+@Codebeispiel >>_ Das nachfolgende Beispiel Ändert die Kultureinstellungen auf fr-FR und gibt den Wochentag des 01.01.2024 aus:
+>>|~SetCulture fr-FR
+>>|~DateSet Ref=01.01.2024|dd.MM.yyyy
+>>|~DateFormat WTag=$Ref|dddd
+>>|@Ausgabe >> Le 1er janvier 2024 était un $WTag
 ~SetCulture fr-FR
 ~DateSet Ref=01.01.2024|dd.MM.yyyy
 ~DateFormat WTag=$Ref|dddd

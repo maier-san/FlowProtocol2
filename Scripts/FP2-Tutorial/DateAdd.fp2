@@ -3,6 +3,7 @@
 ~AddCode  ~DateAdd <Variable> = <Basisdatum> | <Wert> | <Intervall>
 ~AddText  addiert auf das Basisdatum eine Zeitspanne hinzu, die über einen Wert und ein Intervall gegeben ist. Der Wert ist eine ganze Zahl und als Intervall sind folgende Zeichen zugelassen:
 >>_ y = Jahre, M = Monate, w = Wochen, d = Tage, h = Stunden, m = Minuten
+>>_ Das Basisdatum muss im internen Format yyyy-MM-dd HH:mm:ss vorliegen.
 @Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.
 >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
 >>* Ungültiger Intervallwert: Der Ausdruck ... entspricht keinem zulässigen Intervallwert y, M, w, d, h, m. Die Ausführung wird abgebrochen.

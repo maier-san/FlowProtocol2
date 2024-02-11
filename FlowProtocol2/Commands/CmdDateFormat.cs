@@ -38,18 +38,17 @@ namespace FlowProtocol2.Commands
         {
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedValue = ReplaceVars(rc, Value);
-            string expandedFormat = ReplaceVars(rc, Format);
-            CultureInfo culture = CultureInfo.CurrentCulture;
+            string expandedFormat = ReplaceVars(rc, Format);            
             try
             {
-                bool bOKBd = DateTime.TryParseExact(expandedValue, "yyyy-MM-dd HH:mm:ss", culture, DateTimeStyles.None, out DateTime result);
+                bool bOKBd = DateTime.TryParseExact(expandedValue, "yyyy-MM-dd HH:mm:ss", rc.Culture, DateTimeStyles.None, out DateTime result);
                 if (!bOKBd)
                 {
                     rc.SetError(ReadContext, "Falsches Datumsformat",
                         $"Die Zeichenkette '{expandedValue}' kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.");
                     return null;
                 }
-                rc.InternalVars[expandedVarName] = result.ToString(expandedFormat);
+                rc.InternalVars[expandedVarName] = result.ToString(expandedFormat, rc.Culture);
             }
             catch (Exception ex)
             {

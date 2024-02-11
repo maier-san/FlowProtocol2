@@ -39,10 +39,9 @@ namespace FlowProtocol2.Commands
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedValue = ReplaceVars(rc, Value);
             string expandedFormat = ReplaceVars(rc, Format);
-            CultureInfo culture = CultureInfo.CurrentCulture;
             try
             {
-                bool bOK = DateTime.TryParseExact(expandedValue, expandedFormat, culture, DateTimeStyles.None, out DateTime result);
+                bool bOK = DateTime.TryParseExact(expandedValue, expandedFormat, rc.Culture, DateTimeStyles.None, out DateTime result);
                 if (!bOK)
                 {
                     rc.SetError(ReadContext, "Falsches Datumsformat",

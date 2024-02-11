@@ -43,10 +43,9 @@ namespace FlowProtocol2.Commands
             string expandedBaseDate = ReplaceVars(rc, BaseDate);
             string expandedValue = ReplaceVars(rc, Value);
             string expandedInterval = ReplaceVars(rc, Interval);
-            CultureInfo culture = CultureInfo.CurrentCulture;
             try
             {
-                bool bOKBd = DateTime.TryParseExact(expandedBaseDate, "yyyy-MM-dd HH:mm:ss", culture, DateTimeStyles.None, out DateTime baseDate);
+                bool bOKBd = DateTime.TryParseExact(expandedBaseDate, "yyyy-MM-dd HH:mm:ss", rc.Culture, DateTimeStyles.None, out DateTime baseDate);
                 if (!bOKBd)
                 {
                     rc.SetError(ReadContext, "Falsches Datumsformat",

@@ -1,5 +1,6 @@
 namespace FlowProtocol2.Commands
 {
+    using System.Globalization;
     using FlowProtocol2.Core;
     public class RunContext
     {
@@ -20,6 +21,7 @@ namespace FlowProtocol2.Commands
         public string BaseKey { get; set; }
         public int LoopStopCounter { get; set; }
         public int CommandStopCounter { get; set; }
+        public CultureInfo Culture {get; set;}
         public RunContext()
         {
             BoundVars = new Dictionary<string, string>();
@@ -36,6 +38,7 @@ namespace FlowProtocol2.Commands
             ReturnStack = new Stack<EntryPoint>();
             ExecuteNow = false;
             BaseKey = string.Empty;
+            Culture = CultureInfo.CurrentUICulture;
             LoopStopCounter = 1000;
             CommandStopCounter = 20000;
         }

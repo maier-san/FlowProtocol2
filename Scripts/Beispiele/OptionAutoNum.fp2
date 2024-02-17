@@ -1,0 +1,9 @@
+?A': Wie wird das Wetter morgen?
+	#g: Gut
+	#s: Schlecht
+?A': Wie wird das Wetter übermorgen?
+	#g: Gut
+	#s: Schlecht
+?A': Wie wird das Wetter überübermorgen?
+	#g: Gut
+	#s: Schlecht

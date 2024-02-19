@@ -1,0 +1,26 @@
+~SetTitle DynamicOptionGroup-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DynamicOptionGroup <Key>: <Variable>; <Promt>
+~AddText  erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.
+	>>_ Im Unterschied zum
+~AddCode  ?
+~AddText -Befehl wird die Auswahlliste hier dynamisch aus dem Feld der angegebenen Variablen erzeugt, wobei die erste Option mit
+~AddCode  <Variable>(1)
+~AddText , die zweite mit
+~AddCode  <Variable>(2)
+~AddText , usw. dargestellt wird. 
+>>_ Das Ergebnis der Auswahl ist der Index der ausgewählten Option. 
+>>_ Der Schlüssel der Optiongruppe kann wie beim
+~AddCode  ?
+~AddText -Befehl mit
+~AddCode  '
+~AddText  automatisch durchnummeriert werden.
+>>_ Enthält die Variable keine indizierten Werte, wird der Befehl übersprungen.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt eine Menge vo Auswahlwerten über den Split-Befehl und gibt diese als Auswahlmöglichkeit. Die gewählte Option wird ausgegeben:
+>>|~Split Auswahl=Hallo Welt;Aloah Welt;Hi Welt|;
+>>|~DynamicOptionGroup S:Auswahl;Wie willst du die Welt begrüßen?
+>>|@Ausgabe >> $Auswahl($S)
+~Split Auswahl=Hallo Welt;Aloah Welt;Hi Welt|;
+~DynamicOptionGroup S:Auswahl;Wie willst du die Welt begrüßen?
+@Ausgabe >> $Auswahl($S)

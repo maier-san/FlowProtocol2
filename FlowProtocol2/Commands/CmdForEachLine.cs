@@ -69,7 +69,7 @@ namespace FlowProtocol2.Commands
         {
             if (!Initialized)
             {
-                string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath);
+                string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath).Replace('|', Path.DirectorySeparatorChar);
                 string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
                 if (!fileexists)
                 {

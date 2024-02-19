@@ -58,7 +58,7 @@ namespace FlowProtocol2.Commands
             {
                 if (InputIndex == 0)
                 {
-                    InputIndex = GetPreviousCommands<CmdOptionGroup>(c => true, c => false).Count() + 1;
+                    InputIndex = GetPreviousCommands<CmdInputBaseCommand>(c => true, c => false).Count + 1;
                 }
                 expandedKey = expandedKey.Replace("'", "_" + InputIndex.ToString());
             }

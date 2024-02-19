@@ -1,8 +1,8 @@
 ~SetTitle OptionGroup-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ?<Schlüssel>:<Anzeigetext>
-~AddText  erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.
->>_ Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
+~AddText  erzeugt eine Abfrage mit mehreren Optionen, von der genau eine ausgewählt werden kann.
+>>_ Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
 >>_ Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des '-Zeichens automatisch durchnummeriert werden.
 >>_ Zusätzlich können mit den Befehlen
 ~AddCode  ~AddHelpLine

@@ -1,0 +1,17 @@
+~SetInputSection Abschnitt 1
+?F1: Frage 1
+	#j: Ja
+	#n: Nein
+~SetInputSection Abschnitt 2
+?F2: Frage 2
+	#j: Ja		
+		?F21: Frage 2.1
+			#j: Ja
+			#n: Nein		
+	#n: Nein
+~Execute
+~SetInputSection Abschnitt 3
+?F3: Frage 3
+	#j: Ja
+	#n: Nein
+~Execute

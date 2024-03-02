@@ -8,3 +8,5 @@
 >>|@Ausgabe >> $neuerText
 ~Replace neuerText = Ich mag Äpfel und Birnen|Äpfel->Schokolade
 @Ausgabe >> $neuerText
+~Replace Test2 = Bereich 1, xxx|, xxx->BBB
+@Ausgabe >> Test2=$Test2

@@ -77,6 +77,7 @@ namespace FlowProtocol2.Commands
                     c => c.Indent == firstOptionValue.Indent,
                     c => c.Indent < firstOptionValue.Indent);
             int optioncount = 0;
+            string selectedOptionPromt = string.Empty;
             foreach (var idxo in allOptions)
             {
                 IMOptionValue ov = new IMOptionValue(ogroup);
@@ -105,7 +106,8 @@ namespace FlowProtocol2.Commands
             }
             if (SelectedOptionCommand != null)
             {
-                rc.GivenKeys.Add(expandedKey);
+                rc.GivenKeys.Add(expandedKey);                
+                selectedOptionPromt = SelectedOptionCommand.Promt;
             }
             else
             {
@@ -116,6 +118,8 @@ namespace FlowProtocol2.Commands
             if (rc.BoundVars.ContainsKey(expandedKey))
             {
                 rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
+                rc.InternalVars[$"{plainKey}_OptionGroupPromt"] = ogroup.Promt;
+                rc.InternalVars[$"{plainKey}_SelectedOptionText"] = selectedOptionPromt;
             }
             return NextCommand;
         }

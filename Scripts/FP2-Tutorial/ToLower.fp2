@@ -1,0 +1,6 @@
+~SetTitle ToLower-Befehl
+@Beschreibung >>_ Der Befehl ~ToLower <Variable> = <Text> wandelt einen Text in Kleinbuchstaben um.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ siehe
+~Replace ToUpperURL = $BaseURL|ToLower->ToUpper
+~AddLink $ToUpperURL | ~ToUpper

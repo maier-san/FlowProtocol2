@@ -269,5 +269,11 @@ namespace FlowProtocol2.Commands
             rc.GivenKeys.Add("_rseed");
             return rseed;
         }
+
+        protected string BoolString(bool bvalue)
+        {
+            if (bvalue) return "true";
+            return "false";
+        }
     }
 }

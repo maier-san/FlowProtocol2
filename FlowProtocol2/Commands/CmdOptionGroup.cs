@@ -106,7 +106,7 @@ namespace FlowProtocol2.Commands
             }
             if (SelectedOptionCommand != null)
             {
-                rc.GivenKeys.Add(expandedKey);                
+                rc.GivenKeys.Add(expandedKey);
                 selectedOptionPromt = SelectedOptionCommand.Promt;
             }
             else

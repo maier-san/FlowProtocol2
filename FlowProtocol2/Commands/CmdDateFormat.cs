@@ -53,7 +53,7 @@ namespace FlowProtocol2.Commands
             catch (Exception ex)
             {
                 rc.SetError(ReadContext, "Verarbeitungfehler",
-                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Dies Ausführung wird abgebrochen."
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
                     + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedValue='{expandedValue}' expandedFormat='{expandedFormat}'");
                 return null;
             }

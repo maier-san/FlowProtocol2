@@ -19,7 +19,7 @@ namespace FlowProtocol2.Commands
         {
             CmdSet cmd = new CmdSet(rc);
             cmd.VarName = m.Groups[1].Value.Trim();
-            cmd.Text = m.Groups[2].Value;
+            cmd.Text = m.Groups[2].Value.Trim();
             return cmd;
         }
 

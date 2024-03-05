@@ -1,0 +1,17 @@
+~SetTitle FileExists-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~FileExists <Variable> = <Dateipfad>
+~AddText  prüft, ob eine entsprechende Datei existiert und gibt den Wahrheitswert in der Variablen zurück.
+>>_ Der Dateipfad kann absolut oder relativ angegeben werden.
+>>_ Die Funktion ist beschränkt auf die Dateien, die innerhalb des FlowProtocol-Skriptverzeichnisses liegen.
+>>_ Anwendungsfall ist zum Beispiel ein Skript, das zur Erstellung von weiteren Skript oder Datendateien anleitet und dazu unterscheiden will, ob diese schon existieren.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~FileExists w1=If.fp2
+>>|~FileExists w2=Tralala.fp2
+>>|@Ausgabe >> If.fp2: $w1
+>>|@Ausgabe >> Tralala.fp2: $w2
+~FileExists w1=If.fp2
+~FileExists w2=Tralala.fp2
+@Ausgabe >> If.fp2: $w1
+@Ausgabe >> Tralala.fp2: $w2

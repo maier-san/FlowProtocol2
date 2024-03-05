@@ -64,7 +64,7 @@
 	>|            catch (Exception ex)
 	>|            {
 	>|                rc.SetError(ReadContext, "Verarbeitungfehler",
-	>|                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Dies Ausführung wird abgebrochen."
+	>|                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
 	>|                    + $"Variablenwerte:
 	~ForEach vn in VarName
 		~AddText  expanded$vn='{expanded$vn}'
@@ -104,5 +104,5 @@
 	># Beispielcode
 >> Fertiges Beispiel in Codeblock übernehmen
 >> Speichern unter
-	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
+	>|S:\Intern\09_ET\FP2-Skripte\FP2-Tutorial\$CmdName.fp2
 

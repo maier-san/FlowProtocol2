@@ -43,10 +43,7 @@ namespace FlowProtocol2.Commands
                 return null;
             }
             if (Negation == "!") evaluation = !evaluation;
-            if (evaluation)
-                rc.InternalVars[expandedVarName] = "true";
-            else
-                rc.InternalVars[expandedVarName] = "false";
+            rc.InternalVars[expandedVarName] = BoolString(evaluation);
             return NextCommand;
         }
     }

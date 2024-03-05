@@ -1,0 +1,14 @@
+~SetTitle ToUpper-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ToUpper <Variable> = <Text>
+~AddText  wandelt einen Text in Großbuchstaben um.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel wandelt den Text "Hallo Welt 123 !" in Großbuchstaben und in Kleinbuchstaben um.
+>>|~ToUpper v = Hallo Welt 123 !
+>>|~ToLower w = Hallo Welt 123 !
+>>|@Ausgabe >> v = $v
+>>|@Ausgabe >> w = $w
+~ToUpper v = Hallo Welt 123 !
+~ToLower w = Hallo Welt 123 !
+@Ausgabe >> v = $v
+@Ausgabe >> w = $w

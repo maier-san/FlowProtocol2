@@ -1,0 +1,22 @@
+~SetTitle ListFiles-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ListFiles <Variable> = <Skriptpfad>[; Pattern=<Suchmuster>]
+~AddText  listet alle Dateinamen im Skriptpfad auf, die dem Suchmuster entsprechen. Das Ergebnis wird in dem zum Variablenname gehörenden Feld zurückgegeben, d.h.
+~AddCode  <Variable>(1)
+~AddText  enthält den Dateinamen der ersten Datei,
+~AddCode  <Variable>(2)
+~AddText  die der zweiten usw. In
+~AddCode  <Variable>(0)
+~AddText  wird die Anzahl der gefundenen Dateien zurückgegeben.
+@Ausnahmen >>* Verzeichnis nicht gefunden: Das Verzeichnis '...' wurde nicht gefunden. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel listet alle Skripte im Beispielordner auf:
+>>|~ListFiles TSkripte = .; Pattern=*.fp2
+>>|@Ausgabe >>_ Die Liste aller Beispielskripte:
+>>|~ForEach f in TSkripte
+>>|	>* $f
+>>|~Loop
+~ListFiles TSkripte = .; Pattern=*.fp2
+@Ausgabe >>_ Die Liste aller $TSkripte(0) Beispielskripte:
+~ForEach f in TSkripte
+	>* $f
+~Loop

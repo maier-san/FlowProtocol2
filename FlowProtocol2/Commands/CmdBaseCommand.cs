@@ -235,9 +235,8 @@ namespace FlowProtocol2.Commands
         /// </summary>
         /// <param name="rc">RunContext</param>
         /// <param name="pathorname">Ein Dateiname oder ein mit ".\" beginnender Teilpfad</param>
-        /// <param name="fileexists">Gibt zurück, ob die Datein existiert.</param>
         /// <returns>Der expandierte Pfad</returns>
-        protected string ExpandPath(RunContext rc, string pathorname, out bool fileexists)
+        protected string ExpandPath(RunContext rc, string pathorname)
         {
             string ret = string.Empty;
             if (pathorname.StartsWith("." + Path.DirectorySeparatorChar))
@@ -248,6 +247,19 @@ namespace FlowProtocol2.Commands
             {
                 ret = $"{rc.CurrentScriptPath}{Path.DirectorySeparatorChar}{pathorname}";
             }
+            return ret;
+        }
+
+        /// <summary>
+        /// Expandiert einen Dateinamen oder Teilpfad zu einem absoluten Pfad.
+        /// </summary>
+        /// <param name="rc">RunContext</param>
+        /// <param name="pathorname">Ein Dateiname oder ein mit ".\" beginnender Teilpfad</param>
+        /// <param name="fileexists">Gibt zurück, ob die Datein existiert.</param>
+        /// <returns>Der expandierte Pfad</returns>
+        protected string ExpandPath(RunContext rc, string pathorname, out bool fileexists)
+        {
+            string ret = ExpandPath(rc, pathorname);
             fileexists = false;
             System.IO.FileInfo fi = new System.IO.FileInfo(ret);
             if (fi != null && fi.Exists) fileexists = true;
@@ -268,6 +280,12 @@ namespace FlowProtocol2.Commands
             }
             rc.GivenKeys.Add("_rseed");
             return rseed;
+        }
+
+        protected string BoolString(bool bvalue)
+        {
+            if (bvalue) return "true";
+            return "false";
         }
     }
 }

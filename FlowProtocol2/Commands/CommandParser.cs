@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
         public Func<ReadContext, Match, CmdBaseCommand> CommandCreator;
         public CommandParser(string lineexpressionstring, Func<ReadContext, Match, CmdBaseCommand> commandcreator)
         {
-            LineExpression = new Regex(lineexpressionstring);
+            LineExpression = new Regex(lineexpressionstring, RegexOptions.Compiled);
             CommandCreator = commandcreator;
         }
     }

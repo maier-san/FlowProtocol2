@@ -2,6 +2,17 @@
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~AddHelpLink <URL> | <Anzeigezext>
 ~AddText  ergänzt einen Link in der aktuellen Hilfszeile unterhalb der letzten Eingabeaufforerung.
+>>_ Der Link wird ausschließlich mit dem Anzeigetext dargestellt, wenn 
+	> der Anfang der URL mit einem Eintrag der in der Konfiguration hinterlegten Whitelist (Datei appsettings.json, Eigenschaft
+		~AddCode  LinkWhitelist
+		~AddText ) übereinstimmt oder
+	> die Whitelist leer ist oder
+	> auf ein anderes FlowProtocol-Skript verwiesen wird oder
+	> der Anzeigetext den Link als Text enthält (ggf. auch ohne "https://").
+>>_ Anderenfalls wird die URL dem Anzeigetext in Klammern nachgestellt.
+>>_ Damit ist eine Möglichkeit gegeben, die reduzierte Darstellung von Links auf eine vorgegebene Menge von vertrauenswürdigen Domänen oder Adressen zu begrenzen,
+	__ so dass die Einbringung von potentiell schadhaften Links für den Skriptanwender erkennbar ist.
+	__ Auch wenn eine Manipulation von Links in den Skripten nur bei Schreibzugriff auf das Skriptverzeichnis möglich ist, sollte von dieser Form der Absicherung Gebrauch gemacht werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ siehe
 ~Replace InputURL = $BaseURL|AddHelpLink->Input

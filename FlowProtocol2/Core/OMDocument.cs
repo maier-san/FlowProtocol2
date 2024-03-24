@@ -28,7 +28,7 @@ namespace FlowProtocol2.Core
         public List<OMTextLine> TextLines { get; set; }
         public string NumerationType { get; set; }
         public bool Closed { get; set; }
-        public string  ID { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// Gibt den im Block enthaltenen Text als String zurück.
@@ -75,6 +75,20 @@ namespace FlowProtocol2.Core
 
         public string Text { get; set; }
         public string TrimText => Text.Trim();
+        public string LinkText
+        {
+            get
+            {
+                if (IsOnWhitelist || (!string.IsNullOrWhiteSpace(Link) && Text.Contains(Link.Replace("https://", string.Empty))))
+                {
+                    return Text.Trim();
+                }
+                else
+                {
+                    return $"{Text.Trim()} ({Link})";
+                }
+            }
+        }
         public string LeadingSpace
         {
             get
@@ -83,11 +97,13 @@ namespace FlowProtocol2.Core
             }
         }
         public string Link { get; set; }
+        public bool IsOnWhitelist { get; set; }
         public bool Codeformat { get; set; }
         public OMTextElement()
         {
             Text = string.Empty;
             Link = string.Empty;
+            IsOnWhitelist = false;
         }
     }
 }

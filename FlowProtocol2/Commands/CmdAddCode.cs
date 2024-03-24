@@ -29,7 +29,7 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string textexpanded = ReplaceVars(rc, Text);
-            rc.DocumentBuilder.AddNewTextElement(textexpanded, string.Empty, true);
+            rc.DocumentBuilder.AddNewTextElement(textexpanded, string.Empty, true, false);
             return NextCommand;
         }
     }

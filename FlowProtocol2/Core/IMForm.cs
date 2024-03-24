@@ -58,9 +58,9 @@ namespace FlowProtocol2.Core
         {
             CurrentHelpInfoLine = new IMHelpInfoLine();
             HelpInfoLines.Add(CurrentHelpInfoLine);
-            AddHelpText(text, string.Empty);
+            AddHelpText(text, string.Empty, false);
         }
-        public void AddHelpText(string text, string link)
+        public void AddHelpText(string text, string link, bool isonwhitelist)
         {
             if (!string.IsNullOrEmpty(text))
             {
@@ -72,6 +72,7 @@ namespace FlowProtocol2.Core
                 IMHelpTextElement newTextElement = new IMHelpTextElement();
                 newTextElement.Text = text;
                 newTextElement.Link = link;
+                newTextElement.IsOnWhitelist = isonwhitelist;
                 CurrentHelpInfoLine.TextElements.Add(newTextElement);
             }
         }
@@ -90,6 +91,20 @@ namespace FlowProtocol2.Core
     {
         public string Text { get; set; }
         public string TrimText => Text.Trim();
+        public string LinkText
+        {
+            get
+            {
+                if (IsOnWhitelist || (!string.IsNullOrWhiteSpace(Link) && Text.Contains(Link.Replace("https://", string.Empty))))
+                {
+                    return Text.Trim();
+                }
+                else
+                {
+                    return $"{Text.Trim()} ({Link})";
+                }
+            }
+        }
         public string LeadingSpace
         {
             get
@@ -98,10 +113,12 @@ namespace FlowProtocol2.Core
             }
         }
         public string Link { get; set; }
+        public bool IsOnWhitelist { get; set; }
         public IMHelpTextElement() : base()
         {
             Text = string.Empty;
             Link = string.Empty;
+            IsOnWhitelist = false;
         }
     }
 }

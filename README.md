@@ -18,5 +18,8 @@ Diese Einfachheit spiegelt sich auch auf technischer Ebene wieder. Als einzige s
 *FlowProtocol 2* ist eine umfangreiche Neuentwicklung von *FlowProtocol*, das durch zahlreiche Erweiterungen und nachträgliche Ergänzungen immer wieder an Grenzen gekommen ist, insbesonderen aufgrund der gewachsenen Architektur. In *FlowProtocol 2* konnten die zahlreichen dabei gewonnenen Erfahrungen und Ideen von Anfang an berücksichtigt und konsequent umgesetzt werden, was sich auch in einer Überarbeitung der Sprache niedergeschlagen hat. Die direkte Weiterverwendung bestehender *FlowProtocol*-Vorlagen als *FlowProtocol 2*-Skripte ist daher nicht möglich, dennoch sind viele Befehle identisch und die Anpassung sollte meist ohne viel Aufwand möglich sein.
 
 ## Konfiguration
-Die Konfiguration der Anwendung besteht nur darin, ein Verzeichnis für die Skripte einzurichten und den Pfad darauf in die Eigenschaft "ScriptPath" in der Datei appsettings.json einzutragen.
+Die Konfiguration der Anwendung besteht primär darin, ein Verzeichnis für die Skripte einzurichten und den Pfad darauf in die Eigenschaft "ScriptPath" in der Datei appsettings.json einzutragen.
+
+Zusätzlich besteht die Möglichkeit, über die Eigenschaft "LinkWhitelist" in der Datei appsettings.json eine Liste von Domänen und Adressen einzutragen, die als vertrauenswürdig eingestuft werden. Befinden sich Einträge in dieser Liste, so werden Links in den Skripten nur dann allein über den Anzeigetext dargestellt, wenn einer dieser Einträge mit dem Anfang der URL übereinstimmt. Andernfalls wird die URL dem Anzeigetext in Klammern nachgestellt ist so für den Anwender unmittelbar erkennbar.
+
 Das zum Projekt gehörende Verzeichnis Scripts\FP2-Tutorial enthält Skripte für alle zur Sprache gehörenden Befehle, in denen diese an einem kleinen Beispiel kurz erklärt werden. Gerade zum Einlernen in die Syntax empfiehlt es sich, das Tutorial zu den eigenen Skripten hinzuzufügen.

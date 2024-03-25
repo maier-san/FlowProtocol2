@@ -12,7 +12,7 @@
                         <li>
                             @foreach (var hte in hil.TextElements)
                             {
-                                @if (!string.IsNullOrEmpty(hte.Link)){@hte.LeadingSpace<a href="@hte.Link" target="_blank">@hte.TrimText</a>}
+                                @if (!string.IsNullOrEmpty(hte.Link)){@hte.LeadingSpace<a href="@hte.Link" target="_blank">@hte.LinkText</a>}
                                 else {@hte.Text}
                             }
                         </li>

@@ -42,8 +42,9 @@ namespace FlowProtocol2.Commands
             {
                 string linkexpanded = ReplaceVars(rc, Link);
                 string textexpanded = ReplaceVars(rc, Text);
+                bool isonwhitelist = rc.IsOnWhitelist(linkexpanded);
                 if (string.IsNullOrWhiteSpace(textexpanded)) textexpanded = linkexpanded;
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(textexpanded, linkexpanded);
+                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(textexpanded, linkexpanded, isonwhitelist);
             }
             return NextCommand;
         }

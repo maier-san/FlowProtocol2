@@ -21,12 +21,13 @@ namespace FlowProtocol2.Pages.FlowPages
 
         public RunModel(IConfiguration configuration)
         {
-            ScriptPath = configuration["ScriptPath"];
+            ScriptPath = configuration["ScriptPath"];                    
             ScriptFilePath = string.Empty;
             ScriptName = string.Empty;
             ScriptBaseURL = string.Empty;
             BoundVars = new Dictionary<string, string>();
             RunContext = new RunContext();
+            RunContext.LinkWhitelist = configuration.GetSection("LinkWhitelist").Get<List<string>>();
         }
         public IActionResult OnGet(string relativepath)
         {
@@ -48,7 +49,8 @@ namespace FlowProtocol2.Pages.FlowPages
             var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);
             ScriptRunner sr = new ScriptRunner();
             RunContext.BoundVars = BoundVars;
-            RunContext.MyBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
+            RunContext.MyDomain =this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host;
+            RunContext.MyBaseURL = RunContext.MyDomain + this.HttpContext.Request.Path;
             RunContext.MyResultURL = RunContext.MyBaseURL + this.HttpContext.Request.QueryString;
             sr.RunScript(RunContext, sinfo.StartCommand);
             return Page();

@@ -70,7 +70,7 @@ namespace FlowProtocol2.Core
             }
             if (CurrentTextline != null)
             {
-                AddNewTextElement(text, string.Empty, false);
+                AddNewTextElement(text, string.Empty, false, false);
             }
         }
 
@@ -80,13 +80,14 @@ namespace FlowProtocol2.Core
         /// <param name="text">Der Text der dargestellt werden soll.</param>
         /// <param name="link">URL eines Links, falls der Text als Link dargestellt werden soll. string.Empty falls nicht.</param>
         /// <param name="codeformat">True, wenn das Textelement als Code formatiert werden soll.</param>
-        public void AddNewTextElement(string text, string link, bool codeformat)
+        public void AddNewTextElement(string text, string link, bool codeformat, bool isonwhitelist)
         {
             if (CurrentTextline != null && !string.IsNullOrEmpty(text))
             {
                 OMTextElement newtextelement = new OMTextElement();
                 newtextelement.Text = text;
                 newtextelement.Link = link;
+                newtextelement.IsOnWhitelist = isonwhitelist;
                 newtextelement.Codeformat = codeformat;
                 CurrentTextline.TextElements.Add(newtextelement);
             }

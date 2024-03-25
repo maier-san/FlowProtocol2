@@ -3,6 +3,6 @@
 @if (@Model != null)
 {
     @if (Model.Codeformat){@Model.LeadingSpace<code>@Model.TrimText</code>}
-    else if (!string.IsNullOrEmpty(Model.Link)){@Model.LeadingSpace<a href="@Model.Link" target="_blank">@Model.TrimText</a>}
+    else if (!string.IsNullOrEmpty(Model.Link)){@Model.LeadingSpace<a href="@Model.Link" target="_blank">@Model.LinkText</a>}
     else {@Model.Text}
 }

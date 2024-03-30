@@ -1,0 +1,16 @@
+?A1: Frage 1
+	#a: Antwort a
+		@Ausgabe >> Frage 1 - Antwort a
+		?A1a: Frage 1a
+			#a: Antwort a
+				@Ausgabe >> Frage 1a - Antwort a
+			#b: Antwort b
+				@Ausgabe >> Frage 1a - Antwort b
+		~Execute
+	#b: Antwort b
+		@Ausgabe >> Frage 1 - Antwort b
+?A2: Frage 2
+	#a: Antwort a
+		@Ausgabe >> Frage 2 - Antwort a
+	#b: Antwort b
+		@Ausgabe >> Frage 2 - Antwort b

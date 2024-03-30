@@ -53,6 +53,14 @@ namespace FlowProtocol2.Pages.FlowPages
             RunContext.MyBaseURL = RunContext.MyDomain + this.HttpContext.Request.Path;
             RunContext.MyResultURL = RunContext.MyBaseURL + this.HttpContext.Request.QueryString;
             sr.RunScript(RunContext, sinfo.StartCommand);
+            
+            // Füge die restlichen gesetzten Parameter als gegeben dazu:
+            RunContext.GivenKeys.AddRange(
+                RunContext.BoundVars
+                .Where(x => !string.IsNullOrEmpty(x.Value) && !RunContext.GivenKeys.Contains(x.Key))
+                .Select(x => x.Key)
+                .ToList());
+
             return Page();
         }
 

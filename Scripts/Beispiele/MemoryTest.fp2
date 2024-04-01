@@ -1,3 +1,4 @@
+@Ausgabe >> Beim Start: A1=$A1, A2=$A2
 ?A1: Frage 1
 	#a: Antwort a
 		@Ausgabe >> Frage 1 - Antwort a

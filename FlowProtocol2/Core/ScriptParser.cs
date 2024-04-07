@@ -72,6 +72,8 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdToLower.GetComandParser());
             CmdParser.Add(CmdFileExists.GetComandParser());
             CmdParser.Add(CmdListFiles.GetComandParser());
+            CmdParser.Add(CmdEncryptText.GetComandParser());
+            CmdParser.Add(CmdDecryptText.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 

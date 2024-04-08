@@ -1,0 +1,14 @@
+~SetTitle EncryptText-Befehl
+@Beschreibung >>_ Der Befehl 
+~AddCode  ~EncryptText <Variable> = <Text> | <Schlüssel>
+~AddText  verschlüsselt einen Text mit dem angegebenen Schlüssel.
+@Ausnahmen >>* Schlüssel ist leer: Der für die Verschlüsselung angegebene Schlüssel darf nicht leer sein. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~EncryptText CC=Hallo Welt|Passwort1234
+>>|~DecryptText DD=$CC|Passwort1234
+>>|@Ausgabe >> CC=$CC
+>>|>> DD=$DD
+~EncryptText CC=Hallo Welt|Passwort1234
+~DecryptText DD=$CC|Passwort1234
+@Ausgabe >> CC=$CC
+>> DD=$DD

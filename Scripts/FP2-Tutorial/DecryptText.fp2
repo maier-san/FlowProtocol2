@@ -1,0 +1,8 @@
+~SetTitle DecryptText-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DecryptText <Variable> = <Code> | <Schlüssel>
+~AddText  entschlüsselt einen Text mit dem angegebenen Schlüssel.
+@Ausnahmen >>* Schlüssel ist leer: Der für die Entschlüsselung angegebene Schlüssel darf nicht leer sein. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ siehe
+~Replace EncryptTextURL = $BaseURL|DecryptText->EncryptText
+~AddLink $EncryptTextURL | ~EncryptText

@@ -1,0 +1,4 @@
+~End
+~DefineSub HalloLib
+	>> Hallo Lib! (BaseKey ist $BaseKey)
+~Return

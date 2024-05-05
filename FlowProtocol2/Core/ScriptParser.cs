@@ -33,6 +33,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdUrlEncode.GetComandParser());
             CmdParser.Add(CmdReplace.GetComandParser());
             CmdParser.Add(CmdCalculate.GetComandParser());
+            CmdParser.Add(CmdCalculateExpression.GetComandParser());
             CmdParser.Add(CmdRound.GetComandParser());
             CmdParser.Add(CmdRandom.GetComandParser());
             CmdParser.Add(CmdEndParagraph.GetComandParser());
@@ -73,7 +74,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdFileExists.GetComandParser());
             CmdParser.Add(CmdListFiles.GetComandParser());
             CmdParser.Add(CmdEncryptText.GetComandParser());
-            CmdParser.Add(CmdDecryptText.GetComandParser());
+            CmdParser.Add(CmdDecryptText.GetComandParser());            
             // Hier weitere Parser hinzufügen
         }
 

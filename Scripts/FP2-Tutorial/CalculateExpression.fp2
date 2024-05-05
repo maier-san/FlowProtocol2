@@ -1,0 +1,16 @@
+~SetTitle CalculateExpression-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~CalculateExpression <Variable> = <Ausdruck>
+~AddText  berechnet einen mathematischen Ausdruck, der aus den vier Grundrechenarten in einer beliebigen Klammerung besteht und weist das Ergebnis einer Variablen zu.
+@Ausnahmen >>* Division durch null: Beim Durchführen einer Berechnung kam es zu einer Division durch null. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel berechnet zwei Werte X und Y:
+>>|~Set A = 33
+>>|~CalculateExpression X=(-2,5 + 1,57)*(1,3 - 0,4)/18
+>>|~CalculateExpression Y=(2 * ($A +  -3 * (44 + 55)))
+>>|@Ausgabe >> X = $X
+>>|	>> Y = $Y
+~Set A = 33
+~CalculateExpression X=(-2,5 + 1,57)*(1,3 - 0,4)/18
+~CalculateExpression Y=(2 * ($A +  -3 * (44 + 55)))
+@Ausgabe >> X = $X
+	>> Y = $Y

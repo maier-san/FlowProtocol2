@@ -1,16 +1,58 @@
 ~SetTitle CalculateExpression-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~CalculateExpression <Variable> = <Ausdruck>
-~AddText  berechnet einen mathematischen Ausdruck, der aus den vier Grundrechenarten in einer beliebigen Klammerung besteht und weist das Ergebnis einer Variablen zu.
-@Ausnahmen >>* Division durch null: Beim Durchführen einer Berechnung kam es zu einer Division durch null. Die Ausführung wird abgebrochen.
-@Codebeispiel >>_ Das nachfolgende Beispiel berechnet zwei Werte X und Y:
+~AddText  berechnet einen mathematischen Ausdruck, der aus den vier Grundrechenarten 
+~AddCode  +
+~AddText ,
+~AddCode  -
+~AddText  ,
+~AddCode  *
+~AddText  und
+~AddCode  /
+~AddText , dem
+~AddCode  ^
+~AddText -Operator für die Potentenzierung, dem
+~AddCode  %
+~AddText -Operator für Modulo-Rechnung und den Operatoren
+~AddCode  sqrt
+~AddText ,
+~AddCode  sin
+~AddText ,
+~AddCode  cos
+~AddText ,
+~AddCode  tan
+~AddText ,
+~AddCode  exp
+~AddText  und
+~AddCode  ln
+~AddText  in einer beliebigen Klammerung besteht und weist das Ergebnis einer Variablen zu.
+>>_ Es gilt die Punkt-vor-Strich-Rechnung. Die Argumente der trigonometrischen Funktionen werden im Bogenmaß interpretiert.
+@Ausnahmen >>* Division durch null: Beim Durchführen einer Berechnung kam es zu einer Division durch null im Ausdruck .... Die Ausführung wird abgebrochen.
+	>>* Modulo-Rechnung durch null: Beim Durchführen einer Berechnung kam es zu einer Modulo-Rechnung durch null im Ausdruck .... Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel berechnet mehrere Ausdrücke:
 >>|~Set A = 33
->>|~CalculateExpression X=(-2,5 + 1,57)*(1,3 - 0,4)/18
->>|~CalculateExpression Y=(2 * ($A +  -3 * (44 + 55)))
->>|@Ausgabe >> X = $X
+>>|~CalculateExpression U = 72 % 7
+>>|~CalculateExpression V = (-2,5 + 1,57)*(1,3 - 0,4)/18
+>>|~CalculateExpression W = (2 * ($A +  -3 * (44 + 55)))
+>>|~CalculateExpression X = 1/98765432+3/9998887771
+>>|~CalculateExpression Y = 2^3*16^(1/2)+7 
+>>|~CalculateExpression Z = exp(sin(1/4))
+>>|@Ausgabe >> U = $U
+>>|	>> V = $V
+>>|	>> W = $W
+>>|	>> X = $X
 >>|	>> Y = $Y
+>>|	>> Z = $Z	
 ~Set A = 33
-~CalculateExpression X=(-2,5 + 1,57)*(1,3 - 0,4)/18
-~CalculateExpression Y=(2 * ($A +  -3 * (44 + 55)))
-@Ausgabe >> X = $X
+~CalculateExpression U = 72 % 7
+~CalculateExpression V = (-2,5 + 1,57)*(1,3 - 0,4)/18
+~CalculateExpression W = (2 * ($A +  -3 * (44 + 55)))
+~CalculateExpression X = 1/98765432+3/9998887771
+~CalculateExpression Y = 2^3*16^(1/2)+7 
+~CalculateExpression Z = exp(sin(1/4))
+@Ausgabe >> U = $U
+	>> V = $V
+	>> W = $W
+	>> X = $X
 	>> Y = $Y
+	>> Z = $Z	

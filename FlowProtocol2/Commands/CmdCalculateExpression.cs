@@ -33,27 +33,66 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedVarName = ReplaceVars(rc, VarName);
-            string expandedExpression = ReplaceVars(rc, Expression).Replace(" ", string.Empty);
+            // Leerzeichen innen entfernen und außen dazu, damit alle regulären Ausdrücke richtig arbeiten können.
+            string expandedExpression = " " + ReplaceVars(rc, Expression).Replace(" ", string.Empty) + " ";
+            string lastexpandedExpression = string.Empty;
             try
             {
+                // Dezimaltrennzeichen ermitteln
                 string dezTrenn = (1.1).ToString().Replace("1", string.Empty);
-                string RZahl = @"[\-]?[0-9]+\" + dezTrenn + @"?[0-9]*";
-                Regex MExpr = new Regex($"({RZahl})([\\*\\/])({RZahl})");
-                Regex AExpr = new Regex($"[^\\*\\/]({RZahl})([\\+\\-])({RZahl})[^\\*\\/]");
+                // Ausdruck für eine Zahl einschließlich der Möglichkeit der Exponentialdarstellung
+                string RZahl = @"[\-]?[0-9]+\" + dezTrenn + @"?[0-9]*(?:E\-?[0-9][0-9])?";
+                // Operator-Ausdruck
+                Regex OExpr = new Regex($"(sqrt|sin|cos|tan|exp|ln)\\(({RZahl})\\)");
+                // Zahl in Klammern
                 Regex KExpr = new Regex($"\\(({RZahl})\\)");
+                // Potenzierung
+                Regex EExpr = new Regex($"({RZahl})(\\^)({RZahl})");
+                // Punkt-Ausdruck mit "*", "/" oder "%" ohne angrenzende Potenzierung
+                Regex MExpr = new Regex($"[^\\^0-9]({RZahl})([\\*\\/%])({RZahl})[^\\^0-9]");
+                // Strich-Ausdruck mit "+" oder "-" ohne angrenzende Potenzierung oder Punkt-Rechnung
+                Regex AExpr = new Regex($"[^\\^\\*\\/%0-9]({RZahl})([\\+\\-])({RZahl})[^\\^\\*\\/%0-9]");
                 Match? fm = null;
                 do
                 {
                     fm = null;
+                    string search = string.Empty;
                     string erg = string.Empty;
-                    if (KExpr.IsMatch(expandedExpression))
+                    if (OExpr.IsMatch(expandedExpression))
+                    {
+                        fm = OExpr.Match(expandedExpression);
+                        search = fm.Groups[0].Value;
+                        (string fname, double w1) = GetFunctionValues(fm);
+                        switch (fname)
+                        {
+                            case "sqrt": erg = (Math.Sqrt(w1)).ToString(); break;
+                            case "sin": erg = (Math.Sin(w1)).ToString(); break;
+                            case "cos": erg = (Math.Cos(w1)).ToString(); break;
+                            case "tan": erg = (Math.Tan(w1)).ToString(); break;
+                            case "exp": erg = (Math.Exp(w1)).ToString(); break;
+                            case "ln": erg = (Math.Log(w1)).ToString(); break;
+                        }
+                    }
+                    else if (KExpr.IsMatch(expandedExpression))
                     {
                         fm = KExpr.Match(expandedExpression);
+                        search = fm.Groups[0].Value;
                         erg = fm.Value.Replace("(", string.Empty).Replace(")", string.Empty);
+                    }
+                    else if (EExpr.IsMatch(expandedExpression))
+                    {
+                        fm = EExpr.Match(expandedExpression);
+                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
+                        (double w1, char wop, double w2) = GetExpressionValues(fm);
+                        if (wop == '^')
+                        {
+                            erg = (Math.Pow(w1, w2)).ToString();
+                        }
                     }
                     else if (MExpr.IsMatch(expandedExpression))
                     {
                         fm = MExpr.Match(expandedExpression);
+                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '*')
                         {
@@ -68,7 +107,20 @@ namespace FlowProtocol2.Commands
                             else
                             {
                                 rc.SetError(ReadContext, "Division durch null",
-                                    $"Beim Durchführen einer Berechnung kam es zu einer Division durch null. Die Ausführung wird abgebrochen.");
+                                    $"Beim Durchführen einer Berechnung kam es zu einer Division durch null im Ausdruck {expandedExpression}. Die Ausführung wird abgebrochen.");
+                                return null;
+                            }
+                        }
+                        else if (wop == '%')
+                        {
+                            if (w2 != 0)
+                            {
+                                erg = (w1 % w2).ToString();
+                            }
+                            else
+                            {
+                                rc.SetError(ReadContext, "Modulo-Rechnung durch null",
+                                    $"Beim Durchführen einer Berechnung kam es zu einer Modulo-Rechnung durch null im Ausdruck {expandedExpression}. Die Ausführung wird abgebrochen.");
                                 return null;
                             }
                         }
@@ -76,6 +128,7 @@ namespace FlowProtocol2.Commands
                     else if (AExpr.IsMatch(expandedExpression))
                     {
                         fm = AExpr.Match(expandedExpression);
+                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '+')
                         {
@@ -86,12 +139,13 @@ namespace FlowProtocol2.Commands
                             erg = (w1 - w2).ToString();
                         }
                     }
-                    if (fm != null && !string.IsNullOrEmpty(erg))
+                    lastexpandedExpression = expandedExpression;
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(erg))
                     {
-                        expandedExpression = $"{expandedExpression.Substring(0, fm.Index)}{erg}{expandedExpression.Substring(fm.Index + fm.Length)}";
+                        expandedExpression = expandedExpression.Replace(search, erg);
                     }
-                } while (fm != null);
-                rc.InternalVars[expandedVarName] = expandedExpression;
+                } while (lastexpandedExpression != expandedExpression);
+                rc.InternalVars[expandedVarName] = expandedExpression.Trim();
             }
             catch (Exception ex)
             {
@@ -113,6 +167,15 @@ namespace FlowProtocol2.Commands
             if (!v1OK || !v2OK) op = "?";
             char wop = op.ToCharArray()[0];
             return (w1, wop, w2);
+        }
+
+        (string, double) GetFunctionValues(Match fm)
+        {
+            string fname = fm.Groups[1].Value.Trim();
+            string v1 = fm.Groups[2].Value.Trim();
+            bool v1OK = Double.TryParse(v1, out double w1);
+            if (!v1OK) fname = "?";
+            return (fname, w1);
         }
     }
 }

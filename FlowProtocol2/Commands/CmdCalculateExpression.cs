@@ -56,12 +56,14 @@ namespace FlowProtocol2.Commands
                 do
                 {
                     fm = null;
-                    string search = string.Empty;
+                    int repindex = 0;
+                    int replength = 0;
                     string erg = string.Empty;
                     if (OExpr.IsMatch(expandedExpression))
                     {
                         fm = OExpr.Match(expandedExpression);
-                        search = fm.Groups[0].Value;
+                        repindex = fm.Groups[0].Index;
+                        replength = fm.Groups[0].Length;
                         (string fname, double w1) = GetFunctionValues(fm);
                         switch (fname)
                         {
@@ -76,13 +78,15 @@ namespace FlowProtocol2.Commands
                     else if (KExpr.IsMatch(expandedExpression))
                     {
                         fm = KExpr.Match(expandedExpression);
-                        search = fm.Groups[0].Value;
+                        repindex = fm.Groups[0].Index;
+                        replength = fm.Groups[0].Length;
                         erg = fm.Value.Replace("(", string.Empty).Replace(")", string.Empty);
                     }
                     else if (EExpr.IsMatch(expandedExpression))
                     {
                         fm = EExpr.Match(expandedExpression);
-                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
+                        repindex = fm.Groups[1].Index;
+                        replength = fm.Groups[1].Length + fm.Groups[2].Length + fm.Groups[3].Length;
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '^')
                         {
@@ -92,7 +96,8 @@ namespace FlowProtocol2.Commands
                     else if (MExpr.IsMatch(expandedExpression))
                     {
                         fm = MExpr.Match(expandedExpression);
-                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
+                        repindex = fm.Groups[1].Index;
+                        replength = fm.Groups[1].Length + fm.Groups[2].Length + fm.Groups[3].Length;
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '*')
                         {
@@ -128,7 +133,8 @@ namespace FlowProtocol2.Commands
                     else if (AExpr.IsMatch(expandedExpression))
                     {
                         fm = AExpr.Match(expandedExpression);
-                        search = fm.Groups[1].Value + fm.Groups[2].Value + fm.Groups[3].Value;
+                        repindex = fm.Groups[1].Index;
+                        replength = fm.Groups[1].Length + fm.Groups[2].Length + fm.Groups[3].Length;
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '+')
                         {
@@ -140,9 +146,9 @@ namespace FlowProtocol2.Commands
                         }
                     }
                     lastexpandedExpression = expandedExpression;
-                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(erg))
+                    if (repindex >= 0 && replength > 0 && !string.IsNullOrEmpty(erg))
                     {
-                        expandedExpression = expandedExpression.Replace(search, erg);
+                        expandedExpression = $"{expandedExpression[..repindex]}{erg}{expandedExpression[(repindex + replength)..]}";
                     }
                 } while (lastexpandedExpression != expandedExpression);
                 rc.InternalVars[expandedVarName] = expandedExpression.Trim();

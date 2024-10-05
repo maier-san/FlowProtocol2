@@ -86,6 +86,10 @@
 	># in ScriptParser.cs
 	># private void LoadCommands()
 	>|CmdParser.Add(Cmd$CmdName.GetComandParser());
+>> Versionsnummer hochzählen
+	>* .\FlowProtocol2\Pages\Shared\_Layout.cshtml öffnen
+	>* Hintere Nummer in Zeile 43 hochzählen, nachfolgende
+	>|&copy; 2023 MSan, Version
 @Dokumentation >> Neue Flow-DokuDatei anlegen
 >> Code einfügen
 	>|~SetTitle $CmdName-Befehl

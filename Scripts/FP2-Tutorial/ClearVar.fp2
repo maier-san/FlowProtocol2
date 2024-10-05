@@ -1,0 +1,30 @@
+~SetTitle ClearVar-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ClearVar <VarMuster>
+~AddText  löscht alle Variablen, die dem Muster
+~AddCode  <VarMuster>
+~AddText  entsprechen. Dies kann ein Variablenname sein oder der Anfang eines Variablennamens, gefolgt von
+~AddCode  *
+~AddText , wobei im zweiten Fall alle Variablen gelöscht werden, die auf diese Weise beginnen.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel definiert vier Variablen und löscht zuerst nur B und dann alle, die mit B beginnen.
+>>|~Set A=Hallo
+>>|~Set B=Welt
+>>|~Set B2=wie geht es dir?
+>>|~Set C=sei gegrüßt!
+>>|~ClearVar B
+>>|@Ausgabe >> Nach ~ClearVar B: A=$A, B=$B, B2=$B2, C=$C
+>>|~ClearVar B*
+>>|@Ausgabe >> Nach ~ClearVar B*: A=$A, B=$B, B2=$B2, C=$C
+>>|~If !?$B2
+>>|	@Ausgabe >> B2 ist nicht mehr definiert.
+~Set A=Hallo
+~Set B=Welt
+~Set B2=wie geht es dir?
+~Set C=sei gegrüßt!
+~ClearVar B
+@Ausgabe >> Nach ~ClearVar B: A=$A, B=$B, B2=$B2, C=$C
+~ClearVar B*
+@Ausgabe >> Nach ~ClearVar B*: A=$A, B=$B, B2=$B2, C=$C
+~If !?$B2
+	@Ausgabe >> B2 ist nicht mehr definiert.

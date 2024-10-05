@@ -1,0 +1,70 @@
+\documentclass[12pt ,a4paper]{article}
+\usepackage[ansi]{umlaute}
+\usepackage[german]{babel}
+\usepackage{fancyheadings}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptm}
+\usepackage{graphicx}
+\title{Softwareentwicklung mit FlowProtocol 2}
+\author{Wolfgang Maier}
+%%
+%% Layout
+%%
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{0.5ex plus0.2ex minus0.1ex}
+\geometry{lmargin=35mm,rmargin=25mm,tmargin=25mm,bmargin=25mm}
+\addtolength{\headheight}{2.5pt}
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
+%\setlength{\headrulewidth}{0pt}
+\rhead{\thepage}
+\cfoot{}
+%%
+%% Commands
+%%
+\newcommand{\FPZ}{\textit{FlowProtocol 2}\ }
+\newcommand{\Syntax}{\subsubsection*{Syntax}}
+\newcounter{bspcount}
+\newcommand{\Beispiel}{\stepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount}}}
+\newcommand{\webbox}[1]{\par\setlength{\fboxsep}{3mm}\fbox{\begin{minipage}{12cm}\textsf{#1}\end{minipage}\par}\par\vspace{3mm}}
+\newcommand{\webhead}[2]{{\large  #1}\\[2mm]#2\\[1mm]\rule{\linewidth}{1pt}\\[3mm]}
+\newcommand{\webheadR}[1]{{\large  #1}\\}
+\newenvironment{circlist}%
+{\begin{list}{$\bigcirc$}{%
+\setlength{\labelsep}{5pt}
+\setlength{\topsep}{5pt}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\labelwidth}{1cm}
+}}{\end{list}}
+\newcounter{lcount}
+\newenvironment{numlist}%
+{\begin{list}{\textrm{\arabic{lcount}}}{\usecounter{lcount}%
+\setlength{\labelsep}{5pt}
+\setlength{\topsep}{5pt}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\labelwidth}{1cm}
+}}{\end{list}}
+\newcommand{\ZeigeFehlerItem}[4]{\item\textbf{#1}\\#2\ \textsl{#3}\\\texttt{#4}}
+\newcommand{\FehlerBeschreibungItem}[2]{\item[#1]\textsl{#2}\\}
+\begin{document}
+\maketitle
+\begin{center}
+	\includegraphics{FlowLogo}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+\section*{Vorwort}
+Die vorliegende Anleitung beschreibt Möglichkeiten, die Anwendung \FPZ in der professionellen Softwareentwicklung einzusetzen und damit die besonderen Herausforderungen zu meistern, die sich in diesem Bereich stellen. An vielen kleinen und auch auch größeren Beispielen wird gezeigt, wie man Skripte in \FPZ erstellt und welche Bandbreite an Hilfsmitteln sich damit anfertigen lassen. Man lernt, Skripte als Ablageform für Wissen und Konventionen innerhalb eines Entwicklungsteams zu sehen und auch die tägliche Praxis darauf auszurichten. 
+
+\FPZ ist die komplett überarbeitete Nachfolgeversion von FlowProtocol, das im Winter 2021/22 entwickelt wurde. Es handelt sich um eine kleine Anwendung. die über einen Browser bedient wird, und auf der Skripte ausgeführt werden können. Die Skripte bestehen aus einfachen Textdateien, die in einem beliebigen Editor erstellt, und in einer lokalen Verzeichnisstruktur verwaltet werden, mit der eine organisatorische oder aufgabenbezogene Gliederung abgebildet werden kann.
+Bei der Ausführung eines Skriptes werden Informationen abgefragt und über die Anweisungen im Skript verarbeitet. Die Ausgabe erfolgt ausschließlich als Ergebnisdokument im Browser, aus dem dann z.B. Textpassagen über die Zwischenablage weiterverwendet werden können. Bei der Ausführung werden keine Dateien erstellt und geändert.
+
+Der Anwendungsfall, für den FlowProtocol ursprünglich entwickelt wurde, ist die Erstellung von Checklisten, die durch Interaktion mit dem Benutzer auf einen individuellen Fall zugeschnitten werden, und so beliebig ins Detail gehen können, ohne unnötige Einträge aufzulisten. Ein Beispiel, an dem man das gut verdeutlichen kann, ist die Erstellung einer Packliste für eine Urlaubsreise. Ohne Kenntnis über die Art des Urlaubs, seine Länge, Jahreszeit und Betätigungsmöglichkeiten, wird man sich entweder auf sehr allgemeine Dinge wie Unterhosen und Socken beschränken müssen, oder man wird Einträge auflisten, die nur unter bestimmten Bedingungen relevant sind, wie die Wanderschuhe oder die Taucherbrille. 
+Über \FPZ können solche Bedingungen direkt abgefragt werden, so dass die Wanderschuhe nur dann aufgelistet werden, wenn auch die Möglichkeit zum Wandern besteht und genutzt werden soll. Solche Abfragen lassen sich auch ineinander verschachteln, so dass die Frage nach bergigem Gelände z.B.\ nur dann gestellt wird, wenn Wandern allgemein schon als relevant erklärt wurde.
+
+Der größte Vorteil dieser Interaktion, abgesehen vom maßgeschneiderten Ergebnis, liegt jedoch nicht im Komfort, mit dem man seine Liste zusammenstellen kann, sondern darin, dass die Fragen einfach formuliert, und Abhängigkeiten direkt berücksichtigt werden können. 
+\end{document}

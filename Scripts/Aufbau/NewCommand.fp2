@@ -89,7 +89,9 @@
 @Dokumentation >> Neue Flow-DokuDatei anlegen
 >> Code einfügen
 	>|~SetTitle $CmdName-Befehl
-	>|@Beschreibung >>_ Der Befehl ~$CmdName ...
+	>|@Beschreibung >>_ Der Befehl 
+	>|~AddCode  ~$CmdName
+	>|~AddText  ...
 	>|@Ausnahmen >>* keine
 ~If $MitCB==ja
 	>|@Codebeispiel >>_ siehe 
@@ -105,5 +107,6 @@
 	># Beispielcode
 >> Fertiges Beispiel in Codeblock übernehmen
 >> Speichern unter
-	>|S:\Intern\09_ET\FP2-Skripte\FP2-Tutorial\$CmdName.fp2
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
+	
 

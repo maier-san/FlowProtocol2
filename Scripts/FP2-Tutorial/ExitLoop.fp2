@@ -1,0 +1,24 @@
+~SetTitle ExitLoop-Befehl
+@Beschreibung >>_ Der Befehl 
+	~AddCode  ~ExitLoop 
+	~AddText  verlässt eine Schleife und setzt die Ausführung nach dem Loop-Befehl fort.
+@Ausnahmen >>* ExitLoop ohne Loop: Für den Befehl wurde dazugehörender 
+	~AddCode ~Loop
+	~AddText -Befehl gefunden.
+@Codebeispiel >>_ Das nachfolgende Beispiel verlässt eine Schleife nach den dritten Durchlauf:
+>>|~Set idx=0
+>>|~DoWhile $idx<10
+>>|	~AddTo idx+=1
+>>|	@Ausgabe >> Durchlauf $idx
+>>|	~If $idx==3
+>>|		~ExitLoop
+>>|~Loop
+>>|@Ausgabe >> Mehr kommt nicht.
+~Set idx=0
+~DoWhile $idx<10
+	~AddTo idx+=1
+	@Ausgabe >> Durchlauf $idx
+	~If $idx==3
+		~ExitLoop
+~Loop
+@Ausgabe >> Mehr kommt nicht.

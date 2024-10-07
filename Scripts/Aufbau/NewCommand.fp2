@@ -1,8 +1,9 @@
 ~Input CmdName: Befehlsname
 ~SetTitle $CmdName-Implementierung
 ~SetInputTitle Neue Command-Klasse erstellen
-~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein.
-~Split VarName = $Varliste|;
+~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein, oder @, wenn es keine Variablen gibt.
+~If $Varliste!=@
+	~Split VarName = $Varliste|;
 ~SetStopCounter 6; 500
 ?ACB: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja
@@ -85,10 +86,16 @@
 	># in ScriptParser.cs
 	># private void LoadCommands()
 	>|CmdParser.Add(Cmd$CmdName.GetComandParser());
+>> Versionsnummer hochzählen
+	>* .\FlowProtocol2\Pages\Shared\_Layout.cshtml öffnen
+	>* Hintere Nummer in Zeile 43 hochzählen, nachfolgende
+	>|&copy; 2023 MSan, Version
 @Dokumentation >> Neue Flow-DokuDatei anlegen
 >> Code einfügen
 	>|~SetTitle $CmdName-Befehl
-	>|@Beschreibung >>_ Der Befehl ~$CmdName ...
+	>|@Beschreibung >>_ Der Befehl 
+	>|~AddCode  ~$CmdName
+	>|~AddText  ...
 	>|@Ausnahmen >>* keine
 ~If $MitCB==ja
 	>|@Codebeispiel >>_ siehe 
@@ -104,5 +111,6 @@
 	># Beispielcode
 >> Fertiges Beispiel in Codeblock übernehmen
 >> Speichern unter
-	>|S:\Intern\09_ET\FP2-Skripte\FP2-Tutorial\$CmdName.fp2
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
+	
 

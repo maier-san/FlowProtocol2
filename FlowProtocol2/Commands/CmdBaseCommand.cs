@@ -28,9 +28,13 @@ namespace FlowProtocol2.Commands
             {
                 input = input.Replace("$BaseKey", rc.BaseKey);
                 string compareInput = input;
-                do // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
+                int iterationcount = 0;
+                // Wende die Variablen-Ersetzung wiederholt an, bis sich nix mehr verändert
+                // Jedoch maximal 10 Mal, weil man ansonsten mit Hin- und Her-Ersetzungen eine Endlosschleife provozieren kann.
+                do
                 {
                     compareInput = input;
+                    iterationcount++;
                     foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
                     {
                         if (!string.IsNullOrWhiteSpace(v.Key))
@@ -38,7 +42,7 @@ namespace FlowProtocol2.Commands
                             input = input.Replace("$" + v.Key, v.Value);
                         }
                     }
-                } while (compareInput != input && input.Contains('$'));
+                } while (compareInput != input && input.Contains('$') && iterationcount < 10);
                 // Systemvariablen                
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");

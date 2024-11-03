@@ -1,0 +1,12 @@
+~Set anz=2000
+~SetStopCounter 10000; 50000
+~Set i=1
+~SetDateTime Start = HH:mm:ss.fff
+~DoWhile $i<$anz
+	~Set wert($i)=$i
+	~AddTo i+=1
+~Loop
+~SetDateTime Ende = HH:mm:ss.fff
+@Performance >> Test mit anz=$anz
+	> Start: $Start
+	> Ende: $Ende

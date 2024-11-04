@@ -35,7 +35,7 @@ namespace FlowProtocol2.Commands
                 {
                     compareInput = input;
                     iterationcount++;
-                    foreach (var v in rc.InternalVars.OrderByDescending(x => x.Key))
+                    foreach (var v in rc.InternalVars)
                     {
                         if (!string.IsNullOrWhiteSpace(v.Key))
                         {

@@ -14,12 +14,12 @@
 >>|>> Ende
 >>|~End
 >>|~DefineSub HalloWelt2
->>|	>> Hallo Welt2! (BaseKey ist $BaseKey)
+>>|	>> Hallo Welt2! (BaseKey ist $Chr(36)BaseKey)
 >>|~Return
 >>|~DefineSub HalloWelt
->>|	>> Hallo Welt! (BaseKey ist $BaseKey)
->>|	~GoSub HalloWelt2; BaseKey=$BaseKeyB
->>|	>> Tschüs! (BaseKey ist wieder $BaseKey)
+>>|	>> Hallo Welt! (BaseKey ist $Chr(36)BaseKey)
+>>|	~GoSub HalloWelt2; BaseKey=$Chr(36)BaseKeyB
+>>|	>> Tschüs! (BaseKey ist wieder $Chr(36)BaseKey)
 >>|~Return
 @Ausgabe >> Start
 ~GoSub HalloWelt; BaseKey=A

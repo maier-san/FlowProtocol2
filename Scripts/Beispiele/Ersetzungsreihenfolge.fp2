@@ -1,0 +1,14 @@
+// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen.
+@Code >>|// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen.
+>>|~Set a=x
+>>|~Set ab=yy
+>>|~Set abc=zzz
+>>|@Ausgabe >> a=$a!
+>>|@Ausgabe >> ab=$ab!
+>>|@Ausgabe >> abc=$abc!
+~Set a=x
+~Set ab=yy
+~Set abc=zzz
+@Ausgabe >> a=$a!
+@Ausgabe >> ab=$ab!
+@Ausgabe >> abc=$abc!

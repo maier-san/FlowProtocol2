@@ -7,7 +7,7 @@ namespace FlowProtocol2.Commands
     {
         public Dictionary<string, string> BoundVars;
         public List<string> GivenKeys { get; set; }
-        public Dictionary<string, string> InternalVars { get; set; }
+        public SortedDictionary<string, string> InternalVars { get; set; }
         public List<ErrorElement> ErrorItems { get; set; }
         public IMForm InputForm { get; set; }
         public DocumentBuilder DocumentBuilder { get; set; }
@@ -29,7 +29,7 @@ namespace FlowProtocol2.Commands
         {
             BoundVars = new Dictionary<string, string>();
             GivenKeys = new List<string>();
-            InternalVars = new Dictionary<string, string>();
+            InternalVars = new SortedDictionary<string, string>(Comparer<string>.Create((x, y) => y.CompareTo(x)));            
             ErrorItems = new List<ErrorElement>();
             DocumentBuilder = new DocumentBuilder();
             InputForm = new IMForm();

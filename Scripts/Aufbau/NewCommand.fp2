@@ -77,6 +77,9 @@
 	>|        }
 	>|    }
 	>|}
+>> Regulären Ausdruck in Methode 
+	~AddCode  GetComandParser()
+	~AddText  in Zeile 16 anpassen.
 >> Run-Methode ausimplementieren
 	>* ToDo: Run-Methode ausimplementieren
 	>* Regel 1: Die eingelesenen Eigenschaften bleiben unverändert, so dass der Befehl wiederholt ausgeführt werden kann.
@@ -96,6 +99,10 @@
 	>|@Beschreibung >>_ Der Befehl 
 	>|~AddCode  ~$CmdName
 	>|~AddText  ...
+	~ForEach vn in VarName
+		>|~AddCode  <$vn>
+		>|~AddText  ...
+	~Loop
 	>|@Ausnahmen >>* keine
 ~If $MitCB==ja
 	>|@Codebeispiel >>_ siehe 

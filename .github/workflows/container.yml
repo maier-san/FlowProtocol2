@@ -22,13 +22,6 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
             docker push --all-tags ghcr.io/$REPOSITORY_OWNER_LO/es_flowprotocol2
 
-        - name: 'Login via Azure CLI'
-          env: 
-            env_azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          if: ${{ env.env_azure_credentials != '' }}
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
         - name: 'Tag and push image to Azure'
           env: 
             env_secret: ${{ secrets.REGISTRY_PASSWORD }}

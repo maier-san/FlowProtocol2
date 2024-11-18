@@ -1,0 +1,28 @@
+~SetTitle Sort-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~Sort <Feldname> [To <Indexfeld>]
+~AddText  sortiert das eindimensionales Feld 
+~AddCode  <Feldname>
+~AddText  alphanumerisch aufteigend. Wird das
+~AddCode  To
+~AddText -Attribut mit einem zweiten Feld 
+~AddCode  <Indexfeld>
+~AddText  angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf andere Felder übertragen werden kann.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt zwei Felder und gibt diese sortiert nach dem ersten Feld aus:
+>>|~Split Radtypen=Rennrad;Gravel;MTB|;
+>>|~Split Spassfaktor=7;10;6|;
+>>|~Sort Radtypen -> IdxMap
+>>|~Set i=1
+>>|~DoWhile $i<=3
+>>|	@Ausgabe >> $Radtypen($i): $Spassfaktor($IdxMap($i))
+>>|	~AddTo i+=1
+>>|~Loop
+~Split Radtypen=Rennrad;Gravel;MTB|;
+~Split Spassfaktor=7;10;6|;
+~Sort Radtypen -> IdxMap
+~Set i=1
+~DoWhile $i<=3
+	@Ausgabe >> $Radtypen($i): $Spassfaktor($IdxMap($i))
+	~AddTo i+=1
+~Loop

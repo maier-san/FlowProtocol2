@@ -1,0 +1,18 @@
+~SetTitle RegExReplace-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~RegExReplace <Variable> = <Text>|<Ausdruck>-><Ersetze durch>
+~AddText  ersetzt in 
+~AddCode  <Text>
+~AddText  alle Vorkommen, die dem regulären Ausdruck 
+~AddCode  <Ausdruck>
+~AddText  entsprechen durch den Text
+~AddCode  <Ersetze durch>
+~AddText  und weist das Ergebnis der Variablen
+~AddCode  <Variable>
+~AddText  zu.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel ersetzt in einem Satz alle Kombinationen aus Umlaut + "l" durch "xL".
+>>|~RegExReplace SatzMitX = Hallo Welt, alles OK?|[aeiou]l+->xL
+>>|@Ausgabe >> $SatzMitX
+~RegExReplace SatzMitX = Hallo Welt, alles OK?|[aeiou]l+->xL
+@Ausgabe >> $SatzMitX

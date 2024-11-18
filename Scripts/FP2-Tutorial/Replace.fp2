@@ -1,12 +1,18 @@
 ~SetTitle Replace-Befehl
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Replace <Variable> = <Text>|<Suche nach>-><Ersetze durch>
-~AddText  ersetzt alle Vorkommen einer Zeichenfolge in einem Text und ersetzt diese durch eine andere. Das Ergebnis wird in einer Variablen gespeichert.
+~AddText  ersetzt alle Vorkommen von
+~AddCode  <Suche nach>
+~AddText  in 
+~AddCode  <Text>
+~AddText  und ersetzt diese durch 
+~AddCode  <Ersetze durch>
+~AddText  und speichert das Ergebnis in der Variablen
+~AddCode  <Variable>
+~AddText .
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel ersetzt Äpfel durch Schokolade:
 >>|~Replace neuerText = Ich mag Äpfel und Birnen|Äpfel->Schokolade
 >>|@Ausgabe >> $neuerText
 ~Replace neuerText = Ich mag Äpfel und Birnen|Äpfel->Schokolade
 @Ausgabe >> $neuerText
-~Replace Test2 = Bereich 1, xxx|, xxx->BBB
-@Ausgabe >> Test2=$Test2

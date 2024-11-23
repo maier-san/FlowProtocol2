@@ -2,8 +2,9 @@
 ~SetTitle $CmdName-Implementierung
 ~SetInputTitle Neue Command-Klasse erstellen
 ~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein, oder @, wenn es keine Variablen gibt.
+	~AddHelpText Konvention: Variablen für optionale Parameter sollten den Prefix "Opt" haben.
 ~If $Varliste!=@
-	~Split VarName = $Varliste|;
+	~Split VarName = $Varliste|;	
 ~SetStopCounter 6; 500
 ?ACB: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja
@@ -39,7 +40,7 @@
 	>|        {
 	>|            Cmd$CmdName cmd = new Cmd$CmdName(rc);
 	~Set VarIndex=1
-	~ForEach vn in VarName
+	~ForEach vn in VarName	
 		>|            cmd.$vn = m.Groups[$VarIndex].Value.Trim();
 		~AddTo VarIndex+=1	
 	~Loop
@@ -56,7 +57,13 @@
 	>|        public override CmdBaseCommand? Run(RunContext rc)
 	>|        {
 	~ForEach vn in VarName
-		>|            string expanded$vn = ReplaceVars(rc, $vn);
+		~RegExMatch vcheck = $vn|Opt([A-Z][A-Za-z0-9]*)
+		~If $vcheck(0)
+			>|            string expanded$vn = ReplaceVars(rc, $vn).Replace("; $vcheck(1)=", string.Empty));
+		~ElseIf $vn~Path || $vn~File
+			>|            string expanded$vn = ReplaceVars(rc, $vn).Replace('|', Path.DirectorySeparatorChar);
+		~Else
+			>|            string expanded$vn = ReplaceVars(rc, $vn);
 	~Loop
 	>|            try
 	>|            {
@@ -80,6 +87,21 @@
 >> Regulären Ausdruck in Methode 
 	~AddCode  GetComandParser()
 	~AddText  in Zeile 16 anpassen.
+	~ForEach vn in VarName
+		~RegExMatch vcheck = $vn|Opt([A-Z][A-Za-z0-9]*)
+		~If $vcheck(0)
+			>* Für die Variabe
+			~AddCode  $vn
+			~AddText  den Code
+			~AddCode  =(.*)
+			~AddText  ersetzen durch 
+			~AddCode  =([^;]*)\s*(; $vcheck(1)=*.)?			
+			>* ...und sicherstellen, dass in der 
+			~AddCode  Run
+			~AddText -Methode die dazu passende Ersetzung
+			~AddCode  .Replace("; $vcheck(1)=", string.Empty))
+			~AddText implementiert ist.
+	~Loop
 >> Run-Methode ausimplementieren
 	>* ToDo: Run-Methode ausimplementieren
 	>* Regel 1: Die eingelesenen Eigenschaften bleiben unverändert, so dass der Befehl wiederholt ausgeführt werden kann.

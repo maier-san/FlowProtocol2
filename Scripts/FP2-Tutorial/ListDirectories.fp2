@@ -1,0 +1,25 @@
+~SetTitle ListDirectories-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~ListDirectories <Variable> = <Verzeichnispfad>[; Pattern=<Suchmuster>]
+~AddText  listet alle Verzeichnisse in
+~AddCode  <Verzeichnispfad>
+~AddText  auf, die dem
+~AddCode  <Suchmuster>
+~AddText  entsprechen. Das Ergebnis wird im Feld 
+~AddCode  <Variable>
+~AddText  gespeichert. Der Eintrag
+~AddCode  <Variable>(0)
+~AddText  gibt die Anzahl der gefundenen Verzeichnisse zurück.
+>>_ Der Befehl ist auf den Skriptordner und die darunterliegende Struktur beschränkt.
+@Ausnahmen >>* Verzeichnis nicht gefunden: tritt auf, wenn das angegebene Verzeichnis nicht gefunden werden konnte.
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~ListDirectories dirs = .|; Pattern=*a*
+>>|@Ausgabe >> Alle $dirs(0) Verzeichnisse
+>>|~ForEach di in dirs
+>>|	> $di
+>>|~Loop
+~ListDirectories dirs =.|; Pattern=*a*
+@Ausgabe >> Alle $dirs(0) Verzeichnisse mit "a"
+~ForEach di in dirs
+	> $di
+~Loop

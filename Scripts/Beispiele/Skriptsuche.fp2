@@ -1,0 +1,43 @@
+~SetInputDescription Sucht ein Skript oder einen Skriptordner im gesamten Verzeichnisbaum.
+~Input SB: Suchbegriff eingeben
+~Execute
+
+~Set CDir(A)=.|
+~GoSub SucheInOrdner; BaseKey=A
+~End
+// 
+~DefineSub SucheInOrdner
+	~ListDirectories dirlist($BaseKey) = $CDir($BaseKey)
+	~ListFiles filelist = $CDir($BaseKey); pattern=*.fp2
+	~If $CDir($BaseKey)==.|
+		~Set CDir($BaseKey)=.
+		
+	~Set sOrdner=$CDir($BaseKey)
+	~Replace sOrdner=$sOrdner|.$Chr(124)->
+	~Replace sOrdner=$sOrdner|$Chr(124)->\	
+	~Set showOrdner=$sOrdner
+	~Replace uOrdner=$BaseURL|/Run/Beispiele%7CSkriptsuche->/Select/$sOrdner
+	~If $showOrdner==.
+		~Set showOrdner=Basisverzeichnis
+		~Replace uOrdner=$uOrdner|/Select->/SelectMain
+	~If $sOrdner~$SB				
+		@Ordner mit "$SB" >>* 
+			~AddLink $uOrdner |$showOrdner	
+	~Replace rOrdner=$BaseURL|/Run/Beispiele%7CSkriptsuche->/Run/$sOrdner
+	~ForEach fidx in filelist
+		~Replace cDatei=$fidx|.fp2->
+		~If $cDatei~$SB			
+			~UrlEncode udatei=|$cDatei
+			@Skripte mit "$SB" >>*
+				~AddLink $rOrdner$udatei |$cDatei
+				~AddText  in 
+				~AddLink $uOrdner | $showOrdner
+	~Loop	
+	~Set idxd($BaseKey)=0
+	~ForEach didx($BaseKey) in dirlist($BaseKey)
+		~AddTo idxd($BaseKey)+=1
+		~Set BKNeu=$BaseKeyB$idxd($BaseKey)
+		~Set CDir($BKNeu)=$CDir($BaseKey)|$didx($BaseKey)
+		~GoSub SucheInOrdner; BaseKey=$BKNeu	
+	~Loop	
+~Return

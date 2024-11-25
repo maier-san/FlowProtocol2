@@ -12,21 +12,27 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         # checkout the repo
-        - name: 'Checkout GitHub Action'
-          uses: actions/checkout@main
-          
-        - name: 'Login via Azure CLI'
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
         - name: 'Build and push image'
+          uses: actions/checkout@main
+        - run: |
+            docker build -f ./docker/flowprotocol2.dockerfile -t es_flowprotocol2:${{ github.sha }} .
+            REPOSITORY_OWNER_LO=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+            docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/$REPOSITORY_OWNER_LO/es_flowprotocol2:latest
+            docker tag es_flowprotocol2:${{ github.sha }} ghcr.io/$REPOSITORY_OWNER_LO/es_flowprotocol2:${{ github.sha }}
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+            docker push --all-tags ghcr.io/$REPOSITORY_OWNER_LO/es_flowprotocol2
+
+        - name: 'Tag and push image to Azure'
+          env: 
+            env_secret: ${{ secrets.REGISTRY_PASSWORD }}
+          if: ${{ env.env_secret != '' }}
           uses: azure/docker-login@v1
           with:
             login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
-            docker build -f ./docker/flowprotocol2.dockerfile -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2:${{ github.sha }} .
+            docker tag es_flowprotocol2:${{ github.sha }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2:${{ github.sha }}
             docker tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2:${{ github.sha }} ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2:latest
+            docker images
             docker push --all-tags ${{ secrets.REGISTRY_LOGIN_SERVER }}/es_flowprotocol2

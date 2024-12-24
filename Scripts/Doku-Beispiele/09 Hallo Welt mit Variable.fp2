@@ -1,0 +1,6 @@
+?Q: Wie soll die Welt begrüßt werden?
+	#h: Mit "Hallo Welt!"
+		~Set Gruss=Hallo
+	#a: Mit "Aloah Welt!"
+		~Set Gruss=Aloah
+>> $Gruss Welt!

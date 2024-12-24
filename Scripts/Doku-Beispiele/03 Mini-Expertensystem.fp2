@@ -1,0 +1,19 @@
+?: Startet die Anwendung?
+	#: Ja
+		>> Anwendung startet
+		?: Ist eine Benutzeranmeldung möglich?
+			#: Ja
+				>> Benutzeranmeldung möglich.
+				>> Wo liegt das Problem?
+			#: Nein
+				>> Benutzeranmeldung nicht möglich
+				>> Empfehlung: Passwort zurücksetzen
+	#: Nein
+		>> Anwendung startet nicht
+		?: Wurde das System schon neu gestartet?
+			#: Ja
+				>> System wurde schon neu gestartet.
+				>> Empfehlung: 2nd-Level-Support kontaktieren
+			#: Nein
+				>> System wurde noch nicht neu gestartet.
+				>> Empfehlung: System neu starten

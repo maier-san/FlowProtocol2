@@ -26,7 +26,7 @@
 \newcommand{\FPZ}{\textit{FlowProtocol 2}\ }
 \newcommand{\Syntax}{\subsubsection*{Syntax}}
 \newcounter{bspcount}
-\newcommand{\Beispiel}{\stepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount}}}
+\newcommand{\Beispiel}[1]{\stepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
 \newcommand{\webbox}[1]{\par\setlength{\fboxsep}{3mm}\fbox{\begin{minipage}{12cm}\textsf{#1}\end{minipage}\par}\par\vspace{3mm}}
 \newcommand{\webhead}[2]{{\large  #1}\\[2mm]#2\\[1mm]\rule{\linewidth}{1pt}\\[3mm]}
 \newcommand{\webheadR}[1]{{\large  #1}\\}
@@ -53,7 +53,7 @@
 \thispagestyle{empty}
 \maketitle
 \begin{center}
-	\includegraphics{FlowLogo}
+    \includegraphics{FlowLogo}
 \end{center}
 \newpage
 \tableofcontents
@@ -82,10 +82,10 @@ Bis dahin werden aber erst einmal die grundlegenden Befehle und Funktionsweisen 
 
 \newpage
 
-\section{Bezug und Konfiguration}
+\section{Bezug und Konfiguration}\label{Bezug und Konfiguration}\label{BezugKonfig}
 \FPZ steht unter der MIT-Lizenz und ist unter folgender Adresse auf GitHub verfügbar :
 \begin{center}
-	\texttt{https://github.com/maier-san/FlowProtocol2}
+    \texttt{https://github.com/maier-san/FlowProtocol2}
 \end{center}
 
 Die Programmcode kann direkt mit Git oder der frei verfügbaren Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B. \verb|D:\Anwendungen\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden:
@@ -102,4 +102,400 @@ In einer Firma oder Einrichtung wird man das Verzeichnis so wählen, dass die Mit
 Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auflistung des \verb|LinkWhitelist|-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
 
 Für die regelmäßige lokale  Bereitstellung von \FPZ ist es am einfachsten, vom Basisrepository auf GitHub mittels Fork zu verzweigen und die lokalen Anpassungen im eigen Zweig zu verwalten.
+
+\section{Grundlagen}
+\subsection{Das erste Beispiel}
+In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf beschränkt, dass wohl jeder, der in dieser Branche tätig ist, schon an dem einen oder anderen Hallo-Welt-Beispiel vorbeigekommen ist. In dieser Tradition starten auch wir und beginnen mit dem einfachsten aller Beispiele:
+\Beispiel{01 Hallo Welt}
+\begin{verbatim}
+>> Hallo Welt!
+\end{verbatim}
+
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZ-Installation (vgl.\ Abschnitt \ref{Bezug und Konfiguration}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+
+Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
+
+Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{01 Hallo Welt}.
+
+Als Überschrift wird standardmäßig der Dateinahme ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Die Syntax \verb|>>| gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.} erklärt.
+
+Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} werden immer angezeigt, wenn die Ausführung abgeschlossen ist. Mit \emph{Neue Ausführung} kann das aktuell ausgewählte Skript neu gestartet werden und mit \emph{Zurück zur Startseite} kommt man zurück zur Auswahl der Skript-Hauptgruppen, was auch mit dem Menüpunkt \emph{Start} möglich ist. Wir werden noch einige Anwendungsfälle sehen, die sich am besten mit einem Skript umsetzen lassen, das mehrmals hintereinander ausgeführt wird.
+
+\subsection{Eine erste Auswahlabfrage}
+Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausgegeben, was in Anbetracht der recht einfachen Syntax und der schönen Formatierungsmöglichkeiten auch schon Mehrwerte bieten kann, aber der Hauptnutzen von \FPZ\ liegt ganz klar in der Interaktivität. Diese lässt sich umsetzen mit Hilfe von Auswahlabfragen und Texteingaben. Das nachfolgende Beispiel zeigt eine einfache Auswahlabfrage.
+
+\Beispiel{02 Hallo Welt mit Auswahl}
+\begin{verbatim}
+?Q: Wie soll die Welt begrüßt werden?
+    #h: Mit "Hallo Welt!"
+        >> Hallo Welt!
+    #a: Mit "Aloah Welt!"
+        >> Aloah Welt!
+\end{verbatim}
+
+Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{Wie soll die Welt begrüßt werden?} konfrontiert, mit den beiden Antwortmöglichkeiten \emph{Mit ''Hallo Welt!''} und \emph{Mit ''Aloah Welt!''}. Es muss einer der beiden vorgegebenen Auswahlmöglichkeiten gewählt werden, denn die Beantwortung ist die Voraussetzung, dass die Skriptausführung mit \emph{Weiter} fortgesetzt werden kann. Je nach Wahl wird dann entweder \emph{1.\ Hallo Welt!} oder \emph{1.\ Aloah Welt!} ausgegeben.
+
+Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \verb|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \verb|Q| und \verb|h|, bzw.\ \verb|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel. 
+Die Auswahlabfrage wird durch das \verb|?|-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \verb|#|-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
+
+Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wieder aus Befehlen bestehen, die auch für sich alleine stehen können, Dieser Code wird wird nur dann ausgeführt, wenn die dazugehörende Antwortmöglichkeit ausgewählt wurde.
+
+Die Schlüssel für Fragen und Antworten und auch für die später noch kommenden Texteingaben können aus einem oder mehreren Buchstaben und Zahlen bestehen und dienen wie schon genannt dazu, die Eingaben des Anwenders in der URL zu speichern und auch innerhalb des Skriptes abrufbar zu machen. Der Schlüssel für eine Auswahlabfrage muss eindeutig im gesamte Skript sein, der einer Antwortmöglichkeit muss eindeutig innerhalb einer Auswahlabfrage sein.
+
+Da die Pfadlänge für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
+
+\subsection{Allgemeine Ergänzungen zur Syntax}
+In \FPZ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen, also auch mit Leerzeichnen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
+
+Die Zeichenfolge  \verb|//| leitet einen Kommentar ein, jedoch nur zu Beginn einer Zeile.
+
+Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch durch die Zeichenfolge \verb|__| zu Beginn jeder Folgezeile kenntlich gemacht werden muss.
+
+\Beispiel{01b Syntaxergänzungen}
+\begin{verbatim}
+// Das ist ein Kommentar
+
+>> Das ist eine Ausgabe,
+    __ die im Scriptcode
+    __ auf drei Zeilen verteilt wird.
+\end{verbatim}
+
+\section{Entscheidungsbäume}
+Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entscheidungsbäume und Flussdiagramme aufbauen, deren Stärke darin liegt, an jeder Stelle im Skriptcode die vollständige bis dahin getroffene Auswahl zu kennen, und so die nächste Fragestellung ganz exakt auf diese Situation abzustimmen. Die Anwendungsfälle dafür sind enorm vielfältig, aber um im Bereich der Softwareentwicklung zu bleiben, sind hier einige typische Beispiele.
+
+\subsection{Strukturabbildung einer Software}
+Durch den Nachbau der Struktur, bzw.\ des Menübaums einer Software von der Programmoberfläche aus betrachtet, kann man es dem Anwender des Skriptes enorm erleichtern, eine Stelle innerhalb dieses Softwareproduktes eindeutig zu benennen. Der daraus resultierende Pfad oder eine diesem zugeordnete Kennung kann für die Suche nach Vorgängen und Informationen verwendet werden. Da diese Art von Information oft Teil abteilungsübergreifender Kommunikation ist, können mit einer solchen Auswahl sowohl Missverständnissen vermieden, und auch längerer Tastatureingaben eingespart werden.
+
+\subsection{Kategorisierungshilfen} 
+Eine wohl in allen Softwarehäusern stattfindende Kategorisierung ist die des Schweregrades von neu erfassten Fehlern. Diese variieren in der Regel von \emph{hoch kritisch} bis hin zu \emph{niedrig} oder einer numerischen Abstufung mit dieser Entsprechung. Die subjektive und oft situationsbedingte Einschätzung der beteiligten Personen sollte hierbei nicht der Gradmesser sein, sondern vielmehr die objektive Kriterien und der Vergleich mit verständlichen Beispielen. Auf diese Weise können die verfügbaren Ressourcen zielgerichtet eingesetzt werden.
+
+Die nachfolgende Schweregradeinstufung beginnt damit, explizit nach Kriterien für die höchste Einstufung zu fragen und geht weiter zu den Kriterien der zweiten Stufe, wenn diese nicht zutreffen. Nach der zweiten Stufe wird direkt nach Kriterien für die unterste Stufe gefragt, so dass automatisch für alles die Zuordnung zu Stufe 3 erfolgt, was auch dort nicht zugeordnet werden kann. Das macht die Aufstellung der Kriterien leichter, da sich einfacher Kriterien für die ganz niedrige Priorität finden lassen, als für die vorgelagerte Stufe.
+
+\Beispiel{12 Schweregradeinstufung}
+\begin{verbatim}
+?S1: Treffen die Kriterien für einen Stufe-1-Fehler zu?    
+    #k1: Ausgegebene Werte entsprechen nicht der Spezifikation.
+        >> Stufe-1-Fehler: Spezifikationsverletzung
+    #k2: Der Datenschutz ist an einer wesentlichen Stelle verletzt.
+        >> Stufe-1-Fehler: Datenschutzverletzung
+    #k3: Der Datensicherheit ist verletzt oder gefährdet.
+        >> Stufe-1-Fehler: Datensicherheitssverletzung
+    #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+        ?S2: Treffen die Kriterien für einen Stufe-2-Fehler zu?
+            #k1: Der Fehler stört zentrale Programmfunktionen.
+                >> Stufe-2-Fehler: Störung zentraler Funktion.
+            #k2: Es gibt zwei oder mehr Supportanfragen zu 
+                __ diesem Fehler.
+                >> Stufe-2-Fehler: Mindestens zwei Supportanfragen
+            #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+                ?S4: Treffen die Kriterien für einen 
+                    __ Stufe-4-Fehler zu?
+                    #k1: Es handelt sich um einen erkennbaren
+                        __ Tippfehler.
+                        >> Stufe-4-Fehler: Tippfehler
+                    #k2: Der Fehler tritt nur bei unsinnigen
+                        __ Eingaben auf.
+                        >> Stufe-4-Fehler: unsinnige Eingaben
+                    #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+                        >> Stufe-3-Fehler
+\end{verbatim}
+
+Für die Abarbeitung der Fehler-Aufgaben der verschiedene Schweregradstufen kann man dann klare Regeln definieren, wie z.B.\ dass Stufe-1-Fehler umgehend behoben werden und dass die Lösung aller Stufe-2-Fehler zumindest in das nächste Service Release einfließen muss.
+
+Insgesamt ist die Sortierung nach dem Schweregrad keine gute Idee, wenn sich viele Vorgänge ansammeln, da es in diesem Fall erst dann zur Bearbeitung eines Stufe-4-Fehlers kommt, wenn alle Stufe-3-Fehler abgearbeitet sind, was unter Umständen nie der Fall ist. Ein System, das die Einstufung berücksichtigt, aber gleichzeitig die Abarbeitung jeder Aufgabe sicherstellt, ist angelehnt an die Spuren der Autobahn. Die Aufgaben jeder Schweregradstufe bilden jeweils eine Queue, in der neu erstellte Aufgaben unten angefügt und die ältesten oben abgearbeitet werden. Um den Schweregrad zu berücksichtigen, lässt man die linke Spur schneller laufen, indem man die Mengen für die Abarbeitung in ein vorgegebenes Verhältnis setzt, z.B.
+\[M(2):M(3):M(4) = 6 : 3 : 1\]
+d.h.\ für eine abgearbeitete Stufe-4-Aufgabe werden drei Stufe-3-Aufgaben und sechs Stufe-2-Aufgaben abgearbeitet.
+
+\subsection{Expertensysteme}
+Mit Expertensystem oder auch Troubleshooting-System oder Chatbot ist hier eine Anwendung gemeint, die wie ein lebendiger Experte durch immer weiter in die Tiefe gehende Fragestellungen eine in der Regel problematische Situation möglichst genau erfasst, um dann dem Anwender dazu passende Handlungsanweisungen und Lösungsansätze aufzuzeigen und die Situation darüber hinaus auch schon mal vollständig zu beschreiben.
+Probleme gibt es überall und die zur Lösung befähigten Experten erkennt man zuallererst daran, dass sie die richtigen Fragen stellen. Die Möglichkeit, einen großen Teil der Probleme auch in Abwesenheit menschlicher Experten lösen zu können, ist unheimlich wertvoll, insbesondere dann, wenn eine gut gemachte Anleitung Zeit spart und die Sicherheit gibt, nicht irgendetwas wildes auszuprobieren.
+
+Wie auch schon die oben genannten Beispiele, die auch kombiniert werden können, zeigt sich hier der enormen Nutzen, der sich schon aus diesen wenigen Skriptbausteinen ergibt. Der Grund dafür ist nicht, dass diese Befehle irgendetwas raffiniert technisches machen, sondern dass sie es ermöglichen, strukturelles oder fachliches Wissen in eine Form zu bringen, so dass dieses Wissen vom Anwender unmittelbar genutzt werden kann, ohne dass er es sich aneignen muss. \FPZ\ übernimmt die Anwendung des Wissens, der Anwender selbst muss sich immer nur mit einer einzelnen und idealerweise für ihn verständlichen Fragestellung auseinandersetzen, bekommt Führung und Anleitung und muss nicht selbst mühsam zum Experten werden.
+
+Der Umfang solcher Entscheidungsbäume kann riesig werden und trotzdem muss der Anwender am Ende nur eine Handvoll Fragen beantworten, um zum Ziel zu kommen.
+
+Hier ist ein sehr vereinfachtes Beispiel für ein Expertensystem, das eine Problemsituation analysiert und eine Handlungsempfehlung gibt:
+\Beispiel{03 Mini-Expertensystem}\label{Bsp04}
+\begin{verbatim}
+?: Startet die Anwendung?
+    #: Ja
+        >> Anwendung startet
+        ?: Ist eine Benutzeranmeldung möglich?
+            #: Ja
+                >> Benutzeranmeldung möglich.
+                >> Wo liegt das Problem?
+            #: Nein
+                >> Benutzeranmeldung nicht möglich
+                >> Empfehlung: Passwort zurücksetzen
+    #: Nein
+        >> Anwendung startet nicht
+        ?: Wurde das System schon neu gestartet?
+            #: Ja
+                >> System wurde schon neu gestartet.
+                >> Empfehlung: 2nd-Level-Support kontaktieren
+            #: Nein
+                >> System wurde noch nicht neu gestartet.
+                >> Empfehlung: System neu starten
+\end{verbatim}
+
+Zuerst fällt auf, dass hier keine Schlüssel angegeben sind, weder für die Auswahlabfragen, noch für die Antwortmöglichkeiten. Tatsächlich sind diese nicht zwingend erforderlich und werden von \FPZ\ selbständig anhand der Reihenfolge im Code vergeben, wenn sie im Skript weggelassen werden. Dies ist dann möglich, wenn man sich nicht an einer anderen Stelle im Skript auf eine Auswahl beziehen oder dieses wiederholen möchte, und es ist dann besonders vorteilhaft, wenn der Baum sehr groß werden kann und permanent erweitert wird und man den Überblick über die schon vergebenen Schlüssel zu verlieren droht. Der Nachteil der impliziten Schlüsselvergabe liegt darin, dass sich durch das Einfügen einer weiteren Auswahlabfrage am Anfang alle darunter liegenden Schlüssel verschieben, und so eine URL, die die Antworten in Bezug auf die Vorversion enthält, in der neuen Version falsch interpretiert wird. 
+
+Die Ausführung dieses Beispiels zeigt darüber hinaus, wie das System mit ineinander verschachtelten Fragestellungen umgeht. In jedem Schritt werden immer genau die Fragen gestellt, die noch offen sind, und die aufgrund der vorangegangenen Schritte durchlaufen werden müssen. Sobald alle Fragen beantwortet sind, werden die gesammelten Ausgaben ausgegeben und die Ausführung des Skriptes ist abgeschlossen.
+
+\section{Formatierung der Ausgabe}\label{FormatierungAusgabe}
+Dieser Abschnitt widmet sich der Formatierung der Ausgabe und beschreibt Möglichkeiten, Abschnitte zu bilden, Aufzählungen zu verschachteln, sowie Links und Code in die Ausgabe zu integrieren. 
+
+\subsection{Ausgabe in Abschnitten}
+Bis jetzt habe wir nur den Befehl \verb|>>| verwendet, um Aufzählungspunkte auszugeben, und dabei merkt man recht schnell, dass das Ergebnis zumeist nicht nur aus einer Liste besteht, oder bestehen könnte. Nehmen wir das Expertensystem aus Beispiel~\ref{Bsp04}. Die Beschreibung der Situation und der schon durchgeführten Maßnahmen ist inhaltlich betrachtet eine Liste für sich, die Handlungsempfehlung eine andere und läuft alles am Ende in eine Kontaktierung des 2nd-Level-Supports hinaus, könnte die Liste der benötigten Informationen und Materialien als dritte Liste ausgegeben werden.
+
+Dieser Anwendungsfall zeigt auch schon, dass es durchaus üblich ist, dass verschiedenen Listen in einem Skript nicht nacheinander, sondern parallel zusammengestellt werden. Dies ist auch im folgenden Beispiel der Fall, das eine sehr einfache, nicht interaktive Implementierungsanleitung darstellt, die einen Entwickler bei der Implementierung eines neuen Moduls anleitet. Da jeder Entwicklungsschritt auf einen Integrationstest nach sich ziehen sollte, und der Entwickler in diesem Fall auch für die Erstellung der Testpunkte verantwortlich ist, wird zusammen mit der Anleitung auch gleich noch eine Liste von Testpunkten ausgegeben.
+
+\Beispiel{04 Ausgabe in Abschnitten}
+\begin{verbatim}
+@Anleitung >> Erstelle eine neue Modul-Klasse
+@Testpunkte >> Das Modul wird korrekt gestartet
+@Anleitung >> Implementiere die Start-Methode
+@Testpunkte >> Das Modul wird korrekt beendet
+@Anleitung >> Implementiere die Beenden-Methode
+@Anleitung >> Nehme das Modul in den Modulkatalog auf
+@Anleitung >> Übernehme die Testpunkte von unten
+\end{verbatim}
+
+Die Ausführung erzeugt einen Abschnitt \emph{Anleitung} mit entsprechender Überschrift und den fünf Punkten der Anleitung, gefolgt von einem Abschnitt \emph{Testpunkte} mit den beiden Testpunkten. Im Gegensatz zur Zusammenstellung erfolgt die Ausgabe Abschnittsweise, wobei die Reihenfolge durch die jeweils erste Ausgabe des Abschnitts festgelegt wird.
+
+Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschnitt für alle darauffolgenden Ausgaben, sofern diese nicht explizit einem Abschnitt zugeordnet sind. Um also nur die Anleitung auszugeben, reicht eine einzige Festlegung des Abschnitts am Anfang:
+
+\Beispiel{05 Nur ein Abschnitt}
+\begin{verbatim}
+@Anleitung >> Erstelle eine neue Modul-Klasse
+>> Implementiere die Start-Methode
+>> Implementiere die Beenden-Methode
+>> Nehme das Modul in den Modulkatalog auf
+\end{verbatim}
+
+\subsection{Unterpunkte und Absatzformate}
+Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ unterstützt generell zwei Aufzählungsebenen, die mit den Befehlen \verb|>>| und \verb|>| angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des entsprechenden Abschnitts unter.
+
+Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter Aufzählungspunkt (\verb|>>#|), nicht nummerierter Aufzählungspunkt (\verb|>>*|), einfache Textzeile (\verb|>>_|) oder Codezeile  (\texttt{>>|}) ausgegeben wird.
+
+\Beispiel{06 Unterpunkte}
+\begin{verbatim}
+@Anleitung >>_ Geschätzter Zeitaufwand ca. 15 min
+>>* Erstelle eine neue Modul-Klasse.
+    >* Erstelle C#-Datei mit dem Namen des Moduls.
+    >* Füge folgenden Code ein:
+    >| public class NeuesModul : BaseModul
+    >| {
+    >| }
+>>* Implementiere die Start-Methode
+    ># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
+    ># und wähle in der Auswahl des Editors die Methode Start.
+    ># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.
+\end{verbatim}
+
+Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt werden zwei ebenfalls nicht nummerierte Unterpunkte ausgegeben, gefolgt von einem Codeblock mit drei Zeilen. Unter dem zweiten Aufzählungspunkt sieht man drei Unterpunkte, die mit Kleinbuchstaben durchnummeriert sind,
+
+Die drei aufeinanderfolgenden Codezeilen werden zu einem Codeblock zusammengefasst, der mit der automatisch darunter angeordneten Schaltfläche \emph{In Zwischenablage kopieren} in die Zwischenablage genommen werden kann.
+
+Auf die vielfältigen Möglichkeiten der Codegenerierung kommen wir später zurück. Im nächsten Abschnitt bleiben wir nochmal bei der Formatierung und zeigen, wie sich Text innerhalb einer Zeile formatieren lässt.
+
+\subsection{Links und Inline-Code}
+
+Gerade in Anleitungen wird auf Stellen im Code in Form von Klassen-, Methoden- oder Variablennamen verwiesen, und da erleichtert es den Lesefluss deutlich, wenn man diese Textelemente in der Ausgabe entsprechend hervorhebt. Dies ist mit dem Befehl \verb|~AddCode| möglich, der der Ausgabe der letzten Zeile Text hinzufügt, der als Code formatiert ist. Mit dem Befehl \verb|~AddText| kann danach wieder weiterer Text hinzugefügt werden. Man beachte das zusätzliche Leerzeichen, das immer am Anfang des angehängten Textes angefügt werden muss, wenn zwischen diesem und dem vorangegangen Text ein Leerzeichen stehen soll, da Leerraum am Zeilenende generell ignoriert wird.
+
+Als Anwendung im Browser kann \FPZ natürlich auch Links erzeugen, und damit den Anwender sowohl zu statischen Seiten, also auch zu anderen Anwendungen weiterleiten. Auch dieser Möglichkeit widmen wir später noch einen eigenen Abschnitt. Ein Link besteht dabei aus einer URL und dem anzuzeigenden Text, die in dieser Reihenfolge, getrennt von einem vertikalen Strich angegeben werden. Auch hier kann mit \verb|~AddText| wieder weiterer Text im Anschluss angefügt werden.
+
+\Beispiel{07 Links und Inline-Code}
+\begin{verbatim}
+@Anleitung >> Implementiere die Start-Methode
+    > Gibt die Zeichenfolge 
+    ~AddCode  override 
+    ~AddText  innerhalb der Klasse ein
+    > und wähle in der Auswahl des Editors die Methode Start.
+    > Überschreibe die Start-Methode wie im
+    ~AddLink  https://learn.microsoft.com/de-de/dotnet/csharp
+        __/language-reference/keywords/override | Internet
+    ~AddText  beschrieben.
+\end{verbatim}
+
+Das Beispiel formatiert den Text \emph{override} als Code und den Text  \emph{Internet} als Link, also blau, unterstrichen und klickbar. Sofern die Domäne der angegebenen URL in der Konfiguration nicht als sicher angegeben ist (siehe Abschnitt~\ref{BezugKonfig}), wird die URL aus Sicherheitsgründen hinter dem Anzeigen-als-Text ergänzt. Der Link wird standardmäßig immer in einem neuen Tab geöffnet.
+
+\section{Variablen und Texteingaben}
+Die erste Zielsetzung der Vorversion von \FPZ\ bestand tatsächlich nur darin, eine große Menge an möglichen Ausgaben mittels iterierten Fragestellungen auf eine spezifische Situation einzugrenzen und die damit verbundenen Anwendungsfälle abzudecken. Sehr schnell wurde jedoch klar, dass mit ein paar grundlegenden Erweiterungen noch sehr viel mehr möglich ist.
+
+\subsection{Variablen setzen und verwenden}
+Unter einer Variablen versteht man kurz gesagt einen Platzhalter, der verschiedene Werte annehmen kann. Innerhalb von Programmier- oder Skriptsprachen lassen sich die Werte von Variablen setzen und auch abrufen. In \FPZ\ wird einer Variablen mit dem \verb|~Set|-Befehl ein Wert zugewiesen. Die Variable kann dann an nahezu allen Stellen im Skript verwendet werden, indem man Sie mit vorangestelltem \verb|$|-Zeichen kennzeichnet.
+
+\Beispiel{09 Hallo Welt mit Variable}
+\begin{verbatim}
+?Q: Wie soll die Welt begrüßt werden?
+    #h: Mit "Hallo Welt!"
+        ~Set Gruss=Hallo
+    #a: Mit "Aloah Welt!"
+        ~Set Gruss=Aloah
+>> $Gruss Welt!
+\end{verbatim}
+
+Das Beispiel setzt  die Variable \verb|Gruss| je nach Auswahl auf den Wert \emph{Hallo} oder \emph{Aloah} und ruf den Wert in der Ausgabe am Ende auf, so dass entweder \emph{Hallo Welt!} oder \emph{Aloah Welt!} ausgegeben wird.
+
+Eine Variable kann aus Buchstaben (ohne Umlaute), Zahlen, runden Klammern und anderen Variablen zusammengesetzt werden. Der Wert einer Variable kann jede beliebige Zeichenkette sein. 
+
+Die Ersetzung von Variablen durch die jeweils zugeordneten Werte erfolgt durch einfache Ersetzung, d.h.\ das Ende der Variablen muss beim Aufruf nicht gekennzeichnet werden. Variablen, die nicht gesetzt wurden, werden auch nicht ersetzt.
+
+\Beispiel{10 Variablenersetzung}
+\begin{verbatim}
+~Set X=abc
+>> X = $X
+>> Z = $Z (Z wurde nie zugeweisen)
+>> XY = $XY (vor der Zuweisung von XY)
+~Set XY=def
+>> XY = $XY (nach der Zuweisung von XY)
+~Set i=5
+~Set F($i)=ghi
+>> F(i) = F($i) = $F($i)
+\end{verbatim}
+
+Dieses Beispiel zeigt den Umgang mit Variablen, deren Anfang identisch mit einer anderen Variable ist, in diesem Fall \verb|XY|. Die Ersetzung erfolgt in diesem Fall absteigend sortiert, sodass \verb|$XY| vor \verb|$X| ersetzt wird. Die Verwendung der Variablen \verb|$i| im Ausdruck \verb|$F($i)| gibt schon einen Ausblick darauf, dass man auch ganze Felder von Variablen anlegen und durchlaufen kann. Bei der Auswertung wird hierbei zunächst \verb|$i| durch \verb|5| und dann \verb|$F(5)| durch \verb|ghi| ersetzt. Die runden Klammern sind hier übrigens nur schmückendes Beiwerk, um den Index-Teil der Variablen hervorzuheben und vom Feldname abzugrenzen.
+
+Wir werden später noch viele andere Befehle kennenlernen, die Zeichenketten verarbeiten und die das Ergebnis in einer Variablen zurückgeben und lernen auch selbst Funktionen zu schreiben, die ihre Eingabewerte über Variablen übergeben bekommen. 
+
+\subsection{Bewertungssysteme}
+Das Beispiel in diesem Abschnitt verwendet eine Variable, um einen Zahlenwert zu verwalten und in Abhängigkeit der Auswahlwerte Werte zu addieren. Dies ist z.B.\ dann erforderlich, wenn man mehrere gleichartige Dinge nach einem formalen Bewertungssystem bewerten möchte, um sie anschließend anhand der daran angeschlossenen Metrik in eine Rangfolge zu bringen. 
+
+Nehmen wir konkret die Bewertung von Aufgaben, die zur Stablilisierung bestimmter Programmfunktionen in einem Softwareprodukt erstellt wurden. Die Erstellung und Ausformulierung solcher Aufgaben werden meist den Entwicklern selbst überlassen, da nur diese über das Wissen und den technischen Einblick verfügen, um dort Verbesserungspotential auszumachen. Am Ende sollte es aber auch hier der Product Owner sein, der über Umfang und Priorität der Maßnahmen entscheidet, und um die dafür relevanten Aspekte der Entwicklung herauszuarbeiten, könnte er jeder dieser Aufgaben mit dem folgendem Bewertungssystem bewerten lassen:
+
+\Beispiel{11 Bewertungssystem}
+\begin{verbatim}
+~SetInputDescription Schätze den jeweilgen Aspekt für die
+    __ in der vorliegenden Aufgabe beschriebene
+    __ Stabilisierung anhand der Textbeschreibungen ab.
+~Set punkte=0
+@Bewertung >>* Bewertungkrterien: 
+?A1: Wie groß ist der Verbesserungsbedarf an dieser Stelle?
+    #w1: Gering. Es gibt wenig Meldungen zu Einschränkungen an
+        __ dieser Stelle.
+        >* Bedarf: gering (-)
+        ~AddTo punkte+=10
+    #w2: Mittel. Es gibt immer wieder Meldungen zu spürbaren 
+        __  Einschränkungen an dieser Stelle.
+        >* Bedarf: mittel
+        ~AddTo punkte+=25
+    #w3: Groß. Es permanent Meldungen zu störenden Einschränkungen
+        __ an dieser Stelle.
+        >* Bedarf: groß (+)
+        ~AddTo punkte+=50
+?A2: Wie klar ist die durchzuführende Maßnahme beschrieben?
+    #w1: Unkrokret. Es sind noch Analysen und Vorarbeiten notwendig.
+        >* Klarheit: unkonkret (-)
+        ~AddTo punkte+=10
+    #w2: Hinreichend konkret. Der Ansatz ist klar beschrieben,
+        __ aber noch nicht erprobt.
+        >* Klarheit: konkret
+        ~AddTo punkte+=25
+    #w3: Übertragbar. Der Ansatz kann von einer anderen Stelle
+        __ hierher übertragen werden.
+        >* Klarheit: übertragbar (+)
+        ~AddTo punkte+=50
+?A3: Wie effektiv wird die Maßnahmen voraussichtlich sein?
+    #w1: Unklar. Der tatsächliche Effekt ist erst nach der
+        __ Umsetzung erkennbar.
+        >* Effektivität: unklar (-)
+        ~AddTo punkte+=10
+    #w2: Gering bis mittel. Es bleiben Einschränkungen, aber
+        __ weniger oft und weniger groß.
+        >* Effektivität: gering bis mittel
+        ~AddTo punkte+=25
+    #w2: Mittel bis gut. Die vorhandenen Einschränkungen werden
+        __ weitestgehend behoben.
+        >* Effektivität: mittel bis gut (+)
+        ~AddTo punkte+=50
+?A4: Wie aufwändig ist die Umsetzung der Maßnahme?
+    #w1: Sehr aufwändig. 20 Storypunkte oder mehr.
+        >* Aufwand: hoch (-)
+        ~AddTo punkte+=10
+    #w2: Aufwändig. 13-20 Storypunkte.
+        >* Aufwand: mäßig hoch
+        ~AddTo punkte+=25
+    #w2: Im Rahmen. Maximal 8 Storypunkte.
+        >* Aufwand: im Rahmen (+)
+        ~AddTo punkte+=50
+?A5: Wie gut ist die Wiederverwendbarkeit?
+    #w1: Gering. Die Lösung ist speziell auf diese eine Stelle
+        __ zugeschnitten.
+        >* Wiederverwendbarkeit: gering (-)
+        ~AddTo punkte+=10
+    #w2: Übertragbar. Die Lösung kann auf andere Stellen
+        __ übertragen werden.
+        >* Wiederverwendbarkeit: übertragbar
+        ~AddTo punkte+=25
+    #w3: Umfassend. Die Lösung wird zentral eingebaut und
+        __ wirkt sich an mehren Stellen aus.
+        >* Wiederverwendbarkeit: umfassend (+)
+        ~AddTo punkte+=50
+@Bewertung >>* Gesamtbewertung: $punkte Punkte.
+\end{verbatim}
+
+Der Befehl \verb|~SetInputDescription| gibt auf den Seiten, auf denen Eingaben abgefragt werden, den nachfolgenden Text unterhalb des Titels aus. Damit kann man wie in diesem Fall noch einmal allgemein beschreiben, was das Skript macht, und in welchem Kontext die Eingaben abgefragt werden.
+
+Im Anschluss wird die Variable \verb|punkte| auf den Wert 0 gesetzt, was man auch weglassen könnte, und danach folgen fünf Fragen, die jeweils ein Kriterium der in durch die  Aufgabe beschriebenen Entwicklungsmaßnahme abfragen. Für jede Frage werden drei Auswahlmöglichkeiten angeboten, die jeweils aufsteigend eine geringe bis gute Erfüllung des genannten Kriteriums beschreiben. Der ausgewählte Wert wird dann sowohl in einer Zusammenfassung in Textform ausgegeben, und auch in der Gesamtpunktezahl berücksichtigt, indem zu dem in der Punkte-Variablen vorhandenen Wert mehr oder weniger hinzugezählt wird. Eine Erhöhung um den Wert 10 erfolgt dabei mit dem Befehl \verb|~AddTo punkte+=10|. Die Gesamtpunktezahl wird dann ebenfalls am Ende ausgegeben.
+
+Die Verwendung eines solchen Bewertungsskriptes hat primär den Vorteil, dass die Bewertung sehr objektiv ausfällt, da die Einschätzung in Bezug auf einzelnen Kriterien schon von sich aus reflektiert und nicht mittels Bauchgefühl passieren muss, was zusätzlich dadurch verstärkt werden kann, dass die Formulierung der Auswahlwerte eine gewisse Belegbarkeit assoziiert, die insbesondere bei einer gemeinsamen Bewertung im Team auch ausdiskutiert werden kann. Die wiederholte Auseinandersetzung mit den zum größten Teil wirtschaftlichen Kriterien schärft zudem die Sichtweise der Entwickler auf diese Aspekte, so dass diese bei der Suche nach Verbesserungen immer mehr in den Fokus gelangen.
+
+Ob man nun wie im Beispiel oben eine einfache additive Bewertung abbildet, oder komplexere Formeln, die auch berücksichtigt, dass sich Faktoren gegenseitig verstärken können, bleibt der eigenen Kreativität überlassen. Mit \FPZ\ lassen sich alle Formeln realisieren.
+
+\subsection{Texteingaben}
+Schon bei der Erstellung der ersten Skripte gab es die Assoziation zu den zahlreichen Konfigurationsportalen, mit denen man im Internet sein Fahrrad oder Auto nach Wunsch zusammenstellen konnte, und daran angelehnt auch die ersten Versuche, die Konfiguration rund um die vielfach wiederkehrenden Standardentwicklungen in gleicher Weise abzufragen und es so dem Product Owner zu erleichtern, die passende Konfiguration zu wählen. Da die Auswahl schon technisch auf auf die Menge der möglichen Konfigurationen beschränkt blieb, gleichzeitig aber alle notwendigen Entscheidungen abgefragt wurden, konnte man Aufgabenbeschreibungen generieren, die fast alle wesentlichen Konfigurationsaspekte auflisteten. Fast alle deshalb, da die Benennung der zu erstellenden Instanz eben nicht abgefragt werden konnte, und deshalb durch einen Platzhalter \emph{xxx} in der Ausgabe ersetzt werden musste, was den Komfort deutlich schmälerte.
+
+Inzwischen gehören Texteingaben zum Grundumfang von \FPZ\ und zusammen damit wurden auch zahlreiche Befehle hinzugefügt, um Texteingaben zu verarbeiten.
+
+\Beispiel{13 Textersetzung}
+\begin{verbatim}
+~Input si: Suche in
+~Input sn: Suche nach
+~Input ed: Ersetze durch
+~Replace erg=$si|$sn->$ed
+@Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
+@Ergebnis >> $erg
+\end{verbatim}
+
+In diesem Beispiel werden die drei Texte für eine einfache Ersetzungsaufgabe abgefragt und über die jeweiligen Variablen \verb|si|, \verb|sn| und \verb|ed| an den \verb|~Replace|-Befehl übergeben, der das Ergebnis über die Variablen \verb|erg| bereitstellt.
+
+Mit der Möglichkeit, Texte oder Zahlen einzugeben lassen sich jede Menge kleine und größere Hilfsfunktionen realisieren, die sich direkt im Browser aufrufen lassen und damit die eine oder andere Datei auf Basis von Tabellenkalkulation überflüssig machen, besonders, wenn sie eine gute Benutzerführung aufweisen. Hierfür schauen wir uns im nächsten Abschnitt an, was für weitere Formatierungsmöglichkeiten es gibt.
+
+\section{Weitere Formatierungsmöglichkeiten}
+In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Aufgabenkontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
+
+\subsection{Ausgabetitel und Abschnittsverschiebungen}
+Der Titel, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \verb|~SetTitle| unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auflistung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
+
+Beim  Verschieben eines Abschnitts wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, verschiedene Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
+
+\Beispiel{14 Ausgabeformatierung 2}
+\begin{verbatim}
+~Input Bez: Wie soll das Feld heißen?
+@AnlEig >> Setze die Bezeichnung "$Bez"
+?: Welche Art von Werten soll eingegeben werden?
+    #: Texte
+        ~Set Klasse=TextFeld        
+    #: Zahlen
+        ~Set Klasse=Zahlenfeld
+    #: Datumsangaben
+        ~Set Klasse=Datumsfeld
+    #: Werte aus einer vorgegebenen Menge
+        ~Set Klasse=Auswahlfeld
+~SetTitle Implementerung der $Klasse-Instanz $Bez
+@AnlInst >> Erstelle eine $Klasse-Instanz
+?: Kann das Feld leer gelassen werden?
+    #j: Ja
+        ~Set KannLeerSein=true
+    #n: Nein
+        ~Set KannLeerSein=false
+@AnlEig >> Setze KannLeerSein = $KannLeerSein
+~MoveSection AnlInst -> Anleitung
+~MoveSection AnlEig -> Anleitung
+\end{verbatim}
+
+In diesem Beispiel wird eine kleine Anleitung für den Einbau eines Feldes in ein Programm erstellt. Hierbei werden Bezeichnung, Typ und die Eigenschaft, ob das Feld leer gelassen werden kann, abgefragt. Sobald Bezeichnung und Typ festgelegt sind, wird der Titel unter Verwendung dieser Informationen neu gesetzt. Die Anleitung wird zunächst in zwei Abschnitten getrennt zusammengestellt, \verb|@AnlEig| für die beiden Eigenschaften und \verb|@AnlInst| für die Instanziierung. Am Ende werden die beiden Abschnitte  mit dem \verb|~MoveSection|-Befehl nacheinander in den neuen Abschnitt \emph{Anleitung} überführt, so dass die Punkte dort in einer logischen Reihenfolge stehen.
+
+Für dieses Minimalbeispiel hätte man die gewünschte Reihenfolge auch ohne die Verschiebung von Abschnitten hinbekommen, aber gerade bei größeren Anleitungsskripten kann eine Aufteilung helfen, den Überblick zu behalten.
 \end{document}

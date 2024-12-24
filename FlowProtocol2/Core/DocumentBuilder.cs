@@ -113,6 +113,17 @@ namespace FlowProtocol2.Core
                     tsec.Headline = tosection;
                     Document.Sections.Add(tsec);
                 }
+                if (fsec.Textblocks.Any() && tsec.Textblocks.Any())
+                {
+                    var fftb = fsec.Textblocks.First();
+                    var tltb = tsec.Textblocks.Last();
+                    if (fftb != null && tltb != null && fftb.BlockType == tltb.BlockType)
+                    {
+                        // Die aufeinandertreffenden Textblöcke haben den gleichen Typ und werden verschmolzen
+                        tltb.TextLines.AddRange(fftb.TextLines);
+                        fsec.Textblocks.Remove(fftb);
+                    }
+                }
                 tsec.Textblocks.AddRange(fsec.Textblocks);
                 Document.Sections.Remove(fsec);
             }

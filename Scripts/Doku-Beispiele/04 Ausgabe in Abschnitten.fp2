@@ -1,0 +1,7 @@
+@Anleitung >> Erstelle eine neue Modul-Klasse
+@Testpunkte >> Das Modul wird korrekt gestartet
+@Anleitung >> Implementiere die Start-Methode
+@Testpunkte >> Das Modul wird korrekt beendet
+@Anleitung >> Implementiere die Beenden-Methode
+@Anleitung >> Nehme das Modul in den Modulkatalog auf
+@Anleitung >> Übernehme die Testpunkte von unten

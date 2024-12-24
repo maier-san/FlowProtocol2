@@ -11,7 +11,6 @@
 ~AddText  hilfreich, weil sie eine Beschreibung der Einbaustelle ermöglichen, die unabhängig von Verschiebungen und Erweiterungen ist.
 ~SetSection Implementierung
 >>|~SetInputTitle Dynamische Skripterweiterung
->>|~SetInputTitle Dynamische Skripterweiterung
 >>|?W: Wähle eine Buch-Kategorie aus.
 >>|	#: Roman
 >>|		~Set Kategorie=Roman
@@ -25,8 +24,8 @@
 >>|			>|$Chr(36)ScriptFilePath
 >>|		>> Füge oberhalb von Zeile $Chr(36)LineNumber-7 folgenden Codeblock ein:
 >>|			>|$Chr(36)Chr(9)#: $KatNeu
->>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kategorie=$KatNeu
->>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kennung=$KenNeu
+>>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kategorie=$Chr(36)KatNeu
+>>|			>|$Chr(36)Chr(9)$Chr(36)Chr(9)~Set Kennung=$Chr(36)KenNeu
 >>|		>> Speichere die Datei ab.
 >>|		~Set Kategorie=$KatNeu
 >>|		~Set Kennung=$KenNeu

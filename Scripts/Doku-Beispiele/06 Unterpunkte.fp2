@@ -1,0 +1,11 @@
+@Anleitung >>_ Geschätzter Zeitaufwand ca. 15 min
+>>* Erstelle eine neue Modul-Klasse.
+	>* Erstelle C#-Datei mit dem Namen des Moduls.
+	>* Füge folgenden Code ein:
+	>| public class NeuesModul : BaseModul
+	>| {
+	>| }
+>>* Implementiere die Start-Methode
+	># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
+	># und wähle in der Auswahl des Editors die Methode Start.
+	># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.

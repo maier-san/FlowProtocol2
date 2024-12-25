@@ -82,7 +82,7 @@ Bis dahin werden aber erst einmal die grundlegenden Befehle und Funktionsweisen 
 
 \newpage
 
-\section{Bezug und Konfiguration}\label{Bezug und Konfiguration}\label{BezugKonfig}
+\section{Bezug und Konfiguration}\label{BezugKonfig}
 \FPZ steht unter der MIT-Lizenz und ist unter folgender Adresse auf GitHub verfügbar :
 \begin{center}
     \texttt{https://github.com/maier-san/FlowProtocol2}
@@ -111,7 +111,7 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 >> Hallo Welt!
 \end{verbatim}
 
-Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZ-Installation (vgl.\ Abschnitt \ref{Bezug und Konfiguration}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZ-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
 Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
@@ -133,7 +133,9 @@ Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausge
         >> Aloah Welt!
 \end{verbatim}
 
-Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{Wie soll die Welt begrüßt werden?} konfrontiert, mit den beiden Antwortmöglichkeiten \emph{Mit ''Hallo Welt!''} und \emph{Mit ''Aloah Welt!''}. Es muss einer der beiden vorgegebenen Auswahlmöglichkeiten gewählt werden, denn die Beantwortung ist die Voraussetzung, dass die Skriptausführung mit \emph{Weiter} fortgesetzt werden kann. Je nach Wahl wird dann entweder \emph{1.\ Hallo Welt!} oder \emph{1.\ Aloah Welt!} ausgegeben.
+Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{Wie soll die Welt begrüßt werden?} konfrontiert, mit den beiden Antwortmöglichkeiten \emph{Mit ''Hallo Welt!''} und \emph{Mit ''Aloah Welt!''}. Es muss einer der beiden vorgegebenen Auswahlmöglichkeiten gewählt werden, denn wenn man die Skriptausführung mit \emph{Weiter} fortsetzt, werden die nicht beantworten Fragen einfach erneut gestellt und man gelangt nicht zur Ausgabeseite.  Nach getroffener Wahl wird auf der Ausgabeseite dann entweder \emph{1.\ Hallo Welt!} oder \emph{1.\ Aloah Welt!} ausgegeben. Dort hat man dann die Möglichkeit, das eben ausgeführte Skript mittels \emph{Neue Ausführung} erneut auszuführen oder zur Startseite der Skriptauswahl zu wechseln.
+
+Das Grundprinzip, dass auf einer oder mehreren Eingabeseiten die eventuell auch voneinander abhängigen Eingaben abgefragt werden, um dann am Ende die daraus resultierenden Ausgaben auf einer Ausgabeseite anzuzeigen, gilt für alle Skripte.
 
 Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \verb|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \verb|Q| und \verb|h|, bzw.\ \verb|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel. 
 Die Auswahlabfrage wird durch das \verb|?|-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \verb|#|-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
@@ -142,7 +144,7 @@ Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wied
 
 Die Schlüssel für Fragen und Antworten und auch für die später noch kommenden Texteingaben können aus einem oder mehreren Buchstaben und Zahlen bestehen und dienen wie schon genannt dazu, die Eingaben des Anwenders in der URL zu speichern und auch innerhalb des Skriptes abrufbar zu machen. Der Schlüssel für eine Auswahlabfrage muss eindeutig im gesamte Skript sein, der einer Antwortmöglichkeit muss eindeutig innerhalb einer Auswahlabfrage sein.
 
-Da die Pfadlänge für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
+Da die Gesamtlänge der URL für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
 
 \subsection{Allgemeine Ergänzungen zur Syntax}
 In \FPZ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen, also auch mit Leerzeichnen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
@@ -166,7 +168,7 @@ Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entsch
 \subsection{Strukturabbildung einer Software}
 Durch den Nachbau der Struktur, bzw.\ des Menübaums einer Software von der Programmoberfläche aus betrachtet, kann man es dem Anwender des Skriptes enorm erleichtern, eine Stelle innerhalb dieses Softwareproduktes eindeutig zu benennen. Der daraus resultierende Pfad oder eine diesem zugeordnete Kennung kann für die Suche nach Vorgängen und Informationen verwendet werden. Da diese Art von Information oft Teil abteilungsübergreifender Kommunikation ist, können mit einer solchen Auswahl sowohl Missverständnissen vermieden, und auch längerer Tastatureingaben eingespart werden.
 
-\subsection{Kategorisierungshilfen} 
+\subsection{Kategorisierungshilfen} \label{Kategorisierungshilfen}
 Eine wohl in allen Softwarehäusern stattfindende Kategorisierung ist die des Schweregrades von neu erfassten Fehlern. Diese variieren in der Regel von \emph{hoch kritisch} bis hin zu \emph{niedrig} oder einer numerischen Abstufung mit dieser Entsprechung. Die subjektive und oft situationsbedingte Einschätzung der beteiligten Personen sollte hierbei nicht der Gradmesser sein, sondern vielmehr die objektive Kriterien und der Vergleich mit verständlichen Beispielen. Auf diese Weise können die verfügbaren Ressourcen zielgerichtet eingesetzt werden.
 
 Die nachfolgende Schweregradeinstufung beginnt damit, explizit nach Kriterien für die höchste Einstufung zu fragen und geht weiter zu den Kriterien der zweiten Stufe, wenn diese nicht zutreffen. Nach der zweiten Stufe wird direkt nach Kriterien für die unterste Stufe gefragt, so dass automatisch für alles die Zuordnung zu Stufe 3 erfolgt, was auch dort nicht zugeordnet werden kann. Das macht die Aufstellung der Kriterien leichter, da sich einfacher Kriterien für die ganz niedrige Priorität finden lassen, als für die vorgelagerte Stufe.
@@ -470,7 +472,7 @@ Der Titel, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \verb|~S
 
 Beim  Verschieben eines Abschnitts wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, verschiedene Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
 
-\Beispiel{14 Ausgabeformatierung 2}
+\Beispiel{14 Abschnittsverschiebung}
 \begin{verbatim}
 ~Input Bez: Wie soll das Feld heißen?
 @AnlEig >> Setze die Bezeichnung "$Bez"
@@ -497,5 +499,58 @@ Beim  Verschieben eines Abschnitts wird der Inhalt eines Abschnitts an einen and
 
 In diesem Beispiel wird eine kleine Anleitung für den Einbau eines Feldes in ein Programm erstellt. Hierbei werden Bezeichnung, Typ und die Eigenschaft, ob das Feld leer gelassen werden kann, abgefragt. Sobald Bezeichnung und Typ festgelegt sind, wird der Titel unter Verwendung dieser Informationen neu gesetzt. Die Anleitung wird zunächst in zwei Abschnitten getrennt zusammengestellt, \verb|@AnlEig| für die beiden Eigenschaften und \verb|@AnlInst| für die Instanziierung. Am Ende werden die beiden Abschnitte  mit dem \verb|~MoveSection|-Befehl nacheinander in den neuen Abschnitt \emph{Anleitung} überführt, so dass die Punkte dort in einer logischen Reihenfolge stehen.
 
-Für dieses Minimalbeispiel hätte man die gewünschte Reihenfolge auch ohne die Verschiebung von Abschnitten hinbekommen, aber gerade bei größeren Anleitungsskripten kann eine Aufteilung helfen, den Überblick zu behalten.
+Für dieses Minimalbeispiel hätte man die gewünschte Reihenfolge auch ohne die Verschiebung von Abschnitten hinbekommen, aber gerade bei größeren Anleitungsskripten kann eine Aufteilung helfen, die jeweils zu einem Anleitungsschritt dazugehörenden Aspekte wie Programmcode und Testpunkte im Skript eng beieinanderzuhalten.
+
+\subsection{Formatierung der Eingabe}
+So wie man den Titel für die Ausgabeseite setzen kann, lässt sich der Titel auch für die Eingabeseiten setzen und im Laufe der Skriptausführung ändern, ebenso lassen sich auch bei der Eingabe Abschnitte einfügen, um die Eingabeseiten weiter zu gliedern. Zuletzt kann auch noch unterhalb der Überschrift  eine Beschreibung des Skriptes ausgegeben werden, um auch den Anwender abzuholen, der nur durch die Skriptauswahl stöbert, und der bislang nur den Dateinamen kennt.
+
+\Beispiel{15 Bug-Planer}
+\begin{verbatim}
+~SetTitle Bug-Planer
+~SetInputTitle Bug-Planer 6-3-1
+~SetInputDescription Der Bug-Planer berechnet
+    __ für eine Anzahl von Bugs, wie viele Bugs von
+    __ jedem Schweregrad eingeplant werden müssen,
+    __ damit diese im Verhältnis 6:3:1 liegen.
+~SetInputSection Vorhandene Bug-Vorgänge
+~Input A2: Anzahl Bugs mit Schweregrad 2
+~Input A3: Anzahl Bugs mit Schweregrad 3
+~Input A4: Anzahl Bugs mit Schweregrad 4
+~SetInputSection Planung
+~Input AP: Wie viele Bugs möchtest du einplanen?
+~Execute
+~Set S2=0
+~Set S3=0
+~Set S4=0
+~Set Sum=0
+~Split Indexlist=4;3;2;2;3;2;2;3;2;2|;
+~Set anybug = true
+~DoWhile $Sum<$AP && $anybug
+    ~ForEach idx in Indexlist
+        ~If $Sum<$AP && $S$idx<$A$idx
+            ~AddTo S$idx+=1        
+            ~AddTo Sum+=1
+    ~Loop
+    ~EvalExpression anybug = $S4<$A4 || $S3<$A3 || $S2<$A2
+~Loop
+@Ergebnis >>* Eingeplant werden sollen $AP Vorgänge.
+>>* Folgende Aufteilung wird vorgeschlagen:
+    > $S2 von $A2 Bugs mit Schweregrad 2
+    > $S3 von $A3 Bugs mit Schweregrad 3
+    > $S4 von $A4 Bugs mit Schweregrad 4
+\end{verbatim}
+
+Der Bug-Planer aus dem Beispiel oben ist eine schönes Beispiel für ein Berechnungsskript, bei dem Werte abgefragt, und daraus andere Werte berechnet werden. In diesem Fall wird die Anzahl der Bug-Vorgänge für jeden Schweregrad von 2 bis 4 abgefragt, der z.B. wie in Abschnitt~\ref{Kategorisierungshilfen} beschrieben festgelegt werden kann. Zusätzlich wird noch die Anzahl der einzuplanenden Bug-Vorgänge abgefragt und damit dann ein Vorschlag für eine Aufteilung berechnet, die möglichst im Verhältnis $6:3:1$ steht. Eine solche Angleichung geht natürlich nur, wenn von allen Schweregraden ausreichend viele Vorgänge vorhanden sind. Wenn nicht, wird das verplant, was da ist und das Sollverhältnis auf die anderen Schweregrade angewendet.
+
+Für die Eingabeseite wurde hier \verb|~SetInputTitle| eine eigene Überschrift gewählt. Zusätzlich wurde mit \verb|~SetInputDescription| eine Skriptbeschreibung formuliert, die unterhalb der Überschrift ausgegeben wird. Die vier Eingabefelder wurden mit dem Befehl \verb|~SetInputSection| in die beiden Abschnitte \emph{Vorhandene Bug-Vorgänge} und \emph{Planung} unterteilt. Man beachte, dass gleich benannte Eingabeabschnitte an verschiedenen Stellen nicht zusammengeführt werden.
+
+Nach der vierten Eingabe steht der Befehl \verb|~Execute|, der ebenfalls zur Formatierung verwendet werden kann. Der Befehl bewirkt, dass der Aufbau der Eingabeseite an diesem Punkt abgebrochen, und die Eingabeseite im aktuellen Zustand angezeigt wird. Erst wenn alle Abfragen und Eingaben bis zu diesem Punkt getätigt wurden, läuft das Skript weiter bis zum Ende oder bis zum nächsten \verb|~Execute|-Befehl. Bei Skripten mit sehr vielen Abfragen kann man diesen Befehl nutzen, um die Fragen so aufzuteilen, dass sie jeweils auf einen Bildschirm passen oder man kann erzwingen, dass die von einer Auswahl abhängigen Eingaben zuerst vollständig abgefragt werden, bevor der nachfolgenden Block ausgeführt wird. Im Beispiel oben sorgt der Befehl dafür, dass die Berechnungen in der zweiten Hälfte des Skriptes erst ausgeführt werden, wenn die an die Eingaben gebundenen Variablen mit Werten belegt sind. Ansonsten würden die würden die ersten mit diesen Variablen durchgeführten Vergleiche zu einem Fehler führen.
+
+Die Berechnung selbst funktioniert wie folgt: Zunächst werden Variablen \verb|S2|, \verb|S3| und \verb|S4| für die Zahl der zu verteilenden Aufgaben des jeweiligen Schweregrades auf 0 gesetzt, ebenso eine Variable \verb|Sum| für die Zwischensumme der insgesamt schon verteilten Aufgaben. 
+
+Die äußere \verb|~DoWhile|-Schleife wiederholt so lange, wie diese Zwischensumme noch kleiner als die Anzahl der zu verteilenden Aufgaben ist und noch ein Vorgang zum verteilen übrig ist, was über den Befehl \verb|~EvalExpression| getrennt ausgewertet und in der Variablen \verb|anybug| abgespeichert wird.
+
+In der Inneren Schleife wird die Indexsequenz $4,3,2,2,3,2,2,3,2,2$ durchlaufen, was die Index-Variable \verb|idx| nacheinander auf diese Werte setzt. Dies bewirkt, dass die Indices $2$, $3$ und $4$ gleichmäßig im Verhältnis $6:3:1$ durchlaufen werden. Für den jeweils ausgewählten Index wird dann die Anzahl der zu verteilenden Aufgaben $S_i$ um $1$ erhöht, sofern noch Aufgaben des jeweiligen Schweregrades übrig sind ($S_i<A_i$) und die Zwischensumme $S$ der schon verteilten Aufgaben noch kleiner ist, als die Anzahl $A$ der Aufgaben, die verteilt werden soll ($S<A$), also \verb|$S$idx<$A$idx| und \verb|$Sum<$AP|. Für jede verteilte Aufgabe wird auch die Zwischensumme um $1$ erhöht.
+
+Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben oder unten durch einen absoluten Wert begrenzt. Die Eingaben könnten damit auf die des ersten Abschnitts beschränkt werden.
 \end{document}

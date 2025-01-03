@@ -9,6 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdDefineSub : CmdBaseCommand
     {
         public string Name { get; set; }
+        public CmdReturn? AssociatedReturnCommand { get; set; }
 
         public static CommandParser GetComandParser()
         {
@@ -25,11 +26,27 @@ namespace FlowProtocol2.Commands
         public CmdDefineSub(ReadContext readcontext) : base(readcontext)
         {
             Name = string.Empty;
+            AssociatedReturnCommand = null;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            return NextCommand;
+            if (AssociatedReturnCommand == null)
+            {
+                AssociatedReturnCommand = GetNextCommand<CmdReturn>
+                (
+                    c => c.Indent == this.Indent,
+                    c => c.Indent < this.Indent
+                );
+            }
+            if (AssociatedReturnCommand == null)
+            {
+                rc.SetError(ReadContext, "DefineSub ohne Return",
+                    "Dem DefineSub-Befehl kann kein Return-Befehl auf gleicher Ebene zugeordnet werden.");
+                return null;
+            }
+
+            return AssociatedReturnCommand.NextCommand;
         }
     }
 }

@@ -1,0 +1,13 @@
+~Input P: Wie hoch ist die Punktezahl (0-20)
+~Execute
+~If $P>=18
+	~Set Note=sehr gut
+~ElseIf $P>=14
+	~Set Note=gut
+~ElseIf $P>=10
+	~Set Note=befriedigend
+~ElseIf $P>=5
+	~Set Note=ausreichend
+~Else
+	~Set Note=ungenügend
+>> Ergebnis: $P Punkte (Note $Note)

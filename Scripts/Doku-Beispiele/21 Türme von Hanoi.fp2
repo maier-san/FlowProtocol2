@@ -1,0 +1,33 @@
+~Set MoveFromS=1
+~Set MoveToS=3
+~Set MoveCountS=4
+~GoSub Move; BaseKey=S
+~End
+
+// Bewegt n Scheiben von A nach B
+// MoveFrom$BaseKey:  Ausgangsturm A
+// MoveTo$BaseKey:    Zielturm B
+// MoveCount$BaseKey: Anzahl Scheiben n
+~DefineSub Move
+	~If $MoveCount$BaseKey>0
+		~Set Q1$BaseKey=$MoveFrom$BaseKey
+		~Set Q2$BaseKey=$MoveTo$BaseKey
+		~Set Q3$BaseKey=123
+		~Replace Q3$BaseKey=$Q3$BaseKey|$Q1$BaseKey->
+		~Replace Q3$BaseKey=$Q3$BaseKey|$Q2$BaseKey->
+		~Set MC$BaseKey=$MoveCount$BaseKey
+		~AddTo MC$BaseKey+=-1
+
+		~Set MoveFrom$BaseKeyA=$Q1$BaseKey
+		~Set MoveTo$BaseKeyA=$Q3$BaseKey
+		~Set MoveCount$BaseKeyA=$MC$BaseKey
+		~GoSub Move; BaseKey=$BaseKeyA
+		
+		@Lösung >> Von $Q1$BaseKey nach $Q2$BaseKey
+			__ (BaseKey=$BaseKey)
+		
+		~Set MoveFrom$BaseKeyB=$Q3$BaseKey
+		~Set MoveTo$BaseKeyB=$Q2$BaseKey
+		~Set MoveCount$BaseKeyB=$MC$BaseKey
+		~GoSub Move; BaseKey=$BaseKeyB
+~Return

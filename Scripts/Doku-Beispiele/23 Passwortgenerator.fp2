@@ -1,0 +1,35 @@
+~Set L=12
+~Random AnzZiffer=1..2
+~Random AnzGross=1..2
+~Random AnzSonder=1..2
+~Split SZ=33,35,36,37,38,42,43,47,64|,
+~Set M="
+~Set i=0
+~DoWhile $i<$L
+	~Random r=0..$i
+	~AddTo i+=1
+	~If $r==0
+		~Set M="+$i$M
+	~Else
+		~Replace M=$M|"+$r"->"+$r"+$i"
+~Loop
+~Set i=0
+~DoWhile $i<$L
+	~AddTo i+=1
+	~If $AnzZiffer>0
+		~Random z=48..57
+		~AddTo AnzZiffer+=-1
+	~ElseIf $AnzGross>0
+		~Random z=65..90
+		~AddTo AnzGross+=-1
+	~ElseIf $AnzSonder>0
+		~Random s=1..9
+		~Set z=$SZ($s)
+		~AddTo AnzSonder+=-1
+	~Else
+		~Random z=97..122
+	~Replace M=$M|"+$i"->"$Chr($z)"
+~Loop
+~Replace PW=$M|"->
+@Ausgabe >>* Passwortvorschlag
+	>|$PW

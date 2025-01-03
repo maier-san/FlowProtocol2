@@ -1,0 +1,13 @@
+~Input Bez: Trage die Lizenz für FlowProtocol 2 ein:
+~AddHelpLine Du findest die zugeordnete Lizenz auf der 
+~AddHelpLink https://github.com/maier-san/FlowProtocol2
+	__| FlowProtocol2-Seite
+~AddHelpText  bei GitHub auf der rechten Seite als 
+	__ zweiten Punkt unter "About".
+?K: Handelt es sich um eine freie Lizenz?
+	~AddHelpLine Suche im Internet nach Details der Lizenz.
+	~AddHelpLine "Freie Lizenz" bedeutet in diesem
+		__ Zusammenhang, dass für die Nutzung der Software
+		__ auch im kommerziellen Umfeld keine Kosten anfallen.
+	#: Ja
+	#: Nein

@@ -1,0 +1,5 @@
+1	Passwort	ja	Zeichenfolge, deren Kenntnis Zugang zu einer Sache ermöglicht.
+1	Kennwort	nein	Weniger üblich.
+2	Schaltfläche	ja	Steuerelement, das bei Klick eine Aktion auslöst.
+2	Button	nein	Anglizismus.
+2	Knopf	nein	Wird eher mit Geräten assoziiert.

@@ -1,0 +1,21 @@
+~Input C: Kombinierbare Eigenschaften
+	__ (z.B.: A,B,C : X,Y,Z)
+~Split A=$C|:
+~Set aidx=1
+~Set QAnz(1)=1
+~Set Q(1)(1)=#Start#
+~ForEach a in A
+	~Set aprev=$aidx
+	~AddTo aidx+=1
+	~Split W=$a|,
+	~Set widx=0
+	~ForEach q in Q($aprev)
+		~ForEach w in W
+			~AddTo widx+=1
+			~Replace Q($aidx)($widx)=$q - $w|#Start# -->
+		~Loop
+	~Loop
+~Loop
+~ForEach q in Q($aidx)
+	@Kombinationen >> $q
+~Loop

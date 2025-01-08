@@ -16,7 +16,7 @@ namespace FlowProtocol2.Pages.FlowPages
 
         public SelectModel(IConfiguration configuration)
         {
-            ScriptPath = configuration["ScriptPath"];
+            ScriptPath = configuration["ScriptPath"] ?? throw new InvalidOperationException();
             RelativePath = string.Empty;
             RelativeBackPath = string.Empty;
             ScriptGroups = new ObjectArray<NavLink>();

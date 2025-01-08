@@ -20,6 +20,7 @@ Diese Einfachheit spiegelt sich auch auf technischer Ebene wieder. Als einzige s
 ## Konfiguration
 Die Konfiguration der Anwendung besteht primär darin, ein Verzeichnis für die Skripte einzurichten und den Pfad darauf in die Eigenschaft "ScriptPath" in der Datei appsettings.json einzutragen.
 
+
 Zusätzlich besteht die Möglichkeit, über die Eigenschaft "LinkWhitelist" in der Datei appsettings.json eine Liste von Domänen und Adressen einzutragen, die als vertrauenswürdig eingestuft werden. Befinden sich Einträge in dieser Liste, so werden Links in den Skripten nur dann allein über den Anzeigetext dargestellt, wenn einer dieser Einträge mit dem Anfang der URL übereinstimmt. Andernfalls wird die URL dem Anzeigetext in Klammern nachgestellt ist so für den Anwender unmittelbar erkennbar.
 
 Das zum Projekt gehörende Verzeichnis Scripts\FP2-Tutorial enthält Skripte für alle zur Sprache gehörenden Befehle, in denen diese an einem kleinen Beispiel kurz erklärt werden. Gerade zum Einlernen in die Syntax empfiehlt es sich, das Tutorial zu den eigenen Skripten hinzuzufügen.

@@ -1,0 +1,82 @@
+~Input Bez: Bezeichnung Objekttyp (Singular)
+	~AddHelpLine Die Bezeichnung des Objekttyps,
+	__ für den Objekte archiviert werden sollen.
+~Input Klasse: Datenklasse für diesen Objekttyp
+	~AddHelpLine Der Name der Datenklasse, mit der Objekte
+	__ dieses Typs im Programm abgebildet werden.
+?QKonf: Kann es Konflikte geben?
+	~AddHelpLine Gemeint sind Konflikte, die einer Archivierung
+	__ im Wege stehen würden.
+	#j: Ja
+		~Set KonflikteMoeglich=ja
+	#n: Nein
+~CamelCase uBez=$Bez
+~Set AKennung=$NewGuid
+~RegExMatch vmatch = $BezX|([A-Z])
+~ToLower v=$vmatch(1)
+@Anleitung >> Ordner Archivierer öffnen.
+@Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
+	>|$uBezArchivierer.cs
+@Anleitung >> Folgenden Code einfügen:
+	>|// Klasse für die Archivierung von $Bez-Objekten
+	>|public class $uBezArchivierer : BasisArchivierer<$Klasse>
+	>|{
+	>|    // Kennung der Archivierer-Klasse
+	>|    public override Guid ArchiviererKennung()
+	>|    {
+	>|        return Guid("$AKennung");
+	>|    }
+	>|
+	>|    // Methode zum Archivieren des Kursbesuchs
+	>|    public override void Archiviere($Klasse $v)
+	>|    {
+	~If $KonflikteMoeglich==ja
+		>|      var konflikt = PruefeAufKonflikte($v);
+		>|		if (konflikt.vorhanden)
+		>|		{
+		>|			ALogger.Note($"Konflikt für $Bez '{$v}', 
+		>|				{konflikt.Details}");
+		>|			return;
+		>|		}
+	>|		base.StarteArchivierung($v);
+	>|    }
+	~If $KonflikteMoeglich==ja
+		>|	
+		>|	// Konfliktprüfung für die $Bez-Archivierung
+		>|	private Konflikt PruefeAufKonflikte($Klasse $v)
+		>|	{
+		>|		//ToDo: Konfliktprüfung implementieren
+		>|		
+		>|		// Ansonsten
+		>|		return Konflikt.KeinKonflikt();
+		>|	}
+	>|}
+@Testpunkte >> Ein $Bez-Objekt kann archiviert werden
+~If $KonflikteMoeglich==ja
+	~AddText , sofern keine Konflikte auftreten
+~AddText .
+@Testpunkte >> Die Archivierungskennung für $Bez-Objekte 
+	__ lautet $AKennung.
+	> Kann im Protokoll nachgeschlagen werden.
+~If $KonflikteMoeglich==ja
+	@Anleitung >> Konfliktprüfung implementieren
+		> in $uBezArchivierer.cs in
+		~AddCode  PruefeAufKonflikte(...)
+		> bei
+		~AddCode  //ToDo: Konfliktprüfung implementieren
+		> Auflistung der Konflikte nach folgendem Muster:
+		>|		if (Konfliktbedingung)
+		>|			return new Konflikt("Konfliktbeschreibung");
+@Anleitung >> Testaugabe erstellen
+	> Titel: Test der $Bez-Archivierung
+	> Testpunkte aus Abschnitt "Testpunke" übernehmen
+~If $KonflikteMoeglich==ja
+	@Anleitung >> Konflikte in Testpunkten auflisten
+		> Bei "ToDo: Konflikte auflisten"
+	@Testpunkte >> Folgende Konflikte werden erkannt:
+		> ToDo: Konflikte auflisten
+	@Testpunkte >> Wenn ein Konflikt erkannt wird,
+		># wird die Archivierung abgebrochen,
+		># protokolliert, wo der Konflikt aufgetreten ist,
+		># Details zum Konflikt protokolliert.
+	

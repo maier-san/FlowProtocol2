@@ -1,0 +1,16 @@
+?V1: Hat die Funktion Parameter?
+	#j: Ja
+		~Set i=1
+		~DoWhile $V$i==j
+			~Input B$i: Variable für den $i. Paramter:
+			~Set Vars($i)=$B$i
+			~AddTo i+=1
+			?V$i: Hat die Funktion einen $i. Parameter?
+				#j: Ja			
+				#n: Nein
+			~Execute
+		~Loop
+		~ForEach v in Vars
+			@Variablen >> $v
+		~Loop
+	#n: Nein

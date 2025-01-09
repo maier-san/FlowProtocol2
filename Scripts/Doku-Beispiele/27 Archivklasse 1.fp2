@@ -1,0 +1,36 @@
+@Anleitung >> Ordner Archivierer öffnen.
+@Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
+	>|KursArchivierer.cs
+@Anleitung >> Folgenden Code einfügen:
+	>|// Klasse für die Archivierung von Kurs-Objekten
+	>|public class KursArchivierer : BasisArchivierer<Kurs>
+	>|{
+	>|    // Kennung der Archivierer-Klasse
+	>|    public override Guid ArchiviererKennung()
+	>|    {
+	>|        return Guid("14df603a-cb42-4560-bf6c-a740356532b6");
+	>|    }
+	>|
+	>|    // Methode zum Archivieren des Kursbesuchs
+	>|    public override void Archiviere(Kurs k)
+	>|    {
+	>|      var konflikt = PruefeAufKonflikte(k);
+	>|		if (konflikt.vorhanden)
+	>|		{
+	>|			ALogger.Note($"Konflikt für Kurs '{k}', 
+	>|				{konflikt.Details}");
+	>|			return;
+	>|		}
+	>|		base.StarteArchivierung(k);
+	>|    }
+	>|	
+	>|	// Konfliktprüfung für die Kurs-Archivierung
+	>|	private Konflikt PruefeAufKonflikte(Kurs k)
+	>|	{
+	>|		if (k.Status == KStatus.Aktiv)
+	>|			return new Konflikt("Kurs ist noch aktiv");
+	>|		
+	>|		// Ansonsten
+	>|		return Konflikt.KeinKonflikt();
+	>|	}
+	>|}

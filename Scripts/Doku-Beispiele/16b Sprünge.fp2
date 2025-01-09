@@ -1,0 +1,13 @@
+?Q1: Um welche Art von Entwicklung handelt es sich?
+	#F: Neues Framework
+		~GoTo Framework
+	#I: Individuelle Einzelentwicklung
+		~GoTo Einzelentwicklungen
+	#V: Standard-Entwicklung auf Framework-Basis
+		~GoTo Alle Entwicklungen
+~JumpMark Framework
+>> Fragen für Framework-Entwicklungen
+~JumpMark Einzelentwicklungen
+>> Fragen für Einzelentwicklungen 
+~JumpMark Alle Entwicklungen
+>> Fragen für alle Entwicklungen 

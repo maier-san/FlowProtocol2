@@ -16,7 +16,7 @@
 ~AddCode  ~AddLink
 ~AddText  und
 ~AddCode  ~AddCode
-~AddText  können entsprechende Formaierte Textelement zur letzten Zeile hinzugefügt werden.
+~AddText  können entsprechende formatierte Textelemente zur letzten Zeile hinzugefügt werden.
 >>_ Mit dem Befehl
 ~AddCode  ~EndParagraph
 ~AddText  kann der aktuelle Absatz beendet werden.

@@ -1,0 +1,107 @@
+~SetInputDescription Bau dir ein Labyrinth, aber kein zu großes, denn es ist sehr rechenintensiv für FlowProtocol 2.
+~Input GX: Anzahl Zeilen (besser nicht mehr als 5)
+~Input GY: Anzahl Spalten (besser nicht mehr als 10)
+~Execute
+
+// Grundaufbau
+~SetStopCounter 80000; 8000000
+~Set xidx=0
+~Set ff=1
+~Set wAnz=0
+~DoWhile $xidx<$GX
+	~Set xm1=$xidx
+	~AddTo xidx+=1
+	~Set yidx=0
+	~DoWhile $yidx<$GY
+		~Set ym1=$yidx
+		~AddTo yidx+=1
+		~AddTo ff+=1
+		~Set F($xidxI$yidx)=$ff
+		~If $xidx>1
+			~AddTo wAnz+=1
+			~Set WZ($wAnz)=◼
+			~Set WF1($wAnz)=$xm1I$yidx
+			~Set WF2($wAnz)=$xidxI$yidx
+			~Set WT($xidxI$yidx)=$wAnz
+		~If $yidx>1
+			~AddTo wAnz+=1
+			~Set WZ($wAnz)=◼
+			~Set WF1($wAnz)=$xidxI$ym1
+			~Set WF2($wAnz)=$xidxI$yidx
+			~Set WL($xidxI$yidx)=$wAnz
+	~Loop	
+~Loop
+
+// Berechnung
+~Set tidx=1
+~DoWhile $tidx>0
+	~Set tidx=0
+	~Set widx=1
+	~DoWhile $widx<$wAnz
+		~If $F($WF1($widx))<>$F($WF2($widx))
+			~AddTo tidx+=1
+			~Set TW($tidx)=$widx			
+		~AddTo widx+=1
+	~Loop
+	~If $tidx>0		
+		~Random rsel=1..$tidx
+		~Set sel=$TW($rsel)
+		//@Debug >>Noch $tidx (gewählt $sel)
+		~Set WZ($sel)=◻
+		~Set suchenach=$F($WF1($sel))
+		~Set ersetzedurch=$F($WF2($sel))		
+		~Set xidx=0
+		~DoWhile $xidx<$GX
+			~AddTo xidx+=1
+			~Set yidx=0
+			~DoWhile $yidx<$GY
+				~AddTo yidx+=1
+				~If $F($xidxI$yidx)==$suchenach
+					~Set F($xidxI$yidx)=$ersetzedurch
+			~Loop	
+		~Loop
+~Loop
+
+// Ausgabe
+@Das Labyrinth >>|
+~Set yidx=0
+~DoWhile $yidx<$GY
+	~Set ym1=$yidx
+	~AddTo yidx+=1
+	~AddText ◼◼
+~Loop
+~AddText ◼
+~Set xidx=0
+~DoWhile $xidx<$GX
+	~AddTo xidx+=1
+	~If $xidx>1
+		>>|
+		~Set yidx=0
+		~DoWhile $yidx<$GY
+			~AddTo yidx+=1
+			~AddText ◼$WZ($WT($xidxI$yidx))
+		~Loop
+		~AddText ◼
+	>>|◼◻
+	~If $yidx>0
+	~Set yidx=1
+	~DoWhile $yidx<$GY
+		~AddTo yidx+=1
+		~AddText $WZ($WL($xidxI$yidx))◻
+	~Loop
+	~AddText ◼
+~Loop
+>>|	
+~Set yidx=0
+~DoWhile $yidx<$GY
+	~Set ym1=$yidx
+	~AddTo yidx+=1
+	~AddText ◼◼
+~Loop
+~AddText ◼
+
+@Was kann man damit machen? >> Finde einen Weg von oben links nach unten rechts.
+>> Finde einen Weg von oben rechts nach unten links.
+>> Finde zwei Punkte irgendwo im Labyrinth, zwischen denen der Weg am längsten ist.
+>> Finde zwei Punkte auf den gegenüberliegenden Seiten einer Wand, zwischen denen der Weg am längsten ist.
+>> Finde zwei Punkte irgendwo im Labyrinth, zwischen denen der längste Weg besteht, der keine Rechtsabzweigungen hat.

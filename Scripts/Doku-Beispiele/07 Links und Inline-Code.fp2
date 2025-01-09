@@ -1,0 +1,9 @@
+@Anleitung >> Implementiere die Start-Methode
+	> Gibt die Zeichenfolge 
+	~AddCode  override 
+	~AddText  innerhalb der Klasse ein
+	> und wähle in der Auswahl des Editors die Methode Start.
+	> Überschreibe die Start-Methode wie im
+	~AddLink  https://learn.microsoft.com/de-de/dotnet/csharp
+		__/language-reference/keywords/override | Internet
+	~AddText  beschrieben.

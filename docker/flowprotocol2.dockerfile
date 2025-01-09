@@ -3,7 +3,7 @@
 # for multi-Platforms: https://github.com/dotnet/dotnet-docker/tree/main/samples/aspnetapp
 
 # https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers

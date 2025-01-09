@@ -1,0 +1,9 @@
+~Set X=abc
+>> X = $X
+>> Z = $Z (Z wurde nie zugeweisen)
+>> XY = $XY (vor der Zuweisung von XY)
+~Set XY=def
+>> XY = $XY (nach der Zuweisung von XY)
+~Set i=5
+~Set F($i)=ghi
+>> F(i) = F($i) = $F($i)

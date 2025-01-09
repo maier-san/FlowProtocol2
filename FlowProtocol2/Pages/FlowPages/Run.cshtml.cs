@@ -10,7 +10,7 @@ namespace FlowProtocol2.Pages.FlowPages
         [BindProperty(SupportsGet = true)]
         public Dictionary<string, string> BoundVars { get; set; }
         public string ScriptBaseURL { get; set; }
-        public string ScriptPath { get; set; }
+        public required string ScriptPath { get; set; }
         public string ScriptFilePath { get; set; }
         public string ScriptName { get; set; }
         public RunContext RunContext { get; set; }
@@ -21,13 +21,13 @@ namespace FlowProtocol2.Pages.FlowPages
 
         public RunModel(IConfiguration configuration)
         {
-            ScriptPath = configuration["ScriptPath"];
+            ScriptPath = configuration["ScriptPath"] ?? throw new InvalidOperationException();
             ScriptFilePath = string.Empty;
             ScriptName = string.Empty;
             ScriptBaseURL = string.Empty;
             BoundVars = new Dictionary<string, string>();
             RunContext = new RunContext();
-            RunContext.LinkWhitelist = configuration.GetSection("LinkWhitelist").Get<List<string>>();
+            RunContext.LinkWhitelist = configuration.GetSection("LinkWhitelist").Get<List<string>>() ?? throw new InvalidOperationException();
         }
         public IActionResult OnGet(string relativepath)
         {
@@ -35,11 +35,11 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar + relativepath + FlowProtocol2Extension;
             System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);
-            if (fi != null && !fi.Exists)
+            if (!fi.Exists)
             {
                 return RedirectToPage("./NoScriptfile");
             }
-            if (fi != null && fi.Directory != null)
+            if (fi.Directory != null)
             {
                 ScriptName = fi.Name.Replace(".fp2", string.Empty);
                 RunContext.CurrentScriptPath = fi.Directory.FullName;

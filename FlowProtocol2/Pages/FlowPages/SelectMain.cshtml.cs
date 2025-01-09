@@ -4,15 +4,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FlowProtocol2.Pages.FlowPages
 {
-    public class SelectMainModel : PageModel
+    public class SelectMainModel(IConfiguration configuration) : PageModel
     {
-        public string ScriptPath { get; set; }
-        public ObjectArray<NavLink> ScriptGroups { get; set; }
-        public SelectMainModel(IConfiguration configuration)
-        {
-            ScriptPath = configuration["ScriptPath"];
-            ScriptGroups = new ObjectArray<NavLink>();
-        }
+        public string ScriptPath { get; set; } = configuration["ScriptPath"] ?? throw new InvalidOperationException();
+        public ObjectArray<NavLink> ScriptGroups { get; set; } = new();
 
         public IActionResult OnGet()
         {

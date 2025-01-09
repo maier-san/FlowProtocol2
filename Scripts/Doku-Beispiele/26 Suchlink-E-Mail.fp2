@@ -1,0 +1,17 @@
+~Input S:Suchbegriff
+~UrlEncode uS=$S
+@Suchanfragen >>
+	~AddLink https://www.google.com/search?q=$uS |
+	__Suche "$S" bei Google
+>>
+	~AddLink https://www.bing.com/search?q=$uS |
+	__ Suche "$S" bei Bing
+~UrlEncode usub=Suchlinks zu "$S"
+~UrlEncode ubody=Hallo,$CRLF
+	__hier sind zwei Suchlinks zu "$S":$CRLF
+	__https://www.google.com/search?q=$uS$CRLF
+	__https://www.bing.com/search?q=$uS$CRLF
+	__MfG
+>> Suchanfragen
+	~AddLink mailto:a@bc.de?subject=$usub&body=$ubody |
+	__ per E-Mail verschicken

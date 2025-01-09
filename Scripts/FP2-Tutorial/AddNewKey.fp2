@@ -7,10 +7,11 @@
 >>|~Input W: Gib einen Wert ein.
 >>|~Execute
 >>|~SetDateTime Zeitpunkt=HH:mm:ss
->>|~AddNewKey Q = $Zeitpunkt
+>>|~If !?$Chr(36)Q
+>>|	~AddNewKey Q = $Zeitpunkt
 >>|@Ausgabe >> Der Wert "$W" wurde um $Q Uhr eingegeben.
 ~Input W: Gib einen Wert ein.
-~Execute
 ~SetDateTime Zeitpunkt=HH:mm:ss
-~AddNewKey Q = $Zeitpunkt
+~If !?$Q
+	~AddNewKey Q = $Zeitpunkt
 @Ausgabe >> Der Wert "$W" wurde um $Q Uhr eingegeben.

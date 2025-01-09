@@ -1,0 +1,25 @@
+?S1: Treffen die Kriterien für einen Stufe-1-Fehler zu?	
+	#k1: Ausgegebene Werte entsprechen nicht der Spezifikation.
+		>> Stufe-1-Fehler: Spezifikationsverletzung
+	#k2: Der Datenschutz ist an einer wesentlichen Stelle verletzt.
+		>> Stufe-1-Fehler: Datenschutzverletzung
+	#k3: Der Datensicherheit ist verletzt oder gefährdet.
+		>> Stufe-1-Fehler: Datensicherheitssverletzung
+	#no: Nein, die o.g. Kriterien sind nicht erfüllt.
+		?S2: Treffen die Kriterien für einen Stufe-2-Fehler zu?
+			#k1: Der Fehler stört zentrale Programmfunktionen.
+				>> Stufe-2-Fehler: Störung zentraler Funktion.
+			#k2: Es gibt zwei oder mehr Supportanfragen zu 
+				__ diesem Fehler.
+				>> Stufe-2-Fehler: Mindestens zwei Supportanfragen
+			#no: Nein, die o.g. Kriterien sind nicht erfüllt.
+				?S4: Treffen die Kriterien für einen 
+					__ Stufe-4-Fehler zu?
+					#k1: Es handelt sich um einen erkennbaren
+						__ Tippfehler.
+						>> Stufe-4-Fehler: Tippfehler
+					#k2: Der Fehler tritt nur bei unsinnigen
+						__ Eingaben auf.
+						>> Stufe-4-Fehler: unsinnige Eingaben
+					#no: Nein, die o.g. Kriterien sind nicht erfüllt.
+						>> Stufe-3-Fehler

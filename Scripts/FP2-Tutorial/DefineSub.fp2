@@ -4,9 +4,9 @@
 ~AddText  definiert eine Funktion, die mit dem GoSub-Befehl angesprungen werden kann. Die Funktion muss mit
 ~AddCode  ~Return
 ~AddText  abgeschlossen werden.
->>_ Die Funktionsblöcke sollten nach dem
+>>_ Die Funktionsblöcke können mit dem
 ~AddCode  ~End
-~AddText -Befehl stehen, so dass sie bei der normalen Ausführung von oben nach unten nicht erreicht werden.
+~AddText -Befehl abgetrennt werden, werden ansonsten aber auch nicht direkt durchlaufen.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel definiert die Routinen HalloWelt und HalloWelt2 und ruft diese auf:
 >>|@Ausgabe >> Start

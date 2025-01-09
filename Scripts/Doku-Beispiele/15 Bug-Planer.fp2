@@ -1,0 +1,32 @@
+~SetTitle Bug-Planer
+~SetInputTitle Bug-Planer 6-3-1
+~SetInputDescription Der Bug-Planer berechnet
+	__ für eine Anzahl von Bugs, wie viele Bugs von
+	__ jedem Schweregrad eingeplant werden müssen,
+	__ damit diese im Verhältnis 6:3:1 liegen.
+~SetInputSection Vorhandene Bug-Vorgänge
+~Input A2: Anzahl Bugs mit Schweregrad 2
+~Input A3: Anzahl Bugs mit Schweregrad 3
+~Input A4: Anzahl Bugs mit Schweregrad 4
+~SetInputSection Planung
+~Input AP: Wie viele Bugs möchtest du einplanen?
+~Execute
+~Set S2=0
+~Set S3=0
+~Set S4=0
+~Set Sum=0
+~Split Indexlist=4;3;2;2;3;2;2;3;2;2|;
+~EvalExpression anybug = true
+~DoWhile $Sum<$AP && $anybug
+	~ForEach idx in Indexlist
+		~If $Sum<$AP && $S$idx<$A$idx
+			~AddTo S$idx+=1		
+			~AddTo Sum+=1
+	~Loop
+	~EvalExpression anybug = $S4<$A4 || $S3<$A3 || $S2<$A2
+~Loop
+@Ergebnis >>* Eingeplant werden sollen $AP Vorgänge.
+>>* Folgende Aufteilung wird vorgeschlagen:
+	> $S2 von $A2 Bugs mit Schweregrad 2
+	> $S3 von $A3 Bugs mit Schweregrad 3
+	> $S4 von $A4 Bugs mit Schweregrad 4

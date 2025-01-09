@@ -1,0 +1,10 @@
+~CalculateExpression U = 72 % 7
+~CalculateExpression V = (-2,5 + 1,57)*(1,3 - 0,4)/18
+~CalculateExpression W = 2^3*16^(1/2)+7
+~CalculateExpression X = exp(sin(1/4))
+~Round Z=$X|3
+@Ausgabe >> U = $U
+	>> V = $V
+	>> W = $W
+	>> X = $X
+	>> Z = $Z

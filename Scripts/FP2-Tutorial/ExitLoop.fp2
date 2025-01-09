@@ -3,7 +3,7 @@
 	~AddCode  ~ExitLoop 
 	~AddText  verlässt eine Schleife und setzt die Ausführung nach dem Loop-Befehl fort.
 @Ausnahmen >>* ExitLoop ohne Loop: Für den Befehl wurde dazugehörender 
-	~AddCode ~Loop
+	~AddCode  ~Loop
 	~AddText -Befehl gefunden.
 @Codebeispiel >>_ Das nachfolgende Beispiel verlässt eine Schleife nach den dritten Durchlauf:
 >>|~Set idx=0

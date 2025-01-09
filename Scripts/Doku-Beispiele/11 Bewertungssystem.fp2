@@ -1,6 +1,3 @@
-~SetInputDescription Schätze den jeweilgen Aspekt für die
-	__ in der vorliegenden Aufgabe beschriebene
-	__ Stabilisierung anhand der Textbeschreibungen ab.
 ~Set punkte=0
 @Bewertung >>* Bewertungkrterien: 
 ?A1: Wie groß ist der Verbesserungsbedarf an dieser Stelle?
@@ -37,7 +34,7 @@
 		__ weniger oft und weniger groß.
 		>* Effektivität: gering bis mittel
 		~AddTo punkte+=25
-	#w2: Mittel bis gut. Die vorhandenen Einschränkungen werden
+	#w3: Mittel bis gut. Die vorhandenen Einschränkungen werden
 		__ weitestgehend behoben.
 		>* Effektivität: mittel bis gut (+)
 		~AddTo punkte+=50
@@ -48,7 +45,7 @@
 	#w2: Aufwändig. 13-20 Storypunkte.
 		>* Aufwand: mäßig hoch
 		~AddTo punkte+=25
-	#w2: Im Rahmen. Maximal 8 Storypunkte.
+	#w3: Im Rahmen. Maximal 8 Storypunkte.
 		>* Aufwand: im Rahmen (+)
 		~AddTo punkte+=50
 ?A5: Wie gut ist die Wiederverwendbarkeit?

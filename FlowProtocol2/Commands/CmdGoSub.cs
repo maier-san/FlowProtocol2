@@ -46,7 +46,7 @@ namespace FlowProtocol2.Commands
             string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("; BaseKey=", string.Empty)).Trim();
             if (NextCommand != null) rc.ReturnStack.Push(new EntryPoint(NextCommand, rc.BaseKey));
             rc.BaseKey = expandedBaseKey;
-            return sub;
+            return sub.NextCommand;
         }
     }
 }

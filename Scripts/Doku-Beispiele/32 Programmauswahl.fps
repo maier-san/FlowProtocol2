@@ -1,0 +1,19 @@
+?P: Programmbereich $PHinweis
+	#D: Dozenten
+		~Set PAusw=Dozenten
+		?U: Unterbereich in Dozenten $PHinweis
+			#A: Auswahliste Dozenten
+				~Set UAusw=Auswahliste Dozenten
+			#S: Registerblatt Stammdaten
+				~Set UAusw=Registerblatt Stammdaten
+			#F: Registerblatt Fächer
+				~Set UAusw=Registerblatt Fächer
+	#K: Klassen
+		~Set PAusw=Klassen
+		?U: Unterbereich in Klassen $PHinweis
+			#A: Auswahliste Klassen
+				~Set UAusw=Auswahliste Klassen
+			#S: Registerblatt Schüler
+				~Set UAusw=Registerblatt Schüler
+			#U: Registerblatt Unterricht
+				~Set UAusw=Registerblatt Unterricht

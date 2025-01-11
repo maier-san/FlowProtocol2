@@ -1,0 +1,25 @@
+?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
+	#j: Ja
+		@Maßnahmen >> Löschen von Datensätzen:
+		> Sicherstellen, dass keine Datensätze ungewollt 
+		__ gelöscht werden.
+		> Abgrenzungstests formulieren.
+		> Löschweitergaben prüfen. 
+	#n: Nein
+?Q2: Umfasst die Entwicklung die Verwendung
+	__ neuer Drittkomponenten?
+	#j: Ja
+		@Maßnahmen >> Verwendung von Drittkomponenten:
+		> Checkliste für Drittkomponenten durchgehen.
+		> Drittkomponente in eigene Klasse kapseln.
+	#n: Nein
+?Q3: Umfasst die Entwicklung die Verarbeitung von 
+	__ versionsabhängigen Formaten?
+	#j: Ja
+		@Maßnahmen >> Versionsabhängige Formate:
+		> Sicherstellung der Versionsbestimmbarkeit.
+		> Sicherstellung von Abwärtskompatibilität.
+		> Sicherstellung von Aufwärtskompatibilität.
+		> Kennzeichnung der Versionsabhängigkeit 
+		__ im Datenblatt.
+	#n: Nein

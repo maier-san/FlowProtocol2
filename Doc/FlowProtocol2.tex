@@ -1205,19 +1205,19 @@ Solche Oberflächentests\index{Oberflächentests} werden in der Regel ebenfalls al
 
 Ein Unterstützungsskript könnte sehr gut die Voraussetzungen für einen geplanten automatisierten Oberflächentest abfragen und damit schon mal den Test soweit wie möglich vorbereiten.
 
-\subsection{Product-Owner-Unterstützung}
+\subsection{Product-Owner-Unterstützung}\label{POUnterstuetzung}
 
-Der Product Owner oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht in direkt im Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen wurden.
+Der Product Owner\index{Product Owner} oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht in direkt im Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen werden.
 
-Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, dass individuelle Vorlieben und Wünsche zurückstellt und auf  für alle nachvollziehbare klaren Regeln aufbaut.
+Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, das individuelle Vorlieben und Wünsche zurückstellt und auf für alle nachvollziehbare Regeln aufbaut.
 
-Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standard Entwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden konnten und mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasst.
+Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standardentwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasste.
 
-Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle, an der die Entwicklung greifen soll. Wie schon in Abschnitt\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
+Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle innerhalb der Anwendung, an der die Entwicklung greifen soll. Wie schon in Abschnitt~\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
 
-Wir speichern diese Auswahl in einer eigenen Datei mit der Dateiendung \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+Wir speichern diese Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
 
-Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, kann über die Variable \verb|PHinweis| ein Text übergeben werden, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird ebenfalls über zwei Parameter \verb|PAusw| und \verb|UAusw| an das Skript zurück übergeben.
+Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, kann über die Variable \verb|PHinweis| ein Text übergeben werden, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird nach Ausführung über zwei Parameter \verb|PAusw| und \verb|UAusw| an das Skript zurück übergeben.
 
 \Beispiel{Programmauswahl.fps}\label{BspProgrammauswahl}
 \begin{verbatim}
@@ -1242,9 +1242,9 @@ Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden k
                 ~Set UAusw=Registerblatt Unterricht
 \end{verbatim}
 
-Unsere Anwendungsbeispiel selbst Dienst zur Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
+Unsere Anwendungsbeispiel selbst unterstützt bei der Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
 
-Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt, und genau hier liegt der Vorteil eines Systems, dass diese Punkte systematisch abfragt.
+Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt. Genau hier liegt der Vorteil eines solchen Skiptes, das diese Punkte systematisch abfragt.
 
 \Beispiel{Listenfunktion}
 \begin{verbatim}
@@ -1322,29 +1322,145 @@ Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden,
         @ToDo >> Text Feedback-Dialog ausformulieren
 \end{verbatim}
 
-Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Datei ausgelagerten Auswahlfunktion schnell umgesetzt.
+Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Funktionsdatei ausgelagerten Auswahlfunktion schnell umgesetzt.
 
-Die Festlegung, dass eine Listenfunktion über das Kontextmenü der Liste aufgerufen wird, ist fest im Skript hinterlegt. Der Product Owner hat hier keine Auswahlmöglichkeit und soll diese auch nicht haben. Er bestimmt, was er haben möchte und das Designsystem legt Form und Aussehen fest.
+Die Festlegung, dass eine Listenfunktion über das Kontextmenü der Liste aufgerufen wird, ist fest im Skript hinterlegt. Der Product Owner hat hier keine Auswahlmöglichkeit und soll diese auch nicht haben. Er bestimmt, was er haben möchte und das Designsystem\index{Designsystem} legt Form und Aussehen fest.
 
-Dadurch, dass die Design-Entscheidung fest im Skript hinterlegt ist, kann diese wiederum explizit in die Beschreibung einfließen, sodass diese vollständig berücksichtigt wird und niemand mehr das Designsystem auswendig im Kopf haben muss.
+Dadurch, dass die grundlegende Design-Entscheidung fest im Skript hinterlegt ist, kann diese wiederum explizit in die Beschreibung einfließen, sodass diese durchgängig berücksichtigt wird und niemand mehr das Designsystem auswendig im Kopf haben muss.
 
-Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollen nicht dem Zufall überlassen bleiben.
+Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für solche Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert, die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollten nicht dem Zufall überlassen werden.
 
-Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise könnten als Hilfszeilen zur weiteren Entscheidungshilfe ergänzt werden.
+Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise auf allgemein festgelegte Regeln könnten im Skript als Hilfszeilen bei den damit verbundenen Fragen und Texteingaben ergänzt werden.
 
-Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger zum Umsetzen ist. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte in solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
+Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger zum Umsetzen ist und manchmal auch noch weitere Fragen nach sich zieht. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte bei solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
 
-Nun wird festgelegt, wie die Funktion bei Auswahl reagiert. Soll ein Assistent geöffnet werden oder soll die Funktion direkt ausgeführt werden? Im zweiten Fall: soll die Ausführung der Funktion über einen Rückfrage-Dialog abgesichert werden, in Sinne von \emph{sind Sie sicher?} Auch hier bezeichnet Rückfrage-Dialog ein Element aus dem Designsystem, dessen Aussehen weitestgehend festgelegt ist. Symbol und die zur Auswahl stehenden Schaltflächen werden daher nicht abgefragt, nur der Text.
+Nun wird festgelegt, wie die Funktion bei Auswahl reagiert. Soll ein Assistent geöffnet werden oder soll die Funktion direkt ausgeführt werden? Soll die Ausführung der Funktion über einen Rückfrage-Dialog abgesichert werden, in Sinne von \emph{sind Sie sicher?} Auch hier bezeichnet Rückfrage-Dialog ein Element aus dem Designsystem, dessen Aussehen weitestgehend festgelegt ist. Symbol und die zur Auswahl stehenden Schaltflächen werden daher nicht abgefragt, nur der Text.
 
 In gleicher Weise wird am Ende sichergestellt dass der Benutzer auch ein Feedback für die Ausführung der Funktion bekommt. Wenn dieses unmittelbar über die Programmoberfläche erkennbar ist, muss dafür nichts zusätzliches getan werden. Ansonsten sollte eine explizite Rückmeldung in Form eines Dialogs gegeben werden.
 
-Die eigentliche Beschreibung, was die Funktion genau macht und wie der Assistent aussieht, der eventuell aufgerufen wird, ist ebenfalls Teil der Beschreibung. Wie alles, was nur einmalig in Textform beschrieben werden muss, werden diese Informationen nicht über Texteingaben abgefragt, sondern am Ende in Form von Platzhaltern in der Beschreibung gekennzeichnet, und als noch ausstehende Punkte in einer To-Do-Liste notiert.
+Die eigentliche Beschreibung, was die Funktion genau macht und wie der Assistent aussieht, der eventuell aufgerufen wird, ist ebenfalls Teil der Beschreibung. Wie alles, was nur einmalig in Textform beschrieben werden muss, werden diese Informationen nicht über Texteingaben abgefragt, sondern am Ende durch Platzhalter in der Beschreibung gekennzeichnet, und als noch ausstehende Punkte in einer ToDo-Liste\index{ToDo-Liste} notiert.
 
-Nachdem alles ausgefüllt ist, kann der Product Owner die Beschreibung in einen Vorgang übertragen und die noch ausstehenden Punkte dort mit Leben füllen, wobei er sich an dieser To-Do-Liste orientieren kann. Durch das Skript wurde sichergestellt, dass alle von ihm zu treffenden Entscheidungen berücksichtigt wurden und explizit als Teil des Vorgangs aufgelistet sind. 
+Nachdem alles ausgefüllt ist, kann der Product Owner die Beschreibung in einen Vorgang übertragen und die noch ausstehenden Punkte dort mit Leben füllen, wobei er sich an dieser ToDo-Liste orientieren kann. Durch das Skript wurde sichergestellt, dass alle von ihm zu treffenden Entscheidungen berücksichtigt wurden und explizit als Teil des Vorgangs aufgelistet sind. 
 
-Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellung der Qualität. Die Verschriftlichung hilft zuallererst dem Produkt Owner, der dadurch nochmal eine bessere Vorstellung der von ihm beauftragten Entwicklung bekommt. In gleicher Weise hilft sie dem Entwickler der sich sowohl bei der Entwicklung klar an diesen Punkten orientieren kann, weniger Rückfragen stellen muss und die Liste auch nach Fertigstellung der Entwicklung zur Gegenprüfung und zum Abhaken aller Punkte verwenden kann.
+Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellung der Qualität. Die Verschriftlichung hilft zuallererst dem Produkt Owner selbst, der dadurch nochmal eine bessere Vorstellung von der von ihm beauftragten Entwicklung bekommt. In gleicher Weise hilft sie dem Entwickler der sich bei der gesamten Entwicklung klar an diesen Punkten orientieren kann, weniger Rückfragen stellen muss und die Liste auch nach Fertigstellung zur Gegenprüfung und zum Abhaken aller Punkte verwenden kann.
 
-Diese Form von Entwicklung entspricht zwar nicht dem Scrum, in dem ein Product Owner in blumigen Worten eine schöne Geschichte erzählt, die dann mit viel Fantasie von Entwicklern in das Produkt integriert wird, aber sie erfüllt den Anspruch einer integrativen Systementwicklung, die auf einem durchdachten Designsystem aufbaut, und eine einheitliche und benutzerorientierte Programmführung in den Vordergrund stellt und wenig Raum für Lücken lässt.
+Diese Form von Entwicklungsunterstützung scheint alles andere als agil zu sein und passt nicht zu den plastisch beschriebenen User Stories im Srum-Prozess und dem permanenten Austausch zwischen Entwicklung und Product Owner. Hier muss man wieder ganz klar unterscheiden zwischen der Entwicklung von Framework\index{Framework} und der Verwendung des entwickelten Frameworks. Die Entwicklung von neuem Framework kann und sollte agil verlaufen, da Anforderungen und technische Möglichkeiten permanent aufeinander abgestimmt werden müssen. Hier ist viel Aufwand und viel Austausch notwendig, damit das neu Geschaffene am Ende zum Bestehenden passt und systematisch, ohne großen Abstimmungsbedarf verwendet werden kann. Die Erweiterung des Designsystems, die Aufstellung von Regeln für die Verwendung und idealerweise auch die Erstellung von Unterstützungskripten sollten fester Bestandteil bei der Entwicklung neuer Framework-Komponenten sein.
+
+\subsection{Qualitätprotokolle}
+
+Qualitätsprotokolle sind ähnlich wie die Unterstützungskripte Hilfsmittel, die den am Entwicklungsprozess beteiligten Mitarbeitern helfen, ihre Arbeit einfacher und nach einer definierten Vorgehensweise durchzuführen. Letzteres steht hierbei im Vordergrund, denn das Protokoll macht Vorgaben, die zwingend einzuhalten sind, und die auch Gegenstand von internen Richtlinien sein können.
+
+Insbesondere dann, wenn man als Unternehmen eine Zertifizierung\index{Zertifizierung} nach dem Normen ISO 9001\index{ISO 9001} oder ISO 25001\index{ISO 25001} anstrebt und die damit verbundenen Audits bestehen möchte, reicht es nicht, Qualität, Datenschutz und Datensicherheit einfach nur zu wollen, man muss Maßnahmen im Management zur permanenten Aufrechterhaltung diese Aspekte definieren, dokumentieren, einhalten und auch nachweisen können. Dies gelingt langfristig nur dadurch, dass man diese Dinge tatsächlich in den Arbeitsalltag integriert und lebt, und den Nutzen zu schätzen lernt, den diese für den Kunden und auch das Unternehmen selbst haben. 
+
+Je mehr man diese Integration auf den tatsächlich beabsichtigten Effekt ausrichtet und nicht nur nach einer formalen Erfüllung der verlangten Dinge strebt, je einfacher fällt es am Ende, diese Dinge zu berücksichtigen und einen tatsächlichen Mehrwert daraus zu generieren.
+
+Qualitätsprotokolle\index{Qualitätsprotokolle} sind ein einfaches Mittel dafür und lassen sich an vielen Stellen einrichten, am besten dort, wo regelmäßige Tätigkeiten auftreten, bei denen es wichtige Dinge zu beachten gibt.
+
+Als Fortsetzung von Abschnitt~\ref{POUnterstuetzung} beginnen wir mit einem Protokoll für den Product Owner, das dabei hilft, bestimmte Wirkungen der von ihm beauftragten Entwicklungen zu beleuchten, und sich damit auseinanderzusetzen.
+
+Mit einem Fehler im Kontext der Softwareentwicklung assoziieren wir gemeinhin eine fehlerhafte Abweichung vom Sollzustand, die bei der Entwicklung entstanden ist, aber es gibt auch Fehler die schon vorher entstehen und die als Teil der Anforderungen den gesamten Entwicklungsprozess bis hin zum Test durchlaufen können, ohne dass jemand merkt, dass es falsch ist. Am häufigsten geschieht so etwas durch einen unbedachten Umgang mit personenbezogenen Daten und führt am Ende zu einem meist kleinen, aber dennoch ungewollten Datenschutzverstoß der hätte vermieden werden können.
+
+Ein klassisches Beispiel dafür ist der Wunsch, das Geburtsdatum als Spalte für einen Auswahldialog für Personen hinzuzunehmen. Der Grund dafür ist gut nachvollziehbar, und mit Sicherheit erleichtert diese zusätzliche Information die Auswahl an verschiedenen Stellen, und hilft besonders beim Vorhandensein von Dubletten. Andererseits wird die Person bezogene Information des Geburtsdatums an Stellen im Programm abrufbar, wo es primär nicht um die Stammdaten der Personen geht, und damit erweitert sich eventuell der Zugriff auf diese Information um Benutzer, die diesen zuvor nicht hatten.
+
+Die Gefahr, solche Dinge zu übersehen, ist recht groß, da sie oft nebenläufig zu den eigentlich ein Anforderungen stehen. Insofern ist es gut, ein Protokoll zu haben, dass solche Aspekte einzeln und jedes mal abfragt.
+
+Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kontrollfragen aus den Bereichen Datenschutz und Datensicherheit, die der Product Owner nach Beendigung seiner Story-Formulierung durchgehen sollte.
+
+\Beispiel{PO-Assistent}\label{BspPOAssi}
+\begin{verbatim}
+?Q1: Werden durch die Entwicklung Kundendaten
+    __ außerhalb der Programmumgebung gespeichert?
+    #j: Ja
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Ja
+        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung:
+        > Sicherstellen, dass der Speicherort so gewählt 
+        __ werden kann, dass kein unautorisierter Zugriff 
+        __ möglich ist.
+        > Sicherstellen, dass Speichervorgang und Speicherort
+        __ für den Anwender gut erkennbar sind.
+    #n: Nein
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Nein
+?Q2: Werden durch die Entwicklung personenbezogene Daten an 
+    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
+    #j: Ja
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Ja
+        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten:
+        > Sicherstellen, dass der Zugriff auf diese Stellen durch
+        __ die Vergabe von Berechtigungen abgesichert ist.
+        > Sicherstellen dass nicht mehr Daten angezeigt werden
+        __ als in diesem Bearbeitungskontext notwendig ist.
+        > Ggf. Datenschutzbeauftragten mit einbeziehen.
+    #n: Nein
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Nein
+?Q3: Werden durch die Entwicklung neue benutzerbezogene
+    __ Daten protokolliert oder verarbeitet? 
+    #j: Ja
+        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
+        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
+        > Sicherstellen dass die Protokollierung zweckgebunden
+        __ und durch die Benutzervereinbarung abgedeckt ist.
+        > Sicherstellen, dass die Protokollierung in das 
+        __ Datenblatt für Protokollierung aufgenommen wird.
+    #n: Nein
+        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
+\end{verbatim}
+
+Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt Erweiterungsmaßnahmen beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B in dem entsprechende Anforderungen ergänzt werden. Der Abschnitt Wirkungen dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweislich sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
+
+Wie schon erwähnt, kann man solche Protokolle an vielen Stellen verankern, und natürlich gibt es auf technischer Ebene sehr viele Dinge, die vom Entwickler berücksichtigt werden müssen.
+
+Viele Teams praktizieren Verfahren wie das Vier-Augen-Prinzip\index{Vier-Augen-Prinzip} (Peer-Review\index{Peer-Review}), bei dem abgeschlossene Entwicklungen einem Kollegen vorgelegt und erklärt werden, oder verschärfte Varianten davon wie \emph{Smash It}\index{Smash It}, bei der der Kollege gezielt versucht, Fehler und Schwachstellen der Entwicklung aufzudecken, damit diese vor Herausgabe der Version behoben werden können. Dies sind gute Ergänzungen zu den Integrationstests, die ja primär auf das Abprüfen der neuen Funktionalität ausgerichtet sind und nicht auf das Auffinden von Schwachstellen in deren Umgebung. Trotzdem hängt es am Ende hautsächlich von der Erfahrung und der investierten Zeit des Einzelnen ab, ob ein kritischer Fehler oder eine Verwundbarkeit entdeckt wird oder nicht.
+
+Im Laufe der Zeit und vor allem durch die systematische Untersuchung der leider doch nicht rechtzeitig erkannten schwerwiegenden Fehler stellt man fest, dass jedes Entwicklungsmuster seine eigenen Risikofaktoren\index{Risikofaktoren} mit sich bringt, und es in den meisten Fällen systematische Vorgehensweisen gibt, und die jeweiligen Risiken zu verringern.
+
+Das Risiko, dass Daten unbeabsichtigt gelöscht werden, wird dann auftreten, wenn überhaupt Daten gelöscht werden, Kompatibilitätsprobleme bekommt man dann, wenn man mit versionsabhängigen Formaten hantiert. Probleme mit Drittkomponenten zeigen sich oft erst Monate oder Jahre später, entstehen aber in dem Moment wo man sich nicht genügend Zeit nimmt, um den Einbau einer neuen Drittkomponente sorgsam auszuführen.
+
+Das nachfolgende Quali-Maßnahmen\index{Quali-Maßnahmen}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie diese Aspekte erfüllt.
+
+\Beispiel{Quali-Maßnahmen}
+\begin{verbatim}
+?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
+    #j: Ja
+        @Maßnahmen >> Löschen von Datensätzen:
+        > Sicherstellen, dass keine Datensätze ungewollt 
+        __ gelöscht werden.
+        > Abgrenzungstests formulieren.
+        > Löschweitergaben prüfen. 
+    #n: Nein
+?Q2: Umfasst die Entwicklung die Verwendung
+    __ neuer Drittkomponenten?
+    #j: Ja
+        @Maßnahmen >> Verwendung von Drittkomponenten:
+        > Checkliste für Drittkomponenten durchgehen.
+        > Drittkomponente in eigene Klasse kapseln.
+    #n: Nein
+?Q3: Umfasst die Entwicklung die Verarbeitung von 
+    __ versionsabhängigen Formaten?
+    #j: Ja
+        @Maßnahmen >> Versionsabhängige Formate:
+        > Sicherstellung der Versionsbestimmbarkeit.
+        > Sicherstellung von Abwärtskompatibilität.
+        > Sicherstellung von Aufwärtskompatibilität.
+        > Kennzeichnung der Versionsabhängigkeit 
+        __ im Datenblatt.
+    #n: Nein
+\end{verbatim}
+
+Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
+
+Der Umgang mit Drittkomponenten umfasst viele Aspekte, über die man einen eigenen Abschnitt schreiben könnte. Gerade im kommerziellen Umfeld gibt es viel zu beachten, angefangen von der Verträglichkeit der Lizenz, bis hin zur Dokumentation und Planung notwendiger Überwachungsaufgaben für die Sicherstellung der Aktualität und regelmäßige Prüfung auf Verwundbarkeiten. Komponenten, die für sicherheitsrelevante Funktionalität wie Verschlüsselung eingesetzt werden, müssen diesbezüglich besondere Ansprüche erfüllen. Im Beispiel oben wird dementsprechend auch nur auf eine Checkliste für Drittkomponenten verwiesen, die man natürlich ebenfalls mit \FPZ\ abbilden und hier verlinken kann. 
+
+Durch die Kapselung einer Drittkomponente in eine eigenen Klasse lässt sich gut sicherstellen, dass nur die benötigte Funktionalität verwendet wird und die Konfiguration auf die Eigenschaften beschränkt bleibt, die man zulassen möchte.
+
+Beim Umgang mit versionsabhängigen Formaten sollte von Anfang an berücksichtigt werden, dass sich diese ändern können, selbst wenn sie Teil des Produktes sind. Wenn ein Format um neue Eigenschaften erweitert wird, sollten vorhandene Daten in einem älteren Format immer noch verwendbar bleiben. Insbesondere sollte ein Format immer explizit bestimmbar sein, und nicht durch das Vorhandensein oder Nicht-Vorhandensein von Eigenschaften hergeleitet werden müssen.
+
+Die Liste solcher Aspekte liese sich noch um viele Punkte verlängern, und man muss aufpassen, dass die Relevanzklärung noch mit überschaubarem Aufwand möglich ist. Besonders sollte man darauf achten dass die Fragestellungen nach bestimmten Aspekten grundsätzlich unmittelbar, also ohne langes überlegen durch den Entwickler beantwortet werden kann, nachdem er sich ausführlich mit der Aufgabenstellung auseinandergesetzt hat.
 
 \printindex
 \end{document}

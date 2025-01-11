@@ -197,8 +197,10 @@ Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin,
 \section{Entscheidungsbäume}
 Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entscheidungsbäume und Flussdiagramme aufbauen, deren Stärke darin liegt, an jeder Stelle im Skriptcode die vollständige bis dahin getroffene Auswahl zu kennen, und so die nächste Fragestellung ganz exakt auf diese Situation abzustimmen. Die Anwendungsfälle dafür sind enorm vielfältig, aber um im Bereich der Softwareentwicklung zu bleiben, sind hier einige typische Beispiele.
 
-\subsection{Strukturabbildung einer Software}
+\subsection{Strukturabbildung einer Software}\label{Strukturabbildung}
 Durch den Nachbau der Struktur, bzw.\ des Menübaums\index{Menübaum} einer Software von der Programmoberfläche aus betrachtet, kann man es dem Anwender des Skriptes enorm erleichtern, eine Stelle innerhalb dieses Softwareproduktes eindeutig zu benennen. Der daraus resultierende Pfad oder eine diesem zugeordnete Kennung kann für die Suche nach Vorgängen und Informationen verwendet werden. Da diese Art von Information oft Teil abteilungsübergreifender Kommunikation ist, können mit einer solchen Auswahl sowohl Missverständnissen vermieden, und auch längerer Tastatureingaben eingespart werden.
+
+Beispiel~\ref{BspProgrammauswahl} zeigt, wie man einen solchen Auswahlbaum als wiederverwendbare Komponente anlegt.
 
 \subsection{Kategorisierungshilfen}\label{Kategorisierungshilfen}
 Eine wohl in allen Softwarehäusern stattfindende Kategorisierung\index{Kategorisierung} ist die des Schweregrades von neu erfassten Fehlern. Diese variieren in der Regel von \emph{hoch kritisch} bis hin zu \emph{niedrig} oder einer numerischen Abstufung mit dieser Entsprechung. Die subjektive und oft situationsbedingte Einschätzung der beteiligten Personen sollte hierbei nicht der Gradmesser sein, sondern vielmehr die objektive Kriterien und der Vergleich mit verständlichen Beispielen. Auf diese Weise können die verfügbaren Ressourcen zielgerichtet eingesetzt werden.
@@ -913,7 +915,7 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminol
 \begin{verbatim}
 ~Input T:Text
 @Eingabetext >>_ $T
-~ForEachLine z in 24 Terminologieliste.txt
+~ForEachLine z in Terminologieliste.txt
     ~RegExMatch ti=$z|([0-9]*)\t([^\t]*)\t(ja|nein)\t(.*)
     ~If $ti(0)
         ~If $ti(3)==ja
@@ -1209,8 +1211,140 @@ Der Product Owner oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er
 
 Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, dass individuelle Vorlieben und Wünsche zurückstellt und auf  für alle nachvollziehbare klaren Regeln aufbaut.
 
-Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standard Entwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden konnten und mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasste.
+Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standard Entwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden konnten und mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasst.
 
+Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle, an der die Entwicklung greifen soll. Wie schon in Abschnitt\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
+
+Wir speichern diese Auswahl in einer eigenen Datei mit der Dateiendung \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+
+Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, kann über die Variable \verb|PHinweis| ein Text übergeben werden, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird ebenfalls über zwei Parameter \verb|PAusw| und \verb|UAusw| an das Skript zurück übergeben.
+
+\Beispiel{Programmauswahl.fps}\label{BspProgrammauswahl}
+\begin{verbatim}
+?P: Programmbereich $PHinweis
+    #D: Dozenten
+        ~Set PAusw=Dozenten
+        ?U: Unterbereich in Dozenten $PHinweis
+            #A: Auswahliste Dozenten
+                ~Set UAusw=Auswahliste Dozenten
+            #S: Registerblatt Stammdaten
+                ~Set UAusw=Registerblatt Stammdaten
+            #F: Registerblatt Fächer
+                ~Set UAusw=Registerblatt Fächer
+    #K: Klassen
+        ~Set PAusw=Klassen
+        ?U: Unterbereich in Klassen $PHinweis
+            #A: Auswahliste Klassen
+                ~Set UAusw=Auswahliste Klassen
+            #S: Registerblatt Schüler
+                ~Set UAusw=Registerblatt Schüler
+            #U: Registerblatt Unterricht
+                ~Set UAusw=Registerblatt Unterricht
+\end{verbatim}
+
+Unsere Anwendungsbeispiel selbst Dienst zur Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
+
+Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt, und genau hier liegt der Vorteil eines Systems, dass diese Punkte systematisch abfragt.
+
+\Beispiel{Listenfunktion}
+\begin{verbatim}
+~Input Bez: Bezeichnung der Funktion
+~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
+~Include Programmauswahl.fps; BaseKey=E
+
+@Story >>_ Einbau der Listenfunktion "$Bez"
+    __ in die Liste des Bereichs "$PAusw - $UAusw".
+
+@Story >> Die Funktion ist per Kontextmenü aufrufbar.
+    > Bezeichnung Menüpunkt: $Bez
+?Pos1: Gibt es schon einen Funktionen-Abschnitt im
+    __ Kontextmenü?
+    #j: Ja
+        ?Pos2: An welcher Stelle soll der Menüpunkt in
+        __ das Kontextmenü eingebaut werden?
+            #O: Ganz oben
+                ~Set wogenau=ganz oben
+            #U: Ganz unten
+                ~Set wogenau=ganz oben
+            #D: Irgendo dazwischen
+                ~Input Pos3: Einbau unterhalb von...
+                ~Set wogenau=unterhalb von "$Pos3"
+        > ...in vorhandenen Funktionen-Abschnitt $wogenau
+    #n: Nein
+        > Funktionen-Abschnitt anlegen
+
+@Story >> Die Funktion
+?QRechte: Welche Rechte setzt die Funktion voraus?
+    #L: Leserechte auf die Liste
+        ~AddText  setzt Leserechten auf die Liste voraus.
+    #S: Schreibrechte auf die Liste
+        ~AddText  setzt Schreibrechte auf die Liste voraus.
+    #E: Die Funktion hat eigene Rechte
+        ~AddText  setzt eigene Rechte auf die Liste voraus.
+        > Die Berechtigungsstruktur muss erweitert werden.
+        > Eingliederung unter Listenfunktionen - $Bez
+        > Das neue Recht ist zunächst nur für Admins gesetzt.
+
+@Story >> Die Funktion ist
+?AKont: Die Funktion ist
+    #E: ...beschränkt auf Einfachauswahl
+        ~AddText  beschränkt auf Einfachauswahl.
+    #M: ...auch verfügbar für Mehrfachauswahl
+        ~AddText  auch verfügbar für Mehrfachauswahl.
+
+@Story >> Die Funktion
+?Wirk: Die Funktion
+    #A: ...öffnet einen Assistenten
+        ~AddText  öffnet einen Assistenten.
+        > Beschreibung und Skizze Assistent: xxx
+        @ToDo >> Assisten skizzieren und beschreiben
+    #R: ...wird nach Dialog-Rückfrage ausgeführt
+        ~AddText  wird nach Dialog-Rückfrage ausgeführt.
+        > Typ: Rückfrage-Dialog vor Ausführung
+        > Text: xxx
+        @ToDo >> Text Dialog-Rückfrage ausformulieren
+    #O: ...wird ohne Dialog-Rückfrage ausgeführt
+        ~AddText  wird ohne Dialog-Rückfrage ausgeführt.
+
+@Story >> Die Funktion bewirkt folgendes:
+        > xxx
+@ToDo >> Wirkung der Funktion beschreiben.
+
+@Story >> Das Benutzerfeedback
+?Feed: Das Benutzerfeedback
+    #E: ...ist unmittelbar erkennbar
+        ~AddText  ist unmittelbar erkennbar.
+        > Kein Feedback-Dialog notwendig.
+    #D: ...wird explizit über einen Dialog gegeben
+        ~AddText  wird explizit über einen Dialog gegeben.
+        > Typ: Feedback-Dialog nach Ausführung
+        > Text: xxx
+        @ToDo >> Text Feedback-Dialog ausformulieren
+\end{verbatim}
+
+Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Datei ausgelagerten Auswahlfunktion schnell umgesetzt.
+
+Die Festlegung, dass eine Listenfunktion über das Kontextmenü der Liste aufgerufen wird, ist fest im Skript hinterlegt. Der Product Owner hat hier keine Auswahlmöglichkeit und soll diese auch nicht haben. Er bestimmt, was er haben möchte und das Designsystem legt Form und Aussehen fest.
+
+Dadurch, dass die Design-Entscheidung fest im Skript hinterlegt ist, kann diese wiederum explizit in die Beschreibung einfließen, sodass diese vollständig berücksichtigt wird und niemand mehr das Designsystem auswendig im Kopf haben muss.
+
+Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollen nicht dem Zufall überlassen bleiben.
+
+Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise könnten als Hilfszeilen zur weiteren Entscheidungshilfe ergänzt werden.
+
+Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger zum Umsetzen ist. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte in solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
+
+Nun wird festgelegt, wie die Funktion bei Auswahl reagiert. Soll ein Assistent geöffnet werden oder soll die Funktion direkt ausgeführt werden? Im zweiten Fall: soll die Ausführung der Funktion über einen Rückfrage-Dialog abgesichert werden, in Sinne von \emph{sind Sie sicher?} Auch hier bezeichnet Rückfrage-Dialog ein Element aus dem Designsystem, dessen Aussehen weitestgehend festgelegt ist. Symbol und die zur Auswahl stehenden Schaltflächen werden daher nicht abgefragt, nur der Text.
+
+In gleicher Weise wird am Ende sichergestellt dass der Benutzer auch ein Feedback für die Ausführung der Funktion bekommt. Wenn dieses unmittelbar über die Programmoberfläche erkennbar ist, muss dafür nichts zusätzliches getan werden. Ansonsten sollte eine explizite Rückmeldung in Form eines Dialogs gegeben werden.
+
+Die eigentliche Beschreibung, was die Funktion genau macht und wie der Assistent aussieht, der eventuell aufgerufen wird, ist ebenfalls Teil der Beschreibung. Wie alles, was nur einmalig in Textform beschrieben werden muss, werden diese Informationen nicht über Texteingaben abgefragt, sondern am Ende in Form von Platzhaltern in der Beschreibung gekennzeichnet, und als noch ausstehende Punkte in einer To-Do-Liste notiert.
+
+Nachdem alles ausgefüllt ist, kann der Product Owner die Beschreibung in einen Vorgang übertragen und die noch ausstehenden Punkte dort mit Leben füllen, wobei er sich an dieser To-Do-Liste orientieren kann. Durch das Skript wurde sichergestellt, dass alle von ihm zu treffenden Entscheidungen berücksichtigt wurden und explizit als Teil des Vorgangs aufgelistet sind. 
+
+Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellung der Qualität. Die Verschriftlichung hilft zuallererst dem Produkt Owner, der dadurch nochmal eine bessere Vorstellung der von ihm beauftragten Entwicklung bekommt. In gleicher Weise hilft sie dem Entwickler der sich sowohl bei der Entwicklung klar an diesen Punkten orientieren kann, weniger Rückfragen stellen muss und die Liste auch nach Fertigstellung der Entwicklung zur Gegenprüfung und zum Abhaken aller Punkte verwenden kann.
+
+Diese Form von Entwicklung entspricht zwar nicht dem Scrum, in dem ein Product Owner in blumigen Worten eine schöne Geschichte erzählt, die dann mit viel Fantasie von Entwicklern in das Produkt integriert wird, aber sie erfüllt den Anspruch einer integrativen Systementwicklung, die auf einem durchdachten Designsystem aufbaut, und eine einheitliche und benutzerorientierte Programmführung in den Vordergrund stellt und wenig Raum für Lücken lässt.
 
 \printindex
 \end{document}

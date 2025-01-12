@@ -1,0 +1,27 @@
+~SetCulture de-DE
+~SetDateTime dheute=yyyy-MM-dd
+~SetDateTime Jahr = yyyy
+~DateSet tag = 06.01.$Jahr|dd.MM.yyyy
+~Set z=0
+~Set nr=0
+~DoWhile true
+	~DateAdd tag = $tag|1|d	
+	~DateFormat dvgl=$tag|yyyy-MM-dd
+	~If $dvgl == $dheute
+		~Set zukunft=ja
+	~DateFormat wotag=$tag|ddd
+	~If $wotag==Di
+		~AddTo z+=1
+		~If $z==3
+			~Set z=0
+			~AddTo nr+=1
+			~If $zukunft==ja
+				~ExitLoop
+~Loop
+~DateFormat erg=$tag|dd.MM.yyyy
+@jour fixe WM-XX >>* Wiki-Bereich
+	~AddLink ... | jour fixe WM-XX
+	~AddText  öffnen.
+>>* Falls nicht vorhanden, neue Seite anlegen:
+	>|$erg - Jour fixe WM-XX (Nr. $nr/$Jahr)
+>>* (findet an jedem 3ten Dienstag statt)

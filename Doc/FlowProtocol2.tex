@@ -25,6 +25,7 @@
 %% Commands
 %%
 \newcommand{\FPZ}{\textit{FlowProtocol 2}}
+\newcommand{\FPZb}{\textit{FlowProtocol-2}}
 \newcommand{\fcmd}[1]{\texttt{\textasciitilde #1}\index{#1@\texttt{\textasciitilde #1}}}
 \newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
@@ -118,7 +119,7 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 >> Hallo Welt!
 \end{verbatim}
 
-Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZ-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
 Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
@@ -170,7 +171,7 @@ Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\ind
 \end{verbatim}
 
 \subsection{Die FlowProtocol-2-Befehlsreferenz}
-Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZ-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Skripts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Skripts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
 
 \subsection{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an seiner Ergebnis kommt.
@@ -608,7 +609,7 @@ Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch An
     #: Nein
 \end{verbatim}
 
-Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahlabfragen mit dem Befehl \fcmd{AddHelpLine} hinzufügen. Mit \fcmd{AddHelpLink} lassen sich, analog wie bei den Ausgaben, auch Links\index{Links} einbauen, so dass man auf Wiki-Seiten oder andere \FPZ-Skripte verweisen kann. Danach kann man mit \fcmd{AddHelpText} wieder normalen Text an die letzte Zeile anhängen.
+Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahlabfragen mit dem Befehl \fcmd{AddHelpLine} hinzufügen. Mit \fcmd{AddHelpLink} lassen sich, analog wie bei den Ausgaben, auch Links\index{Links} einbauen, so dass man auf Wiki-Seiten oder andere \FPZb-Skripte verweisen kann. Danach kann man mit \fcmd{AddHelpText} wieder normalen Text an die letzte Zeile anhängen.
 
 
 \section{Programmierung}
@@ -699,7 +700,7 @@ Beim ersten Durchlauf der äußeren Schleife ist die Variable \verb|PZ(1)| noch ni
 
 Für jede Zahl $n$, für die nach Durchlauf der inneren Schleife die Variable \verb|prim| noch auf \verb|Ja| steht, wird die Menge der gefundenen Primzahlen \verb|PZ| um $n$ erweitert, weil $n$ in diesem Fall durch keine der bisher gefundenen Primzahlen teilbar ist. Ist $n$ dagegen durch eine dieser Primzahlen $p$ teilbar, also wenn der Rest bei Division durch $p$ null ergibt, dann wird die Variable \verb|prim| auf \verb|Nein| gesetzt und die innere Schleife verlassen, weil auch die folgenden Durchläufe das Ergebnis nicht mehr verändern würden.
 
-Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige Schleifendurchläufe zu vermeiden. Dies ist dahingehend kein Fehler, da die Ausführung von \FPZ-Skripten, verglichen mit einer kompilierbaren Programmiersprache wie C\#, sehr langsam ist.
+Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige Schleifendurchläufe zu vermeiden. Dies ist dahingehend kein Fehler, da die Ausführung von \FPZb-Skripten, verglichen mit einer kompilierbaren Programmiersprache wie C\#, sehr langsam ist.
 
 Die Programmierung von Schleifen bringt immer auch mit sich, dass man versehentlich eine Endlosschleife durchläuft, z.B.\ wenn man das Hochzählen der Variable vergisst und so die Abbruchbedingung nie erreicht wird. Um dies und auch Endlosrekursionen frühzeitig zu erkennen, werden alle Durchläufe von Schleifen im Hintergrund mitgezählt, und die Ausführung mit dem Fehler \emph{Maximale Anzahl Schleifendurchläufe erreicht} beendet, wenn der intern gesetzte Stop-Zähler\index{Stop-Zähler} für Schleifen oder die Gesamtzahl an durchlaufenen Befehlen erreicht wird. Mit dem Befehl \fcmd{SetStopCounter} lassen sich diese beiden Werte hochsetzen, wenn man abschätzen kann, dass eine reguläre Skriptanwendung so viele Durchläufe und Befehlsausführungen mit sich bringt. Raffinierte Berechnungen vielen Iterationen und Rekursionen sind zwar möglich, liegen aber eher am Rand der Wohlfühlzone von \FPZ.
 
@@ -945,7 +946,7 @@ Der große Vorteil von Webanwendungen liegt darin, dass man innerhalb der Program
 
 Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInline} schon gesehen. Um jedoch beliebigen Text als Parameter in einem Link einzufügen, muss man diesen in einer speziellen Form kodieren. Hierfür gibt es in \FPZ\ den Befehl \fcmd{UrlEncode}. Das nachfolgende Beispiel zeigt die Verwendung von URL-Parametern\index{URL-Parametern} am Beispiel eines Suchbegriffs, den man als Parameter an eine Suchmaschine übergeben kann, hier am Beispiel von Google und Bing.
 
-\Beispiel{Suchlink-E-Mail}
+\Beispiel{Suchlink-E-Mail}\label{BspSuchlink}
 \begin{verbatim}
 ~Input S:Suchbegriff
 ~UrlEncode uS=$S
@@ -974,7 +975,7 @@ Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit de
 
 Oft müssen solche Tickets oder andere Vorgänge durch Personen außerhalb des Fachbereichs erstellt werden, die sich besonders schwer damit tun alle Eigenschaften in der für die Bearbeitung gewünschten Art und Weise zu setzen. Wenn hier mit einem Skript soweit unterstützt werden kann, dass am Ende die Erstellung des Vorgangs direkt über einen Link möglich ist, hat man viel gewonnen. Idealerweise kombiniert man so ein Erstellungsskript mit einem Expertensystem (siehe Abschnitt~\ref{Expertensystem}) und der angeleiteten Suche nach eventuell schon vorhandenen Tickets zum Thema.
 
-Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZ-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfszeilen der entsprechenden Felder mit Parametern verlinkt werden.
+Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfszeilen der entsprechenden Felder mit Parametern verlinkt werden.
 
 \section{Systementwicklung}
 In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode, und auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
@@ -984,7 +985,7 @@ Die Überschrift lautet bewusst Systementwicklung\index{Systementwicklung}\, da v
 
 Die Erweiterung des Frameworks für ein solches System ist aufwendig, da all diese Punkte berücksichtigt werden müssen. Die Erweiterung der Anwendung auf Basis des vorhandenen Frameworks ist dagegen recht einfach, oder sollte es zumindest sein, da in diesem Fall keine technischen Probleme mehr gelöst werden müssen, sondern nur noch die richtigen Komponenten in der richtigen Art und Weise zusammengebaut, und nach den Vorgaben des Product Owners konfiguriert werden müssen. Und je besser das Framework ist, umso weniger Spielraum gibt es beim Anwenden und damit auch weniger Fragen, weniger Abweichungen und weniger Fehler.
 
-Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZ-Skripten und dass diese Methode sowohl von der Effizienz als auch von der Qualität her punkten kann.
+Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZb-Skripten und dass diese Methode sowohl von der Effizienz als auch von der Qualität her punkten kann.
 
 Zielsetzung ist ein System aus Anleitungen und Unterstützungssystemen, das alle Komponenten des Frameworks in jeweils allen Phasen der Softwareentwicklung repräsentiert, angefangen bei der Auswahl der Komponenten zur Umsetzung bestimmter Anforderungen, über die Verwendung im Programmcode, bis hin zur Testphase. Alle Abhängigkeiten, die sich zwischen den verschiedenen Entwicklungsphasen ergeben, sollten weitestgehend in den Skripten abgebildet sein und automatisch Berücksichtigung finden.
 
@@ -1003,7 +1004,7 @@ Die Idee ist, diese Dinge nun so zu systematisieren dass sie durch das Skript au
 
 Die große Kunst dabei ist es, die Abfrage der Situation so niederschwellig wie möglich zu gestalten, so dass die gestellten Fragen und geforderten Eingaben mit so wenig technischem Wissen wie möglich getätigt werden können. Wenn also eine Eigenschaft $x$ nur in bestimmten Fällen gesetzt werden kann, und je nach Situation einen von drei verschiedenen Werten annehmen kann, sollte zunächst verstanden werden, was diesen Fall und diese Situationen ausmachen und was die entsprechenden Werte bedeuten. Die Fragestellung des Skriptes sollte auf diesem Wissen aufbauen. Man sieht, dass der Entwickler des Skriptes ein ähnlich tiefgreifendes Wissen benötigt, wie der Entwickler des Frameworks, zu dessen Verwendung es anleitet.
 
-Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt werden soll eine Archivierungsklasse für die Archivierung eines Dozenten und damit verbunden auch gleich die \FPZ-Anleitung für weitere Archivierungsklassen. Zurückgreifen können wir auf den Programmcode der Archivierungsklasse für Kurse, der schon geschrieben wurde. 
+Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt werden soll eine Archivierungsklasse für die Archivierung eines Dozenten und damit verbunden auch gleich die \FPZb-Anleitung für weitere Archivierungsklassen. Zurückgreifen können wir auf den Programmcode der Archivierungsklasse für Kurse, der schon geschrieben wurde. 
 
 Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, die dann wie folgt aussieht:
 
@@ -1421,35 +1422,51 @@ Im Laufe der Zeit und vor allem durch die systematische Untersuchung der leider 
 
 Das Risiko, dass Daten unbeabsichtigt gelöscht werden, wird dann auftreten, wenn überhaupt Daten gelöscht werden, Kompatibilitätsprobleme bekommt man dann, wenn man mit versionsabhängigen Formaten hantiert. Probleme mit Drittkomponenten zeigen sich oft erst Monate oder Jahre später, entstehen aber in dem Moment wo man sich nicht genügend Zeit nimmt, um den Einbau einer neuen Drittkomponente sorgsam auszuführen.
 
-Das nachfolgende Quali-Maßnahmen\index{Quali-Maßnahmen}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie diese Aspekte erfüllt.
+Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie bestimmte Aspekte erfüllt.
 
-\Beispiel{Quali-Maßnahmen}
+\Beispiel{Quali-Assistent}
 \begin{verbatim}
-?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
+?Q1: Werden durch die Entwicklung Kundendaten
+    __ außerhalb der Programmumgebung gespeichert?
     #j: Ja
-        @Maßnahmen >> Löschen von Datensätzen:
-        > Sicherstellen, dass keine Datensätze ungewollt 
-        __ gelöscht werden.
-        > Abgrenzungstests formulieren.
-        > Löschweitergaben prüfen. 
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Ja
+        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung:
+        > Sicherstellen, dass der Speicherort so gewählt 
+        __ werden kann, dass kein unautorisierter Zugriff 
+        __ möglich ist.
+        > Sicherstellen, dass Speichervorgang und Speicherort
+        __ für den Anwender gut erkennbar sind.
     #n: Nein
-?Q2: Umfasst die Entwicklung die Verwendung
-    __ neuer Drittkomponenten?
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Nein
+?Q2: Werden durch die Entwicklung personenbezogene Daten an 
+    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
     #j: Ja
-        @Maßnahmen >> Verwendung von Drittkomponenten:
-        > Checkliste für Drittkomponenten durchgehen.
-        > Drittkomponente in eigene Klasse kapseln.
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Ja
+        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten:
+        > Sicherstellen, dass der Zugriff auf diese Stellen durch
+        __ die Vergabe von Berechtigungen abgesichert ist.
+        > Sicherstellen dass nicht mehr Daten angezeigt werden
+        __ als in diesem Bearbeitungskontext notwendig ist.
+        > Ggf. Datenschutzbeauftragten mit einbeziehen.
     #n: Nein
-?Q3: Umfasst die Entwicklung die Verarbeitung von 
-    __ versionsabhängigen Formaten?
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Nein
+?Q3: Werden durch die Entwicklung neue benutzerbezogene
+    __ Daten protokolliert oder verarbeitet? 
     #j: Ja
-        @Maßnahmen >> Versionsabhängige Formate:
-        > Sicherstellung der Versionsbestimmbarkeit.
-        > Sicherstellung von Abwärtskompatibilität.
-        > Sicherstellung von Aufwärtskompatibilität.
-        > Kennzeichnung der Versionsabhängigkeit 
-        __ im Datenblatt.
+        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
+        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
+        > Sicherstellen dass die Protokollierung zweckgebunden
+        __ und durch die Benutzervereinbarung abgedeckt ist.
+        > Sicherstellen, dass die Protokollierung in das 
+        __ Datenblatt für Protokollierung aufgenommen wird.
     #n: Nein
+        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
 \end{verbatim}
 
 Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
@@ -1460,7 +1477,124 @@ Durch die Kapselung einer Drittkomponente in eine eigenen Klasse lässt sich gut 
 
 Beim Umgang mit versionsabhängigen Formaten sollte von Anfang an berücksichtigt werden, dass sich diese ändern können, selbst wenn sie Teil des Produktes sind. Wenn ein Format um neue Eigenschaften erweitert wird, sollten vorhandene Daten in einem älteren Format immer noch verwendbar bleiben. Insbesondere sollte ein Format immer explizit bestimmbar sein, und nicht durch das Vorhandensein oder Nicht-Vorhandensein von Eigenschaften hergeleitet werden müssen.
 
+Auch hier ist das Skript wieder so aufgebaut, dass parallel zu den ergänzenden Maßnahmen ein Protokoll mit den Wirkungen der Entwicklung ausgegeben wird, das zum Nachweis der Auseinandersetzung in der Aufgabe hinterlegt werden könnte.
+
 Die Liste solcher Aspekte liese sich noch um viele Punkte verlängern, und man muss aufpassen, dass die Relevanzklärung noch mit überschaubarem Aufwand möglich ist. Besonders sollte man darauf achten dass die Fragestellungen nach bestimmten Aspekten grundsätzlich unmittelbar, also ohne langes überlegen durch den Entwickler beantwortet werden kann, nachdem er sich ausführlich mit der Aufgabenstellung auseinandergesetzt hat.
+
+\section{Organisationswerkzeuge}
+Im Drumherum der täglichen Arbeit gibt es viele kleine Aufgaben, die sich oft mehrfach täglich wiederholen, und bei denen man froh ist wenn man auf passende Hilfswerkzeuge zurückgreifen kann. In diesem Abschnitt beschreiben wir einiges solche Werkzeuge, die sich mit wenig Aufwand als \FPZb-Skript anfertigen lassen.
+
+\subsection{Zeitmessung}
+Zeitmessung\index{Zeitmessung} ist ein mächtiges Instrument, und meist unerlässlich, insbesondere wenn man direkt für einzelne Kunden arbeitet. Da Zeitmessung oftmals mit Leistungsmessung assoziiert wird, und damit auch als Grundlage für potentielle Kritik an der eigenen Arbeit, tut man sich oft schwer, diese für verschiedene Tätigkeiten zu etablieren.
+
+Umgekehrt finden wir durch Zeitmessung heraus in welche Art von Aufgaben unsere Arbeitszeit fließt, und können auf dieser Grundlage beurteilen, ob sie dort auch in ausreichendem Maße zur Wertschöpfung beiträgt. Stellen wir etwa fest, dass für die Bearbeitung von Supportvorgängen infolge einer unklaren Situation im Programm in Summe zwölf Stunden Zeit aufgewendet werden mussten, die man sich hätte sparen können, wenn man die entsprechende Stelle klarer ausgestaltet hätte, dann lernt man daraus auf lange Sicht und kann die Gewichtung solcher Maßnahmen für die Zukunft anpassen.
+
+Darüber hinaus erlaubt uns die Zeitmessung das sogenannte Controlling\index{Controlling}, also die permanente Überprüfung ob jüngere Anpassungen der Arbeitsweise den beabsichtigten Effekt haben.
+
+Aufgrund der großen Bedeutung ist Zeitmessung in vielen Systemen fest integriert und muss nicht durch ein zusätzliches Hilfsmittel ergänzt werden. Das nachfolgende Beispiel zeigt eine einfache Zeitmessung über ein \FPZb-Skript. Dieses ermöglicht es, die Zeitmessung zu pausieren und fortzusetzen und gibt am Ende ein Minuten genaues zeitprotokoll aus.
+
+Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kann man so auch zwischen der Zeitmessung für verschiedenen Aufgaben hin und her wechseln.
+
+\Beispiel{Zeitmesser}
+\begin{verbatim}
+~Input A: Aufgabe
+~SetInputTitle Zeitmessung für Aufgabe $A
+~Set idx=0
+~GoSub NotiereZeit
+~Set Status=läuft
+~Set Aktion=pausieren
+~Set Summe=0
+~Set fertig=Nein
+~DoWhile $fertig!=Ja
+    ~Set pri=$idx
+    ?A($idx): Zeitmessung $Status (Summe: $Summe Minuten)
+        #P: Zeitmessung $Aktion    
+        #A: Zeitmessung abschließen    
+            ~Set fertig=Ja
+    ~Execute
+    ~GoSub NotiereZeit    
+    ~If $Status==läuft
+        ~Replace ZTerm=$ZP($idx) - ($ZP($pri))|:-> * 60 +
+        ~CalculateExpression Diff = $ZTerm
+        ~AddTo Summe += $Diff
+        @Zeitprotokoll für Aufgabe $A >>|$ZP($pri)-$ZP($idx) Uhr
+            __ - $Diff Minuten
+        ~Set Status=pausiert
+        ~Set Aktion=fortsetzten        
+    ~Else
+        ~Set Status=läuft
+        ~Set Aktion=pausieren
+~Loop
+@Zeitprotokoll für Aufgabe $A >>|Summe: $Summe Minuten
+
+~DefineSub NotiereZeit
+    ~AddTo idx+=1
+    ~SetDateTime Zeit = HH:mm
+    ~AddNewKey ZP($idx) = $Zeit
+~Return
+\end{verbatim}
+
+Das Skript funktioniert wie folgt: nach Abfrage der Aufgabe, damit diese als Titel dargestellt werden kann, wird wiederholt eine Schleife durchlaufen, bis die Zeitmessung abgeschlossen wird. In jedem Schleifendurchlauf hat man die Wahl zwischen \emph{Zeitmessung pausieren} und \emph{Zeitmessung abschließen} oder \emph{Zeitmessung fortsetzen} und \emph{Zeitmessung abschließen}, je nachdem ob die Zeitmessung gerade läuft oder pausiert. Die Implementierung entspricht also einem Kippschalter\index{Kippschalter} mit dem zwischen diesen beiden Zuständen hin und her geschaltet werden kann.
+
+Bei jeder Aktion wird die Funktion \verb|NotiereZeit| durchlaufen, die mit Hilfe des Befehls \fcmd{SetDateTime} die Uhrzeit notiert und diese mit Hilfe des \fcmd{AddNewKey} als Teil der URL gespeichert, wobei der fortlaufenden Schlüssel \verb|ZP(...)| verwendet wird.
+
+Der Befehl \fcmd{SetDateTime} speichert die Systemzeit\index{Systemzeit} in einem vorgegebenen Format in einer Variable und der Befehl \fcmd{AddNewKey} funktioniert so, dass er den Wert nur dann als Teil der URL speichert, wenn dort noch kein Wert für diesen Schlüssel vorhanden ist. Er verhält sich damit analog zu den Auswahlabfragen und Texteingaben, die auch nur dann eine Eingabe verlangen, wenn der Wert noch nicht in der URL vorhanden ist. Die Zeitpunkte aller Aktionen werden damit in der URL gespeichert.
+
+Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und aktueller Aktion die Zeitdifferenz in Minuten berechnet und zu einer Summe aufaddiert. Für die Differenzberechnung wird dabei etwas trickreich der Doppelpunkt der Uhrzeiten einfach durch die Zeichenfolge \verb|* 60 +| ersetzt, sodass sich beispielsweise aus dem Ausdruck \verb|12:36 - (11:51)| der Rechenterm $12\cdot 60+36 -(11\cdot 60+51)$ ergibt, der die Differenz der Uhrzeiten in Minuten, also $45$ berechnet.
+
+Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das vollständige Zeitprotokoll mit den Uhrzeiten, den Differenzminuten und der Gesamtzeitdauer ausgegeben.
+
+\subsection{Meeting-Vorbereitung}
+Auch das nächste Beispiel verwendet Befehle zur Abfrage der Systemzeit um eine Ausgabe zu erzeugen, in diesem Fall eine Überschrift für das Protokoll des nächsten jour fixe\index{jour fixe}, der an jedem dritten Dienstag stattfindet.
+
+Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
+
+Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-bereich verlinken könnte.
+
+\Beispiel{Jour fixe}
+\begin{verbatim}
+~SetCulture de-DE
+~SetDateTime dheute=yyyy-MM-dd
+~SetDateTime Jahr = yyyy
+~DateSet tag = 06.01.$Jahr|dd.MM.yyyy
+~Set z=0
+~Set nr=0
+~DoWhile true
+    ~DateAdd tag = $tag|1|d    
+    ~DateFormat dvgl=$tag|yyyy-MM-dd
+    ~If $dvgl == $dheute
+        ~Set zukunft=ja
+    ~DateFormat wotag=$tag|ddd
+    ~If $wotag==Di
+        ~AddTo z+=1
+        ~If $z==3
+            ~Set z=0
+            ~AddTo nr+=1
+            ~If $zukunft==ja
+                ~ExitLoop
+~Loop
+~DateFormat erg=$tag|dd.MM.yyyy
+@jour fixe WM-XX >>* Wiki-Bereich
+    ~AddLink ... | jour fixe WM-XX
+    ~AddText  öffnen.
+>>* Falls nicht vorhanden, neue Seite anlegen:
+    >|$erg - Jour fixe WM-XX (Nr. $nr/$Jahr)
+>>* (findet an jedem 3ten Dienstag statt)
+\end{verbatim}
+
+Das Beispiel zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
+
+In unserem Beispiel werden mit \verb|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \verb|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
+
+Die eigentliche Berechnung erfolgt in einer Schleife, in der die \verb|tag|-Variable mit dem Befehl \fcmd{DateAdd} sukzessive um einen Tag hochgezählt wird. Für den Vergleicht wird dieses Datum mit dem \fcmd{DateFormat}-Befehl auf das gleiche Format gebracht wie \verb|dheute|. Sobald das aktuelle Datum erreicht wird, wird die Variable \verb|zukunft| auf \verb|ja| gesetzt, danach wird der Wochentag über das Format \verb|ddd| bestimmt.
+
+In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Dienstag handelt wenn ja wird ein Zähler \verb|z| bis maximal drei hochgezählt, und sobald ein dritter Dienstag gefunden ist, der in der Zukunft liegt, wird die Schleife mit \fcmd{ExitLoop} verlassen. Die Termine werden zusätzlich über das Jahr durchgezählt.
+
+Das gefundene Datum wird dann zusammen mit der laufenden Nummer in die Überschrift für die Protokollseite eingebaut und als Codeblock ausgegeben, so dass sie direkt in die Zwischenablage kopiert werden kann.
+
+Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der Terminregeln, die zusätzliche Ausgabe der letzten vergangenen oder weiterer zukünftigen Termine oder durch Ausgabe eines Such-Links, ähnlich wie in Beispiel~\ref{BspSuchlink}, der direkt nach der entsprechenden Seite im Wiki sucht.
+
+Umso einfacher es ist, einen spontanen Gedanken auf einer entsprechenden Seite zu notieren, umso eher wird dies auch praktiziert. Oft sind es die kleinen Hürden, die nicht genommen werden, und wegen denen am Ende Ideen nicht weiterverfolgt werden oder Dinge unerledigt bleiben.
 
 \printindex
 \end{document}

@@ -1,0 +1,35 @@
+~Input A: Aufgabe
+~SetInputTitle Zeitmessung für Aufgabe $A
+~Set idx=0
+~GoSub NotiereZeit
+~Set Status=läuft
+~Set Aktion=pausieren
+~Set Summe=0
+~Set fertig=Nein
+~DoWhile $fertig!=Ja
+	~Set pri=$idx
+	?A($idx): Zeitmessung $Status (Summe: $Summe Minuten)
+		#P: Zeitmessung $Aktion	
+		#A: Zeitmessung abschließen	
+			~Set fertig=Ja
+	~Execute
+	~GoSub NotiereZeit	
+	~If $Status==läuft
+		~Replace ZTerm=$ZP($idx) - ($ZP($pri))|:-> * 60 +
+		~CalculateExpression Diff = $ZTerm
+		~AddTo Summe += $Diff
+		@Zeitprotokoll für Aufgabe $A >>|$ZP($pri)-$ZP($idx) Uhr
+			__ - $Diff Minuten
+		~Set Status=pausiert
+		~Set Aktion=fortsetzten		
+	~Else
+		~Set Status=läuft
+		~Set Aktion=pausieren
+~Loop
+@Zeitprotokoll für Aufgabe $A >>|Summe: $Summe Minuten
+
+~DefineSub NotiereZeit
+	~AddTo idx+=1
+	~SetDateTime Zeit = HH:mm
+	~AddNewKey ZP($idx) = $Zeit
+~Return

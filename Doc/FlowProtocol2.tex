@@ -25,6 +25,7 @@
 %% Commands
 %%
 \newcommand{\FPZ}{\textit{FlowProtocol 2}}
+\newcommand{\FPZb}{\textit{FlowProtocol-2}}
 \newcommand{\fcmd}[1]{\texttt{\textasciitilde #1}\index{#1@\texttt{\textasciitilde #1}}}
 \newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
@@ -118,7 +119,7 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 >> Hallo Welt!
 \end{verbatim}
 
-Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZ-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
 Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
@@ -170,7 +171,7 @@ Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\ind
 \end{verbatim}
 
 \subsection{Die FlowProtocol-2-Befehlsreferenz}
-Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZ-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Skripts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Skripts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
 
 \subsection{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an seiner Ergebnis kommt.
@@ -197,8 +198,10 @@ Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin,
 \section{Entscheidungsbäume}
 Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entscheidungsbäume und Flussdiagramme aufbauen, deren Stärke darin liegt, an jeder Stelle im Skriptcode die vollständige bis dahin getroffene Auswahl zu kennen, und so die nächste Fragestellung ganz exakt auf diese Situation abzustimmen. Die Anwendungsfälle dafür sind enorm vielfältig, aber um im Bereich der Softwareentwicklung zu bleiben, sind hier einige typische Beispiele.
 
-\subsection{Strukturabbildung einer Software}
+\subsection{Strukturabbildung einer Software}\label{Strukturabbildung}
 Durch den Nachbau der Struktur, bzw.\ des Menübaums\index{Menübaum} einer Software von der Programmoberfläche aus betrachtet, kann man es dem Anwender des Skriptes enorm erleichtern, eine Stelle innerhalb dieses Softwareproduktes eindeutig zu benennen. Der daraus resultierende Pfad oder eine diesem zugeordnete Kennung kann für die Suche nach Vorgängen und Informationen verwendet werden. Da diese Art von Information oft Teil abteilungsübergreifender Kommunikation ist, können mit einer solchen Auswahl sowohl Missverständnissen vermieden, und auch längerer Tastatureingaben eingespart werden.
+
+Beispiel~\ref{BspProgrammauswahl} zeigt, wie man einen solchen Auswahlbaum als wiederverwendbare Komponente anlegt.
 
 \subsection{Kategorisierungshilfen}\label{Kategorisierungshilfen}
 Eine wohl in allen Softwarehäusern stattfindende Kategorisierung\index{Kategorisierung} ist die des Schweregrades von neu erfassten Fehlern. Diese variieren in der Regel von \emph{hoch kritisch} bis hin zu \emph{niedrig} oder einer numerischen Abstufung mit dieser Entsprechung. Die subjektive und oft situationsbedingte Einschätzung der beteiligten Personen sollte hierbei nicht der Gradmesser sein, sondern vielmehr die objektive Kriterien und der Vergleich mit verständlichen Beispielen. Auf diese Weise können die verfügbaren Ressourcen zielgerichtet eingesetzt werden.
@@ -606,7 +609,7 @@ Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch An
     #: Nein
 \end{verbatim}
 
-Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahlabfragen mit dem Befehl \fcmd{AddHelpLine} hinzufügen. Mit \fcmd{AddHelpLink} lassen sich, analog wie bei den Ausgaben, auch Links\index{Links} einbauen, so dass man auf Wiki-Seiten oder andere \FPZ-Skripte verweisen kann. Danach kann man mit \fcmd{AddHelpText} wieder normalen Text an die letzte Zeile anhängen.
+Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahlabfragen mit dem Befehl \fcmd{AddHelpLine} hinzufügen. Mit \fcmd{AddHelpLink} lassen sich, analog wie bei den Ausgaben, auch Links\index{Links} einbauen, so dass man auf Wiki-Seiten oder andere \FPZb-Skripte verweisen kann. Danach kann man mit \fcmd{AddHelpText} wieder normalen Text an die letzte Zeile anhängen.
 
 
 \section{Programmierung}
@@ -697,7 +700,7 @@ Beim ersten Durchlauf der äußeren Schleife ist die Variable \verb|PZ(1)| noch ni
 
 Für jede Zahl $n$, für die nach Durchlauf der inneren Schleife die Variable \verb|prim| noch auf \verb|Ja| steht, wird die Menge der gefundenen Primzahlen \verb|PZ| um $n$ erweitert, weil $n$ in diesem Fall durch keine der bisher gefundenen Primzahlen teilbar ist. Ist $n$ dagegen durch eine dieser Primzahlen $p$ teilbar, also wenn der Rest bei Division durch $p$ null ergibt, dann wird die Variable \verb|prim| auf \verb|Nein| gesetzt und die innere Schleife verlassen, weil auch die folgenden Durchläufe das Ergebnis nicht mehr verändern würden.
 
-Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige Schleifendurchläufe zu vermeiden. Dies ist dahingehend kein Fehler, da die Ausführung von \FPZ-Skripten, verglichen mit einer kompilierbaren Programmiersprache wie C\#, sehr langsam ist.
+Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige Schleifendurchläufe zu vermeiden. Dies ist dahingehend kein Fehler, da die Ausführung von \FPZb-Skripten, verglichen mit einer kompilierbaren Programmiersprache wie C\#, sehr langsam ist.
 
 Die Programmierung von Schleifen bringt immer auch mit sich, dass man versehentlich eine Endlosschleife durchläuft, z.B.\ wenn man das Hochzählen der Variable vergisst und so die Abbruchbedingung nie erreicht wird. Um dies und auch Endlosrekursionen frühzeitig zu erkennen, werden alle Durchläufe von Schleifen im Hintergrund mitgezählt, und die Ausführung mit dem Fehler \emph{Maximale Anzahl Schleifendurchläufe erreicht} beendet, wenn der intern gesetzte Stop-Zähler\index{Stop-Zähler} für Schleifen oder die Gesamtzahl an durchlaufenen Befehlen erreicht wird. Mit dem Befehl \fcmd{SetStopCounter} lassen sich diese beiden Werte hochsetzen, wenn man abschätzen kann, dass eine reguläre Skriptanwendung so viele Durchläufe und Befehlsausführungen mit sich bringt. Raffinierte Berechnungen vielen Iterationen und Rekursionen sind zwar möglich, liegen aber eher am Rand der Wohlfühlzone von \FPZ.
 
@@ -913,7 +916,7 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminol
 \begin{verbatim}
 ~Input T:Text
 @Eingabetext >>_ $T
-~ForEachLine z in 24 Terminologieliste.txt
+~ForEachLine z in Terminologieliste.txt
     ~RegExMatch ti=$z|([0-9]*)\t([^\t]*)\t(ja|nein)\t(.*)
     ~If $ti(0)
         ~If $ti(3)==ja
@@ -943,7 +946,7 @@ Der große Vorteil von Webanwendungen liegt darin, dass man innerhalb der Program
 
 Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInline} schon gesehen. Um jedoch beliebigen Text als Parameter in einem Link einzufügen, muss man diesen in einer speziellen Form kodieren. Hierfür gibt es in \FPZ\ den Befehl \fcmd{UrlEncode}. Das nachfolgende Beispiel zeigt die Verwendung von URL-Parametern\index{URL-Parametern} am Beispiel eines Suchbegriffs, den man als Parameter an eine Suchmaschine übergeben kann, hier am Beispiel von Google und Bing.
 
-\Beispiel{Suchlink-E-Mail}
+\Beispiel{Suchlink-E-Mail}\label{BspSuchlink}
 \begin{verbatim}
 ~Input S:Suchbegriff
 ~UrlEncode uS=$S
@@ -972,7 +975,7 @@ Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit de
 
 Oft müssen solche Tickets oder andere Vorgänge durch Personen außerhalb des Fachbereichs erstellt werden, die sich besonders schwer damit tun alle Eigenschaften in der für die Bearbeitung gewünschten Art und Weise zu setzen. Wenn hier mit einem Skript soweit unterstützt werden kann, dass am Ende die Erstellung des Vorgangs direkt über einen Link möglich ist, hat man viel gewonnen. Idealerweise kombiniert man so ein Erstellungsskript mit einem Expertensystem (siehe Abschnitt~\ref{Expertensystem}) und der angeleiteten Suche nach eventuell schon vorhandenen Tickets zum Thema.
 
-Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZ-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfszeilen der entsprechenden Felder mit Parametern verlinkt werden.
+Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfszeilen der entsprechenden Felder mit Parametern verlinkt werden.
 
 \section{Systementwicklung}
 In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode, und auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
@@ -982,7 +985,7 @@ Die Überschrift lautet bewusst Systementwicklung\index{Systementwicklung}\, da v
 
 Die Erweiterung des Frameworks für ein solches System ist aufwendig, da all diese Punkte berücksichtigt werden müssen. Die Erweiterung der Anwendung auf Basis des vorhandenen Frameworks ist dagegen recht einfach, oder sollte es zumindest sein, da in diesem Fall keine technischen Probleme mehr gelöst werden müssen, sondern nur noch die richtigen Komponenten in der richtigen Art und Weise zusammengebaut, und nach den Vorgaben des Product Owners konfiguriert werden müssen. Und je besser das Framework ist, umso weniger Spielraum gibt es beim Anwenden und damit auch weniger Fragen, weniger Abweichungen und weniger Fehler.
 
-Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZ-Skripten und dass diese Methode sowohl von der Effizienz als auch von der Qualität her punkten kann.
+Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZb-Skripten und dass diese Methode sowohl von der Effizienz als auch von der Qualität her punkten kann.
 
 Zielsetzung ist ein System aus Anleitungen und Unterstützungssystemen, das alle Komponenten des Frameworks in jeweils allen Phasen der Softwareentwicklung repräsentiert, angefangen bei der Auswahl der Komponenten zur Umsetzung bestimmter Anforderungen, über die Verwendung im Programmcode, bis hin zur Testphase. Alle Abhängigkeiten, die sich zwischen den verschiedenen Entwicklungsphasen ergeben, sollten weitestgehend in den Skripten abgebildet sein und automatisch Berücksichtigung finden.
 
@@ -1001,7 +1004,7 @@ Die Idee ist, diese Dinge nun so zu systematisieren dass sie durch das Skript au
 
 Die große Kunst dabei ist es, die Abfrage der Situation so niederschwellig wie möglich zu gestalten, so dass die gestellten Fragen und geforderten Eingaben mit so wenig technischem Wissen wie möglich getätigt werden können. Wenn also eine Eigenschaft $x$ nur in bestimmten Fällen gesetzt werden kann, und je nach Situation einen von drei verschiedenen Werten annehmen kann, sollte zunächst verstanden werden, was diesen Fall und diese Situationen ausmachen und was die entsprechenden Werte bedeuten. Die Fragestellung des Skriptes sollte auf diesem Wissen aufbauen. Man sieht, dass der Entwickler des Skriptes ein ähnlich tiefgreifendes Wissen benötigt, wie der Entwickler des Frameworks, zu dessen Verwendung es anleitet.
 
-Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt werden soll eine Archivierungsklasse für die Archivierung eines Dozenten und damit verbunden auch gleich die \FPZ-Anleitung für weitere Archivierungsklassen. Zurückgreifen können wir auf den Programmcode der Archivierungsklasse für Kurse, der schon geschrieben wurde. 
+Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt werden soll eine Archivierungsklasse für die Archivierung eines Dozenten und damit verbunden auch gleich die \FPZb-Anleitung für weitere Archivierungsklassen. Zurückgreifen können wir auf den Programmcode der Archivierungsklasse für Kurse, der schon geschrieben wurde. 
 
 Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, die dann wie folgt aussieht:
 
@@ -1203,14 +1206,395 @@ Solche Oberflächentests\index{Oberflächentests} werden in der Regel ebenfalls al
 
 Ein Unterstützungsskript könnte sehr gut die Voraussetzungen für einen geplanten automatisierten Oberflächentest abfragen und damit schon mal den Test soweit wie möglich vorbereiten.
 
-\subsection{Product-Owner-Unterstützung}
+\subsection{Product-Owner-Unterstützung}\label{POUnterstuetzung}
 
-Der Product Owner oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht in direkt im Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen wurden.
+Der Product Owner\index{Product Owner} oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht in direkt im Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen werden.
 
-Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, dass individuelle Vorlieben und Wünsche zurückstellt und auf  für alle nachvollziehbare klaren Regeln aufbaut.
+Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, das individuelle Vorlieben und Wünsche zurückstellt und auf für alle nachvollziehbare Regeln aufbaut.
 
-Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standard Entwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden konnten und mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasste.
+Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standardentwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasste.
 
+Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle innerhalb der Anwendung, an der die Entwicklung greifen soll. Wie schon in Abschnitt~\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
+
+Wir speichern diese Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+
+Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, kann über die Variable \verb|PHinweis| ein Text übergeben werden, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird nach Ausführung über zwei Parameter \verb|PAusw| und \verb|UAusw| an das Skript zurück übergeben.
+
+\Beispiel{Programmauswahl.fps}\label{BspProgrammauswahl}
+\begin{verbatim}
+?P: Programmbereich $PHinweis
+    #D: Dozenten
+        ~Set PAusw=Dozenten
+        ?U: Unterbereich in Dozenten $PHinweis
+            #A: Auswahliste Dozenten
+                ~Set UAusw=Auswahliste Dozenten
+            #S: Registerblatt Stammdaten
+                ~Set UAusw=Registerblatt Stammdaten
+            #F: Registerblatt Fächer
+                ~Set UAusw=Registerblatt Fächer
+    #K: Klassen
+        ~Set PAusw=Klassen
+        ?U: Unterbereich in Klassen $PHinweis
+            #A: Auswahliste Klassen
+                ~Set UAusw=Auswahliste Klassen
+            #S: Registerblatt Schüler
+                ~Set UAusw=Registerblatt Schüler
+            #U: Registerblatt Unterricht
+                ~Set UAusw=Registerblatt Unterricht
+\end{verbatim}
+
+Unsere Anwendungsbeispiel selbst unterstützt bei der Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
+
+Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt. Genau hier liegt der Vorteil eines solchen Skiptes, das diese Punkte systematisch abfragt.
+
+\Beispiel{Listenfunktion}
+\begin{verbatim}
+~Input Bez: Bezeichnung der Funktion
+~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
+~Include Programmauswahl.fps; BaseKey=E
+
+@Story >>_ Einbau der Listenfunktion "$Bez"
+    __ in die Liste des Bereichs "$PAusw - $UAusw".
+
+@Story >> Die Funktion ist per Kontextmenü aufrufbar.
+    > Bezeichnung Menüpunkt: $Bez
+?Pos1: Gibt es schon einen Funktionen-Abschnitt im
+    __ Kontextmenü?
+    #j: Ja
+        ?Pos2: An welcher Stelle soll der Menüpunkt in
+        __ das Kontextmenü eingebaut werden?
+            #O: Ganz oben
+                ~Set wogenau=ganz oben
+            #U: Ganz unten
+                ~Set wogenau=ganz oben
+            #D: Irgendo dazwischen
+                ~Input Pos3: Einbau unterhalb von...
+                ~Set wogenau=unterhalb von "$Pos3"
+        > ...in vorhandenen Funktionen-Abschnitt $wogenau
+    #n: Nein
+        > Funktionen-Abschnitt anlegen
+
+@Story >> Die Funktion
+?QRechte: Welche Rechte setzt die Funktion voraus?
+    #L: Leserechte auf die Liste
+        ~AddText  setzt Leserechten auf die Liste voraus.
+    #S: Schreibrechte auf die Liste
+        ~AddText  setzt Schreibrechte auf die Liste voraus.
+    #E: Die Funktion hat eigene Rechte
+        ~AddText  setzt eigene Rechte auf die Liste voraus.
+        > Die Berechtigungsstruktur muss erweitert werden.
+        > Eingliederung unter Listenfunktionen - $Bez
+        > Das neue Recht ist zunächst nur für Admins gesetzt.
+
+@Story >> Die Funktion ist
+?AKont: Die Funktion ist
+    #E: ...beschränkt auf Einfachauswahl
+        ~AddText  beschränkt auf Einfachauswahl.
+    #M: ...auch verfügbar für Mehrfachauswahl
+        ~AddText  auch verfügbar für Mehrfachauswahl.
+
+@Story >> Die Funktion
+?Wirk: Die Funktion
+    #A: ...öffnet einen Assistenten
+        ~AddText  öffnet einen Assistenten.
+        > Beschreibung und Skizze Assistent: xxx
+        @ToDo >> Assisten skizzieren und beschreiben
+    #R: ...wird nach Dialog-Rückfrage ausgeführt
+        ~AddText  wird nach Dialog-Rückfrage ausgeführt.
+        > Typ: Rückfrage-Dialog vor Ausführung
+        > Text: xxx
+        @ToDo >> Text Dialog-Rückfrage ausformulieren
+    #O: ...wird ohne Dialog-Rückfrage ausgeführt
+        ~AddText  wird ohne Dialog-Rückfrage ausgeführt.
+
+@Story >> Die Funktion bewirkt folgendes:
+        > xxx
+@ToDo >> Wirkung der Funktion beschreiben.
+
+@Story >> Das Benutzerfeedback
+?Feed: Das Benutzerfeedback
+    #E: ...ist unmittelbar erkennbar
+        ~AddText  ist unmittelbar erkennbar.
+        > Kein Feedback-Dialog notwendig.
+    #D: ...wird explizit über einen Dialog gegeben
+        ~AddText  wird explizit über einen Dialog gegeben.
+        > Typ: Feedback-Dialog nach Ausführung
+        > Text: xxx
+        @ToDo >> Text Feedback-Dialog ausformulieren
+\end{verbatim}
+
+Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Funktionsdatei ausgelagerten Auswahlfunktion schnell umgesetzt.
+
+Die Festlegung, dass eine Listenfunktion über das Kontextmenü der Liste aufgerufen wird, ist fest im Skript hinterlegt. Der Product Owner hat hier keine Auswahlmöglichkeit und soll diese auch nicht haben. Er bestimmt, was er haben möchte und das Designsystem\index{Designsystem} legt Form und Aussehen fest.
+
+Dadurch, dass die grundlegende Design-Entscheidung fest im Skript hinterlegt ist, kann diese wiederum explizit in die Beschreibung einfließen, sodass diese durchgängig berücksichtigt wird und niemand mehr das Designsystem auswendig im Kopf haben muss.
+
+Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für solche Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert, die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollten nicht dem Zufall überlassen werden.
+
+Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise auf allgemein festgelegte Regeln könnten im Skript als Hilfszeilen bei den damit verbundenen Fragen und Texteingaben ergänzt werden.
+
+Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger zum Umsetzen ist und manchmal auch noch weitere Fragen nach sich zieht. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte bei solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
+
+Nun wird festgelegt, wie die Funktion bei Auswahl reagiert. Soll ein Assistent geöffnet werden oder soll die Funktion direkt ausgeführt werden? Soll die Ausführung der Funktion über einen Rückfrage-Dialog abgesichert werden, in Sinne von \emph{sind Sie sicher?} Auch hier bezeichnet Rückfrage-Dialog ein Element aus dem Designsystem, dessen Aussehen weitestgehend festgelegt ist. Symbol und die zur Auswahl stehenden Schaltflächen werden daher nicht abgefragt, nur der Text.
+
+In gleicher Weise wird am Ende sichergestellt dass der Benutzer auch ein Feedback für die Ausführung der Funktion bekommt. Wenn dieses unmittelbar über die Programmoberfläche erkennbar ist, muss dafür nichts zusätzliches getan werden. Ansonsten sollte eine explizite Rückmeldung in Form eines Dialogs gegeben werden.
+
+Die eigentliche Beschreibung, was die Funktion genau macht und wie der Assistent aussieht, der eventuell aufgerufen wird, ist ebenfalls Teil der Beschreibung. Wie alles, was nur einmalig in Textform beschrieben werden muss, werden diese Informationen nicht über Texteingaben abgefragt, sondern am Ende durch Platzhalter in der Beschreibung gekennzeichnet, und als noch ausstehende Punkte in einer ToDo-Liste\index{ToDo-Liste} notiert.
+
+Nachdem alles ausgefüllt ist, kann der Product Owner die Beschreibung in einen Vorgang übertragen und die noch ausstehenden Punkte dort mit Leben füllen, wobei er sich an dieser ToDo-Liste orientieren kann. Durch das Skript wurde sichergestellt, dass alle von ihm zu treffenden Entscheidungen berücksichtigt wurden und explizit als Teil des Vorgangs aufgelistet sind. 
+
+Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellung der Qualität. Die Verschriftlichung hilft zuallererst dem Produkt Owner selbst, der dadurch nochmal eine bessere Vorstellung von der von ihm beauftragten Entwicklung bekommt. In gleicher Weise hilft sie dem Entwickler der sich bei der gesamten Entwicklung klar an diesen Punkten orientieren kann, weniger Rückfragen stellen muss und die Liste auch nach Fertigstellung zur Gegenprüfung und zum Abhaken aller Punkte verwenden kann.
+
+Diese Form von Entwicklungsunterstützung scheint alles andere als agil zu sein und passt nicht zu den plastisch beschriebenen User Stories im Srum-Prozess und dem permanenten Austausch zwischen Entwicklung und Product Owner. Hier muss man wieder ganz klar unterscheiden zwischen der Entwicklung von Framework\index{Framework} und der Verwendung des entwickelten Frameworks. Die Entwicklung von neuem Framework kann und sollte agil verlaufen, da Anforderungen und technische Möglichkeiten permanent aufeinander abgestimmt werden müssen. Hier ist viel Aufwand und viel Austausch notwendig, damit das neu Geschaffene am Ende zum Bestehenden passt und systematisch, ohne großen Abstimmungsbedarf verwendet werden kann. Die Erweiterung des Designsystems, die Aufstellung von Regeln für die Verwendung und idealerweise auch die Erstellung von Unterstützungskripten sollten fester Bestandteil bei der Entwicklung neuer Framework-Komponenten sein.
+
+\subsection{Qualitätprotokolle}
+
+Qualitätsprotokolle sind ähnlich wie die Unterstützungskripte Hilfsmittel, die den am Entwicklungsprozess beteiligten Mitarbeitern helfen, ihre Arbeit einfacher und nach einer definierten Vorgehensweise durchzuführen. Letzteres steht hierbei im Vordergrund, denn das Protokoll macht Vorgaben, die zwingend einzuhalten sind, und die auch Gegenstand von internen Richtlinien sein können.
+
+Insbesondere dann, wenn man als Unternehmen eine Zertifizierung\index{Zertifizierung} nach dem Normen ISO 9001\index{ISO 9001} oder ISO 25001\index{ISO 25001} anstrebt und die damit verbundenen Audits bestehen möchte, reicht es nicht, Qualität, Datenschutz und Datensicherheit einfach nur zu wollen, man muss Maßnahmen im Management zur permanenten Aufrechterhaltung diese Aspekte definieren, dokumentieren, einhalten und auch nachweisen können. Dies gelingt langfristig nur dadurch, dass man diese Dinge tatsächlich in den Arbeitsalltag integriert und lebt, und den Nutzen zu schätzen lernt, den diese für den Kunden und auch das Unternehmen selbst haben. 
+
+Je mehr man diese Integration auf den tatsächlich beabsichtigten Effekt ausrichtet und nicht nur nach einer formalen Erfüllung der verlangten Dinge strebt, je einfacher fällt es am Ende, diese Dinge zu berücksichtigen und einen tatsächlichen Mehrwert daraus zu generieren.
+
+Qualitätsprotokolle\index{Qualitätsprotokolle} sind ein einfaches Mittel dafür und lassen sich an vielen Stellen einrichten, am besten dort, wo regelmäßige Tätigkeiten auftreten, bei denen es wichtige Dinge zu beachten gibt.
+
+Als Fortsetzung von Abschnitt~\ref{POUnterstuetzung} beginnen wir mit einem Protokoll für den Product Owner, das dabei hilft, bestimmte Wirkungen der von ihm beauftragten Entwicklungen zu beleuchten, und sich damit auseinanderzusetzen.
+
+Mit einem Fehler im Kontext der Softwareentwicklung assoziieren wir gemeinhin eine fehlerhafte Abweichung vom Sollzustand, die bei der Entwicklung entstanden ist, aber es gibt auch Fehler die schon vorher entstehen und die als Teil der Anforderungen den gesamten Entwicklungsprozess bis hin zum Test durchlaufen können, ohne dass jemand merkt, dass es falsch ist. Am häufigsten geschieht so etwas durch einen unbedachten Umgang mit personenbezogenen Daten und führt am Ende zu einem meist kleinen, aber dennoch ungewollten Datenschutzverstoß der hätte vermieden werden können.
+
+Ein klassisches Beispiel dafür ist der Wunsch, das Geburtsdatum als Spalte für einen Auswahldialog für Personen hinzuzunehmen. Der Grund dafür ist gut nachvollziehbar, und mit Sicherheit erleichtert diese zusätzliche Information die Auswahl an verschiedenen Stellen, und hilft besonders beim Vorhandensein von Dubletten. Andererseits wird die Person bezogene Information des Geburtsdatums an Stellen im Programm abrufbar, wo es primär nicht um die Stammdaten der Personen geht, und damit erweitert sich eventuell der Zugriff auf diese Information um Benutzer, die diesen zuvor nicht hatten.
+
+Die Gefahr, solche Dinge zu übersehen, ist recht groß, da sie oft nebenläufig zu den eigentlich ein Anforderungen stehen. Insofern ist es gut, ein Protokoll zu haben, dass solche Aspekte einzeln und jedes mal abfragt.
+
+Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kontrollfragen aus den Bereichen Datenschutz und Datensicherheit, die der Product Owner nach Beendigung seiner Story-Formulierung durchgehen sollte.
+
+\Beispiel{PO-Assistent}\label{BspPOAssi}
+\begin{verbatim}
+?Q1: Werden durch die Entwicklung Kundendaten
+    __ außerhalb der Programmumgebung gespeichert?
+    #j: Ja
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Ja
+        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung:
+        > Sicherstellen, dass der Speicherort so gewählt 
+        __ werden kann, dass kein unautorisierter Zugriff 
+        __ möglich ist.
+        > Sicherstellen, dass Speichervorgang und Speicherort
+        __ für den Anwender gut erkennbar sind.
+    #n: Nein
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Nein
+?Q2: Werden durch die Entwicklung personenbezogene Daten an 
+    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
+    #j: Ja
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Ja
+        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten:
+        > Sicherstellen, dass der Zugriff auf diese Stellen durch
+        __ die Vergabe von Berechtigungen abgesichert ist.
+        > Sicherstellen dass nicht mehr Daten angezeigt werden
+        __ als in diesem Bearbeitungskontext notwendig ist.
+        > Ggf. Datenschutzbeauftragten mit einbeziehen.
+    #n: Nein
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Nein
+?Q3: Werden durch die Entwicklung neue benutzerbezogene
+    __ Daten protokolliert oder verarbeitet? 
+    #j: Ja
+        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
+        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
+        > Sicherstellen dass die Protokollierung zweckgebunden
+        __ und durch die Benutzervereinbarung abgedeckt ist.
+        > Sicherstellen, dass die Protokollierung in das 
+        __ Datenblatt für Protokollierung aufgenommen wird.
+    #n: Nein
+        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
+\end{verbatim}
+
+Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt Erweiterungsmaßnahmen beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B in dem entsprechende Anforderungen ergänzt werden. Der Abschnitt Wirkungen dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweislich sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
+
+Wie schon erwähnt, kann man solche Protokolle an vielen Stellen verankern, und natürlich gibt es auf technischer Ebene sehr viele Dinge, die vom Entwickler berücksichtigt werden müssen.
+
+Viele Teams praktizieren Verfahren wie das Vier-Augen-Prinzip\index{Vier-Augen-Prinzip} (Peer-Review\index{Peer-Review}), bei dem abgeschlossene Entwicklungen einem Kollegen vorgelegt und erklärt werden, oder verschärfte Varianten davon wie \emph{Smash It}\index{Smash It}, bei der der Kollege gezielt versucht, Fehler und Schwachstellen der Entwicklung aufzudecken, damit diese vor Herausgabe der Version behoben werden können. Dies sind gute Ergänzungen zu den Integrationstests, die ja primär auf das Abprüfen der neuen Funktionalität ausgerichtet sind und nicht auf das Auffinden von Schwachstellen in deren Umgebung. Trotzdem hängt es am Ende hautsächlich von der Erfahrung und der investierten Zeit des Einzelnen ab, ob ein kritischer Fehler oder eine Verwundbarkeit entdeckt wird oder nicht.
+
+Im Laufe der Zeit und vor allem durch die systematische Untersuchung der leider doch nicht rechtzeitig erkannten schwerwiegenden Fehler stellt man fest, dass jedes Entwicklungsmuster seine eigenen Risikofaktoren\index{Risikofaktoren} mit sich bringt, und es in den meisten Fällen systematische Vorgehensweisen gibt, und die jeweiligen Risiken zu verringern.
+
+Das Risiko, dass Daten unbeabsichtigt gelöscht werden, wird dann auftreten, wenn überhaupt Daten gelöscht werden, Kompatibilitätsprobleme bekommt man dann, wenn man mit versionsabhängigen Formaten hantiert. Probleme mit Drittkomponenten zeigen sich oft erst Monate oder Jahre später, entstehen aber in dem Moment wo man sich nicht genügend Zeit nimmt, um den Einbau einer neuen Drittkomponente sorgsam auszuführen.
+
+Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie bestimmte Aspekte erfüllt.
+
+\Beispiel{Quali-Assistent}
+\begin{verbatim}
+?Q1: Werden durch die Entwicklung Kundendaten
+    __ außerhalb der Programmumgebung gespeichert?
+    #j: Ja
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Ja
+        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung:
+        > Sicherstellen, dass der Speicherort so gewählt 
+        __ werden kann, dass kein unautorisierter Zugriff 
+        __ möglich ist.
+        > Sicherstellen, dass Speichervorgang und Speicherort
+        __ für den Anwender gut erkennbar sind.
+    #n: Nein
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Nein
+?Q2: Werden durch die Entwicklung personenbezogene Daten an 
+    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
+    #j: Ja
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Ja
+        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten:
+        > Sicherstellen, dass der Zugriff auf diese Stellen durch
+        __ die Vergabe von Berechtigungen abgesichert ist.
+        > Sicherstellen dass nicht mehr Daten angezeigt werden
+        __ als in diesem Bearbeitungskontext notwendig ist.
+        > Ggf. Datenschutzbeauftragten mit einbeziehen.
+    #n: Nein
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Nein
+?Q3: Werden durch die Entwicklung neue benutzerbezogene
+    __ Daten protokolliert oder verarbeitet? 
+    #j: Ja
+        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
+        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
+        > Sicherstellen dass die Protokollierung zweckgebunden
+        __ und durch die Benutzervereinbarung abgedeckt ist.
+        > Sicherstellen, dass die Protokollierung in das 
+        __ Datenblatt für Protokollierung aufgenommen wird.
+    #n: Nein
+        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
+\end{verbatim}
+
+Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
+
+Der Umgang mit Drittkomponenten umfasst viele Aspekte, über die man einen eigenen Abschnitt schreiben könnte. Gerade im kommerziellen Umfeld gibt es viel zu beachten, angefangen von der Verträglichkeit der Lizenz, bis hin zur Dokumentation und Planung notwendiger Überwachungsaufgaben für die Sicherstellung der Aktualität und regelmäßige Prüfung auf Verwundbarkeiten. Komponenten, die für sicherheitsrelevante Funktionalität wie Verschlüsselung eingesetzt werden, müssen diesbezüglich besondere Ansprüche erfüllen. Im Beispiel oben wird dementsprechend auch nur auf eine Checkliste für Drittkomponenten verwiesen, die man natürlich ebenfalls mit \FPZ\ abbilden und hier verlinken kann. 
+
+Durch die Kapselung einer Drittkomponente in eine eigenen Klasse lässt sich gut sicherstellen, dass nur die benötigte Funktionalität verwendet wird und die Konfiguration auf die Eigenschaften beschränkt bleibt, die man zulassen möchte.
+
+Beim Umgang mit versionsabhängigen Formaten sollte von Anfang an berücksichtigt werden, dass sich diese ändern können, selbst wenn sie Teil des Produktes sind. Wenn ein Format um neue Eigenschaften erweitert wird, sollten vorhandene Daten in einem älteren Format immer noch verwendbar bleiben. Insbesondere sollte ein Format immer explizit bestimmbar sein, und nicht durch das Vorhandensein oder Nicht-Vorhandensein von Eigenschaften hergeleitet werden müssen.
+
+Auch hier ist das Skript wieder so aufgebaut, dass parallel zu den ergänzenden Maßnahmen ein Protokoll mit den Wirkungen der Entwicklung ausgegeben wird, das zum Nachweis der Auseinandersetzung in der Aufgabe hinterlegt werden könnte.
+
+Die Liste solcher Aspekte liese sich noch um viele Punkte verlängern, und man muss aufpassen, dass die Relevanzklärung noch mit überschaubarem Aufwand möglich ist. Besonders sollte man darauf achten dass die Fragestellungen nach bestimmten Aspekten grundsätzlich unmittelbar, also ohne langes überlegen durch den Entwickler beantwortet werden kann, nachdem er sich ausführlich mit der Aufgabenstellung auseinandergesetzt hat.
+
+\section{Organisationswerkzeuge}
+Im Drumherum der täglichen Arbeit gibt es viele kleine Aufgaben, die sich oft mehrfach täglich wiederholen, und bei denen man froh ist wenn man auf passende Hilfswerkzeuge zurückgreifen kann. In diesem Abschnitt beschreiben wir einiges solche Werkzeuge, die sich mit wenig Aufwand als \FPZb-Skript anfertigen lassen.
+
+\subsection{Zeitmessung}
+Zeitmessung\index{Zeitmessung} ist ein mächtiges Instrument, und meist unerlässlich, insbesondere wenn man direkt für einzelne Kunden arbeitet. Da Zeitmessung oftmals mit Leistungsmessung assoziiert wird, und damit auch als Grundlage für potentielle Kritik an der eigenen Arbeit, tut man sich oft schwer, diese für verschiedene Tätigkeiten zu etablieren.
+
+Umgekehrt finden wir durch Zeitmessung heraus in welche Art von Aufgaben unsere Arbeitszeit fließt, und können auf dieser Grundlage beurteilen, ob sie dort auch in ausreichendem Maße zur Wertschöpfung beiträgt. Stellen wir etwa fest, dass für die Bearbeitung von Supportvorgängen infolge einer unklaren Situation im Programm in Summe zwölf Stunden Zeit aufgewendet werden mussten, die man sich hätte sparen können, wenn man die entsprechende Stelle klarer ausgestaltet hätte, dann lernt man daraus auf lange Sicht und kann die Gewichtung solcher Maßnahmen für die Zukunft anpassen.
+
+Darüber hinaus erlaubt uns die Zeitmessung das sogenannte Controlling\index{Controlling}, also die permanente Überprüfung ob jüngere Anpassungen der Arbeitsweise den beabsichtigten Effekt haben.
+
+Aufgrund der großen Bedeutung ist Zeitmessung in vielen Systemen fest integriert und muss nicht durch ein zusätzliches Hilfsmittel ergänzt werden. Das nachfolgende Beispiel zeigt eine einfache Zeitmessung über ein \FPZb-Skript. Dieses ermöglicht es, die Zeitmessung zu pausieren und fortzusetzen und gibt am Ende ein Minuten genaues zeitprotokoll aus.
+
+Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kann man so auch zwischen der Zeitmessung für verschiedenen Aufgaben hin und her wechseln.
+
+\Beispiel{Zeitmesser}
+\begin{verbatim}
+~Input A: Aufgabe
+~SetInputTitle Zeitmessung für Aufgabe $A
+~Set idx=0
+~GoSub NotiereZeit
+~Set Status=läuft
+~Set Aktion=pausieren
+~Set Summe=0
+~Set fertig=Nein
+~DoWhile $fertig!=Ja
+    ~Set pri=$idx
+    ?A($idx): Zeitmessung $Status (Summe: $Summe Minuten)
+        #P: Zeitmessung $Aktion    
+        #A: Zeitmessung abschließen    
+            ~Set fertig=Ja
+    ~Execute
+    ~GoSub NotiereZeit    
+    ~If $Status==läuft
+        ~Replace ZTerm=$ZP($idx) - ($ZP($pri))|:-> * 60 +
+        ~CalculateExpression Diff = $ZTerm
+        ~AddTo Summe += $Diff
+        @Zeitprotokoll für Aufgabe $A >>|$ZP($pri)-$ZP($idx) Uhr
+            __ - $Diff Minuten
+        ~Set Status=pausiert
+        ~Set Aktion=fortsetzten        
+    ~Else
+        ~Set Status=läuft
+        ~Set Aktion=pausieren
+~Loop
+@Zeitprotokoll für Aufgabe $A >>|Summe: $Summe Minuten
+
+~DefineSub NotiereZeit
+    ~AddTo idx+=1
+    ~SetDateTime Zeit = HH:mm
+    ~AddNewKey ZP($idx) = $Zeit
+~Return
+\end{verbatim}
+
+Das Skript funktioniert wie folgt: nach Abfrage der Aufgabe, damit diese als Titel dargestellt werden kann, wird wiederholt eine Schleife durchlaufen, bis die Zeitmessung abgeschlossen wird. In jedem Schleifendurchlauf hat man die Wahl zwischen \emph{Zeitmessung pausieren} und \emph{Zeitmessung abschließen} oder \emph{Zeitmessung fortsetzen} und \emph{Zeitmessung abschließen}, je nachdem ob die Zeitmessung gerade läuft oder pausiert. Die Implementierung entspricht also einem Kippschalter\index{Kippschalter} mit dem zwischen diesen beiden Zuständen hin und her geschaltet werden kann.
+
+Bei jeder Aktion wird die Funktion \verb|NotiereZeit| durchlaufen, die mit Hilfe des Befehls \fcmd{SetDateTime} die Uhrzeit notiert und diese mit Hilfe des \fcmd{AddNewKey} als Teil der URL gespeichert, wobei der fortlaufenden Schlüssel \verb|ZP(...)| verwendet wird.
+
+Der Befehl \fcmd{SetDateTime} speichert die Systemzeit\index{Systemzeit} in einem vorgegebenen Format in einer Variable und der Befehl \fcmd{AddNewKey} funktioniert so, dass er den Wert nur dann als Teil der URL speichert, wenn dort noch kein Wert für diesen Schlüssel vorhanden ist. Er verhält sich damit analog zu den Auswahlabfragen und Texteingaben, die auch nur dann eine Eingabe verlangen, wenn der Wert noch nicht in der URL vorhanden ist. Die Zeitpunkte aller Aktionen werden damit in der URL gespeichert.
+
+Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und aktueller Aktion die Zeitdifferenz in Minuten berechnet und zu einer Summe aufaddiert. Für die Differenzberechnung wird dabei etwas trickreich der Doppelpunkt der Uhrzeiten einfach durch die Zeichenfolge \verb|* 60 +| ersetzt, sodass sich beispielsweise aus dem Ausdruck \verb|12:36 - (11:51)| der Rechenterm $12\cdot 60+36 -(11\cdot 60+51)$ ergibt, der die Differenz der Uhrzeiten in Minuten, also $45$ berechnet.
+
+Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das vollständige Zeitprotokoll mit den Uhrzeiten, den Differenzminuten und der Gesamtzeitdauer ausgegeben.
+
+\subsection{Meeting-Vorbereitung}
+Auch das nächste Beispiel verwendet Befehle zur Abfrage der Systemzeit um eine Ausgabe zu erzeugen, in diesem Fall eine Überschrift für das Protokoll des nächsten jour fixe\index{jour fixe}, der an jedem dritten Dienstag stattfindet.
+
+Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
+
+Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-bereich verlinken könnte.
+
+\Beispiel{Jour fixe}
+\begin{verbatim}
+~SetCulture de-DE
+~SetDateTime dheute=yyyy-MM-dd
+~SetDateTime Jahr = yyyy
+~DateSet tag = 06.01.$Jahr|dd.MM.yyyy
+~Set z=0
+~Set nr=0
+~DoWhile true
+    ~DateAdd tag = $tag|1|d    
+    ~DateFormat dvgl=$tag|yyyy-MM-dd
+    ~If $dvgl == $dheute
+        ~Set zukunft=ja
+    ~DateFormat wotag=$tag|ddd
+    ~If $wotag==Di
+        ~AddTo z+=1
+        ~If $z==3
+            ~Set z=0
+            ~AddTo nr+=1
+            ~If $zukunft==ja
+                ~ExitLoop
+~Loop
+~DateFormat erg=$tag|dd.MM.yyyy
+@jour fixe WM-XX >>* Wiki-Bereich
+    ~AddLink ... | jour fixe WM-XX
+    ~AddText  öffnen.
+>>* Falls nicht vorhanden, neue Seite anlegen:
+    >|$erg - Jour fixe WM-XX (Nr. $nr/$Jahr)
+>>* (findet an jedem 3ten Dienstag statt)
+\end{verbatim}
+
+Das Beispiel zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
+
+In unserem Beispiel werden mit \verb|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \verb|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
+
+Die eigentliche Berechnung erfolgt in einer Schleife, in der die \verb|tag|-Variable mit dem Befehl \fcmd{DateAdd} sukzessive um einen Tag hochgezählt wird. Für den Vergleicht wird dieses Datum mit dem \fcmd{DateFormat}-Befehl auf das gleiche Format gebracht wie \verb|dheute|. Sobald das aktuelle Datum erreicht wird, wird die Variable \verb|zukunft| auf \verb|ja| gesetzt, danach wird der Wochentag über das Format \verb|ddd| bestimmt.
+
+In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Dienstag handelt wenn ja wird ein Zähler \verb|z| bis maximal drei hochgezählt, und sobald ein dritter Dienstag gefunden ist, der in der Zukunft liegt, wird die Schleife mit \fcmd{ExitLoop} verlassen. Die Termine werden zusätzlich über das Jahr durchgezählt.
+
+Das gefundene Datum wird dann zusammen mit der laufenden Nummer in die Überschrift für die Protokollseite eingebaut und als Codeblock ausgegeben, so dass sie direkt in die Zwischenablage kopiert werden kann.
+
+Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der Terminregeln, die zusätzliche Ausgabe der letzten vergangenen oder weiterer zukünftigen Termine oder durch Ausgabe eines Such-Links, ähnlich wie in Beispiel~\ref{BspSuchlink}, der direkt nach der entsprechenden Seite im Wiki sucht.
+
+Umso einfacher es ist, einen spontanen Gedanken auf einer entsprechenden Seite zu notieren, umso eher wird dies auch praktiziert. Oft sind es die kleinen Hürden, die nicht genommen werden, und wegen denen am Ende Ideen nicht weiterverfolgt werden oder Dinge unerledigt bleiben.
 
 \printindex
 \end{document}

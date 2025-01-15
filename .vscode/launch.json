@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/FlowProtocol2/bin/Debug/net6.0/FlowProtocol2.dll",
+            "program": "${workspaceFolder}/FlowProtocol2/bin/Debug/net8.0/FlowProtocol2.dll",
             "args": [],
             "cwd": "${workspaceFolder}/FlowProtocol2",
             "stopAtEntry": false,

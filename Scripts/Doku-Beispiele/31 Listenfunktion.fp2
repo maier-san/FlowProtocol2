@@ -1,0 +1,72 @@
+~Input Bez: Bezeichnung der Funktion
+~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
+~Include 32 Programmauswahl.fps; BaseKey=E
+
+@Story >>_ Einbau der Listenfunktion "$Bez"
+	__ in die Liste des Bereichs "$PAusw - $UAusw".
+
+@Story >> Die Funktion ist per Kontextmenü aufrufbar.
+	> Bezeichnung Menüpunkt: $Bez
+?Pos1: Gibt es schon einen Funktionen-Abschnitt im
+	__ Kontextmenü?
+	#j: Ja
+		?Pos2: An welcher Stelle soll der Menüpunkt in
+		__ das Kontextmenü eingebaut werden?
+			#O: Ganz oben
+				~Set wogenau=ganz oben
+			#U: Ganz unten
+				~Set wogenau=ganz oben
+			#D: Irgendo dazwischen
+				~Input Pos3: Einbau unterhalb von...
+				~Set wogenau=unterhalb von "$Pos3"
+		> ...in vorhandenen Funktionen-Abschnitt $wogenau
+	#n: Nein
+		> Funktionen-Abschnitt anlegen
+
+@Story >> Die Funktion
+?QRechte: Welche Rechte setzt die Funktion voraus?
+	#L: Leserechte auf die Liste
+		~AddText  setzt Leserechten auf die Liste voraus.
+	#S: Schreibrechte auf die Liste
+		~AddText  setzt Schreibrechte auf die Liste voraus.
+	#E: Die Funktion hat eigene Rechte
+		~AddText  setzt eigene Rechte auf die Liste voraus.
+		> Die Berechtigungsstruktur muss erweitert werden.
+		> Eingliederung unter Listenfunktionen - $Bez
+		> Das neue Recht ist zunächst nur für Admins gesetzt.
+
+@Story >> Die Funktion ist
+?AKont: Die Funktion ist
+	#E: ...beschränkt auf Einfachauswahl
+		~AddText  beschränkt auf Einfachauswahl.
+	#M: ...auch verfügbar für Mehrfachauswahl
+		~AddText  auch verfügbar für Mehrfachauswahl.
+
+@Story >> Die Funktion
+?Wirk: Die Funktion
+	#A: ...öffnet einen Assistenten
+		~AddText  öffnet einen Assistenten.
+		> Beschreibung und Skizze Assistent: xxx
+		@ToDo >> Assisten skizzieren und beschreiben
+	#R: ...wird nach Dialog-Rückfrage ausgeführt
+		~AddText  wird nach Dialog-Rückfrage ausgeführt.
+		> Typ: Rückfrage-Dialog vor Ausführung
+		> Text: xxx
+		@ToDo >> Text Dialog-Rückfrage ausformulieren
+	#O: ...wird ohne Dialog-Rückfrage ausgeführt
+		~AddText  wird ohne Dialog-Rückfrage ausgeführt.
+
+@Story >> Die Funktion bewirkt folgendes:
+		> xxx
+@ToDo >> Wirkung der Funktion beschreiben.
+
+@Story >> Das Benutzerfeedback
+?Feed: Das Benutzerfeedback
+	#E: ...ist unmittelbar erkennbar
+		~AddText  ist unmittelbar erkennbar.
+		> Kein Feedback-Dialog notwendig.
+	#D: ...wird explizit über einen Dialog gegeben
+		~AddText  wird explizit über einen Dialog gegeben.
+		> Typ: Feedback-Dialog nach Ausführung
+		> Text: xxx
+		@ToDo >> Text Feedback-Dialog ausformulieren

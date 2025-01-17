@@ -1,0 +1,46 @@
+~ListDirectories wdir = .Wissensgebiete; Pattern=Wissen *
+~DynamicOptionGroup WGeb:wdir;Wähle das Wissensgebiet
+~Execute
+~ListFiles wdats = .Wissensgebiete|$wdir($WGeb); Pattern=*.txt
+~Set idx=0
+~ForEach wdat in wdats
+	~AddTo idx+=1
+	~Replace wpak($idx)=$wdat|.txt->
+~Loop
+~If $idx==0
+	@Hinweis >>_ Im Ordner "Wissensgebiete\$wdir($WGeb)"
+	__ sind keine Dateien vorhanden. Die Ausführung
+	__ wird abgebrochen.
+	~End
+~DynamicOptionGroup WPak:wpak;Wähle das Wissenspaket
+~Execute
+~Set WPfad=.Wissensgebiete|$wdir($WGeb)|$wdats($WPak)
+?A: Was möchtest du tun?
+	#sa: Alle Reflektionsaussagen durchgehen
+		~ForEachLine ref in $WPfad; IndexVar=idx; SectionVar=Ab
+			~SetInputSection $Ab
+			?R$idx: $ref
+			#j: Ja
+				@Was ich weiß >> $ref
+			#n: Nein
+				@NN >> $ref
+			~Calculate mod4 = $idx % 4
+			~If $mod4==0
+				~Execute
+		~Loop
+		~MoveSection  NN->Was ich nicht weiß
+	#s4: Drei Reflektionsaussagen als Stichprobe
+		~ForEachLine ref in $WPfad; Take=3; IndexVar=idx
+			?R$idx: $ref
+			#j: Ja
+			#n: Nein
+				~Replace refmod=$ref|Ich weiß, ->...
+				@Heute nicht gewusst >> $refmod
+		~Loop
+	#db: Weitere Reflektionsaussagen erfassen
+		@Anleitung >> Öffne die Wissensdatei
+			>|$CurrentScriptPath\Wissensgebiete\$wdir($WGeb)
+			__\$wdats($WPak)
+		>> Füge neue Reflektionsaussagen ein
+			> Diese sollten mit "Ich weiß, " beginnen
+			> ... und nach Möglichkeit nicht die Antwort enthalten

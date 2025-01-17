@@ -29,9 +29,8 @@
 \newcommand{\fcmd}[1]{\texttt{\textasciitilde #1}\index{#1@\texttt{\textasciitilde #1}}}
 \newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
-\newcommand{\Syntax}{\subsubsection*{Syntax}}
 \newcounter{bspcount}
-\newcommand{\Beispiel}[1]{\stepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
+\newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
 \newcommand{\webbox}[1]{\par\setlength{\fboxsep}{3mm}\fbox{\begin{minipage}{12cm}\textsf{#1}\end{minipage}\par}\par\vspace{3mm}}
 \newcommand{\webhead}[2]{{\large  #1}\\[2mm]#2\\[1mm]\rule{\linewidth}{1pt}\\[3mm]}
 \newcommand{\webheadR}[1]{{\large  #1}\\}
@@ -96,16 +95,20 @@ Zuletzt möchte ich noch Danke sagen, an alle Kollegen bei easySoft, die \FPZ\ be
     \texttt{https://github.com/maier-san/FlowProtocol2}
 \end{center}
 
-Die Programmcode kann direkt mit Git oder der frei verfügbaren Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B. \verb|D:\Anwendungen\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden:
+Die Programmcode kann direkt mit Git oder der frei verfügbaren Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B. \verb|D:\Anwendungen\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden, wobei als Zielframework\index{Zielframework} .NET 8 vorausgesetzt wird:
 \begin{verbatim}
 dotnet.exe build
     D:\Anwendungen\FlowProtocol2/FlowProtocol2/FlowProtocol2.csproj
 \end{verbatim}
-Die Konfiguration erfolgt über die Datei \cidxfrag{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
+
+
+Die Konfiguration erfolgt über die Datei \cidxfrag{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
 \begin{verbatim}
 "ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
 \end{verbatim}
 In einer Firma oder Einrichtung wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
+
+In den Dateien \verb|Properties\launchSettings.json|, \verb|appsettings.json| und \verb|Program.cs| sind Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
 
 Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auflistung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
 
@@ -155,7 +158,7 @@ Die Schlüssel für Fragen und Antworten und auch für die später noch kommenden Te
 Da die Gesamtlänge der URL für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
 
 \subsection{Allgemeine Ergänzungen zur Syntax}
-In \FPZ\ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung\index{Einrückung} am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen\index{Leerzeilen} und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen\index{Tabulatorzeichen}, also auch mit Leerzeichnen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
+In \FPZ\ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung\index{Einrückung} am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen\index{Leerzeilen} und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen\index{Tabulatorzeichen}, also auch mit Leerzeichen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
 
 Die Zeichenfolge \verb|//| leitet einen Kommentar\index{Kommentar} ein, jedoch nur zu Beginn einer Zeile.
 
@@ -171,7 +174,7 @@ Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\ind
 \end{verbatim}
 
 \subsection{Die FlowProtocol-2-Befehlsreferenz}
-Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Skripts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Scipts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
 
 \subsection{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an seiner Ergebnis kommt.
@@ -189,11 +192,11 @@ Hier ein Beispiel für so einen Fehler:
         Antwort B
 \end{verbatim}
 
-Laufzeitfehler\index{Laufzeitfehler} treten dagegen meist im Zusammenhang mit Variablen auf, z.B wenn mit diesen Rechenoperationen durchgeführt werden sollen, diese aber keinen Zahlenwert enthalten. Auch hier kann man anhand der Angaben in der Fehlermeldung die Stelle lokalisieren und sich an die Klärung der Ursache machen.
+Laufzeitfehler\index{Laufzeitfehler} treten dagegen meist im Zusammenhang mit Variablen auf, z.B.\ wenn mit diesen Rechenoperationen durchgeführt werden sollen, diese aber keinen Zahlenwert enthalten. Auch hier kann man anhand der Angaben in der Fehlermeldung die Stelle lokalisieren und sich an die Klärung der Ursache machen.
 
 In den meisten restlichen Fällen erscheint keine Fehlermeldung, aber das Skript produziert nicht die gewünschte Ausgabe. Und dann geht es an das Debuggen\index{Debuggen}\, also das Entfernen der Fehler. Hier gibt es bei \FPZ\ den großen Vorteil, dass das Feedback nach einer Änderung sehr schnell zu bekommen ist. Man ändert einfach eine Stelle im Skriptcode, speichert und drückt die Aktualisieren-Schaltfläche im Browser und erhält umgehend das Resultat der aktualisierten Version. Man muss weder neu kompilieren, noch irgendwelche Eingaben wiederholen.
 
-Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin, an vielen Stellen Hilfsausgaben zu erzeugen, z.B mit den Werten von Variablen, der Information, ob eine bestimmten Stelle durchlaufen wurde, und so weiter. Diese können ganz normal als Ausgaben in das Skript eingebaut werden, idealerweise gesammelt in einem eigenen Debug-Abschnitt (siehe Abschnitt~\ref{Abschnitte}). Sobald die Entwicklung des Skriptes abgeschlossen ist, werden diese Hilfsausgaben auskommentiert oder entfernt.
+Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin, an vielen Stellen Hilfsausgaben zu erzeugen, z.B.\ mit den Werten von Variablen, der Information, ob eine bestimmten Stelle durchlaufen wurde, und so weiter. Diese können ganz normal als Ausgaben in das Skript eingebaut werden, idealerweise gesammelt in einem eigenen Debug-Abschnitt (siehe Abschnitt~\ref{Abschnitte}). Sobald die Entwicklung des Skriptes abgeschlossen ist, werden diese Hilfsausgaben auskommentiert oder entfernt.
 
 \section{Entscheidungsbäume}
 Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entscheidungsbäume und Flussdiagramme aufbauen, deren Stärke darin liegt, an jeder Stelle im Skriptcode die vollständige bis dahin getroffene Auswahl zu kennen, und so die nächste Fragestellung ganz exakt auf diese Situation abzustimmen. Die Anwendungsfälle dafür sind enorm vielfältig, aber um im Bereich der Softwareentwicklung zu bleiben, sind hier einige typische Beispiele.
@@ -840,7 +843,7 @@ Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste 
 ~Loop
 \end{verbatim}
 
-Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jede Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
+Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B.\ \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jede Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
 
 Der Umgang mit solchen kombinatorischen Auflistungen\index{kombinatorischen Auflistungen} ist in der Softwareentwicklung wichtiger, als man denkt und der größte Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann müssen auch diese Fälle betrachtet und behandelt werden. 
 
@@ -892,10 +895,10 @@ Das Beispiel zeigt einen Passwortgenerator\index{Passwortgenerator}, der für ein
 
 Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr}-Befehl verwendet der das Zeichen mit dem dazu gehörenden Dezimalcode erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
 
-\subsection{Reguläre Ausdrücke und Datenabfragen}
-Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich Auch die verschiedenen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
+\subsection{Reguläre Ausdrücke und Datenabfragen}\label{RegUndDaten}
+Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich Auch die verschiedenen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
 
-Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die im gleichen Grundordner liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber lesend. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
+Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die irgendwo im Skripte-Verzeichnis liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber lesend. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
 
 Das nachfolgende Beispiel ist ein einfaches Werkzeug zur Anwendung einer Terminologie\index{Terminologie} auf einen Eingabetext. Die Terminologie für einen bestimmten Kontext beschreibt die dort relevanten Begriffe und gibt an, welche der jeweils möglichen Benennungen innerhalb des Kontextes zulässig sind und welche nicht. In der Regel einigt man sich für jeden Begriff auf eine zulässige Benennung und schließt mehrere andere aus. So entsteht mit der Zeit eine Terminologiedatenbank aus Begriffen, Benennungen, Definitionen und Ausschlussbegründungen, die in einem sehr einfachen Fall so aussehen könnte:
 
@@ -975,7 +978,7 @@ Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit de
 
 Oft müssen solche Tickets oder andere Vorgänge durch Personen außerhalb des Fachbereichs erstellt werden, die sich besonders schwer damit tun alle Eigenschaften in der für die Bearbeitung gewünschten Art und Weise zu setzen. Wenn hier mit einem Skript soweit unterstützt werden kann, dass am Ende die Erstellung des Vorgangs direkt über einen Link möglich ist, hat man viel gewonnen. Idealerweise kombiniert man so ein Erstellungsskript mit einem Expertensystem (siehe Abschnitt~\ref{Expertensystem}) und der angeleiteten Suche nach eventuell schon vorhandenen Tickets zum Thema.
 
-Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfszeilen der entsprechenden Felder mit Parametern verlinkt werden.
+Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfezeilen der entsprechenden Felder mit Parametern verlinkt werden.
 
 \section{Systementwicklung}
 In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode, und auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
@@ -998,7 +1001,7 @@ Auch wenn die eigentliche Arbeit an einer Entwicklung beim Product Owner beginnt
 
 Die Vorgehensweise hierfür ist relativ einfach und folgt dem Top-Down-Ansatz. Idealerweise nutzt man einen konkreten Anwendungsfall, um eine Anleitung zu erstellen, also die angeforderte Umsetzung einer entsprechenden Aufgabe. Ohne Anleitung würde man sich hierbei vermutlich an einem früheren Beispiel derselben Art orientieren und versuchen, daraus mit der Methode \emph{kopieren, einfügen, anpassen} die gewünschte neue Instanz zu erzeugen. Die Erstellung der Anleitung geht im Prinzip denselben Weg.
 
-Im ersten Schritt erzeugt man zunächst ein Skript, dass nur 1-zu-1 den Programmcode erzeugt, der das frühere Beispiel ausmacht, also ohne Verallgemeinerungen und ohne Platzhalter. Nun geht man diesen Stück für Stück durch und prüft was man für die geforderte Instanz anpassen würde, z.B kontextbezogene Benennungen, bestimmte IDs, Änderungen aufgrund anderer Anforderungen oder Voraussetzungen.
+Im ersten Schritt erzeugt man zunächst ein Skript, dass nur 1-zu-1 den Programmcode erzeugt, der das frühere Beispiel ausmacht, also ohne Verallgemeinerungen und ohne Platzhalter. Nun geht man diesen Stück für Stück durch und prüft was man für die geforderte Instanz anpassen würde, z.B.\ kontextbezogene Benennungen, bestimmte IDs, Änderungen aufgrund anderer Anforderungen oder Voraussetzungen.
 
 Die Idee ist, diese Dinge nun so zu systematisieren dass sie durch das Skript auf jeden gegebenen Anwendungsfall hin angepasst werden können, und der Programmcode den Anwendungsfall am Ende so gut wie möglich vollständig abbildet. Bezeichnungen, sowie das Vorhandensein bestimmter Voraussetzungen oder Anforderungen können abgefragt werden und benötigte IDs können nach Anleitung ermittelt oder mittels Zufallsgenerator generiert werden. Stück für Stück wird so aus einem Skript, das konkreten Programmcode ausgibt, ein Skript, dass die Situation abfragt, und für diese den passenden Programmcode ausgibt, zumindest solchen, der für den aktuellen Anwendungsfall passt. 
 
@@ -1056,7 +1059,7 @@ Die erste Abhängigkeit ist die Bezeichnung \emph{Kurs}, die hier gleich in versc
 
 Wir fragen also die Bezeichnung des Objekttyp, sowie den Namen der dazugehörenden Klasse ab und leiten die übrigen Verwendungen daraus ab.
 
-Für die Umwandlung eines Textes in eine Zeichenkette, die weder Umlaute, noch Sonderzeichen enthält gibt es in \FPZ\ den Befehl \fcmd{CamelCase}, der  die dazu notwendigen Ersetzungen durchführt. Die Zeichenkette bleibt insgesamt lesbar und kann z.B als Klassenname, Eigenschaft oder Variable im Programmcode verwendet werden.
+Für die Umwandlung eines Textes in eine Zeichenkette, die weder Umlaute, noch Sonderzeichen enthält gibt es in \FPZ\ den Befehl \fcmd{CamelCase}, der  die dazu notwendigen Ersetzungen durchführt. Die Zeichenkette bleibt insgesamt lesbar und kann z.B.\ als Klassenname, Eigenschaft oder Variable im Programmcode verwendet werden.
 
 Um es ganz schön zu haben, leiten wir auch die Variable \verb|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem \fcmd{ToLower}-Befehl in einen kleinen Buchstaben um. Hier muss man natürlich darauf achten dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
 
@@ -1331,7 +1334,7 @@ Dadurch, dass die grundlegende Design-Entscheidung fest im Skript hinterlegt ist
 
 Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für solche Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert, die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollten nicht dem Zufall überlassen werden.
 
-Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise auf allgemein festgelegte Regeln könnten im Skript als Hilfszeilen bei den damit verbundenen Fragen und Texteingaben ergänzt werden.
+Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise auf allgemein festgelegte Regeln könnten im Skript als Hilfezeilen bei den damit verbundenen Fragen und Texteingaben ergänzt werden.
 
 Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger zum Umsetzen ist und manchmal auch noch weitere Fragen nach sich zieht. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte bei solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
 
@@ -1412,7 +1415,7 @@ Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kont
         @Wirkungen >> Protokollierung von Nutzerdaten: Nein
 \end{verbatim}
 
-Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt Erweiterungsmaßnahmen beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B in dem entsprechende Anforderungen ergänzt werden. Der Abschnitt Wirkungen dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweislich sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
+Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt Erweiterungsmaßnahmen beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B.\ in dem entsprechende Anforderungen ergänzt werden. Der Abschnitt Wirkungen dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweislich sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
 
 Wie schon erwähnt, kann man solche Protokolle an vielen Stellen verankern, und natürlich gibt es auf technischer Ebene sehr viele Dinge, die vom Entwickler berücksichtigt werden müssen.
 
@@ -1547,9 +1550,9 @@ Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das
 \subsection{Meeting-Vorbereitung}
 Auch das nächste Beispiel verwendet Befehle zur Abfrage der Systemzeit um eine Ausgabe zu erzeugen, in diesem Fall eine Überschrift für das Protokoll des nächsten jour fixe\index{jour fixe}, der an jedem dritten Dienstag stattfindet.
 
-Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
+Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-Bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
 
-Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-bereich verlinken könnte.
+Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-Bereich verlinken könnte.
 
 \Beispiel{Jour fixe}
 \begin{verbatim}
@@ -1592,9 +1595,460 @@ In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Diens
 
 Das gefundene Datum wird dann zusammen mit der laufenden Nummer in die Überschrift für die Protokollseite eingebaut und als Codeblock ausgegeben, so dass sie direkt in die Zwischenablage kopiert werden kann.
 
-Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der Terminregeln, die zusätzliche Ausgabe der letzten vergangenen oder weiterer zukünftigen Termine oder durch Ausgabe eines Such-Links, ähnlich wie in Beispiel~\ref{BspSuchlink}, der direkt nach der entsprechenden Seite im Wiki sucht.
+Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der Terminregeln, die zusätzliche Ausgabe der letzten vergangenen oder weiterer zukünftigen Termine, durch Ausgabe eines Such-Links, ähnlich wie in Beispiel~\ref{BspSuchlink}, der direkt nach der entsprechenden Seite im Wiki sucht, oder durch die Ausgabe einer Standard-Agenda, die man auf die neu erstellte Seite übernehmen kann.
 
-Umso einfacher es ist, einen spontanen Gedanken auf einer entsprechenden Seite zu notieren, umso eher wird dies auch praktiziert. Oft sind es die kleinen Hürden, die nicht genommen werden, und wegen denen am Ende Ideen nicht weiterverfolgt werden oder Dinge unerledigt bleiben.
+Umso einfacher Dinge sind, umso eher und öfter wird gebraucht davon gemacht. Meist sind es die kleinen Hürden, die nicht genommen werden.
+
+\subsection{Asset-Dokumentation}
+In einem Softwareunternehmen sollten verschiedene Arten von Assets\index{Assets} dokumentiert werden, um die Ressourcen, das geistige Eigentum und die Infrastruktur des Unternehmens zu verwalten und zu schützen. Die Dokumentation sollte gleichermaßen einen Überblick über die vorhandenen Assets geben, als auch die damit verbundenen Aufgaben beschreiben. Je nach Art des Assets sind unterschiedliche Eigenschaften relevant, die jedoch insgesamt in einheitlicher Form dokumentiert werden sollten.
+
+Sofern dafür nicht eine spezialisierte Asset-Datenbank verwendet wird, ist das Firmenwiki der richtige Ort, um diese Informationen zu verwalten. \FPZ\ kann dabei helfen, die je nach Art benötigten Detailinformationen interaktiv abzufragen und daraus das Datenblatt und die Liste der regelmäßigen oder aktuell noch ausstehenden Aufgaben zu erstellen.
+
+Das dazugehörende Beispiel beginnt mit der Abfrage der allgemeinen Rahmendaten des Assets, zu dem Bezeichnung, Verwendungszweck und vor allem die Art gehört, von der die Menge der weiteren Eigenschaften abhängt. Das am Ende erstellte Dokument wird Teil des internen Managementsystems\index{internes Managementsystems} (IMS\index{IMS}) und sollte demzufolge auch einen Dokumenteigentümer haben, der das Dokument regelmäßig sichtet und aktuell hält.
+
+\Beispiel{Asset-Dokumentation (Teil 1)}\label{BspAsset1}
+\begin{verbatim}
+~Input Bez: Bezeichnung des neuen Assets
+?Asset: Welche Art von Asset soll dokumentiert werden?        
+    #: Drittanbieterkomponente
+    #: Dienst (produktiv)
+    #: Dienst (intern)
+        ~Set ArtAsset=Dienst (intern)
+        ~Set WirdProduktivEingesetzt=Nein        
+        ~Set HatLizenz=Ja
+        ~Set HatAufrufURL=Ja
+        ~Set HatLokaleAdministratoren=Ja
+        ~Set HatLokaleInstallation=Nein
+        ~Set IstEinCloudDienst=Ja
+        ~Set IstInformationsquelle=Nein
+        ~Set IstEinGeraet=Nein
+        ~Set SetztFachwissenVoraus=Ja
+    #: Server (produktiv)
+    #: Server (intern)    
+    #: Datenblatt
+    #: Software
+    #: Anleitung/Beschreibung
+    #: Wissensdokumentation
+    #: Manueller Prozess
+    #: Mobiles Endgerät
+
+~Input DEig: Dokumenteigentümer (Mitarbeiterkürzel)
+~Input VZweck: Wozu wird dass Asset verwendet?
+~SetTitle Asset "$Bez"
+@Datenblatt >>* Dokumenteigentümer: $DEig
+@Offboarding >> Dokumenteigentümer prüfen
+@Datenblatt >>* Art: $ArtAsset
+@Datenblatt >>* Verwendungszweck
+    >* $VZweck
+@Jährl. Aufgaben >> Verwendung/Bedarf prüfen
+@Außerbetriebenahme >> Asset-Dokumentation archivieren
+~Execute
+\end{verbatim}
+
+Je nach Art gibt es bestimmte Eigenschaften oder Aspekte, die für die Dokumentation relevant sind oder sein können, und die abgefragt werden müssen. Die für eine Art relevanten Eigenschaften werden über entsprechend benannte Variablen als Schalter\index{Schalter} gesetzt, die im späteren Verlauf abgefragt werden. Auf diese Weise muss jede Eigenschaft oder jeder Aspekt nur einmalig im Skript implementiert werden und die Reihenfolge bleibt einheitlich.
+
+Im Beispiel oben ist nur der Fall des intern genutzten Dienstes ausimplementiert. Für alle anderen Typen würde man entsprechende Schalter setzen, z.B.\ für den Typ \emph{Software} die Eigenschaft \verb|HatLokaleInstallation=Ja|.
+
+Die Implementierung der einzelnen Aspekte sieht prinzipiell so aus, dass man die dafür benötigten Eigenschaften abfragt und im Datenblatt auflistet. Hier können wieder untergeordnete Aspekte eine Rolle spielen, wie z.B.\ verschiedene Arten von Lizenzen, die man ebenfalls mit Schaltern abbilden kann. Für Assets mit Lizenz sind im Beispiel schon mal zwei Arten hinterlegt:
+
+\Beispiel{Asset-Dokumentation (Teil 2)}\label{BspAsset2}
+\begin{verbatim}
+~If $HatLizenz==Ja    
+    ?Liz: Welche Art von Lizenz liegt vor?
+        #: Frei, kommerziell nutzbar
+            ~Set ArtLizenz=Frei, kommerziell nutzbar
+            ~Set KommerziellNutzbar=Ja
+            ~Set Benutzerbezogen=Nein
+            ~Set Kostenpflichtig=Nein
+        #: Abo-Lizenz, benutzerbezogen
+            ~Set ArtLizenz=Abo-Lizenz, benutzerbezogen
+            ~Set KommerziellNutzbar=Ja
+            ~Set Benutzerbezogen=Ja
+            ~Set Kostenpflichtig=Ja
+    @Datenblatt >>* Lizenz
+        >* Art: $ArtLizenz
+        >* Kommerziell nutzbar: $KommerziellNutzbar
+        >* Benutzerbezogen: $Benutzerbezogen
+        >* Kostenpflichtig: $Kostenpflichtig
+    ~If $Benutzerbezogen==Ja
+        @Jährl. Aufgaben >> Lizenzumfang abgleichen
+        @Offboarding >> Lizenzumfang anpassen
+    ~If $Kostenpflichtig==Ja
+        @Jährl. Aufgaben >> Preis-Leistung prüfen
+        @Außerbetriebenahme >> Lizenz kündigen
+        ~Set ALGegenstand=Lizenzverwaltung
+        ~Set ALKey=LIV
+        ~GoSub AssetLink
+\end{verbatim}
+
+Die meisten Informationen landen im Datenblatt. Bei benutzerbezogenen und kostenpflichtigen Lizenzen leiten sich zusätzlich Aufgaben für die jährliche Überprüfung, das Offboarding und die Außerbetriebnahme ab. So kann z.B.\ eine Lizenz zurückgegeben oder stillgelegt werden, wenn der nutzende die Mitarbeiter das Unternehmen verlässt. Der Funktionsaufruf \verb|AssetLink| am Ende wird in diesem Skript noch häufiger verwendet. Er ruft die folgende Funktion auf:
+
+\Beispiel{Asset-Dokumentation (Teil 3)}
+\begin{verbatim}
+~DefineSub AssetLink
+    ?QAL$ALKey: Ist ein Asset für "$ALGegenstand" vorhanden?
+    #j: Ja
+        ~Input AL$ALKey: Link auf Asset für "$ALGegenstand"
+        @Datenblatt > $ALGegenstand:
+        ~AddLink $AL$ALKey| als Asset erfasst
+    #n: Nein
+        @Datenblatt > $ALGegenstand:
+        @ToDos >> Asset für $ALGegenstand erfassen
+~Return
+\end{verbatim}
+
+Diese fragt eine bestimmte variable Eigenschaft des Assets ab, die vorzugsweise wieder als eigenes Asset angelegt sein sollte, so dass mittels Link darauf verwiesen werden kann. In diesem Fall ist es die Lizenzverwaltung, also die Information über die Anzahl, Art und Zuteilung der vorhandenen, kostenpflichtigen Lizenzen. Um die Komplexität überschaubar zu halten, ist es sinnvoll, möglichst viele Teilsysteme als eigene Assets zu erfassen und jeweils darauf zu verweisen. Auf diese Weise spart man sich die verschachtelte Abfrage der damit verbundenen Eigenschaften und Aufgaben und bekommt eine sehr homogene Dokumentation.
+
+Wenn man mit einer derartigen Dokumentation beginnt, muss man davon ausgehen, dass einige der abgefragten Dinge zunächst nicht vorhanden sind und der Ist-Zustand des Assets nicht alle Anforderungen erfüllt. Entsprechend sollte man diese Möglichkeit in den Auswahlabfragen grundsätzlich berücksichtigen. Wenn dann auf diese Weise festgestellt wird, dass wichtige Dinge fehlen, kann daraus eine Aufgabe in einem ToDo-Abschnitt abgeleitet werden. In gleicher Weise leiten sich aus bestimmten Eigenschaften oder Antworten Aufgaben ab, die regelmäßig, z.B.\ jährlich im Zusammenhang mit dem Asset durchgeführt werden sollten, und solche, die dann notwendig werden, wenn die mit dem Asset verbundenen Mitarbeiter das Unternehmen verlassen. Am Ende gibt es auch noch Aufgaben, die bei der Außerbetriebnahme des Assets durchzuführen sind, wie die Archivierung der Asset-Dokumentation selbst.
+
+Für die restlichen oben gesetzten Schalter könnte die Erfassung in sehr vereinfachter Form so aussehen:
+
+\Beispiel{Asset-Dokumentation (Teil 4)}\label{BspAsset4}
+\begin{verbatim}
+~If $HatAufrufURL==Ja
+    ~Input AufrufURL: Unter welcher URL wird der Dienst aufgerufen?
+    @Datenblatt >>* Aufruf
+    >* URL:
+    ~AddLink $AufrufURL | $AufrufURL
+    @Jährl. Aufgaben >> Verfügbarkeit prüfen
+~If $HatLokaleAdministratoren==Ja
+    ~Input Admins: Mitarbeiter mit Admin-Zugang und -kenntnissen:
+    @Datenblatt >>* Administration
+        > Mitarbeiter mit Zugang und Wissen: $Admins
+    ~Set ALGegenstand=Admin-Wissen
+    ~Set ALKey=ADW
+    ~GoSub AssetLink
+    @Offboarding >> Admin-Zugang übergeben
+    ~Set ALGegenstand=Admin-Notfallzugang
+    ~Set ALKey=ANZ
+    ~GoSub AssetLink
+~If $IstEinCloudDienst==Ja
+    ~Input AnbCloudName: Anbieter des Cloud-Dienstes
+    ~Input AnbCloudWeb: Internetseite Anbieter
+    @Datenblatt >>* Anbieter
+    >* Name: $AnbCloudName
+    >* Webseite:
+    ~AddLink $AnbCloudWeb| $AnbCloudWeb
+    @Jährl. Aufgaben >> Weitere Verfügbarkeit prüfen
+    @Datenblatt >>* Risiko: Wegfall des Dienstes
+    ~Set ALGegenstand=Wegfall-Notfallplan
+    ~Set ALKey=WNP
+    ~GoSub AssetLink
+    @Außerbetriebenahme >> Konfigurationsdaten sichern
+~If $SetztFachwissenVoraus==Ja
+    ~Set ALGegenstand=Nutzungswissen
+    ~Set ALKey=WFN
+    ~GoSub AssetLink
+
+~MoveSection Jährl. Aufgaben->Jährliche Aufgaben
+~MoveSection Offboarding->Offboarding-Aufgaben
+~MoveSection Außerbetriebenahme->Aufgaben bei Außerbetriebenahme
+~MoveSection ToDos->Aktuelle ToDos
+\end{verbatim}
+
+Die Menge der abgefragten Informationen sollte sich primär daran orientieren, was in Ausnahmesituationen benötigt wird, um den Kernbetrieb am Laufen zu halten. Auch das Ausfallrisiko auf Mitarbeiterseite ist nicht zu unterschätzen. Mitarbeiter, die zentrales Wissen oder Zugänge zu essentiellen Diensten haben, können verunfallen und für längere Zeit vollständig ausfallen. Insofern sollte immer darauf geachtet werden, das relevantes Wissen festgehalten wird und dass essentielle Zugänge notfallmäßig hinterlegt werden.
+
+Die vier \fcmd{MoveSection}-Befehle am Ende stellen sicher, dass die einzelnen Abschnitte immer in der gleichen Reihenfolge aufgelistet werden. Zusätzlich wird dabei die Abschnittsüberschrift komplett ausgeschrieben.
+
+Das Ergebnisdokument kann mit Überschrift und allen Abschnitten auf eine eigene Wiki-Seite innerhalb der Asset-Dokumentation übernommen werden. Der vorzugsweise nach Art gegliederte Unterbereich innerhalb der Dokumentation und die genaue Vorgehensweise könnten hierbei zusätzlich noch in einem eigenen Anleitungsabschnitt beschrieben werden. Ebenso sollte man die Abfragen und Texteingaben im Skript noch durch zusätzliche Hilfezeilen selbsterklärender gestalten, so dass man am Ende ein Skript bekommt, mit dem die jetzt schon für das entsprechende Asset verantwortlichen Mitarbeitern direkt in die Lage versetzt werden, diese in der gewünschten Form zu dokumentieren.
+
+Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sichten und auf Notwendigkeit zu prüfen. Nicht selten werden Vorgehensweisen oder Softwareprodukte eingeführt, die sich dann irgendwann von selbst ausschleichen, ohne dass eine Außerbetriebnahme stattgefunden hat, was ein schlechter Zustand ist, vor allem, wenn weiterhin Geld dafür bezahlt wird. Die jährliche Sichtung der Assets, zusammen mit den notwendigen Wartungsaufgaben ist wichtig, um z.B.\ rechtzeitig darüber informiert zu sein wenn, etwa aufgrund einer Abkündigung Nutzungseinschränkungen absehbar werden.
+
+Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
+
+\section{Mitgestaltung}
+Wie schon mehrfach beschrieben, sollte man Skripte nicht einfach nur als Programmcode sehen, der durch die Umgebung ausgeführt werden kann und mit dem sich bestimmte Aufgaben einfach lösen lassen, sondern man sollte Skripte vor allem auch als ein Medium betrachten, das es ermöglicht, fachliches Wissen so zu hinterlegen, dass es bei der Anwendung des Skriptes automatisch berücksichtigt wird. Es ist nicht notwendig, dass der Anwender weiß, wie man die Aufgabe richtig macht, so lange ihm das Skript keine Möglichkeit gibt, sie falsch zu machen.
+
+Ausgehen davon sollte die Zielsetzung sein, möglichst viel in den Köpfen vorhandenes Wissen in so eine Form zu bringen. In diesem Abschnitt zeigen wir Beispiele, wie das möglich ist, auch ohne dass man jedem Mitarbeiter die \FPZb-Programmierung ans Herz legen muss.
+
+\subsection{Angeleitete Skript-Erweiterungen}
+Bei Auswahlabfragen hat man die Auswahl zwischen verschiedenen Werten. Was aber kann der Anwender machen, wenn der von ihm gewünschte Wert nicht in der Liste aufgeführt ist? Für diesem Fall könnte man einen entsprechenden zusätzlichen Auswahlwert \emph{Nicht in Liste}\index{nicht in Liste} ergänzen, und versuchen, diesen neuen Fall so gut wie möglich im Skript zu behandeln. 
+
+Meist werden in Abhängigkeit von Auswahlwerten nur bestimmte Variablen oder Schalter gesetzt, die dann in einem anderen, schon vorhandenen Teil des Skriptes, weiterverarbeitet werden. In diesem Fall kann man die entsprechenden Werte für die zu setzenden Variablen direkt abfragen und hat so den allgemeinen Fall behandelt. Schöner wäre es jedoch, wenn die verschiedenen Eingaben, die eventuell mit einigem Aufwand zusammengetragen werden müssen, für den nächsten Anwender direkt im Skript als auswählbarer Wert eingebaut wären.
+
+\FPZ\ kann selbst keine Änderung an den Skripten durchführen, aber es kann sehr gut dazu anleiten.
+
+Betrachten wir die Fragestellung, unter welcher Lizenz ein Softwareprodukt bereitgestellt wird, um daraus bestimmte Eigenschaften abzuleiten, wie die Bezeichnung, eine Link auf eine Beschreibung der Lizenz, die Information ob diese Lizenz den Einsatz im kommerziellen Umfeld erlaubt und ob sie kostenpflichtig ist.
+
+Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, und weitere Lizenzen dann hinzuzunehmen, wenn sie tatsächlich benötigt werden. Diese Abfrage könnte man wie folgt aufbauen:
+
+\Beispiel{Lizenzabfrage}
+\begin{verbatim}
+?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
+    #: MIT-Lizenz
+        ~Set BezeichnungLizenz=MIT-Lizenz
+        ~Set LinkAufLizenzbeschreibung=
+            __https://de.wikipedia.org/wiki/MIT-Lizenz
+        ~Set ErlaubtKomVerw=Ja
+        ~Set IstKostenpflichtig=Nein
+    // Oberhalb von hier neue Einträge einfügen
+    #x: Nicht in Liste
+        @Skript-Erweiterung >>_ Es wird empfohlen, das Skript
+            __ um die nicht vorhandenen Einträge zu erweitern. 
+            __ Gehe dazu wie folgt vor:
+        >> Öffne die Skriptdatei in einem Texteditor:
+            >|$ScriptFilePath
+        >> Füge vor Zeile $LineNumber-7 folgenden Codeblock ein:
+            ~Input ILizenz: Unter welcher Lizenz wird die 
+                __ Software bereitgestellt?
+            >|$Chr(9)#: $ILizenz
+            ~Input IBez: Bezeichnung Lizenz
+            >|$Chr(9)$Chr(9)~Set BezeichnungLizenz=$IBez
+            ~Set BezeichnungLizenz=$IBez
+            ~Input ILink: Link auf Lizenzbeschreibung
+            >|$Chr(9)$Chr(9)~Set LinkAufLizenzbeschreibung=$ILink
+            ~Set LinkAufLizenzbeschreibung=$ILink
+            ?QKom: Erlaubt kommerzielle Verwendung?
+                #j: Ja
+                    >|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Ja
+                    ~Set ErlaubtKomVerw=Ja
+                #n: Nein
+                    >|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Nein
+                    ~Set ErlaubtKomVerw=Nein
+            ?QKost: Ist kostenpflichtig?
+                #j: Ja
+                    >|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Ja
+                    ~Set IstKostenpflichtig=Ja
+                #n: Nein
+                    >|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Nein
+                    ~Set IstKostenpflichtig=Nein
+        >> Speichere die Datei ab.
+@Ausgabe >>* Die Software wird unter der Lizenz "$BezeichnungLizenz"        
+        __ bereitgestellt.
+    >* Link: 
+    ~AddLink $LinkAufLizenzbeschreibung | $LinkAufLizenzbeschreibung
+    >* Kommerzielle Verwendung möglich? - $ErlaubtKomVerw
+    >* Kostenpflichtig? - $IstKostenpflichtig
+\end{verbatim}
+
+Die Auswahl von \emph{Nicht in Liste} fragt die benötigen Werte ab und setzt die Variablen in der gleichen Weise, wie es die anderen Einträge machen, so dass das Skript seine Aufgabe erfüllen kann, z.B.\ die Dokumentation der abgefragten Lizenz mit den ganzen Eigenschaften.
+
+Es passiert aber noch mehr. Als Teil der Ausgabe wird in einem eigenen Abschnitt \emph{Skript-Erweiterung}\index{Skript-Erweiterung} eine Schritt-für-Schritt-Anleitung gegeben, die beschreibt, wie man die neu erfasste Lizenz permanent in das Skript einbauen kann. Hierbei wird beschrieben, wo man die Skript-Datei findet, und welche Zeilen man wo einfügen muss. Der einzufügende Codeblock wird vollständig ausgegeben und kann direkt in die Zwischenablage übernommen werden. Die Erweiterung kann damit ohne jede Kenntnis der \FPZb-Programmiersprache umgesetzt werden.
+
+Für die Zusammenstellung der benötigten Informationen wird zum einen die Variable \cidxvar{ScriptFilePath} verwendet, die den Dateipfad des aktuellen Skriptes ausgibt. Dieser ist aus Sicht des Servers, auf dem \FPZ\ läuft und muss gegebenenfalls gegen einen ausgeschriebenen Pfad ausgetauscht werden, wenn der Zugriff auf die Datei für den Anwender über einen anderen Pfad erfolgen soll. Die Zeilennummer\index{Zeilennummer} wird mit Hilfe der Variablen \cidxvar{LineNumber} abgefragt, die stets die Nummer der entsprechenden Zeile zurückgibt. Möchte man sich auf eine Zeile $n$ Zeilen darüber beziehen, kann für diese Variable direkt ein Korrekturwert von $-n$ angegeben werden.
+
+Das Tabulatorzeichen\index{Tabulatorzeichen} für die Einrückung des auszugebenden Skriptcodes wird über die Sequenz \cidxvar{Chr(9)} angegeben, da unmaskierte Tabulatorzeichen beim Einlesen von Skripten durch vier Leerzeichen ersetzt werden.
+
+\subsection{Metaskripting}
+Jetzt kann man zu Recht bemängeln, dass der Scriptcode, der für die \emph{Nicht in Liste}-Auswahlmöglichkeit erstellt werden muss, selbst sehr komplex und relativ umfangreich ist. Die Hürde eine solche Möglichkeit zu schaffen scheint damit recht hoch zu sein, und selbst wenn man sich dafür bei einer Vorlage bedienen kann, sind immer noch einige Anpassungen notwendig, da sich die abzufragenden Variablen ja von Fall zu Fall unterscheiden.
+
+Die Lösung für dieses Problem ist, man ahnt es vermutlich schon, ist ein \FPZb-Skript, das einem diese Arbeit abnimmt.
+
+Das sogenannte Metaskripting\index{Metaskripting}, also das Erstellen von Skriptcode der neuen Skriptcode erzeugt, ist ein mächtiges Instrument und lässt sich an vielen Stellen einsetzen, sogar über verschiedene Programmiersprachen hinweg. Es gibt Beispiele für produktiv eingesetzte \FPZb-Skripte, die SQL-Anweisungen erzeugen, der wiederum C\#-Code ausgegeben.
+
+Für unseren Anwendungsfall der angeleiteten Skript-Erweiterung benötigen wir folgende Eingaben: die Fragestellung, einen Schlüssel, eine Liste von Werten, die entweder als Texteingabe oder Schalter abgefragt werden sollen, und die Information in welcher Tiefe der Code eingerückt sein soll.
+
+Die Abfrage erfolgt entsprechend mit vier Texteingaben, wobei die Menge der abzufragenden Werte über eine kommagetrennte Aufzählung gemacht wird, wobei die Unterscheidung zwischen Textangaben und Schaltern durch die Angabe eines Fragezeichens bei jedem Wert getroffen wird. Die Einrückung wird durch eine Sequenz von T-Zeichen angegeben, wobei später jedes T durch Tabulatorzeichen ersetzt wird.
+
+Das Ergebnis sieht wie folgt aus:
+
+\Beispiel{Meta-Erweiterung}
+\begin{verbatim}
+~Input Frage: Welche Frage soll ausgegeben werden?
+~Input Key: Schlüssel für die Frage
+~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
+~AddHelpLine Werte mit "?" werden als Schalter abgebildet.
+~Input Tabs: Einrückung (T pro Tab, @ sonst)
+~CamelCase CKey=$Key
+~Set T=$Chr(9)
+~Set ST=$Chr(36)Chr(36)Chr(9)
+~Replace EE=$Tabs|@->
+~Replace FF=$EE|T->$Chr(36)Chr(36)Chr(9)
+~Replace EE=$EE|T->$Chr(9)
+@Erweiterung >>* Auswahlabfrage
+>|$EE?$CKey: $Frage
+>|$EE$T// Oberhalb von hier neue Einträge einfügen
+>|$EE$T#x: Nicht in Liste
+>|$EE$T$T@Skript-Erweiterung >>_ Es wird empfohlen, das
+    __ Skript um die nicht vorhandenen Einträge zu erweitern.
+    __ Gehe dazu wie folgt vor:
+>|$EE$T$T>> Öffne die Skriptdatei in einem Texteditor:
+>|$EE$T$T$T>|$Chr(36)ScriptFilePath
+>|$EE$T$T>> Füge vor Zeile $Chr(36)LineNumber-5 folgenden
+    __ Codeblock ein:
+>|$EE$T$T$T~Input I$CKey: $Frage
+>|$EE$T$T$T>|$FF$ST#: $I$CKey
+~If $WListe!=@
+    ~Split Werte=$WListe|,
+    ~ForEach widx in Werte
+        ~CamelCase vidx=$widx
+        ~If $widx~?
+            @Erweiterung >|$EE$T$T$T?Q$vidx: $widx
+            >|$EE$T$T$T$T#j: Ja
+            >|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Ja
+            >|$EE$T$T$T$T$T~Set $vidx=Ja
+            >|$EE$T$T$T$T#n: Nein
+            >|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Nein
+            >|$EE$T$T$T$T$T~Set $vidx=Nein
+            ~If $ErsterSchalter!=Ja
+                @IfBlocks >>* If-Abfragen für die Schalter
+                ~Set ErsterSchalter=Ja
+            @IfBlocks >|$EE~If $$vidx==Ja
+            >|$EE$T//$widx
+        ~Else            
+            @Erweiterung >|$EE$T$T$T~Input I$vidx: $widx
+            >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$vidx
+            >|$EE$T$T$T~Set $vidx=$I$vidx
+    ~Loop
+@Erweiterung >|$EE$T$T>> Speichere die Datei ab.
+~MoveSection IfBlocks->Erweiterung
+\end{verbatim}
+
+Um den Code schmal zu halten, werden am Anfang die Hilfsvariablen \verb|T| und \verb|ST| mit den häufig benötigten Sequenzen belegt. Damit die Tabulatorzeichen im innersten Code bis zum letztendlichen Einfügen in das Zielskript noch maskiert bleiben, werden sie durch mehrfache Ersetzung des \verb|$|-Zeichens der \cidxvar{Chr(9)}-Sequenz durch \cidxvar{Chr(36)} zusätzlich markiert.
+In gleicher Weise werden auch die Variablen \cidxvar{ScriptFilePath} und \cidxvar{LineNumber} durch die \cidxvar{Chr(36)}-Sequenz maskiert, so dass diese erst im Zielskript durch die entsprechenden Werte ersetzt werden und nicht bereits in der Ausgabe dieses Skriptes.
+
+Für die Schalter, also die Werte, die mit einem Fragezeichen gekennzeichnet wurden, werden in einem zweiten Codeblock noch If-Abfragen erstellt. Damit kann man ähnlich wie ein Beispiel~\ref{BspAsset1} bis \ref{BspAsset4} für jeden Schalter individuellen Code ausführen, wenn dieser gesetzt ist.
+
+Metaskripting ist ohne Frage anspruchsvoll, aber dafür ist der Nutzen aufgrund der Multiplikator-Wirkung recht groß, und wenn ein solches Skript am Ende dazu führt, dass alle Mitarbeiter in der Lage sind, die produktiv eingesetzten Skripte permanent zu erweitern und ihr Wissen dort einzupflegen, dann ist das den Aufwand auf jeden Fall wert.
+
+Auch hier verhält es sich ähnlich wie bei der Entwicklung von Anwendungscode. Wird etwas nur einmal benötigt, kann es der Spezialist machen. Wird etwas mehrfach benötigt, kann der Spezialist passendes Werkzeug dafür anfertigen, mit dem die Aufgabe einfacher umgesetzt werden kann.
+
+\subsection{Wissensdokumentation}
+Die Dokumentation von Wissen oder auch die Verwaltung von Wissen ist eine der wichtigsten Aufgaben in einem Unternehmen, das seine Wertschöpfung in erster Linie aus dem Wissen der Mitarbeiter generiert.
+
+Fast alle Abläufe, die im Arbeitsalltag stattfinden, setzen Wissen voraus, ebenso die meisten Anwendungen und Werkzeuge, die dabei eingesetzt werden.
+
+Dort, wo dieses Wissen jeden Tag, oder zumindest einmal in der Woche benötigt wird, wird es sich von selbst verfestigen, so dass man hier keinen Aufwand betreiben muss. Anders sieht es aus bei Wissen, dass nur gelegentlich benötigt wird, und bei dem zusätzlich gar nicht offensichtlich ist, ob es hier etwas zu wissen gibt oder nicht. Wenn dieses Wissen fehlt, laufen Dinge schief, was im besten Fall nur Mehraufwand bedeutet und im schlimmsten Fall zu problematischen Fehler führen kann.
+
+Wer nicht weiß, wie eine bestimmte Art von Skript erstellt wird, wird keines erstellen können, wer nicht weiß, welches Risiko eine bestimmte Entwicklung mit sich bringt, wird nicht darauf achten können und die Eintrittswahrscheinlichkeit erhöhen, und wer nicht weiß, welche Richtlinien im Umgang mit Kundendaten zu beachten sind, wird möglicherweise einen Datenschutzverstoß verursachen.
+
+Wie schon mehrfach beschrieben, lassen sich mit Hilfe von Skripten gute Anleitungen und Hilfsmittel erstellen, die das wesentliche Detailwissen über bestimmte Arbeitsschritte enthalten und so den einzelnen Mitarbeiter auch wissensmäßig entlasten.
+
+Auch das Grundwissen zu allgemeinen Themengebieten, wie C\#-Programmierung oder Kenntnis der SQL-Syntax muss nicht unbedingt firmenspezifisch verwaltet werden, da es ja eine generelle Vorstellung davon gibt, was es bedeutet, dieses Wissen zu haben, und man es ggf.\ mit zahlreichen Schulungen oder Tutorials abgleichen und auffrischen kann.
+
+Generell sollte das vorausgesetzte Wissen auf die Punkte beschränkt werden, die unternehmensspezifisch sind, die einem helfen, die richtigen Entscheidungen zu treffen, Fehler zu vermeiden und das für bestimmte Arbeitsschritte benötigte Detailwissen zielsicher aufzufinden. Das ist immer noch eine ganze Menge, und für jede spezielle Aufgabe und für jeden Verantwortungsbereich gibt es eigenes Wissen, was benötigt wird.
+
+Wie aber verwaltet man dieses Wissen wie erfährt ein neuer Mitarbeiter, was er alles wissen muss? Wie lässt sich überprüfen ob ein Mitarbeiter alles weiß, was er wissen sollte? Die Verantwortung über diese Punkte liegt in der Regel beim direkten Vorgesetzten, der aber auch nicht in den einzelnen Menschen hineinschauen kann. Meist behilft man sich damit die zwingend einzuhaltenden Richtlinien schriftlich festzuhalten und für das restliche Wissen grobe Themengebiete aufzulisten, die zur Orientierung verwendet werden können. 
+
+Ein im Gegensatz dazu sehr expliziter Ansatz für die Wissensverwaltung\index{Wissensverwaltung} ist die Auflistung von Wissen in Form von Reflexionsaussagen\index{Reflexionsaussagen}. Eine Reflektionsaussage ist dabei eine Aussage in der Form \emph{Ich weiß, \dots} formuliert, z.B.\ \emph{Ich wie man in einem PowerShell-Skript auf Befehlszeilenargumente zugreift}.
+
+Die Aussage dient, wie die Bezeichnung schon sagt, dazu das eigene Wissen zu reflektieren, also darüber nachzudenken ob man diese Aussage mit Ja oder mit Nein beantworten kann. Der große Vorteil bei dieser Form der Erfassung liegt darin, dass es sehr einfach ist, Wissen in dieser Form zu erfassen, da man ja nicht den Inhalt des Wissens erfassen muss, sondern nur einen Verweis darauf. Das ist sogar dann möglich wenn man die Aussage für sich selbst gar nicht mit Ja beantworten kann. Darüberhinaus erlaubt es die Formulierung, das abgefragte Wissen sehr genau abzugrenzen, so dass man in der Regel klar verstehen kann, was gemeint ist.
+
+Genau diese Einfachheit ist wichtig, um mit möglichst wenig Aufwand möglichst alles an Wissen zu dokumentieren, das man für wichtig und relevant hält. Vor allem in dem Moment, wo man feststellt, das aufgrund fehlenden Wissens etwas schief gelaufen ist, sollte einen nichts davon abhalten, schnell dafür sorgen, dass dieses fehlende Wissen in die Dokumentation aufgenommen wird.
+
+Diese Praktik lässt sich recht gut mit \FPZ\ anwenden. Die Listen mit den Reflektionsaussagen zu einzelnen Wissensgebieten lassen sich einfach als Textdateien anlegen und in einem Ordner speichern. In unserem Beispiel gibt es einen Ordner \emph{.Wissensgebiete}, der wiederum weitere Ordner für bestimmte Wissensgebiete enthält, hier \emph{Wissen Flowprotocol2} und \emph{Wissen Softwareentwicklung}. Durch die Markierung des Ordners \emph{.Wissensgebiete} mit einem Punkt am Anfang, wird dieser nicht Skript-Unterordner im Menübaum von \FPZ\ aufgelistet.
+
+Im Ordner \emph{Wissen für FlowProtocol2} sind die beiden Textdateien \emph{Basisbefehle.txt} und \emph{Programmierung.txt} hinterlegt, die wie die Skripte auch, mit einem einfachen Texteditor erstellt wurden. Diese haben folgenden Inhalt:
+
+\Beispiel{Basisbefehle.txt}
+\begin{verbatim}
+[Ausgabe]
+Ich weiß, wie man eine Ausgabe erzeugt.
+Ich weiß, wie man eine zweistufige Ausgabe erzeugt.
+Ich weiß, wie man die Ausgabe in Abschnitte gliedert.
+Ich weiß, wie man die Nummerierung der Aufzählung steuert.
+Ich weiß, wie man einen Codeblock erzeugt.
+Ich weiß, wie man einen Link auf eine Internetseite erzeugt.
+Ich weiß, wie man eine Auswahlabfrage macht.
+
+[Eingabe]
+Ich weiß, wie man eine Texteingabe abfragt.
+Ich weiß, wie man einen eingegebenen Text wieder ausgibt.
+Ich weiß, wie man Auswahlabfragen ineinander verschachtelt.
+\end{verbatim}
+
+\Beispiel{Programmierung.txt}
+\begin{verbatim}
+[Strukturen]
+Ich weiß, wie eine If-Abfrage aufgebaut ist. 
+Ich weiß, wie eine Bedingung aufgebaut ist.
+Ich weiß, wie man eine Von-1-bis-10-Schleife implementiert.
+Ich weiß, wie man eine Liste von Elementen durchläuft.
+Ich weiß, wie man eine Funktion definiert und aufruft.
+Ich weiß, wie man eine Sprungmarke definiert und anspringt.
+
+[Verarbeitung]
+Ich weiß, wie man Variablen setzt und verwendet.
+Ich weiß, wie man Texte ersetzen kann.
+Ich weiß, wie man reguläre Ausdrücke verwenden kann.
+Ich weiß, wie man Berechnungen durchführen kann.
+\end{verbatim}
+
+Die Begriffe in den eckigen Klammern dienen zur thematischen Gliederung und werden ebenfalls beim Auslesen berücksichtigt.
+
+Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
+
+\Beispiel{Wissensreflektion}
+\begin{verbatim}
+~ListDirectories wdir = .Wissensgebiete; Pattern=Wissen *
+~DynamicOptionGroup WGeb:wdir;Wähle das Wissensgebiet
+~Execute
+~ListFiles wdats = .Wissensgebiete|$wdir($WGeb); Pattern=*.txt
+~Set idx=0
+~ForEach wdat in wdats
+    ~AddTo idx+=1
+    ~Replace wpak($idx)=$wdat|.txt->
+~Loop
+~If $idx==0
+    @Hinweis >>_ Im Ordner "Wissensgebiete\$wdir($WGeb)"
+    __ sind keine Dateien vorhanden. Die Ausführung
+    __ wird abgebrochen.
+    ~End
+~DynamicOptionGroup WPak:wpak;Wähle das Wissenspaket
+~Execute
+~Set WPfad=.Wissensgebiete|$wdir($WGeb)|$wdats($WPak)
+?A: Was möchtest du tun?
+    #sa: Alle Reflektionsaussagen durchgehen
+        ~ForEachLine ref in $WPfad; IndexVar=idx; SectionVar=Ab
+            ~SetInputSection $Ab
+            ?R$idx: $ref
+            #j: Ja
+                @Was ich weiß >> $ref
+            #n: Nein
+                @NN >> $ref
+            ~Calculate mod4 = $idx % 4
+            ~If $mod4==0
+                ~Execute
+        ~Loop
+        ~MoveSection  NN->Was ich nicht weiß
+    #s4: Drei Reflektionsaussagen als Stichprobe
+        ~ForEachLine ref in $WPfad; Take=3; IndexVar=idx
+            ?R$idx: $ref
+            #j: Ja
+            #n: Nein
+                ~Replace refmod=$ref|Ich weiß, ->...
+                @Heute sollte ich rausfinden... >> $refmod
+        ~Loop
+    #db: Weitere Reflektionsaussagen erfassen
+        @Anleitung >> Öffne die Wissensdatei
+            >|$CurrentScriptPath\Wissensgebiete\$wdir($WGeb)
+            __\$wdats($WPak)
+        >> Füge neue Reflektionsaussagen ein
+            > Diese sollten mit "Ich weiß, " beginnen
+            > ... und nach Möglichkeit nicht die Antwort enthalten
+\end{verbatim}
+
+Es beginnt mit einer Abfrage aller Verzeichnisse im Ordner \emph{.Wissensgebiete} die mit \emph{Wissen} beginnen. Dazu wird der Befehl \fcmd{ListDirectories} verwendet, der das Ergebnis in einem Feld abspeichert.
+
+Durch den Befehl \fcmd{DynamicOptionGroup} wird diese Auflistung als Auswahl einer Auswahlabfrage angeboten, sodass der Anwender ein Wissensgebiet und damit gleichzeitig einen Ordner auswählen kann.
+
+Im nächsten Schritt werden mit dem Befehl \fcmd{ListFiles} die Dateien innerhalb des gewählten Ordners abgefragt, die auf \emph{.txt} enden. Ähnlich wie oben wird hier eine Auswahlabfrage generiert, zuvor wird jedoch in einer Schleife eine Auflistung ohne die txt-Endungen erzeugt. Wenn in dem gewählten Ordner keine Dateien vorhanden sind, wird die Ausführung mit einer Hinweismeldung abgebrochen.
+
+Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auflistung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \verb|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
+
+Bei \emph{Drei Reflektionsaussagen als Stichprobe} werden zufällig drei Zeilen aus der Datei ausgewählt. Die Zahl drei wird mit dem \cidxfrag{Take}-Argument angegeben. Der Seed-Wert\index{Seed-Wert} des Zufallsgenerators\index{Zufallsgenerator} wird dabei als Parameter \verb|_rseed| in der URL notiert, so dass bei erneuten Aufrufen oder ein Aktualisierung der Seite wieder die genau gleiche Zufallsfolge entsteht. Hier werden nur die mit Nein beantworteten Punkte unter der Überschrift \emph{Heute sollte ich rausfinden\dots} in leicht angepasster Form aufgelistet.
+
+Bei \emph{Weitere Reflektionsaussagen erfassen} wird eine Anleitung ausgegeben, die dabei unterstützt, die richtige Datei zu finden und dort weitere Aussagen einzufügen. Hierbei wird für die Zusammensetzung des Pfades die Systemvariable \cidxvar{CurrentScriptPath} verwendet, die den Pfad des aktuell ausgeführten Skriptes ausgibt.
+
+Bei der Anwendung dieser Mittel gibt es verschiedene Möglichkeiten. Die Zielsetzung sollte in jedem Fall darin bestehen, dass am Ende alle Mitarbeiter die Dinge wissen, die Sie wissen müssen, um ihre Arbeit gut zu machen, und dabei sollte auch immer davon ausgegangen werden, dass die Mitarbeiter die Bereitschaft dazu mitbringen.
+
+Zu sehen, wie viel Fachwissen für die eigene Arbeit notwendig ist, unterstreicht wie anspruchsvoll diese ist und sollte daher ein gutes Gefühl vermitteln. Besonders dann, wenn ein Großteil dieses Wissens über Jahre hinweg aus dem Team heraus aufgebaut wurde, ist die Sichtweise darauf eine andere, als wenn die Inhalte ausschließlich aus externen Quellen stammen. Der Entwickler einer Framework-Komponente hat letztendlich das gleiche Interesse daran, dass sein Kollege diese richtig verwendet, wie der Datenschutzbeauftragte daran hat, dass die Datenschutz-Richtlinien allen bekannt sind und eingehalten werden.
+
+Das Durchgehen der Reflektionsaussagen ermöglicht es jedem einzelnen, die weißen Flecken auf seiner Wissenslandkarte zu identifizieren und eventuell vorhandene Lücken zu schließen. Dafür muss er diese Lücken jedoch gegenüber keinem anderen offenlegen, denn \FPZ\ arbeitet diskret und gibt keine Informationen weiter. Zu wissen, was man nicht weiß, ist die Grundvoraussetzung dafür, um fehlendes Wissen zielgerichtet zu ergänzen. Man kann damit die benötigte Information recherchieren oder direkt bei einem Kollegen nachfragen. Durch die Reflexionsaussage hat man sogar direkt die Beschreibung, mit der man eine solche Anfrage stellen kann.
+
+Generell kann man davon ausgehen, dass es etliche Punkte gibt, die noch von mehreren Mitarbeitern nicht gewusst werden, oder bei denen es aus anderen Gründen sinnvoll ist, sie nochmal in gemeinsamer Runde zu besprechen, um auf den gleichen Stand zu kommen. Gleichzeitig unterliegt auch das Wissen selbst einem permanenten Wandel, es kommen neue Punkte dazu und bestehendes Wissen wird eventuell nicht mehr benötigt. Von daher ist auch eine regelmäßige redaktionelle Überarbeitung notwendig und es macht Sinn beides zusammenzulegen.
+
+Unter dem Titel Wissensaktualisierung\index{Wissensaktualisierung} plant man mindestens einmal im Jahr einen Termin ein, bei dem alle Kollegen die Möglichkeit haben, sowohl ihr eigenes, als auch das gemeinsame Wissen aufzufrischen und zu aktualisieren. Idealerweise geht jeder dafür im Vorfeld die vorhandenen Listen durch und notiert die Punkte, die er im Meeting angesprochen haben möchte, sei es um sich selbst oder seine Kollegen auf den aktuellen Stand zu bringen, oder über die Herausnahme oder Überarbeitung des Reflektionsaussage zu diskutieren. 
+
+Für die Sammlung dieser Punkte kann eine eigene Variante im Wissensreflektion-Skript eingebaut werden. Die von den verschiedenen Mitarbeitern gesammelten Punkte werden dann vom Moderator des Meetings zusammengetragen und je nach Häufigkeit zu einer Agenda umgesetzt. Je nach Menge der zu besprechenden Reflektionsaussagen ist es sinnvoll, diese in Vorbereitung des Meetings noch mit Antworten oder Verweisen auf eventuelle Informationsquellen anzureichern, sodass man im Meeting selbst keine Zeit mehr dafür aufwenden muss. Die Diskussion über die zu wissenden Dinge ist ebenso wertvoll wie der Wissensaustausch selbst, und so wird man am Ende des Tages in jedem Fall viel gewonnen haben.
+
+Die im Beispiel gezeigte Variante mit der Stichprobe\index{Stichprobe} aus drei Reflexionsaussagen lässt sich gut dafür einsetzen, sich jeden Morgen oder zweimal die Woche eine solche Auswahl zu generieren, und so permanent sein eigenes Wissen auf die Probe zu stellen. Die dabei gefundenen Lücken lassen sich dann ebenso beiläufig im Arbeitsalltag schließen.
+
+Diese Form der Stichproben-Abfrage kann mit einer etwas größeren Anzahl auch dafür verwendet werden, eine Art von Prüfungsbogen zu erstellen, der dann für eine Kontrolle des Wissens durch eine dritte Person verwendet wird. Hier muss man sich jedoch genau fragen, ob und unter welcher Voraussetzungen man einen derartigen Kontrollmechanismus tatsächlich einsetzen möchte.
+
+Umgekehrt gibt es auch gesetztliche Nachweispflichten, die man in Bezug auf seine Mitarbeiter wahrnehmen muss, etwa dass diese einen Führerschein haben, wenn sie mit Firmenfahrzeugen unterwegs sind. Das Zusenden der mit Ja beantworteten Reflektionsaussagen ist eine einfache Möglichkeit, das Vorhandensein des Wissens gegenüber seinen Vorgesetzten konkret zu bestätigen. Diese Vorgehensweise kann dahin gehen stressfrei gestaltet werden, dass man genügend Zeit und beliebig viele Anläufe bekommt, um eine eventuell vorgegebene Mindestquote zu erreichen, und ergänzend dazu hat man das oben beschriebene Meeting für den gemeinsamen Austausch.
+
+Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
 
 \printindex
 \end{document}

@@ -1,0 +1,120 @@
+~Input Bez: Bezeichnung des neuen Assets
+?Asset: Welche Art von Asset soll dokumentiert werden?		
+	#: Drittanbieterkomponente
+	#: Dienst (produktiv)
+	#: Dienst (intern)
+		~Set ArtAsset=Dienst (intern)
+		~Set WirdProduktivEingesetzt=Nein		
+		~Set HatLizenz=Ja
+		~Set HatAufrufURL=Ja
+		~Set HatLokaleAdministratoren=Ja
+		~Set HatLokaleInstallation=Nein
+		~Set IstEinCloudDienst=Ja
+		~Set IstInformationsquelle=Nein
+		~Set IstEinGeraet=Nein
+		~Set SetztFachwissenVoraus=Ja
+	#: Server (produktiv)
+	#: Server (intern)	
+	#: Datenblatt
+	#: Software
+	#: Anleitung/Beschreibung
+	#: Wissensdokumentation
+	#: Manueller Prozess
+	#: Mobiles Endgerät
+
+~Input DEig: Dokumenteigentümer (Mitarbeiterkürzel)
+~Input VZweck: Wozu wird dass Asset verwendet?
+~SetTitle Asset "$Bez"
+@Datenblatt >>* Dokumenteigentümer: $DEig
+@Offboarding >> Dokumenteigentümer prüfen
+@Datenblatt >>* Art: $ArtAsset
+@Datenblatt >>* Verwendungszweck
+	>* $VZweck
+@Jährl. Aufgaben >> Verwendung/Bedarf prüfen
+@Außerbetriebenahme >> Asset-Dokumentation archivieren
+~Execute
+
+~If $WirdProduktivEingesetzt==Ja
+	//...
+~If $HatLizenz==Ja	
+	?Liz: Welche Art von Lizenz liegt vor?
+		#: Frei, kommerziell nutzbar
+			~Set ArtLizenz=Frei, kommerziell nutzbar
+			~Set KommerziellNutzbar=Ja
+			~Set Benutzerbezogen=Nein
+			~Set Kostenpflichtig=Nein
+		#: Abo-Lizenz, benutzerbezogen
+			~Set ArtLizenz=Abo-Lizenz, benutzerbezogen
+			~Set KommerziellNutzbar=Ja
+			~Set Benutzerbezogen=Ja
+			~Set Kostenpflichtig=Ja
+	@Datenblatt >>* Lizenz
+		>* Art: $ArtLizenz
+		>* Kommerziell nutzbar: $KommerziellNutzbar
+		>* Benutzerbezogen: $Benutzerbezogen
+		>* Kostenpflichtig: $Kostenpflichtig
+	~If $Benutzerbezogen==Ja
+		@Jährl. Aufgaben >> Lizenzumfang abgleichen
+		@Offboarding >> Lizenzumfang anpassen
+	~If $Kostenpflichtig==Ja
+		@Jährl. Aufgaben >> Preis-Leistung prüfen
+		@Außerbetriebenahme >> Lizenz kündigen
+		~Set ALGegenstand=Lizenzverwaltung
+		~Set ALKey=LIV
+		~GoSub AssetLink
+~If $HatAufrufURL==Ja
+	~Input AufrufURL: Unter welcher URL wird der Dienst aufgerufen?
+	@Datenblatt >>* Aufruf
+	>* URL:
+	~AddLink $AufrufURL | $AufrufURL
+	@Jährl. Aufgaben >> Verfügbarkeit prüfen
+~If $HatLokaleAdministratoren==Ja
+	~Input Admins: Mitarbeiter mit Admin-Zugang und -kenntnissen:
+	@Datenblatt >>* Administration
+		> Mitarbeiter mit Zugang und Wissen: $Admins
+	~Set ALGegenstand=Admin-Wissen
+	~Set ALKey=ADW
+	~GoSub AssetLink
+	@Offboarding >> Admin-Zugang übergeben
+	~Set ALGegenstand=Admin-Notfallzugang
+	~Set ALKey=ANZ
+	~GoSub AssetLink
+~If $HatLokaleInstallation==Ja
+	//...
+~If $IstEinCloudDienst==Ja
+	~Input AnbCloudName: Anbieter des Cloud-Dienstes
+	~Input AnbCloudWeb: Internetseite Anbieter
+	@Datenblatt >>* Anbieter
+	>* Name: $AnbCloudName
+	>* Webseite:
+	~AddLink $AnbCloudWeb| $AnbCloudWeb
+	@Jährl. Aufgaben >> Weitere Verfügbarkeit prüfen
+	@Datenblatt >>* Risiko: Wegfall des Dienstes
+	~Set ALGegenstand=Wegfall-Notfallplan
+	~Set ALKey=WNP
+	~GoSub AssetLink
+	@Außerbetriebenahme >> Konfigurationsdaten sichern
+~If $IstInformationsquelle==Ja
+	//...
+~If $IstEinGeraet==Ja
+	//...
+~If $SetztFachwissenVoraus==Ja
+	~Set ALGegenstand=Nutzungswissen
+	~Set ALKey=WFN
+	~GoSub AssetLink
+
+~MoveSection Jährl. Aufgaben->Jährliche Aufgaben
+~MoveSection Offboarding->Offboarding-Aufgaben
+~MoveSection Außerbetriebenahme->Aufgaben bei Außerbetriebenahme
+~MoveSection ToDos->Aktuelle ToDos
+
+~DefineSub AssetLink
+	?QAL$ALKey: Ist ein Asset für "$ALGegenstand" vorhanden?
+	#j: Ja
+		~Input AL$ALKey: Link auf Asset für "$ALGegenstand"
+		@Datenblatt > $ALGegenstand:
+		~AddLink $AL$ALKey| als Asset erfasst
+	#n: Nein
+		@Datenblatt > $ALGegenstand:
+		@ToDos >> Asset für $ALGegenstand erfassen
+~Return

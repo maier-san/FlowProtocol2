@@ -20,7 +20,7 @@
 @Codebeispiel >>_ Das nachfolgende Beispiel erzeugt eine Menge vo Auswahlwerten über den Split-Befehl und gibt diese als Auswahlmöglichkeit. Die gewählte Option wird ausgegeben:
 >>|~Split Auswahl=Hallo Welt;Aloah Welt;Hi Welt|;
 >>|~DynamicOptionGroup S:Auswahl;Wie willst du die Welt begrüßen?
->>|@Ausgabe >> $Auswahl($S)
+>>|@Ausgabe >> $Auswahl($Chr(36)S)
 ~Split Auswahl=Hallo Welt;Aloah Welt;Hi Welt|;
 ~DynamicOptionGroup S:Auswahl;Wie willst du die Welt begrüßen?
 @Ausgabe >> $Auswahl($S)

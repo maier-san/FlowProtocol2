@@ -1,0 +1,13 @@
+[Strukturen]
+Ich weiß, wie eine If-Abfrage aufgebaut ist. 
+Ich weiß, wie eine Bedingung aufgebaut ist.
+Ich weiß, wie man eine Von-1-bis-10-Schleife implementiert.
+Ich weiß, wie man eine Liste von Elementen durchläuft.
+Ich weiß, wie man eine Funktion definiert und aufruft.
+Ich weiß, wie man eine Sprungmarke definiert und anspringt.
+
+[Verarbeitung]
+Ich weiß, wie man Variablen setzt und verwendet.
+Ich weiß, wie man Texte ersetzen kann.
+Ich weiß, wie man reguläre Ausdrücke verwenden kann.
+Ich weiß, wie man Berechnungen durchführen kann.

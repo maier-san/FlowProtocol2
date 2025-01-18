@@ -1,0 +1,48 @@
+~Input Frage: Welche Frage soll ausgegeben werden?
+~Input Key: Schlüssel für die Frage
+~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
+~AddHelpLine Werte mit "?" werden als Schalter abgebildet.
+~Input Tabs: Einrückung (T pro Tab, @ sonst)
+~CamelCase CKey=$Key
+~Set T=$Chr(9)
+~Set ST=$Chr(36)Chr(36)Chr(9)
+~Replace EE=$Tabs|@->
+~Replace FF=$EE|T->$Chr(36)Chr(36)Chr(9)
+~Replace EE=$EE|T->$Chr(9)
+@Erweiterung >>* Auswahlabfrage
+>|$EE?$CKey: $Frage
+>|$EE$T// Oberhalb von hier neue Einträge einfügen
+>|$EE$T#x: Nicht in Liste
+>|$EE$T$T@Skript-Erweiterung >>_ Es wird empfohlen, das
+	__ Skript um die nicht vorhandenen Einträge zu erweitern.
+	__ Gehe dazu wie folgt vor:
+>|$EE$T$T>> Öffne die Skriptdatei in einem Texteditor:
+>|$EE$T$T$T>|$Chr(36)ScriptFilePath
+>|$EE$T$T>> Füge vor Zeile $Chr(36)LineNumber-5 folgenden
+	__ Codeblock ein:
+>|$EE$T$T$T~Input I$CKey: $Frage
+>|$EE$T$T$T>|$FF$ST#: $I$CKey
+~If $WListe!=@
+	~Split Werte=$WListe|,
+	~ForEach widx in Werte
+		~CamelCase vidx=$widx
+		~If $widx~?
+			@Erweiterung >|$EE$T$T$T?Q$vidx: $widx
+			>|$EE$T$T$T$T#j: Ja
+			>|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Ja
+			>|$EE$T$T$T$T$T~Set $vidx=Ja
+			>|$EE$T$T$T$T#n: Nein
+			>|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Nein
+			>|$EE$T$T$T$T$T~Set $vidx=Nein
+			~If $ErsterSchalter!=Ja
+				@IfBlocks >>* If-Abfragen für die Schalter
+				~Set ErsterSchalter=Ja
+			@IfBlocks >|$EE~If $$vidx==Ja
+			>|$EE$T//$widx
+		~Else			
+			@Erweiterung >|$EE$T$T$T~Input I$vidx: $widx
+			>|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$vidx
+			>|$EE$T$T$T~Set $vidx=$I$vidx
+	~Loop
+@Erweiterung >|$EE$T$T>> Speichere die Datei ab.
+~MoveSection IfBlocks->Erweiterung

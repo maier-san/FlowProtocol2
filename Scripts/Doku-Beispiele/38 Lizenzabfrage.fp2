@@ -1,0 +1,45 @@
+?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
+	#: MIT-Lizenz
+		~Set BezeichnungLizenz=MIT-Lizenz
+		~Set LinkAufLizenzbeschreibung=
+			__https://de.wikipedia.org/wiki/MIT-Lizenz
+		~Set ErlaubtKomVerw=Ja
+		~Set IstKostenpflichtig=Nein
+	// Oberhalb von hier neue Einträge einfügen
+	#x: Nicht in Liste
+		@Skript-Erweiterung >>_ Es wird empfohlen, das Skript
+			__ um die nicht vorhandenen Einträge zu erweitern. 
+			__ Gehe dazu wie folgt vor:
+		>> Öffne die Skriptdatei in einem Texteditor:
+			>|$ScriptFilePath
+		>> Füge vor Zeile $LineNumber-7 folgenden Codeblock ein:
+			~Input ILizenz: Unter welcher Lizenz wird die 
+				__ Software bereitgestellt?
+			>|$Chr(9)#: $ILizenz
+			~Input IBez: Bezeichnung Lizenz
+			>|$Chr(9)$Chr(9)~Set BezeichnungLizenz=$IBez
+			~Set BezeichnungLizenz=$IBez
+			~Input ILink: Link auf Lizenzbeschreibung
+			>|$Chr(9)$Chr(9)~Set LinkAufLizenzbeschreibung=$ILink
+			~Set LinkAufLizenzbeschreibung=$ILink
+			?QKom: Erlaubt kommerzielle Verwendung?
+				#j: Ja
+					>|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Ja
+					~Set ErlaubtKomVerw=Ja
+				#n: Nein
+					>|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Nein
+					~Set ErlaubtKomVerw=Nein
+			?QKost: Ist kostenpflichtig?
+				#j: Ja
+					>|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Ja
+					~Set IstKostenpflichtig=Ja
+				#n: Nein
+					>|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Nein
+					~Set IstKostenpflichtig=Nein
+		>> Speichere die Datei ab.
+@Ausgabe >>* Die Software wird unter der Lizenz "$BezeichnungLizenz"		
+		__ bereitgestellt.
+	>* Link: 
+	~AddLink $LinkAufLizenzbeschreibung | $LinkAufLizenzbeschreibung
+	>* Kommerzielle Verwendung möglich? - $ErlaubtKomVerw
+	>* Kostenpflichtig? - $IstKostenpflichtig

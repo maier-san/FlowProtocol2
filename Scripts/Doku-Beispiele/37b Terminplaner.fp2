@@ -1,0 +1,66 @@
+~SetStopCounter 100000; 3000000
+~Input Anz: Anzahl Termine
+~Execute
+@Terminpräferenzen >>_ $Anz Termine
+~Set idx=0
+~DoWhile $idx<$Anz
+	~AddTo idx+=1
+	~Input Prf$idx: Termin $idx - Präferenzen (kommagetrennt)
+	>>* Termin $idx: $Prf$idx	
+~Loop
+~Set BestPSum=10000
+~Set BestAnzV=0
+~Set TidxS=1
+~Set MAVS=
+~Set AnzVS=0
+~Set PSumS=0
+~GoSub SucheLoesung; BaseKey=S
+@Ergebnis >>_ $BestAnzV Termine verplant, $BestPSum Punkte
+~Set idx=0
+~DoWhile $idx<$Anz
+	~AddTo idx+=1
+	>>* Termin $idx: $FErg($idx)
+~Loop
+
+// Tidx$BaseKey = Nächster Terminindex
+// MAV$BaseKey = Liste der schon verplanten Mitarbeiter
+// PSum$BaseKey = Aktuelle Präferenz-Summe
+// Rückgabe: FErg(1..Anz) = Belegung der Termine
+~DefineSub SucheLoesung	
+	~Split VerplanteMA=$MAV$BaseKey|/
+	~Calculate AnzV$BaseKey=$VerplanteMA(0)-1
+	~If $Tidx$BaseKey<=$Anz
+		~Split pr$BaseKey=$Prf$Tidx$BaseKey|,		
+		~ForEach pi in pr$BaseKey
+			~RegExMatch pw = $pi|([A-Z][A-Z][a-z]*)([0-9]?)
+			~If $pw(0)
+				~Set ku=$pw(1)
+				~Set va=$pw(2)
+				~If $va==
+					~Set va=1
+				~If $MAV$BaseKey/!~/$ku/
+					~Set Erg($Tidx$BaseKey)=$ku					
+					~Calculate Tidx$BaseKeyX$ku=$Tidx$BaseKey+1
+					~Calculate PSum$BaseKeyX$ku=$PSum$BaseKey+$va
+					~Set MAV$BaseKeyX$ku=$MAV$BaseKey/$ku
+					~GoSub SucheLoesung; BaseKey=$BaseKeyX$ku
+		~Loop
+		~CalculateExpression restpot=$Anz-$BestAnzV
+			__-($Tidx$BaseKey-$AnzV$BaseKey)
+		~If $restpot>=0
+			~Set Erg($Tidx$BaseKey)=Nicht besetzt
+			~Calculate Tidx$BaseKey0=$Tidx$BaseKey+1
+			~Set PSum$BaseKey0=$PSum$BaseKey
+			~Set MAV$BaseKey0=$MAV$BaseKey
+			~GoSub SucheLoesung; BaseKey=$BaseKey0		
+	~Else
+		~If $AnzV$BaseKey>$BestAnzV || $AnzV$BaseKey==$BestAnzV
+			__ && $PSum$BaseKey<$BestPSum			
+			~Set BestAnzV=$AnzV$BaseKey
+			~Set BestPSum=$PSum$BaseKey	
+			~Set idx=0
+			~DoWhile $idx<$Anz
+				~AddTo idx+=1
+				~Set FErg($idx)=$Erg($idx)
+			~Loop		
+~Return

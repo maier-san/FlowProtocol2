@@ -102,13 +102,13 @@ dotnet.exe build
 \end{verbatim}
 
 
-Die Konfiguration erfolgt über die Datei \cidxfrag{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
+Die Konfiguration erfolgt über die Datei \emph{appsettings.json}\index{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
 \begin{verbatim}
 "ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
 \end{verbatim}
 In einer Firma oder Einrichtung wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
 
-In den Dateien \verb|Properties\launchSettings.json|, \verb|appsettings.json| und \verb|Program.cs| sind Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
+In den Programm- und Konfigurationsdateien \emph{launchSettings.json}\index{launchSettings.json}, \emph{appsettings.json} und \emph{Program.cs}\index{Program.cs} sind die Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
 
 Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auflistung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
 
@@ -879,7 +879,7 @@ Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, 
         ~Random z=65..90
         ~AddTo AnzGross+=-1
     ~ElseIf $AnzSonder>0
-        ~Random s=1..9
+        ~Random s=1..$SZ(0)
         ~Set z=$SZ($s)
         ~AddTo AnzSonder+=-1
     ~Else
@@ -893,7 +893,9 @@ Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, 
 
 Das Beispiel zeigt einen Passwortgenerator\index{Passwortgenerator}, der für eine vorgegebene Länge ein Passwort aus zufälligen Zeichen erzeugt. Die von den meisten Passwortrichtlinien geforderten Zusatzbedingungen, dass das Passwort auch Ziffern, Großbuchstaben und Sonderzeichen enthalten muss, sind ebenfalls berücksichtigt. Da diese Zeichen zum Eintippen oftmals lästig sind, kann ihre Anzahl hier beschränkt werden. Ebenso kann die Menge der Sonderzeichen festgelegt werden, die zum Einsatz kommen soll.
 
-Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr}-Befehl verwendet der das Zeichen mit dem dazu gehörenden Dezimalcode erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
+Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr}-Befehl verwendet der das Zeichen mit dem dazu gehörenden ANSI-Code\index{ANSI-Code} erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
+
+Für die Erzeugung der Sonderzeichen wird zunächst eine Zufallszahl von $1$ bis zur Länge der Liste \verb|SZ| generiert, wobei diese mit \verb|$SZ(0)| abgerufen wird. Mit dieser Zahl wird der entsprechende Listeneintrag ausgelesen, der dann in gleicher Weise wie die anderen Codes in ein Zeichen umgewandelt wird. Damit kann die Liste um weitere Codes ergänzt werden, ohne dass an anderer Stelle die Anzahl der Liste angepasst werden muss.
 
 \subsection{Reguläre Ausdrücke und Datenabfragen}\label{RegUndDaten}
 Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich Auch die verschiedenen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
@@ -1755,6 +1757,133 @@ Das Ergebnisdokument kann mit Überschrift und allen Abschnitten auf eine eigene 
 Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sichten und auf Notwendigkeit zu prüfen. Nicht selten werden Vorgehensweisen oder Softwareprodukte eingeführt, die sich dann irgendwann von selbst ausschleichen, ohne dass eine Außerbetriebnahme stattgefunden hat, was ein schlechter Zustand ist, vor allem, wenn weiterhin Geld dafür bezahlt wird. Die jährliche Sichtung der Assets, zusammen mit den notwendigen Wartungsaufgaben ist wichtig, um z.B.\ rechtzeitig darüber informiert zu sein wenn, etwa aufgrund einer Abkündigung Nutzungseinschränkungen absehbar werden.
 
 Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
+
+\subsection{Terminplanung}
+Unser letztes Beispiel im Abschnitt Organisationswerkzeuge ist ein kleines Terminplanungswerkzeug, das schön zeigt, wie sich mit ein bisschen Programmierung Aufgaben so lösen lassen, dass es für alle Beteiligten von Vorteil ist.
+
+Die Ausgangssituation dürfte in einem Unternehmen recht häufig, aber mindestens einmal pro Jahr und Abteilung vorkommen: für eine Menge von Mitarbeiter sollen innerhalb eines Zeitraums Einzeltermine geplant werden, so dass am Ende für jeden Mitarbeiter der Menge ein Termin mit Raum eingeplant ist.
+
+Die normale Vorgehensweise wäre nun, mit Hilfe des eigenen Terminkalenders und denen der Mitarbeiter und Räume einen Termin nach dem anderen zu planen, was bedeutet, dass man mindestens immer drei Kalender offen haben muss. Unschön wird das ganze dann gegen Ende der Planung, wenn man für die verbleibenden Mitarbeiter keine möglichen Termine mehr findet, und man somit Anfang und Mittelteil der Planung wieder umstellen muss.
+
+Die deutlich einfachere Vorgehensweise besteht darin, zunächst nur Termine für sich selbst und den Raum einzuplanen, dafür eventuell auch einen mehr als benötigt wird. Anschließend veröffentlicht man die Liste dieser Termine im Wiki und bittet die Mitarbeiter, sich dort Ihre Wunschtermine auszuwählen, also je nach Gesamtzahl drei bis fünf Wunschtermine pro Mitarbeiter. Hierzu trägt sich der Mitarbeiter einfach in die Tabelle mit seinem Kürzel hinter dem jeweiligen Termin ein.
+
+Bei der Auswahl kann zusätzlich noch die Präferenz angegeben werden, als ob der jeweilige Termin die erste, zweite oder dritte Wahl für den Mitarbeiter ist. Dies wird einfach durch die entsprechende Ziffer hinter dem Kürzel angegeben.
+
+Für eine Auswahl von fünf Terminen könnten die Wünsche von vier Mitarbeitern mit den Kürzeln AB, CD, EF und GH wie folgt aussehen:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& AB2\\
+Termin 2& CD, EF1\\
+Termin 3& EF2, AB1\\
+Termin 4& GH, CD\\
+Termin 5& CD, EF3\\ \hline
+\end{tabular}
+\end{center}
+
+In diesem Fall hat der Mitarbeiter AB nur zwei Termine angegeben und GH nur einen, eventuell weil er von auswärts anreisen muss. Der Mitarbeiter CD hat keine Präferenzen, die drei von ihm gewählten Termine sind für ihn gleichwertig.
+
+Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingabefelder des folgenden Skriptes übertragen:
+
+\Beispiel{Terminplaner}
+\begin{verbatim}
+~SetStopCounter 100000; 3000000
+~Input Anz: Anzahl Termine
+~Execute
+@Terminpräferenzen >>_ $Anz Termine
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    ~Input Prf$idx: Termin $idx - Präferenzen (kommagetrennt)
+    >>* Termin $idx: $Prf$idx    
+~Loop
+~Set BestPSum=10000
+~Set BestAnzV=0
+~Set TidxS=1
+~Set MAVS=
+~Set AnzVS=0
+~Set PSumS=0
+~GoSub SucheLoesung; BaseKey=S
+@Ergebnis >>_ $BestAnzV Termine verplant, $BestPSum Punkte
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    >>* Termin $idx: $FErg($idx)
+~Loop
+
+// Tidx$BaseKey = Nächster Terminindex
+// MAV$BaseKey = Liste der schon verplanten Mitarbeiter
+// PSum$BaseKey = Aktuelle Präferenz-Summe
+// Rückgabe: FErg(1..Anz) = Belegung der Termine
+~DefineSub SucheLoesung    
+    ~Split VerplanteMA=$MAV$BaseKey|/
+    ~Calculate AnzV$BaseKey=$VerplanteMA(0)-1
+    ~If $Tidx$BaseKey<=$Anz
+        ~Split pr$BaseKey=$Prf$Tidx$BaseKey|,        
+        ~ForEach pi in pr$BaseKey
+            ~RegExMatch pw = $pi|([A-Z][A-Z][a-z]*)([0-9]?)
+            ~If $pw(0)
+                ~Set ku=$pw(1)
+                ~Set va=$pw(2)
+                ~If $va==
+                    ~Set va=1
+                ~If $MAV$BaseKey/!~/$ku/
+                    ~Set Erg($Tidx$BaseKey)=$ku                    
+                    ~Calculate Tidx$BaseKeyX$ku=$Tidx$BaseKey+1
+                    ~Calculate PSum$BaseKeyX$ku=$PSum$BaseKey+$va
+                    ~Set MAV$BaseKeyX$ku=$MAV$BaseKey/$ku
+                    ~GoSub SucheLoesung; BaseKey=$BaseKeyX$ku
+        ~Loop
+        ~CalculateExpression restpot=$Anz-$BestAnzV
+            __-($Tidx$BaseKey-$AnzV$BaseKey)
+        ~If $restpot>=0
+            ~Set Erg($Tidx$BaseKey)=Nicht besetzt
+            ~Calculate Tidx$BaseKey0=$Tidx$BaseKey+1
+            ~Set PSum$BaseKey0=$PSum$BaseKey
+            ~Set MAV$BaseKey0=$MAV$BaseKey
+            ~GoSub SucheLoesung; BaseKey=$BaseKey0        
+    ~Else
+        ~If $AnzV$BaseKey>$BestAnzV || $AnzV$BaseKey==$BestAnzV
+            __ && $PSum$BaseKey<$BestPSum            
+            ~Set BestAnzV=$AnzV$BaseKey
+            ~Set BestPSum=$PSum$BaseKey    
+            ~Set idx=0
+            ~DoWhile $idx<$Anz
+                ~AddTo idx+=1
+                ~Set FErg($idx)=$Erg($idx)
+            ~Loop        
+~Return
+\end{verbatim}
+
+Da das Skript zur Lösungsfindung exponentiell viele Variationen durchprobiert, werden gleich zu Beginn die Stop-Zähler\index{Stop-Zähler} für die maximale Anzahl an Schleifendurchläufen und Befehlsausführungen mit dem Befehls \fcmd{SetStopCounter} auf sehr große Werte gesetzt.
+
+Zuerst wird die Anzahl der Termine abgefragt, dann für jeden Termin die Präferenzen, wie üblich kommagetrennt.
+
+Die Suche nach der passenden Lösung erfolgt mit Hilfe der Funktion \verb|SucheLoesung|, die als Übergabeparameter den Index des nächsten zu planenden Termins, die Liste der schon verplanten Mitarbeiter und die Zwischensumme der Präferenzwerte übergeben bekommt.  Die Anzahl der schon verplanten Termine wird mit Hilfe des \fcmd{Split}-Befehls aus der Aufzählung der schon verplanten Mitarbeiter berechnet. 
+
+Immer wenn der Index des letzten Termins erreicht ist, wird die aktuelle Lösung mit der bisher besten Lösung verglichen, wobei primär die Anzahl der geplanten Termine zählt, und bei gleicher Anzahl eine möglichst geringe Präferenzsumme. Ist eine neue beste Lösung gefunden, wird diese in das Feld \verb|FErg(...)| übertragen.
+
+Ansonsten werden alle Mitarbeiter durchlaufen die sich für den als nächstes zur Planung anstehenden Termin eingetragen haben. Die Kürzel werden mit Hilfe eines regulären Ausdrucks vom Präferenzwert getrennt. Wennn keiner angegeben ist, wird der Wert 1 gesetzt. Mit Hilfe des Enthält-nicht-Operators\index{Enthält-nicht-Operator} \verb|!~| wird dann geprüft, ob der entsprechende Mitarbeiter noch nicht in der Menge der bisher verplanten Mitarbeiter enthalten ist, wobei das Trennzeichen \verb|/| verwendet wird. In diesem Fall werden die Parameter für einen weiteren Funktionsaufruf gesetzt, wobei die \verb|BaseKey|-Variable um den Buchstaben X und das Mitarbeiterkürzel erweitert werden.
+
+Nach Durchlauf aller Mitarbeiter wird auch noch die Variante geprüft, bei der der anstehende Termin nicht besetzt wird. Gerade wenn mehr Termine angeboten werden, als Mitarbeiter vorhanden sind, müssen Termine unbesetzt bleiben.
+
+Da dadurch die Menge der zu untersuchende Lösungen noch mal deutlich erhöht wird, wird hier noch zusätzlich das Restpotenzial $R$ abgeprüft. Dieses berechnet sich über die Formel $R=A-A_B-(i-A_T)$, wobei $A$ die Anzahl der angebotenen Termine ist, $A_B$, die Anzahl der verplanten Termine der bislang besten Lösung, $i$ der aktuelle Index und $A_T$ die Anzahl der bis jetzt verplanten Termine. Ist $R\ge0$, kann trotz nicht besetzen des anstehenden Termins potentiell noch eine bessere Lösung gefunden werden, ansonsten ist das ausgeschlossen und diese Variante muss nicht weiterverfolgt werden.
+
+Am Ende wird die beste gefundene Lösung als Ergebnis ausgegeben. Das Skript kann auch mit den Daten aus unserem Beispiel oben umgehen und findet zielsicher die beste Lösung mit mit vier verplanten Terminen und einer Präferenzsumme von 4, d.h.\ jeder Mitarbeiter bekommt einen Termin seiner ersten Wahl:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& nicht besetzt\\
+Termin 2& EF\\
+Termin 3& AB\\
+Termin 4& GH\\
+Termin 5& CD\\ \hline
+\end{tabular}
+\end{center}
+
+Der Vorteil dieser Methode liegt darin, dass die lästige Suche nach freien Terminen auf die einzelnen Mitarbeiter aufgeteilt wird, die aber dafür nur jeweils ihren eigenen Kalender sichten müssen. Als Ausgleich dafür bekommen sie die Möglichkeit, mit der Präferenz Einfluss auf die Terminauswahl zu nehmen.
+
+Dadurch, dass auch die Reihenfolge, in der die Wünsche eingetragen werden so gut wie keine Rolle spielt, ist dieser Ansatz auch besser als der Auswahlansatz, bei dem sich jeder nur für genau einen Termin eintragen darf, der noch nicht gewählt wurde, so dass die Mitarbeiter benachteiligt werden, die nicht unmittelbar auf die Aufforderung reagieren können.
 
 \section{Mitgestaltung}
 Wie schon mehrfach beschrieben, sollte man Skripte nicht einfach nur als Programmcode sehen, der durch die Umgebung ausgeführt werden kann und mit dem sich bestimmte Aufgaben einfach lösen lassen, sondern man sollte Skripte vor allem auch als ein Medium betrachten, das es ermöglicht, fachliches Wissen so zu hinterlegen, dass es bei der Anwendung des Skriptes automatisch berücksichtigt wird. Es ist nicht notwendig, dass der Anwender weiß, wie man die Aufgabe richtig macht, so lange ihm das Skript keine Möglichkeit gibt, sie falsch zu machen.

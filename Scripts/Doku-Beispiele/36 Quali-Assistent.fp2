@@ -4,8 +4,8 @@
 		@Ergänzungsmaßnahmen >> Löschen von Datensätzen:
 		> Sicherstellen, dass keine Datensätze ungewollt 
 		__ gelöscht werden.
-		> Abgrenzungstests formulieren.
-		> Löschweitergaben prüfen. 
+		> Abgrenzungstests formulieren
+		> Löschweitergaben prüfen
 	#n: Nein
 		@Wirkungen >> Löschen von Datensätzen: Nein
 ?Q2: Umfasst die Entwicklung die Verwendung
@@ -13,8 +13,8 @@
 	#j: Ja
 		@Wirkungen >> Verwendung von Drittkomponenten: Ja
 		@Ergänzungsmaßnahmen >> Verwendung von Drittkomponenten:
-		> Checkliste für Drittkomponenten durchgehen.
-		> Drittkomponente in eigene Klasse kapseln.
+		> Checkliste für Drittkomponenten durchgehen
+		> Drittkomponente in eigene Klasse kapseln
 	#n: Nein
 		@Wirkungen >> Verwendung von Drittkomponenten: Nein
 ?Q3: Umfasst die Entwicklung die Verarbeitung von 
@@ -22,10 +22,10 @@
 	#j: Ja
 		@Wirkungen >> Versionsabhängige Formate: Ja
 		@Ergänzungsmaßnahmen >> Versionsabhängige Formate:
-		> Sicherstellung der Versionsbestimmbarkeit.
-		> Sicherstellung von Abwärtskompatibilität.
+		> Sicherstellung der Versionsbestimmbarkeit
+		> Sicherstellung von Abwärtskompatibilität
 		> Sicherstellung von Aufwärtskompatibilität
 		> Kennzeichnung der Versionsabhängigkeit 
 		__ im Datenblatt.
 	#n: Nein
-		@Wirkungen >> Versionsabhängige Formate: Nein.
+		@Wirkungen >> Versionsabhängige Formate: Nein

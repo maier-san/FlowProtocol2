@@ -1,18 +1,18 @@
-~Set MoveFromS=1
-~Set MoveToS=3
+~Set MoveFromS=A
+~Set MoveToS=C
 ~Set MoveCountS=4
 ~GoSub Move; BaseKey=S
 ~End
 
-// Bewegt n Scheiben von A nach B
-// MoveFrom$BaseKey:  Ausgangsturm A
-// MoveTo$BaseKey:    Zielturm B
+// Bewegt n Scheiben von Stange a nach b
+// MoveFrom$BaseKey:  Ausgangsstange a (A, B, C)
+// MoveTo$BaseKey:    Zielstange b (A, B, C)
 // MoveCount$BaseKey: Anzahl Scheiben n
 ~DefineSub Move
 	~If $MoveCount$BaseKey>0
 		~Set Q1$BaseKey=$MoveFrom$BaseKey
 		~Set Q2$BaseKey=$MoveTo$BaseKey
-		~Set Q3$BaseKey=123
+		~Set Q3$BaseKey=ABC
 		~Replace Q3$BaseKey=$Q3$BaseKey|$Q1$BaseKey->
 		~Replace Q3$BaseKey=$Q3$BaseKey|$Q2$BaseKey->
 		~Set MC$BaseKey=$MoveCount$BaseKey

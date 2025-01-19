@@ -1,6 +1,6 @@
 ~Input Bez: Bezeichnung der Funktion
 ~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
-~Include 32 Programmauswahl.fps; BaseKey=E
+~Include Programmauswahl.fps; BaseKey=E
 
 @Story >>_ Einbau der Listenfunktion "$Bez"
 	__ in die Liste des Bereichs "$PAusw - $UAusw".

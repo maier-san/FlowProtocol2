@@ -70,11 +70,21 @@ namespace FlowProtocol2.Commands
                     }
                 }
                 input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());
-                if (input.Contains("$Chr"))
+                if (input.Contains("$Chr("))
                 {
-                    for (int i = 1; i < 255; i++)
+                    Regex ChrExpr = new Regex(@"\$Chr\(([0-9]*)\)");                    
+                    while(ChrExpr.IsMatch(input))
                     {
-                        input = input.Replace($"$Chr({i})", Convert.ToChar(i).ToString());
+                        var chrmatch = ChrExpr.Match(input);
+                        int chrindex = chrmatch.Groups[0].Index;
+                        int chrlength = chrmatch.Groups[0].Length;
+                        string strAnsicode = chrmatch.Groups[1].Value.Trim();            
+                        bool codeOK = int.TryParse(strAnsicode, out int ansicode);
+                        if (codeOK && ansicode>0 && ansicode<2048)
+                        {
+                            input = input.Remove(chrindex, chrlength);
+                            input = input.Insert(chrindex, Convert.ToChar(ansicode).ToString());
+                        }
                     }
                 }
             }

@@ -1,0 +1,8 @@
+>> FlowLib geladen
+~DefineSub LibCall1
+	>> LibCall1 mit BaseKey=$BaseKey
+	~GoSub LibCall2; BaseKey=$BaseKeyX
+~Return
+~DefineSub LibCall2
+	>> LibCall2 mit BaseKey=$BaseKey
+~Return

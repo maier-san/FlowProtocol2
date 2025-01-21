@@ -30,7 +30,7 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedJumpMark = ReplaceVars(rc, JumpMark);
-            CmdJumpMark? jump = GetFirstCommand<CmdJumpMark>(c => c.Mark == expandedJumpMark, c => false);
+            CmdJumpMark? jump = GetFirstCommand<CmdJumpMark>(rc, c => c.Mark == expandedJumpMark, c => false);
             if (jump == null)
             {
                 rc.SetError(ReadContext, "Sprungziel nicht gefunden",

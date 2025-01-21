@@ -1,0 +1,11 @@
+~Include FlowLib.fps
+~GoSub LibCall1; BaseKey=A
+~GoSub LibCall2; BaseKey=B
+~GoSub StdCall3; BaseKey=C
+>> Ende
+~DefineSub StdCall3
+	>> StdCall3 mit BaseKey=$BaseKey
+~Return
+~DefineSub LibCall2
+	>> Std-LibCall2 mit BaseKey=$BaseKey
+~Return

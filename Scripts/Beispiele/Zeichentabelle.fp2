@@ -1,0 +1,6 @@
+~SetStopCounter 20000;20000
+~Set i=33
+~DoWhile $i<2048
+	>>* Chr($i)=$Chr($i)
+	~AddTo i+=1
+~Loop

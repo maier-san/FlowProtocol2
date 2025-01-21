@@ -47,6 +47,7 @@ namespace FlowProtocol2.Commands
                     index++;
                     rc.InternalVars[$"{expandedVarName}({index})"] = idx.Trim();
                 }
+                rc.InternalVars[$"{expandedVarName}(0)"] = index.ToString();
                 index++;
                 rc.InternalVars.Remove($"{expandedVarName}({index})");
             }

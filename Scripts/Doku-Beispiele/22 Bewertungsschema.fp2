@@ -1,4 +1,4 @@
-~Input P: Wie hoch ist die Punktezahl (0-20)
+~Input P: Wie hoch ist die Punktezahl (0-20)?
 ~Execute
 ~If $P>=18
 	~Set Note=sehr gut

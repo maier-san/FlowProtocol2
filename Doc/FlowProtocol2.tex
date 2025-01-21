@@ -31,28 +31,6 @@
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
 \newcounter{bspcount}
 \newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
-\newcommand{\webbox}[1]{\par\setlength{\fboxsep}{3mm}\fbox{\begin{minipage}{12cm}\textsf{#1}\end{minipage}\par}\par\vspace{3mm}}
-\newcommand{\webhead}[2]{{\large  #1}\\[2mm]#2\\[1mm]\rule{\linewidth}{1pt}\\[3mm]}
-\newcommand{\webheadR}[1]{{\large  #1}\\}
-\newenvironment{circlist}%
-{\begin{list}{$\bigcirc$}{%
-\setlength{\labelsep}{5pt}
-\setlength{\topsep}{5pt}
-\setlength{\itemsep}{0pt}
-\setlength{\parsep}{0pt}
-\setlength{\labelwidth}{1cm}
-}}{\end{list}}
-\newcounter{lcount}
-\newenvironment{numlist}%
-{\begin{list}{\textrm{\arabic{lcount}}}{\usecounter{lcount}%
-\setlength{\labelsep}{5pt}
-\setlength{\topsep}{5pt}
-\setlength{\itemsep}{0pt}
-\setlength{\parsep}{0pt}
-\setlength{\labelwidth}{1cm}
-}}{\end{list}}
-\newcommand{\ZeigeFehlerItem}[4]{\item\textbf{#1}\\#2\ \textsl{#3}\\\texttt{#4}}
-\newcommand{\FehlerBeschreibungItem}[2]{\item[#1]\textsl{#2}\\}
 \makeindex
 \begin{document}
 \thispagestyle{empty}
@@ -102,13 +80,13 @@ dotnet.exe build
 \end{verbatim}
 
 
-Die Konfiguration erfolgt über die Datei \cidxfrag{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
+Die Konfiguration erfolgt über die Datei \emph{appsettings.json}\index{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
 \begin{verbatim}
 "ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
 \end{verbatim}
 In einer Firma oder Einrichtung wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
 
-In den Dateien \verb|Properties\launchSettings.json|, \verb|appsettings.json| und \verb|Program.cs| sind Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
+In den Programm- und Konfigurationsdateien \emph{launchSettings.json}\index{launchSettings.json}, \emph{appsettings.json} und \emph{Program.cs}\index{Program.cs} sind die Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
 
 Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auflistung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
 
@@ -117,6 +95,7 @@ Für die regelmäßige lokale Bereitstellung von \FPZ\ ist es am einfachsten, vom B
 \section{Grundlagen}
 \subsection{Das erste Beispiel}
 In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf beschränkt, dass wohl jeder, der in dieser Branche tätig ist, schon an dem einen oder anderen Hallo-Welt-Beispiel vorbeigekommen ist. In dieser Tradition starten auch wir und beginnen mit dem einfachsten aller Beispiele:
+
 \Beispiel{Hallo Welt}
 \begin{verbatim}
 >> Hallo Welt!
@@ -194,7 +173,7 @@ Hier ein Beispiel für so einen Fehler:
 
 Laufzeitfehler\index{Laufzeitfehler} treten dagegen meist im Zusammenhang mit Variablen auf, z.B.\ wenn mit diesen Rechenoperationen durchgeführt werden sollen, diese aber keinen Zahlenwert enthalten. Auch hier kann man anhand der Angaben in der Fehlermeldung die Stelle lokalisieren und sich an die Klärung der Ursache machen.
 
-In den meisten restlichen Fällen erscheint keine Fehlermeldung, aber das Skript produziert nicht die gewünschte Ausgabe. Und dann geht es an das Debuggen\index{Debuggen}\, also das Entfernen der Fehler. Hier gibt es bei \FPZ\ den großen Vorteil, dass das Feedback nach einer Änderung sehr schnell zu bekommen ist. Man ändert einfach eine Stelle im Skriptcode, speichert und drückt die Aktualisieren-Schaltfläche im Browser und erhält umgehend das Resultat der aktualisierten Version. Man muss weder neu kompilieren, noch irgendwelche Eingaben wiederholen.
+In den meisten restlichen Fällen erscheint keine Fehlermeldung, aber das Skript produziert nicht die gewünschte Ausgabe. Und dann geht es an das Debuggen\index{Debuggen}, also das Entfernen der Fehler. Hier gibt es bei \FPZ\ den großen Vorteil, dass das Feedback nach einer Änderung sehr schnell zu bekommen ist. Man ändert einfach eine Stelle im Skriptcode, speichert und drückt die Aktualisieren-Schaltfläche im Browser und erhält umgehend das Resultat der aktualisierten Version. Man muss weder neu kompilieren, noch irgendwelche Eingaben wiederholen.
 
 Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin, an vielen Stellen Hilfsausgaben zu erzeugen, z.B.\ mit den Werten von Variablen, der Information, ob eine bestimmten Stelle durchlaufen wurde, und so weiter. Diese können ganz normal als Ausgaben in das Skript eingebaut werden, idealerweise gesammelt in einem eigenen Debug-Abschnitt (siehe Abschnitt~\ref{Abschnitte}). Sobald die Entwicklung des Skriptes abgeschlossen ist, werden diese Hilfsausgaben auskommentiert oder entfernt.
 
@@ -218,16 +197,16 @@ Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt dami
         >> Stufe-1-Fehler: Spezifikationsverletzung
     #k2: Der Datenschutz ist an einer wesentlichen Stelle verletzt.
         >> Stufe-1-Fehler: Datenschutzverletzung
-    #k3: Der Datensicherheit ist verletzt oder gefährdet.
+    #k3: Die Datensicherheit ist verletzt oder gefährdet.
         >> Stufe-1-Fehler: Datensicherheitssverletzung
-    #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+    #no: Nein, die o.g. Kriterien treffen nicht zu.
         ?S2: Treffen die Kriterien für einen Stufe-2-Fehler zu?
             #k1: Der Fehler stört zentrale Programmfunktionen.
                 >> Stufe-2-Fehler: Störung zentraler Funktion.
             #k2: Es gibt zwei oder mehr Supportanfragen zu 
                 __ diesem Fehler.
                 >> Stufe-2-Fehler: Mindestens zwei Supportanfragen
-            #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+            #no: Nein, die o.g. Kriterien treffen nicht zu.
                 ?S4: Treffen die Kriterien für einen 
                     __ Stufe-4-Fehler zu?
                     #k1: Es handelt sich um einen erkennbaren
@@ -236,7 +215,7 @@ Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt dami
                     #k2: Der Fehler tritt nur bei unsinnigen
                         __ Eingaben auf.
                         >> Stufe-4-Fehler: unsinnige Eingaben
-                    #no: Nein, die o.g. Kriterien sind nicht erfüllt.
+                    #no: Nein, die o.g. Kriterien treffen nicht zu.
                         >> Stufe-3-Fehler
 \end{verbatim}
 
@@ -322,25 +301,24 @@ Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter A
 \begin{verbatim}
 @Anleitung >>_ Geschätzter Zeitaufwand ca. 15 min
 >>* Erstelle eine neue Modul-Klasse.
-    >* Erstelle C#-Datei mit dem Namen des Moduls.
-    >* Füge folgenden Code ein:
+    >* Erstelle eine C#-Datei mit dem Namen des Moduls.
+>>* Füge folgenden Code ein:
     >| public class NeuesModul : BaseModul
     >| {
     >| }
->>* Implementiere die Start-Methode
+>>* Implementiere die Start-Methode.
     ># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
     ># und wähle in der Auswahl des Editors die Methode Start.
     ># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.
 \end{verbatim}
 
-Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt werden zwei ebenfalls nicht nummerierte Unterpunkte ausgegeben, gefolgt von einem Codeblock\index{Codeblock} mit drei Zeilen. Unter dem zweiten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}\, die mit Kleinbuchstaben durchnummeriert sind,
+Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind,
 
 Die drei aufeinanderfolgenden Codezeilen werden zu einem Codeblock zusammengefasst, der mit der automatisch darunter angeordneten Schaltfläche \emph{In Zwischenablage kopieren} in die Zwischenablage\index{Zwischenablage} genommen werden kann.
 
-Auf die vielfältigen Möglichkeiten der Codegenerierung kommen wir später zurück. Im nächsten Abschnitt bleiben wir nochmal bei der Formatierung und zeigen, wie sich Text innerhalb einer Zeile formatieren lässt.
+Auf die vielfältigen Möglichkeiten der Codegenerierung kommen wir später noch zurück. Im nächsten Abschnitt bleiben wir nochmal bei der Formatierung und zeigen, wie sich Text innerhalb einer Zeile formatieren lässt.
 
 \subsection{Links und Inline-Code}\label{LinksInline}
-
 Gerade in Anleitungen wird auf Stellen im Code in Form von Klassen-, Methoden- oder Variablennamen verwiesen, und da erleichtert es den Lesefluss deutlich, wenn man diese Textelemente in der Ausgabe entsprechend hervorhebt. Dies ist mit dem Befehl \fcmd{AddCode} möglich, der der Ausgabe der letzten Zeile Text hinzufügt, der als Code\index{Code} formatiert ist. Mit dem Befehl \fcmd{AddText} kann danach wieder weiterer Text hinzugefügt werden. Man beachte das zusätzliche Leerzeichen, das immer am Anfang des angehängten Textes angefügt werden muss, wenn zwischen diesem und dem vorangegangen Text ein Leerzeichen stehen soll, da Leerraum am Zeilenende generell ignoriert wird.
 
 Als Anwendung im Browser kann \FPZ\ natürlich auch Links erzeugen, und damit den Anwender sowohl zu statischen Seiten, also auch zu anderen Anwendungen weiterleiten. Auch dieser Möglichkeit widmen wir später noch einen eigenen Abschnitt. Ein Link\index{Links} besteht dabei aus einer URL und dem anzuzeigenden Text, die in dieser Reihenfolge, getrennt von einem vertikalen Strich angegeben werden. Auch hier kann mit \fcmd{AddText} wieder weiterer Text im Anschluss angefügt werden.
@@ -504,14 +482,14 @@ Mit der Möglichkeit, Texte oder Zahlen einzugeben lassen sich jede Menge kleine 
 In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Aufgabenkontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
 
 \subsection{Ausgabetitel und Abschnittsverschiebungen}
-Der Titel\index{Titel}\, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auflistung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
+Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auflistung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
 
 Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, verschiedene Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
 
 \Beispiel{Abschnittsverschiebung}
 \begin{verbatim}
 ~Input Bez: Wie soll das Feld heißen?
-@AnlEig >> Setze die Bezeichnung "$Bez"
+@AnlEigenschaften >> Setze die Bezeichnung "$Bez"
 ?: Welche Art von Werten soll eingegeben werden?
     #: Texte
         ~Set Klasse=TextFeld        
@@ -522,15 +500,15 @@ Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt e
     #: Werte aus einer vorgegebenen Menge
         ~Set Klasse=Auswahlfeld
 ~SetTitle Implementerung der $Klasse-Instanz $Bez
-@AnlInst >> Erstelle eine $Klasse-Instanz
+@AnlInstanziierung >> Erstelle eine $Klasse-Instanz
 ?: Kann das Feld leer gelassen werden?
     #j: Ja
         ~Set KannLeerSein=true
     #n: Nein
         ~Set KannLeerSein=false
-@AnlEig >> Setze KannLeerSein = $KannLeerSein
-~MoveSection AnlInst -> Anleitung
-~MoveSection AnlEig -> Anleitung
+@AnlEigenschaften >> Setze KannLeerSein = $KannLeerSein
+~MoveSection AnlInstanziierung -> Anleitung
+~MoveSection AnlEigenschaften -> Anleitung
 \end{verbatim}
 
 In diesem Beispiel wird eine kleine Anleitung für den Einbau eines Feldes in ein Programm erstellt. Hierbei werden Bezeichnung, Typ und die Eigenschaft, ob das Feld leer gelassen werden kann, abgefragt. Sobald Bezeichnung und Typ festgelegt sind, wird der Titel unter Verwendung dieser Informationen neu gesetzt. Die Anleitung wird zunächst in zwei Abschnitten getrennt zusammengestellt, \verb|@AnlEig| für die beiden Eigenschaften und \verb|@AnlInst| für die Instanziierung. Am Ende werden die beiden Abschnitte  mit dem \fcmd{MoveSection}-Befehl nacheinander in den neuen Abschnitt \emph{Anleitung} überführt, so dass die Punkte dort in einer logischen Reihenfolge stehen.
@@ -578,9 +556,9 @@ So wie man den Titel\index{Titel} für die Ausgabeseite setzen kann, lässt sich d
 
 Der Bug-Planer\index{Bug-Planer} aus dem Beispiel oben ist eine schönes Beispiel für ein Berechnungsskript, bei dem Werte abgefragt, und daraus andere Werte berechnet werden. In diesem Fall wird die Anzahl der Bug-Vorgänge für jeden Schweregrad von 2 bis 4 abgefragt, der z.B. wie in Abschnitt~\ref{Kategorisierungshilfen} beschrieben festgelegt werden kann. Zusätzlich wird noch die Anzahl der einzuplanenden Bug-Vorgänge abgefragt und damit dann ein Vorschlag für eine Aufteilung berechnet, die möglichst im Verhältnis $6:3:1$ steht. Eine solche Angleichung geht natürlich nur, wenn von allen Schweregraden ausreichend viele Vorgänge vorhanden sind. Wenn nicht, wird das verplant, was da ist und das Sollverhältnis auf die anderen Schweregrade angewendet.
 
-Für die Eingabeseite wurde hier \fcmd{SetInputTitle} eine eigene Überschrift gewählt. Zusätzlich wurde mit \fcmd{SetInputDescription} eine Skriptbeschreibung\index{Skriptbeschreibung} formuliert, die unterhalb der Überschrift ausgegeben wird. Die vier Eingabefelder wurden mit dem Befehl \fcmd{SetInputSection} in die beiden Abschnitte\index{Abschnitt!bei Eingabe} \emph{Vorhandene Bug-Vorgänge} und \emph{Planung} unterteilt. Man beachte, dass gleich benannte Eingabeabschnitte an verschiedenen Stellen nicht zusammengeführt.
+Für die Eingabeseite wurde hier mit \fcmd{SetInputTitle} eine eigene Überschrift gewählt. Zusätzlich wurde mit \fcmd{SetInputDescription} eine Skriptbeschreibung\index{Skriptbeschreibung} formuliert, die unterhalb der Überschrift ausgegeben wird. Die vier Eingabefelder wurden mit dem Befehl \fcmd{SetInputSection} in die beiden Abschnitte\index{Abschnitt!bei Eingabe} \emph{Vorhandene Bug-Vorgänge} und \emph{Planung} unterteilt. Man beachte, dass gleich benannte Eingabeabschnitte an verschiedenen Stellen nicht zusammengeführt werden.
 
-Nach der vierten Eingabe steht der Befehl \fcmd{Execute}, der ebenfalls zur Formatierung verwendet werden kann. Der Befehl bewirkt, dass der Aufbau der Eingabeseite an diesem Punkt abgebrochen, und die Eingabeseite im aktuellen Zustand angezeigt wird. Erst wenn alle Abfragen und Eingaben bis zu diesem Punkt getätigt wurden, läuft das Skript weiter bis zum Ende oder bis zum nächsten \fcmd{Execute}-Befehl. Bei Skripten mit sehr vielen Abfragen kann man diesen Befehl nutzen, um die Fragen so aufzuteilen, dass sie jeweils auf einen Bildschirm passen oder man kann erzwingen, dass die von einer Auswahl abhängigen Eingaben zuerst vollständig abgefragt werden, bevor der nachfolgenden Block ausgeführt wird. Im Beispiel oben sorgt der Befehl dafür, dass die Berechnungen in der zweiten Hälfte des Skriptes erst ausgeführt werden, wenn die an die Eingaben gebundenen Variablen mit Werten belegt sind. Ansonsten würden die würden die ersten mit diesen Variablen durchgeführten Vergleiche zu einem Fehler führen.
+Nach der vierten Eingabe steht der Befehl \fcmd{Execute}, der ebenfalls zur Formatierung verwendet werden kann. Der Befehl bewirkt, dass der Aufbau der Eingabeseite an diesem Punkt abgebrochen, und die Eingabeseite im aktuellen Zustand angezeigt wird. Erst wenn alle Abfragen und Eingaben bis zu diesem Punkt getätigt wurden, läuft das Skript weiter bis zum Ende oder bis zum nächsten \fcmd{Execute}-Befehl. Bei Skripten mit sehr vielen Abfragen kann man diesen Befehl nutzen, um die Fragen so aufzuteilen, dass sie jeweils auf einen Bildschirm passen oder man kann erzwingen, dass die von einer Auswahl abhängigen Eingaben zuerst vollständig abgefragt werden, bevor der nachfolgenden Block ausgeführt wird. Im Beispiel oben sorgt der Befehl dafür, dass die Berechnungen in der zweiten Hälfte des Skriptes erst ausgeführt werden, wenn die an die Eingaben gebundenen Variablen mit Werten belegt sind. Ansonsten würden die ersten mit diesen Variablen durchgeführten Vergleiche zu einem Fehler führen.
 
 Die Berechnung selbst funktioniert wie folgt: Zunächst werden Variablen \verb|S2|, \verb|S3| und \verb|S4| für die Zahl der zu verteilenden Aufgaben des jeweiligen Schweregrades auf $0$ gesetzt, ebenso eine Variable \verb|Sum| für die Zwischensumme der insgesamt schon verteilten Aufgaben. 
 
@@ -588,12 +566,12 @@ Die äußere \fcmd{DoWhile}-Schleife wiederholt so lange, wie diese Zwischensumme 
 
 In der Inneren Schleife wird die Indexsequenz $4,3,2,2,3,2,2,3,2,2$ durchlaufen, was die Index-Variable \verb|idx| nacheinander auf diese Werte setzt. Dies bewirkt, dass die Indices $2$, $3$ und $4$ gleichmäßig im Verhältnis $6:3:1$ durchlaufen werden. Für den jeweils ausgewählten Index wird dann die Anzahl der zu verteilenden Aufgaben $S_i$ um $1$ erhöht, sofern noch Aufgaben des jeweiligen Schweregrades übrig sind ($S_i<A_i$) und die Zwischensumme $S$ der schon verteilten Aufgaben noch kleiner ist, als die Anzahl $A$ der Aufgaben, die verteilt werden soll ($S<A$), also \verb|$S$idx<$A$idx| und \verb|$Sum<$AP|. Für jede verteilte Aufgabe wird auch die Zwischensumme um $1$ erhöht.
 
-Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben oder unten durch einen absoluten Wert begrenzt. Die Eingaben könnten damit auf die des ersten Abschnitts beschränkt werden.
+Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben und unten durch einen absoluten Wert begrenzt. Die Eingaben könnten damit auf die des ersten Abschnitts beschränkt werden.
 
 \subsection{Hilfezeilen}
-Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten und die benötigen Eingaben tätigen muss.
+Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss und welche man weglassen kann, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten, und die benötigen Eingaben tätigen muss.
 
-Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch Anwender mit wenig Erfahrung in der Lage sind, das Skript auszuführen, ist eine Kunst für sich. In manchen Fällen wird das nicht möglich sein, und man wird einfach ein gewisses Systemwissen beim Anwender voraussetzen müssen, in den meisten Fällen wird man jedoch ein oder zwei Zeilen Anleitung auskommen, um zu beschreiben, wo man einen Wert findet oder wie die gestellte Frage oder einzelne Auswahlwerte genau zu interpretieren sind.
+Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch Anwender mit wenig Erfahrung in der Lage sind, das Skript auszuführen, ist eine Kunst für sich. In manchen Fällen wird das nicht möglich sein, und man wird einfach ein gewisses Systemwissen\index{Systemwissen} beim Anwender voraussetzen müssen. In den meisten Fällen wird man jedoch mit ein oder zwei Zeilen Anleitung auskommen, um zu beschreiben, wo man einen Wert findet oder wie die gestellte Frage oder einzelne Auswahlwerte genau zu interpretieren sind.
 
 \Beispiel{Hilfezeilen}
 \begin{verbatim}
@@ -640,7 +618,7 @@ Der \fcmd{GoTo}-Befehl ist für \FPZ\ dahingehend interessant, da er den eng mit 
 >> Fragen für alle Entwicklungen 
 \end{verbatim}
 
-Zu Beginn wird nach der Kategorisierung einer Entwicklung gefragt, die entweder eine Framework-Entwicklung ist, eine individuelle Einzelentwicklung oder eine Standardentwicklung auf Basis des vorhandenen Frameworks ist. In Abhängigkeit der Antwort werden entweder alle drei Blöcke, nur die letzten neiden Blöcke oder nur der letzte Block durchlaufen.
+Zu Beginn wird nach der Kategorisierung einer Entwicklung gefragt, die entweder eine Framework-Entwicklung ist, eine individuelle Einzelentwicklung oder eine Standardentwicklung auf Basis des vorhandenen Frameworks ist. In Abhängigkeit der Antwort werden entweder alle drei Blöcke, nur die letzten beiden Blöcke oder nur der letzte Block durchlaufen.
 
 Man kann Sprungmarken auch einfach dazu verwenden, um tief verschachtelte Abfragen in übersichtlicher Art und Weise als Folgen anzuordnen.
 
@@ -649,7 +627,7 @@ Aus Abschnitt~\ref{BewSysteme} kennen wir schon den \fcmd{AddTo}-Befehl, mit dem
 (modulo) durchführen konnte. Umfangreichere Ausdrücke mussten dementsprechend in mehreren Zeilen zerlegt und mit entsprechend vielen Hilfsvariablen berechnet werden.
 
 Mit dem Befehl \fcmd{CalculateExpression} lassen sich inzwischen auch längere Ausdrücke auf Basis der Operatoren \verb|+|, \verb|-|, \verb|*|, \verb|/|, \verb|%| 
-und \verb|^| und den Funktionen \verb|sqrt|, \verb|sin|, \verb|cos|, \verb|tan|, \verb|exp| und \verb|ln| und einer beliebigen Klammerung in einer Zeile berechnen. Die Berechnungen erfolgen nummerisch und die Ergebnisse werden in Dezimal- oder ggf.\ auch in Exponentialschreibweise dargestellt.
+und \verb|^| und den Funktionen \cidxfrag{sqrt}, \cidxfrag{sin}, \cidxfrag{cos}, \cidxfrag{tan}, \cidxfrag{exp} und \cidxfrag{ln} und einer beliebigen Klammerung in einer Zeile berechnen. Die Berechnungen erfolgen nummerisch und die Ergebnisse werden in Dezimal- oder ggf.\ auch in Exponentialschreibweise\index{Exponentialschreibweise} dargestellt.
 
 \Beispiel{Berechnungen}
 \begin{verbatim}
@@ -665,12 +643,12 @@ und \verb|^| und den Funktionen \verb|sqrt|, \verb|sin|, \verb|cos|, \verb|tan|,
     >> Z = $Z
 \end{verbatim}
 
-In die letzten Zeile vor der Ausgabe wird der Wert der Variablen \verb|X| auf drei Stellen hinter dem Komma gerundet und das Ergebnis der Variablen \verb|Z| zugewiesen.
+In die letzten Zeile vor der Ausgabe wird der Wert der Variablen \verb|X| mit dem \fcmd{Round}-Befehl auf drei Stellen hinter dem Komma gerundet und das Ergebnis der Variablen \verb|Z| zugewiesen.
 
 \subsection{Schleifen}
 Die große Stärke von Computern liegt darin, die gleichen Dinge in leichter Variation oft zu wiederholen, ohne sich zu langweilen und ohne in der Ausführung nachlässig zu werden. Mit Hilfe von Schleifen\index{Schleifen} lassen sich solche Mehrfachausführungen einfach implementieren.
 
-Die bekannten höheren Programmiersprachen unterscheiden drei prinzipielle Arten von Schleifen: Die \emph{For-Schleife}\index{For-Schleife} wird mit einer Zählervariablen eingeleitet, die mit einem Startwert beginnt, diesen bei jedem Durchlauf um eine Schrittlänge hoch zählt, und beendet wird, wenn ein Zielwert erreicht oder eine Abbruchbedingung erfüllt wird. Die \emph{Do-While-Schleife}\index{Do-While-Schleife} läuft dagegen so lange durch, bis eine Abbruchbedingung erfüllt ist. Schließlich gibt es noch die \emph{For-Each-Schleife}\index{For-Each-Schleife}\, bei der eine vorgegebene Menge von Elementen durchlaufen wird. Eine Indexvariable nimmt dabei nacheinander den Wert dieser Elemente an.
+Die bekannten höheren Programmiersprachen unterscheiden drei prinzipielle Arten von Schleifen: Die \emph{For-Schleife}\index{For-Schleife} wird mit einer Zählervariablen eingeleitet, die mit einem Startwert beginnt, diesen bei jedem Durchlauf um eine Schrittlänge hoch zählt, und beendet wird, wenn ein Zielwert erreicht oder eine Abbruchbedingung erfüllt wird. Die \emph{Do-While-Schleife}\index{Do-While-Schleife} läuft dagegen so lange durch, bis eine Abbruchbedingung erfüllt ist. Schließlich gibt es noch die \emph{For-Each-Schleife}\index{For-Each-Schleife}, bei der eine vorgegebene Menge von Elementen durchlaufen wird. Eine Indexvariable nimmt dabei nacheinander den Wert dieser Elemente an.
 
 In \FPZ\ gibt es die Beiden Befehle \fcmd{DoWhile} und \fcmd{ForEach} für die Einleitung von Do-While-Schleifen und For-Each-Schleifen. Reine For-Schleifen lassen sich sehr direkt auch als Do-While-Schleife abbilden, deshalb gibt es für diese keinen eigenen Befehl. Das Schleifenende, also die Stelle, an der ggf.\ ein weiterer Durchlauf gestartet wird, wird in beiden Fällen mit dem \fcmd{Loop}-Befehl gekennzeichnet, der die gleiche Einrückung wie der Beginn der Schleife haben muss. Auf diese Weise lassen sich mehrere Schleifen ineinander verschachteln. Zusätzlich gibt es noch den \fcmd{ExitLoop}-Befehl, mit dem die aktuell ausgeführte Schleife unmittelbar verlassen wird.
 
@@ -715,7 +693,7 @@ Ein häufigerer Anwendungsfall, insbesondere wenn man Skripte schreibt, die Progr
     #j: Ja
         ~Set i=1
         ~DoWhile $V$i==j
-            ~Input B$i: Variable für den $i. Paramter:
+            ~Input B$i: Variable für den $i. Parameter:
             ~Set Vars($i)=$B$i
             ~AddTo i+=1
             ?V$i: Hat die Funktion einen $i. Parameter?
@@ -738,7 +716,7 @@ Zu den wichtigsten Steuermechanismen innerhalb eines Programms gehört ganz klar 
 
 \Beispiel{Bewertungsschema}
 \begin{verbatim}
-~Input P: Wie hoch ist die Punktezahl (0-20)
+~Input P: Wie hoch ist die Punktezahl (0-20)?
 ~Execute
 ~If $P>=18
     ~Set Note=sehr gut
@@ -753,33 +731,33 @@ Zu den wichtigsten Steuermechanismen innerhalb eines Programms gehört ganz klar 
 >> Ergebnis: $P Punkte (Note $Note)
 \end{verbatim}
 
-Ein klassischer Anwendungsfall für mehrstufige If-Abfragen ist die Anwendung eines Bewertungsschemas\index{Bewertungsschema}\, bei der für einen vorgegebenen Wert das dazu passende Intervall gesucht werden muss, mit dem diesem Wert dann ein Zielwert zugeordnet wird. Im Beispiel oben wird so einem Punktewert von 0 bis 20 eine Note in Textform zugeordnet.
+Ein klassischer Anwendungsfall für mehrstufige If-Abfragen ist die Anwendung eines Bewertungsschemas\index{Bewertungsschema}, bei der für einen vorgegebenen Wert das dazu passende Intervall gesucht werden muss, mit dem diesem Wert dann ein Zielwert zugeordnet wird. Im Beispiel oben wird so einem Punktewert von 0 bis 20 eine Note in Textform zugeordnet.
 
 Die Bedingungen im Beispiel sind einfache Größer-gleich-Vergleiche\index{Vergleiche}, aber es können auch komplexere Ausdrücke formuliert werden. Die Bedingung muss dabei in der disjunktiven Normalform\index{disjunktive Normalform} angegeben werden, also als Oder-Verknüpfung\index{Oder-Verknüpfung} (\verb=||=) von Und-Verknüpfungen\index{Und-Verknüpfung} (\verb|&&|), wobei keine Klammerung notwendig ist.
 Als Literale sind die Konstanten \verb|1| (wahr), \cidxfrag{true} (wahr\index{wahr}), \verb|0| und \cidxfrag{false} (falsch\index{falsch}) verwendbar, sowie für Zeichenketten $s$ und $t$, Zahlen $x$ und $y$ und Variablen $v$ die folgenden Ausdrücke zulässig: \verb|s==t| ($s$ ist gleich $t$), \verb|s!=t| ($s$ ist ungleich $t$), \verb|x<>y| ($x$ ist ungleich $y$), \verb|x<y| ($x$ ist kleiner als $y$), \verb|x<=y| ($x$ ist kleiner oder gleich $y$), \verb|x>y| ($x$ ist größer als $y$), \verb|x>=y| ($x$ ist größer oder gleich $y$), \verb|s~t| ($s$ enthält $t$), \verb|s!~t| ($s$ enthält $t$ nicht), \verb|?$v| ($v$ ist gesetzt), \verb|!?$v| ($v$ ist nicht gesetzt). 
 
 \subsection{Funktionen}
-Viele spannende und mächtige Algorithmen gründen auf Funktionen\index{Funktionen}, die sich rekursiv selbst aufrufen. Es gibt Programmiersprachen wie Scheme, die einen dazu verleiten, so gut wie jede Problemstellung mittels Rekursion\index{Rekursion} zu lösen. Auch \FPZ\ erlaubt die Definition von Funktionen und rekursive Aufrufe, obgleich wie schon im früheren Abschnitten erwähnt, dort nicht der Schwerpunkt dieser Skriptsprache liegt.
+Viele spannende und mächtige Algorithmen gründen auf Funktionen\index{Funktionen}, die sich rekursiv selbst aufrufen. Es gibt Programmiersprachen wie Scheme, die einen dazu bringen, so gut wie jede Problemstellung mittels Rekursion\index{Rekursion} zu lösen. Auch \FPZ\ erlaubt die Definition von Funktionen und rekursive Aufrufe, obgleich wie schon im früheren Abschnitten erwähnt, dort nicht unbedingt der Schwerpunkt dieser Skriptsprache liegt.
 
 Das nachfolgende Beispiel zeigt den Klassiker unter den rekursiv lösbaren Aufgaben, nämlich die Türme von Hanoi\index{Türme von Hanoi}. Dabei geht es darum, einen Turm von mehreren absteigend großen Schreiben von einer Stange unter Zuhilfenahme einer zweiten Stange auf eine dritte Stange umzustapeln, wobei jeweils nur eine Scheibe bewegt werden darf und niemals eine größere Scheibe auf einer kleineren Scheibe abgelegt werden darf.
 
 \Beispiel{Türme von Hanoi}
 \begin{verbatim}
-~Set MoveFromS=1
-~Set MoveToS=3
+~Set MoveFromS=A
+~Set MoveToS=C
 ~Set MoveCountS=4
 ~GoSub Move; BaseKey=S
 ~End
 
-// Bewegt n Scheiben von A nach B
-// MoveFrom$BaseKey:  Ausgangsturm A
-// MoveTo$BaseKey:    Zielturm B
+// Bewegt n Scheiben von Stange a nach b
+// MoveFrom$BaseKey:  Ausgangsstange a (A, B, C)
+// MoveTo$BaseKey:    Zielstange b (A, B, C)
 // MoveCount$BaseKey: Anzahl Scheiben n
 ~DefineSub Move
     ~If $MoveCount$BaseKey>0
         ~Set Q1$BaseKey=$MoveFrom$BaseKey
         ~Set Q2$BaseKey=$MoveTo$BaseKey
-        ~Set Q3$BaseKey=123
+        ~Set Q3$BaseKey=ABC
         ~Replace Q3$BaseKey=$Q3$BaseKey|$Q1$BaseKey->
         ~Replace Q3$BaseKey=$Q3$BaseKey|$Q2$BaseKey->
         ~Set MC$BaseKey=$MoveCount$BaseKey
@@ -800,11 +778,11 @@ Das nachfolgende Beispiel zeigt den Klassiker unter den rekursiv lösbaren Aufgab
 ~Return
 \end{verbatim}
 
-Der Lösungsansatz besteht darin, das Umstapeln eines Turms mit $n$ Scheiben von Stange $a$ nach Stange $b$ in drei Schritte zu zerlegen: Zunächst stapelt man den oberen Teil des Turms aus $n-1$ Schreiben um auf die freie Stange $c$, bewegt dann die $n$te Schreibe auf die Zielstange $b$ und stapelt dann wieder denselben Turm von Stange $c$ auf Stange $b$ oben auf diese Scheibe drauf. Auf diese Weise hat man das Problem auf das Verschieben eines kleineren Turms zurückgeführt und kann das wiederholt anwenden, bis man schließlich bei einem Turm mit $0$ Scheiben angekommen ist, bei dem nichts mehr zu tun ist.
+Der Lösungsansatz besteht darin, das Umstapeln eines Turms mit $n$ Scheiben von Stange $a$ nach Stange $b$ in drei Schritte zu zerlegen: Zunächst stapelt man den oberen Teil des Turms aus $n-1$ Schreiben um auf die freie Stange $c$, bewegt dann die $n$te Schreibe auf die Zielstange $b$ und stapelt dann wieder denselben Turm von Stange $c$ auf Stange $b$ oben auf diese Scheibe drauf. Auf diese Weise hat man das Problem auf das Umstapeln eines kleineren Turms zurückgeführt und kann das wiederholt anwenden, bis man schließlich bei einem Turm mit $0$ Scheiben angekommen ist, bei dem nichts mehr zu tun ist.
 
-Die Definition der Funktionen erfolgt am Ende des Skriptes, das zuvor mit dem Befehl \fcmd{End} beendet werden muss. Jede Funktion wird mit dem Befehl \fcmd{DefineSub} eingeleitet und mit dem Befehl \fcmd{Return} beendet. Der dazwischen liegende, eingerückte Codeblock wird bei jedem Aufruf durchlaufen. Ein Aufruf wird mit mir im Befehl \fcmd{GoSub} in die Wege geleitet, bei dem auch der \cidxfrag{BaseKey}-Wert übergeben werden kann. Nach dem Aufruf wird das Skript in der nächsten Zeile fortgesetzt.
+Die Definition der Funktionen erfolgt standardmäßig am Ende des Skriptes. Ihr Code wird nur durchlauben, wenn sie aufgerufen werden, trotzdem wird hier zur besseren Übersichtlichkeit die Ausführung vorher mit dem Befehl \fcmd{End} beendet. Jede Funktion wird mit dem Befehl \fcmd{DefineSub} eingeleitet und mit dem Befehl \fcmd{Return} beendet. Der dazwischen liegende, eingerückte Codeblock wird bei jedem Aufruf durchlaufen. Ein Aufruf wird mit mir im Befehl \fcmd{GoSub} in die Wege geleitet, bei dem auch der \cidxfrag{BaseKey}-Wert übergeben werden kann. Nach dem Aufruf wird das Skript in der nächsten Zeile fortgesetzt.
 
-Da es in \FPZ\ keine lokalen Variablenbereiche gibt, muss man die Variablen, die für einen bestimmten Funktionsaufruf erhalten bleiben sollen, explizit von den anderen Variablen abgrenzen. Dafür kann über die Sondervariable \cidxfrag{BaseKey} eine Zahl oder Zeichenfolge übergeben werden, die für jeden Funktionsaufruf getrennt verwaltet wird und die in den innerhalb der Funktion genutzten Variablen als Teil der Bezeichnung eingebaut werden kann, um auch diese zu trennen. In gleicherweise können auch die Funktionsargumente vor dem Funktionsaufruf als ganz normale Variablen definiert werden. 
+Da es in \FPZ\ keine lokalen Variablenbereiche gibt, muss man die Variablen, die für einen bestimmten Funktionsaufruf erhalten bleiben sollen, explizit von den anderen Variablen abgrenzen. Dafür kann über die Sondervariable \cidxfrag{BaseKey} eine Zahl oder Zeichenfolge übergeben werden, die für jeden Funktionsaufruf getrennt verwaltet wird und die in den innerhalb der Funktion genutzten Variablen als Teil der Bezeichnung eingebaut werden kann, um auch diese zu trennen. In gleicherweise können auch die Funktionsargumente vor dem Funktionsaufruf als Variablen definiert werden, die sich auf den übergebenen \cidxfrag{BaseKey}-Wert beziehen. Im Beispiel wird vor dem ersten Aufruf im Skript \verb|MoveFromS=A| als einer von drei Funktionsparametern gesetzt und beim Funktionsaufruf wird \verb|BaseKey=S| übergegeben. Damit wird innerhalb der Funktion \verb|$MoveFrom$BaseKey| zu \verb|$MoveFromS| und schließlich zu \verb|A| ersetzt. Bei den rekursiven Aufrufen wird der \cidxfrag{BaseKey}-Wert dann jeweils um die Buchstaben A und B erweitert, so dass am Ende Funktionsparameter zu 15 verschiedenen \cidxfrag{BaseKey}-Werten verwaltet werden.
 
 Der Umgang mit rekursiven Funktionen ist in \FPZ\ zugegebenermaßen etwas gewöhnungsbedürftig, aber er lässt sich mit einigen Debug-Ausgaben und etwas Übung doch gut hinbekommen. Analog zu den Variablen lassen sich auch die Schlüssel für Eingaben mithilfe der \cidxfrag{BaseKey}-Variablen definieren, so das in jeder Rekursion auch Benutzerinteraktionen stattfinden können. Auf diese Weise kann zum Beispiel ein Sortieralgorithmus wie Mergesort implementiert werden, der den einzelnen Vergleich zweier Elemente an den Anwender weitergibt. Damit kann etwa die Sortierung von Projekten oder Aufgaben nach Priorität auf Einzelvergleiche heruntergebrochen werden, die sich oft mit Bauchgefühl ganz gut festlegen lassen.
 
@@ -845,9 +823,9 @@ Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste 
 
 Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B.\ \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jede Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
 
-Der Umgang mit solchen kombinatorischen Auflistungen\index{kombinatorischen Auflistungen} ist in der Softwareentwicklung wichtiger, als man denkt und der größte Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann müssen auch diese Fälle betrachtet und behandelt werden. 
+Der Umgang mit solchen kombinatorischen Auflistungen\index{kombinatorischen Auflistungen} ist in der Softwareentwicklung wichtiger, als man denkt und ein großer Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann, müssen auch diese Fälle betrachtet und behandelt werden. 
 
-Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. Entsprechend empfiehlt es sich, den Kombinator so zu erweitern, dass sich zumindest die sich gegenseitig ausschließenden Kombinationen  angeben und entfernen lassen.
+Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. Entsprechend empfiehlt es sich, den Kombinator so zu erweitern, dass sich zumindest die sich gegenseitig ausschließenden Kombinationen  angeben und entfernen lassen.
 
 \subsection{Ersetzungen und Zufallsgenerierung}
 Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, etwa in Beispiel~\ref{BspTextersetzung}. Die Ersetzung\index{Ersetzung} von Texten in anderen Texten ist für viele Zwecke einsetzbar. Im nachfolgende Beispiel wird die Textersetzung dazu verwendet um systematisch einen Text aufzubauen. Hierbei kommt auch der Befehl \fcmd{Random} zum Einsatz, mit dem eine Zufallszahl\index{Zufallszahl} in einem Zahlenbereich generiert werden kann.
@@ -879,7 +857,7 @@ Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, 
         ~Random z=65..90
         ~AddTo AnzGross+=-1
     ~ElseIf $AnzSonder>0
-        ~Random s=1..9
+        ~Random s=1..$SZ(0)
         ~Set z=$SZ($s)
         ~AddTo AnzSonder+=-1
     ~Else
@@ -893,22 +871,24 @@ Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, 
 
 Das Beispiel zeigt einen Passwortgenerator\index{Passwortgenerator}, der für eine vorgegebene Länge ein Passwort aus zufälligen Zeichen erzeugt. Die von den meisten Passwortrichtlinien geforderten Zusatzbedingungen, dass das Passwort auch Ziffern, Großbuchstaben und Sonderzeichen enthalten muss, sind ebenfalls berücksichtigt. Da diese Zeichen zum Eintippen oftmals lästig sind, kann ihre Anzahl hier beschränkt werden. Ebenso kann die Menge der Sonderzeichen festgelegt werden, die zum Einsatz kommen soll.
 
-Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr}-Befehl verwendet der das Zeichen mit dem dazu gehörenden Dezimalcode erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
+Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr}-Befehl verwendet der das Zeichen mit dem dazu gehörenden ANSI-Code\index{ANSI-Code} erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
+
+Für die Erzeugung der Sonderzeichen wird zunächst eine Zufallszahl von $1$ bis zur Länge der Liste \verb|SZ| generiert, wobei diese mit \verb|$SZ(0)| abgerufen wird. Mit dieser Zahl wird der entsprechende Listeneintrag ausgelesen, der dann in gleicher Weise wie die anderen Codes in ein Zeichen umgewandelt wird. Damit kann die Liste um weitere Codes ergänzt werden, ohne dass an anderer Stelle die Anzahl der Liste angepasst werden muss.
 
 \subsection{Reguläre Ausdrücke und Datenabfragen}\label{RegUndDaten}
-Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich Auch die verschiedenen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
+Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich auch die verschiedenen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
 
-Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die irgendwo im Skripte-Verzeichnis liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber lesend. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
+Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die irgendwo im Skripte-Verzeichnis liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber man kann sie auslesen. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
 
 Das nachfolgende Beispiel ist ein einfaches Werkzeug zur Anwendung einer Terminologie\index{Terminologie} auf einen Eingabetext. Die Terminologie für einen bestimmten Kontext beschreibt die dort relevanten Begriffe und gibt an, welche der jeweils möglichen Benennungen innerhalb des Kontextes zulässig sind und welche nicht. In der Regel einigt man sich für jeden Begriff auf eine zulässige Benennung und schließt mehrere andere aus. So entsteht mit der Zeit eine Terminologiedatenbank aus Begriffen, Benennungen, Definitionen und Ausschlussbegründungen, die in einem sehr einfachen Fall so aussehen könnte:
 
 \Beispiel{Terminologieliste.txt}
 \begin{verbatim}
-1    Passwort    ja    Zeichenfolge, deren Kenntnis Zugang...
+1    Passwort    ja  Zeichenfolge, deren Kenntnis Zugang...
 1    Kennwort    nein    Weniger üblich.
-2    Schaltfläche    ja    Steuerelement, das bei Klick eine...
-2    Button    nein    Anglizismus.
-2    Knopf    nein    Wird eher mit Geräten assoziiert.
+2    Schaltfläche    ja  Steuerelement, das bei Klick eine...
+2    Button  nein    Anglizismus.
+2    Knopf   nein    Wird eher mit Geräten assoziiert.
 \end{verbatim}
 
 Jede Zeile hat vier Einträge, die durch Tabulatoren getrennt sind. Im ersten wird die ID des Begriffes angegeben und da ein Begriff mehrere Benennungen haben kann, können auch mehrere Zeilen zur selben ID vorhanden sein. Die zweite Spalte gibt eine Benennung an. Die dritte Spalte enthält entweder den Inhalt \emph{ja} oder \emph{nein} und gibt an, ob die jeweilige Benennung zulässig ist oder nicht. Im ersten Fall gibt die vierte Spalte die Definition des Begriffes an, im zweiten Fall beschreibt sie die Begründung, warum die entsprechende Benennung nicht verwendet werden soll. Für die Verarbeitung ist es wichtig, dass die zulässige Benennung immer in der ersten Zeile für jede ID steht und dass alle Zeilen zur selben ID aufeinander folgen.
@@ -938,7 +918,7 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminol
 ~Loop
 \end{verbatim}
 
-Es durchläuft alle Benennungen aus der Terminologiedatenbank und prüft, ob diese im eingegebenen Text vorhanden sind. Je nachdem ob es sich um eine zulässige Benennung handelt oder nicht, wird diese dann in einem entsprechenden Abschnitt aufgelistet. Bei einer nicht zulässigen Benennung wird die zum entsprechenden Begriff empfohlene Benennung samt Definition ausgegeben, ebenso die Begründung warum die Benennung nicht verwendet werden soll. Für die Eingabe \emph{ nach Eingabe des Passworts muss der Button gedrückt werden} wird \emph{Passwort} als zulässige Benennung bestätigt und \emph{Button} mit Hinweis auf \emph{Schaltfläche} als nicht zulässige Benennung abgelehnt. 
+Es durchläuft alle Benennungen aus der Terminologiedatenbank und prüft, ob diese im eingegebenen Text vorhanden sind. Je nachdem ob es sich um eine zulässige Benennung handelt oder nicht, wird diese dann in einem entsprechenden Abschnitt aufgelistet. Bei einer nicht zulässigen Benennung wird die zum entsprechenden Begriff empfohlene Benennung samt Definition ausgegeben, ebenso die Begründung warum die Benennung nicht verwendet werden soll. Für die Eingabe \emph{nach Eingabe des Passworts muss der Button gedrückt werden} wird \emph{Passwort} als zulässige Benennung bestätigt und \emph{Button} mit Hinweis auf \emph{Schaltfläche} und der Begründung, dass es sich um einen Anglizismus handelt, als nicht zulässige Benennung abgelehnt. 
 
 Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \verb|ti| eine Liste zurück. Das nullte Element gibt an, ob für den Ausdruck ein Treffer gefunden wurde, die nachfolgenden Elemente enthalten die Teiltexte des gefundenen Ausdrucks, die über die runden Klammern im Ausdruck als Gruppen angegeben wurden.
 
@@ -970,32 +950,32 @@ Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInl
     __ per E-Mail verschicken
 \end{verbatim}
 
-Zuerst wird ein Suchbegriff abgefragt. Dieser wird mittels \fcmd{UrlEncode} in die Variable \verb|uS| in codierter Form abgelegt. Für den mailto-Link\index{mailto-Link} werden nacheinander Betreff (\emph{subject}) und Inhalt (\emph{body}) der E-Mail in gleicher Weise in die beiden Variablen \verb|usub| und \verb|ubody| codiert und am Ende in den Link eingebaut.
+Zuerst wird ein Suchbegriff abgefragt. Dieser wird mittels \fcmd{UrlEncode} in die Variable \verb|uS| in codierter Form abgelegt. Für den mailto-Link\index{mailto-Link} werden nacheinander Betreff (\emph{subject}) und Inhalt (\emph{body}) der E-Mail\index{E-Mail} in gleicher Weise in die beiden Variablen \verb|usub| und \verb|ubody| codiert und am Ende in den Link eingebaut.
 
-Das Beispiel zeigt zum einen den Einsatz von Zeilenumbrüche\index{Zeilenumbrüche}\, die man mit dem Befehl \cidxvar{CRLF} erzeugen kann, was die Zeichenkombination \emph{Carriage Return + Line Feed} ausgibt, und zum anderen, dass auch kodierte Texte wie die Suchlinks wieder Bestandteil von Codierungen sein können. 
+Das Beispiel zeigt zum einen den Einsatz von Zeilenumbrüche\index{Zeilenumbrüche}, die man mit dem Befehl \cidxvar{CRLF} erzeugen kann, was die Zeichenkombination \emph{Carriage Return + Line Feed} ausgibt, und zum anderen, dass auch kodierte Texte wie die Suchlinks wieder Bestandteil von Codierungen sein können. 
 
-Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit denen sich Vorgänge über parametrisierte Aufrufe vollständig vorbereiten lassen, so dass alle relevanten Felder ausgefüllt sind. In gleicher Weise können auch spezialisierte Suchen im selben Ticketsystem in Form von Links bereitgestellt werden, so dass direkt innerhalb der richtigen Projekt- oder Aufgabenkategorie gesucht wird. Ein klassisches Beispiel ist die Einrichtung einer Metasuche\index{Metasuche}\, die für einen eingegebenen Suchbegriff ähnlich wie das Beispiel oben verschiedene Links in den verschiedenen Firmensystemen wie Wiki, Programmdokumentation und dem Ticketsystem bereitstellt, und in letzterem noch zusätzlich unter verschiedenen Suchparametern.
+Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit denen sich Vorgänge über parametrisierte Aufrufe vollständig vorbereiten lassen, so dass alle relevanten Felder ausgefüllt sind. In gleicher Weise können auch spezialisierte Suchen im selben Ticketsystem in Form von Links bereitgestellt werden, so dass direkt innerhalb der richtigen Projekt- oder Aufgabenkategorie gesucht wird. Ein klassisches Beispiel ist die Einrichtung einer Metasuche\index{Metasuche}, die für einen eingegebenen Suchbegriff ähnlich wie das Beispiel oben verschiedene Links in den verschiedenen Firmensystemen wie Wiki, Programmdokumentation und dem Ticketsystem bereitstellt, und in letzterem noch zusätzlich unter verschiedenen Suchparametern.
 
 Oft müssen solche Tickets oder andere Vorgänge durch Personen außerhalb des Fachbereichs erstellt werden, die sich besonders schwer damit tun alle Eigenschaften in der für die Bearbeitung gewünschten Art und Weise zu setzen. Wenn hier mit einem Skript soweit unterstützt werden kann, dass am Ende die Erstellung des Vorgangs direkt über einen Link möglich ist, hat man viel gewonnen. Idealerweise kombiniert man so ein Erstellungsskript mit einem Expertensystem (siehe Abschnitt~\ref{Expertensystem}) und der angeleiteten Suche nach eventuell schon vorhandenen Tickets zum Thema.
 
 Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfezeilen der entsprechenden Felder mit Parametern verlinkt werden.
 
 \section{Systementwicklung}
-In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode, und auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
+In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode. Auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
 
 \subsection{Zielsetzung der Systementwicklung}
-Die Überschrift lautet bewusst Systementwicklung\index{Systementwicklung}\, da viele Softwarehäuser über Jahre hinweg ein umfangreiches System aufbauen und weiterentwickeln, dass auf einem ebenso umfangreichen und durchdachten Framework aufbaut, das wiederum durchgängig auf einem Designsystem gründet. Jeder Teil der Anwendung sieht damit einheitlich aus, folgt den gleichen Bedienprinzipien sowie der für den Domänenkontext festgelegten Terminologie.
+Die Überschrift lautet bewusst Systementwicklung\index{Systementwicklung}, da viele Softwarehäuser über Jahre hinweg ein umfangreiches System aufbauen und weiterentwickeln, dass auf einem ebenso umfangreichen und durchdachten Framework aufbaut, das wiederum durchgängig auf einem Designsystem gründet. Jeder Teil der Anwendung sieht damit einheitlich aus, folgt den gleichen Bedienprinzipien sowie der für den Domänenkontext festgelegten Terminologie.
 
-Die Erweiterung des Frameworks für ein solches System ist aufwendig, da all diese Punkte berücksichtigt werden müssen. Die Erweiterung der Anwendung auf Basis des vorhandenen Frameworks ist dagegen recht einfach, oder sollte es zumindest sein, da in diesem Fall keine technischen Probleme mehr gelöst werden müssen, sondern nur noch die richtigen Komponenten in der richtigen Art und Weise zusammengebaut, und nach den Vorgaben des Product Owners konfiguriert werden müssen. Und je besser das Framework ist, umso weniger Spielraum gibt es beim Anwenden und damit auch weniger Fragen, weniger Abweichungen und weniger Fehler.
+Die Erweiterung des Frameworks für ein solches System ist aufwendig, da all diese Punkte berücksichtigt werden müssen. Die Erweiterung der Anwendung auf Basis des vorhandenen Frameworks ist dagegen recht einfach, oder sollte es zumindest sein, da in diesem Fall keine technischen Probleme mehr gelöst werden müssen, sondern nur noch die richtigen Komponenten in der richtigen Art und Weise zusammengebaut, und nach den Vorgaben des Product Owners konfiguriert werden müssen. Und je besser das Framework ist, desto weniger Spielraum gibt es beim Anwenden und damit auch weniger Fragen, weniger Abweichungen und weniger Fehler.
 
-Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZb-Skripten und dass diese Methode sowohl von der Effizienz als auch von der Qualität her punkten kann.
+Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZb-Skripten und dass diese Methode hier sowohl von der Effizienz als auch von der Qualität her punkten kann.
 
 Zielsetzung ist ein System aus Anleitungen und Unterstützungssystemen, das alle Komponenten des Frameworks in jeweils allen Phasen der Softwareentwicklung repräsentiert, angefangen bei der Auswahl der Komponenten zur Umsetzung bestimmter Anforderungen, über die Verwendung im Programmcode, bis hin zur Testphase. Alle Abhängigkeiten, die sich zwischen den verschiedenen Entwicklungsphasen ergeben, sollten weitestgehend in den Skripten abgebildet sein und automatisch Berücksichtigung finden.
 
 \subsection{Entwicklungsanleitungen}
 Entwicklungsanleitungen\index{Entwicklungsanleitungen} sind, wie der Begriff schon sagt, Anleitungen für die Entwickler. Diese beschreiben, wie Anforderungen mit Hilfe der zur Verfügung stehenden Mittel umgesetzt werden können oder sollen. 
 
-Idealerweise gibt es für jede wiederkehrende Entwicklung eine dokumentierte Best Practice, die vorgibt, wie diese umzusetzen ist so dass unabhängig von einzelnen Entwicklern immer dieselbe Lösung herauskommen sollte, die sowohl Qualität, als auch Wartbarkeit garantiert. Die Anleitung für ein wiederkehrendes Entwicklungsmuster ist ein guter Ort um so eine Best Practice direkt zu hinterlegen und aktuell zu halten, denn die Tatsache, das einem eine solche Anleitung die Arbeit einfacher macht, stell praktisch sicher, dass diese auch verwendet wird, und damit auch die Best Practice Anwendung findet.
+Idealerweise gibt es für jede wiederkehrende Entwicklung eine dokumentierte Best Practice\index{Best Practice}, die vorgibt, wie diese umzusetzen ist so dass unabhängig von einzelnen Entwicklern immer dieselbe Lösung herauskommen sollte, die sowohl Qualität, als auch Wartbarkeit garantiert. Die Anleitung für ein wiederkehrendes Entwicklungsmuster ist ein guter Ort um so eine Best Practice direkt zu hinterlegen und aktuell zu halten, denn die Tatsache, das einem eine solche Anleitung die Arbeit einfacher macht, stell praktisch sicher, dass diese auch verwendet wird, und damit auch die Best Practice Anwendung findet.
 
 Auch wenn die eigentliche Arbeit an einer Entwicklung beim Product Owner beginnt, ist es sinnvoll beim Aufbau solcher Anleitungen bei der Entwicklung zu beginnen. Zum einen sind die Entwickler diejenigen, die am wenigsten Berührungsängste mit der Skriptentwicklung haben dürften, zum anderen ist durch das Vorhandensein von Framework-Komponenten schon eine sehr weit fortgeschrittene Systematisierung der wiederkehrenden Entwicklungen vorhanden, die nur noch in Skriptform gebracht werden muss.
 
@@ -1061,7 +1041,7 @@ Wir fragen also die Bezeichnung des Objekttyp, sowie den Namen der dazugehörende
 
 Für die Umwandlung eines Textes in eine Zeichenkette, die weder Umlaute, noch Sonderzeichen enthält gibt es in \FPZ\ den Befehl \fcmd{CamelCase}, der  die dazu notwendigen Ersetzungen durchführt. Die Zeichenkette bleibt insgesamt lesbar und kann z.B.\ als Klassenname, Eigenschaft oder Variable im Programmcode verwendet werden.
 
-Um es ganz schön zu haben, leiten wir auch die Variable \verb|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem \fcmd{ToLower}-Befehl in einen kleinen Buchstaben um. Hier muss man natürlich darauf achten dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
+Um es ganz schön zu haben, leiten wir auch die Variable \verb|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem Befehl \fcmd{ToLower} in einen kleinen Buchstaben um. Hier muss man natürlich darauf achten dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
 
 Die in der Klasse hart codierte Guid-Kennung kann frei gewählt werden, und wird vom Skript selbst als Zufallswert vom Typ \emph{Guid} erzeugt. Dafür wird der \cidxvar{NewGuid}-Befehl verwendet.
 
@@ -1210,7 +1190,6 @@ Solche Oberflächentests\index{Oberflächentests} werden in der Regel ebenfalls al
 Ein Unterstützungsskript könnte sehr gut die Voraussetzungen für einen geplanten automatisierten Oberflächentest abfragen und damit schon mal den Test soweit wie möglich vorbereiten.
 
 \subsection{Product-Owner-Unterstützung}\label{POUnterstuetzung}
-
 Der Product Owner\index{Product Owner} oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht in direkt im Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen werden.
 
 Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklerteam, als auch auf die ihm zuarbeiten den Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein gemeinsames Ganzes zu machen, das individuelle Vorlieben und Wünsche zurückstellt und auf für alle nachvollziehbare Regeln aufbaut.
@@ -1219,7 +1198,7 @@ Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeisp
 
 Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle innerhalb der Anwendung, an der die Entwicklung greifen soll. Wie schon in Abschnitt~\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
 
-Wir speichern diese Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+Wir speichern dieses Skript für die Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung\index{Dateiendung} \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Durch die andere Dateiendung wird das Skript auch nicht in der Auswahl von \FPZ\ angezeigt, so dass es nicht eigenständig aufgerufen werden kann. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
 
 Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, kann über die Variable \verb|PHinweis| ein Text übergeben werden, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird nach Ausführung über zwei Parameter \verb|PAusw| und \verb|UAusw| an das Skript zurück übergeben.
 
@@ -1351,7 +1330,6 @@ Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellu
 Diese Form von Entwicklungsunterstützung scheint alles andere als agil zu sein und passt nicht zu den plastisch beschriebenen User Stories im Srum-Prozess und dem permanenten Austausch zwischen Entwicklung und Product Owner. Hier muss man wieder ganz klar unterscheiden zwischen der Entwicklung von Framework\index{Framework} und der Verwendung des entwickelten Frameworks. Die Entwicklung von neuem Framework kann und sollte agil verlaufen, da Anforderungen und technische Möglichkeiten permanent aufeinander abgestimmt werden müssen. Hier ist viel Aufwand und viel Austausch notwendig, damit das neu Geschaffene am Ende zum Bestehenden passt und systematisch, ohne großen Abstimmungsbedarf verwendet werden kann. Die Erweiterung des Designsystems, die Aufstellung von Regeln für die Verwendung und idealerweise auch die Erstellung von Unterstützungskripten sollten fester Bestandteil bei der Entwicklung neuer Framework-Komponenten sein.
 
 \subsection{Qualitätprotokolle}
-
 Qualitätsprotokolle sind ähnlich wie die Unterstützungskripte Hilfsmittel, die den am Entwicklungsprozess beteiligten Mitarbeitern helfen, ihre Arbeit einfacher und nach einer definierten Vorgehensweise durchzuführen. Letzteres steht hierbei im Vordergrund, denn das Protokoll macht Vorgaben, die zwingend einzuhalten sind, und die auch Gegenstand von internen Richtlinien sein können.
 
 Insbesondere dann, wenn man als Unternehmen eine Zertifizierung\index{Zertifizierung} nach dem Normen ISO 9001\index{ISO 9001} oder ISO 25001\index{ISO 25001} anstrebt und die damit verbundenen Audits bestehen möchte, reicht es nicht, Qualität, Datenschutz und Datensicherheit einfach nur zu wollen, man muss Maßnahmen im Management zur permanenten Aufrechterhaltung diese Aspekte definieren, dokumentieren, einhalten und auch nachweisen können. Dies gelingt langfristig nur dadurch, dass man diese Dinge tatsächlich in den Arbeitsalltag integriert und lebt, und den Nutzen zu schätzen lernt, den diese für den Kunden und auch das Unternehmen selbst haben. 
@@ -1381,9 +1359,9 @@ Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kont
         __ außerhalb der Programmumgebung:
         > Sicherstellen, dass der Speicherort so gewählt 
         __ werden kann, dass kein unautorisierter Zugriff 
-        __ möglich ist.
+        __ möglich ist
         > Sicherstellen, dass Speichervorgang und Speicherort
-        __ für den Anwender gut erkennbar sind.
+        __ für den Anwender gut erkennbar sind
     #n: Nein
         @Wirkungen >> Speicherung von Kundendaten 
         __ außerhalb der Programmumgebung: Nein
@@ -1395,10 +1373,10 @@ Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kont
         @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
         __ personenbezogener Daten:
         > Sicherstellen, dass der Zugriff auf diese Stellen durch
-        __ die Vergabe von Berechtigungen abgesichert ist.
+        __ die Vergabe von Berechtigungen abgesichert ist
         > Sicherstellen dass nicht mehr Daten angezeigt werden
-        __ als in diesem Bearbeitungskontext notwendig ist.
-        > Ggf. Datenschutzbeauftragten mit einbeziehen.
+        __ als in diesem Bearbeitungskontext notwendig ist
+        > Ggf. Datenschutzbeauftragten mit einbeziehen
     #n: Nein
         @Wirkungen >>  Erweiterte Sichtbarkeit 
         __ personenbezogener Daten: Nein
@@ -1408,9 +1386,9 @@ Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kont
         @Wirkungen >> Protokollierung von Nutzerdaten: Ja
         @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
         > Sicherstellen dass die Protokollierung zweckgebunden
-        __ und durch die Benutzervereinbarung abgedeckt ist.
+        __ und durch die Benutzervereinbarung abgedeckt ist
         > Sicherstellen, dass die Protokollierung in das 
-        __ Datenblatt für Protokollierung aufgenommen wird.
+        __ Datenblatt für Protokollierung aufgenommen wird
     #n: Nein
         @Wirkungen >> Protokollierung von Nutzerdaten: Nein
 \end{verbatim}
@@ -1429,47 +1407,37 @@ Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich au
 
 \Beispiel{Quali-Assistent}
 \begin{verbatim}
-?Q1: Werden durch die Entwicklung Kundendaten
-    __ außerhalb der Programmumgebung gespeichert?
+?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
     #j: Ja
-        @Wirkungen >> Speicherung von Kundendaten 
-        __ außerhalb der Programmumgebung: Ja
-        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
-        __ außerhalb der Programmumgebung:
-        > Sicherstellen, dass der Speicherort so gewählt 
-        __ werden kann, dass kein unautorisierter Zugriff 
-        __ möglich ist.
-        > Sicherstellen, dass Speichervorgang und Speicherort
-        __ für den Anwender gut erkennbar sind.
+        @Wirkungen >> Löschen von Datensätzen: Ja
+        @Ergänzungsmaßnahmen >> Löschen von Datensätzen:
+        > Sicherstellen, dass keine Datensätze ungewollt 
+        __ gelöscht werden.
+        > Abgrenzungstests formulieren
+        > Löschweitergaben prüfen
     #n: Nein
-        @Wirkungen >> Speicherung von Kundendaten 
-        __ außerhalb der Programmumgebung: Nein
-?Q2: Werden durch die Entwicklung personenbezogene Daten an 
-    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
+        @Wirkungen >> Löschen von Datensätzen: Nein
+?Q2: Umfasst die Entwicklung die Verwendung
+    __ neuer Drittkomponenten?
     #j: Ja
-        @Wirkungen >>  Erweiterte Sichtbarkeit 
-        __ personenbezogener Daten: Ja
-        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
-        __ personenbezogener Daten:
-        > Sicherstellen, dass der Zugriff auf diese Stellen durch
-        __ die Vergabe von Berechtigungen abgesichert ist.
-        > Sicherstellen dass nicht mehr Daten angezeigt werden
-        __ als in diesem Bearbeitungskontext notwendig ist.
-        > Ggf. Datenschutzbeauftragten mit einbeziehen.
+        @Wirkungen >> Verwendung von Drittkomponenten: Ja
+        @Ergänzungsmaßnahmen >> Verwendung von Drittkomponenten:
+        > Checkliste für Drittkomponenten durchgehen
+        > Drittkomponente in eigene Klasse kapseln
     #n: Nein
-        @Wirkungen >>  Erweiterte Sichtbarkeit 
-        __ personenbezogener Daten: Nein
-?Q3: Werden durch die Entwicklung neue benutzerbezogene
-    __ Daten protokolliert oder verarbeitet? 
+        @Wirkungen >> Verwendung von Drittkomponenten: Nein
+?Q3: Umfasst die Entwicklung die Verarbeitung von 
+    __ versionsabhängigen Formaten?
     #j: Ja
-        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
-        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
-        > Sicherstellen dass die Protokollierung zweckgebunden
-        __ und durch die Benutzervereinbarung abgedeckt ist.
-        > Sicherstellen, dass die Protokollierung in das 
-        __ Datenblatt für Protokollierung aufgenommen wird.
+        @Wirkungen >> Versionsabhängige Formate: Ja
+        @Ergänzungsmaßnahmen >> Versionsabhängige Formate:
+        > Sicherstellung der Versionsbestimmbarkeit
+        > Sicherstellung von Abwärtskompatibilität
+        > Sicherstellung von Aufwärtskompatibilität
+        > Kennzeichnung der Versionsabhängigkeit 
+        __ im Datenblatt.
     #n: Nein
-        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
+        @Wirkungen >> Versionsabhängige Formate: Nein
 \end{verbatim}
 
 Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
@@ -1554,7 +1522,7 @@ Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was
 
 Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-Bereich verlinken könnte.
 
-\Beispiel{Jour fixe}
+\Beispiel{Jour-fixe-Planer}
 \begin{verbatim}
 ~SetCulture de-DE
 ~SetDateTime dheute=yyyy-MM-dd
@@ -1585,7 +1553,7 @@ Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort
 >>* (findet an jedem 3ten Dienstag statt)
 \end{verbatim}
 
-Das Beispiel zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
+Das Beispiel des \emph{Jour-fixe-Planers}\index{Jour-fixe-Planer} zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
 
 In unserem Beispiel werden mit \verb|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \verb|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
 
@@ -1756,6 +1724,133 @@ Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sicht
 
 Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
 
+\subsection{Terminplanung}
+Unser letztes Beispiel im Abschnitt Organisationswerkzeuge ist ein kleines Terminplanungswerkzeug, das schön zeigt, wie sich mit ein bisschen Programmierung Aufgaben so lösen lassen, dass es für alle Beteiligten von Vorteil ist.
+
+Die Ausgangssituation dürfte in einem Unternehmen recht häufig, aber mindestens einmal pro Jahr und Abteilung vorkommen: für eine Menge von Mitarbeiter sollen innerhalb eines Zeitraums Einzeltermine geplant werden, so dass am Ende für jeden Mitarbeiter der Menge ein Termin mit Raum eingeplant ist.
+
+Die normale Vorgehensweise wäre nun, mit Hilfe des eigenen Terminkalenders und denen der Mitarbeiter und Räume einen Termin nach dem anderen zu planen, was bedeutet, dass man mindestens immer drei Kalender offen haben muss. Unschön wird das ganze dann gegen Ende der Planung, wenn man für die verbleibenden Mitarbeiter keine möglichen Termine mehr findet, und man somit Anfang und Mittelteil der Planung wieder umstellen muss.
+
+Die deutlich einfachere Vorgehensweise besteht darin, zunächst nur Termine für sich selbst und den Raum einzuplanen, dafür eventuell auch einen mehr als benötigt wird. Anschließend veröffentlicht man die Liste dieser Termine im Wiki und bittet die Mitarbeiter, sich dort Ihre Wunschtermine auszuwählen, also je nach Gesamtzahl drei bis fünf Wunschtermine pro Mitarbeiter. Hierzu trägt sich der Mitarbeiter einfach in die Tabelle mit seinem Kürzel hinter dem jeweiligen Termin ein.
+
+Bei der Auswahl kann zusätzlich noch die Präferenz angegeben werden, als ob der jeweilige Termin die erste, zweite oder dritte Wahl für den Mitarbeiter ist. Dies wird einfach durch die entsprechende Ziffer hinter dem Kürzel angegeben.
+
+Für eine Auswahl von fünf Terminen könnten die Wünsche von vier Mitarbeitern mit den Kürzeln AB, CD, EF und GH wie folgt aussehen:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& AB2\\
+Termin 2& CD, EF1\\
+Termin 3& EF2, AB1\\
+Termin 4& GH, CD\\
+Termin 5& CD, EF3\\ \hline
+\end{tabular}
+\end{center}
+
+In diesem Fall hat der Mitarbeiter AB nur zwei Termine angegeben und GH nur einen, eventuell weil er von auswärts anreisen muss. Der Mitarbeiter CD hat keine Präferenzen, die drei von ihm gewählten Termine sind für ihn gleichwertig.
+
+Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingabefelder des folgenden Skriptes übertragen:
+
+\Beispiel{Terminplaner}
+\begin{verbatim}
+~SetStopCounter 100000; 3000000
+~Input Anz: Anzahl Termine
+~Execute
+@Terminpräferenzen >>_ $Anz Termine
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    ~Input Prf$idx: Termin $idx - Präferenzen (kommagetrennt)
+    >>* Termin $idx: $Prf$idx    
+~Loop
+~Set BestPSum=10000
+~Set BestAnzV=0
+~Set TidxS=1
+~Set MAVS=
+~Set AnzVS=0
+~Set PSumS=0
+~GoSub SucheLoesung; BaseKey=S
+@Ergebnis >>_ $BestAnzV Termine verplant, $BestPSum Punkte
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    >>* Termin $idx: $FErg($idx)
+~Loop
+
+// Tidx$BaseKey = Nächster Terminindex
+// MAV$BaseKey = Liste der schon verplanten Mitarbeiter
+// PSum$BaseKey = Aktuelle Präferenz-Summe
+// Rückgabe: FErg(1..Anz) = Belegung der Termine
+~DefineSub SucheLoesung    
+    ~Split VerplanteMA=$MAV$BaseKey|/
+    ~Calculate AnzV$BaseKey=$VerplanteMA(0)-1
+    ~If $Tidx$BaseKey<=$Anz
+        ~Split pr$BaseKey=$Prf$Tidx$BaseKey|,        
+        ~ForEach pi in pr$BaseKey
+            ~RegExMatch pw = $pi|([A-Z][A-Z][a-z]*)([0-9]?)
+            ~If $pw(0)
+                ~Set ku=$pw(1)
+                ~Set va=$pw(2)
+                ~If $va==
+                    ~Set va=1
+                ~If $MAV$BaseKey/!~/$ku/
+                    ~Set Erg($Tidx$BaseKey)=$ku                    
+                    ~Calculate Tidx$BaseKeyX$ku=$Tidx$BaseKey+1
+                    ~Calculate PSum$BaseKeyX$ku=$PSum$BaseKey+$va
+                    ~Set MAV$BaseKeyX$ku=$MAV$BaseKey/$ku
+                    ~GoSub SucheLoesung; BaseKey=$BaseKeyX$ku
+        ~Loop
+        ~CalculateExpression restpot=$Anz-$BestAnzV
+            __-($Tidx$BaseKey-$AnzV$BaseKey)
+        ~If $restpot>=0
+            ~Set Erg($Tidx$BaseKey)=Nicht besetzt
+            ~Calculate Tidx$BaseKey0=$Tidx$BaseKey+1
+            ~Set PSum$BaseKey0=$PSum$BaseKey
+            ~Set MAV$BaseKey0=$MAV$BaseKey
+            ~GoSub SucheLoesung; BaseKey=$BaseKey0        
+    ~Else
+        ~If $AnzV$BaseKey>$BestAnzV || $AnzV$BaseKey==$BestAnzV
+            __ && $PSum$BaseKey<$BestPSum            
+            ~Set BestAnzV=$AnzV$BaseKey
+            ~Set BestPSum=$PSum$BaseKey    
+            ~Set idx=0
+            ~DoWhile $idx<$Anz
+                ~AddTo idx+=1
+                ~Set FErg($idx)=$Erg($idx)
+            ~Loop        
+~Return
+\end{verbatim}
+
+Da das Skript zur Lösungsfindung exponentiell viele Variationen durchprobiert, werden gleich zu Beginn die Stop-Zähler\index{Stop-Zähler} für die maximale Anzahl an Schleifendurchläufen und Befehlsausführungen mit dem Befehls \fcmd{SetStopCounter} auf sehr große Werte gesetzt.
+
+Zuerst wird die Anzahl der Termine abgefragt, dann für jeden Termin die Präferenzen, wie üblich kommagetrennt.
+
+Die Suche nach der passenden Lösung erfolgt mit Hilfe der Funktion \verb|SucheLoesung|, die als Übergabeparameter den Index des nächsten zu planenden Termins, die Liste der schon verplanten Mitarbeiter und die Zwischensumme der Präferenzwerte übergeben bekommt.  Die Anzahl der schon verplanten Termine wird mit Hilfe des \fcmd{Split}-Befehls aus der Aufzählung der schon verplanten Mitarbeiter berechnet. 
+
+Immer wenn der Index des letzten Termins erreicht ist, wird die aktuelle Lösung mit der bisher besten Lösung verglichen, wobei primär die Anzahl der geplanten Termine zählt, und bei gleicher Anzahl eine möglichst geringe Präferenzsumme. Ist eine neue beste Lösung gefunden, wird diese in das Feld \verb|FErg(...)| übertragen.
+
+Ansonsten werden alle Mitarbeiter durchlaufen die sich für den als nächstes zur Planung anstehenden Termin eingetragen haben. Die Kürzel werden mit Hilfe eines regulären Ausdrucks vom Präferenzwert getrennt. Wenn keiner angegeben ist, wird der Wert 1 gesetzt. Mit Hilfe des Enthält-nicht-Operators\index{Enthält-nicht-Operator} \verb|!~| wird dann geprüft, ob der entsprechende Mitarbeiter noch nicht in der Menge der bisher verplanten Mitarbeiter enthalten ist, wobei das Trennzeichen \verb|/| verwendet wird. In diesem Fall werden die Parameter für einen weiteren Funktionsaufruf gesetzt, wobei die \verb|BaseKey|-Variable um den Buchstaben X und das Mitarbeiterkürzel erweitert werden.
+
+Nach Durchlauf aller Mitarbeiter wird auch noch die Variante geprüft, bei der der anstehende Termin nicht besetzt wird. Gerade wenn mehr Termine angeboten werden, als Mitarbeiter vorhanden sind, müssen Termine unbesetzt bleiben.
+
+Da dadurch die Menge der zu untersuchende Lösungen noch mal deutlich erhöht wird, wird hier noch zusätzlich das Restpotenzial $R$ abgeprüft. Dieses berechnet sich über die Formel $R=A-A_B-(i-A_T)$, wobei $A$ die Anzahl der angebotenen Termine ist, $A_B$, die Anzahl der verplanten Termine der bislang besten Lösung, $i$ der aktuelle Index und $A_T$ die Anzahl der bis jetzt verplanten Termine. Ist $R\ge0$, kann trotz nicht besetzen des anstehenden Termins potentiell noch eine bessere Lösung gefunden werden, ansonsten ist das ausgeschlossen und diese Variante muss nicht weiterverfolgt werden.
+
+Am Ende wird die beste gefundene Lösung als Ergebnis ausgegeben. Das Skript kann auch mit den Daten aus unserem Beispiel oben umgehen und findet zielsicher die beste Lösung mit mit vier verplanten Terminen und einer Präferenzsumme von 4, d.h.\ jeder Mitarbeiter bekommt einen Termin seiner ersten Wahl:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& nicht besetzt\\
+Termin 2& EF\\
+Termin 3& AB\\
+Termin 4& GH\\
+Termin 5& CD\\ \hline
+\end{tabular}
+\end{center}
+
+Der Vorteil dieser Methode liegt darin, dass die lästige Suche nach freien Terminen auf die einzelnen Mitarbeiter aufgeteilt wird, die aber dafür nur jeweils ihren eigenen Kalender sichten müssen. Als Ausgleich dafür bekommen sie die Möglichkeit, mit der Präferenz Einfluss auf die Terminauswahl zu nehmen.
+
+Dadurch, dass auch die Reihenfolge, in der die Wünsche eingetragen werden so gut wie keine Rolle spielt, ist dieser Ansatz auch besser als der Auswahlansatz, bei dem sich jeder nur für genau einen Termin eintragen darf, der noch nicht gewählt wurde, so dass die Mitarbeiter benachteiligt werden, die nicht unmittelbar auf die Aufforderung reagieren können.
+
 \section{Mitgestaltung}
 Wie schon mehrfach beschrieben, sollte man Skripte nicht einfach nur als Programmcode sehen, der durch die Umgebung ausgeführt werden kann und mit dem sich bestimmte Aufgaben einfach lösen lassen, sondern man sollte Skripte vor allem auch als ein Medium betrachten, das es ermöglicht, fachliches Wissen so zu hinterlegen, dass es bei der Anwendung des Skriptes automatisch berücksichtigt wird. Es ist nicht notwendig, dass der Anwender weiß, wie man die Aufgabe richtig macht, so lange ihm das Skript keine Möglichkeit gibt, sie falsch zu machen.
 
@@ -1899,7 +1994,7 @@ In gleicher Weise werden auch die Variablen \cidxvar{ScriptFilePath} und \cidxva
 
 Für die Schalter, also die Werte, die mit einem Fragezeichen gekennzeichnet wurden, werden in einem zweiten Codeblock noch If-Abfragen erstellt. Damit kann man ähnlich wie ein Beispiel~\ref{BspAsset1} bis \ref{BspAsset4} für jeden Schalter individuellen Code ausführen, wenn dieser gesetzt ist.
 
-Metaskripting ist ohne Frage anspruchsvoll, aber dafür ist der Nutzen aufgrund der Multiplikator-Wirkung recht groß, und wenn ein solches Skript am Ende dazu führt, dass alle Mitarbeiter in der Lage sind, die produktiv eingesetzten Skripte permanent zu erweitern und ihr Wissen dort einzupflegen, dann ist das den Aufwand auf jeden Fall wert.
+Metaskripting ist ohne Frage anspruchsvoll, aber dafür ist der Nutzen aufgrund der Multiplikatorwirkung recht groß, und wenn ein solches Skript am Ende dazu führt, dass alle Mitarbeiter in der Lage sind, die produktiv eingesetzten Skripte permanent zu erweitern und ihr Wissen dort einzupflegen, dann ist das den Aufwand auf jeden Fall wert.
 
 Auch hier verhält es sich ähnlich wie bei der Entwicklung von Anwendungscode. Wird etwas nur einmal benötigt, kann es der Spezialist machen. Wird etwas mehrfach benötigt, kann der Spezialist passendes Werkzeug dafür anfertigen, mit dem die Aufgabe einfacher umgesetzt werden kann.
 

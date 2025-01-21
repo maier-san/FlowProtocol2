@@ -1,0 +1,23 @@
+~Include Benutzervariablen.fps
+~Input AKennung: Gib die Aufgabenkennung ein:
+~Input PatchCode: Gib den Korrekturcode ein:
+~SetDateTime Datum=yyyy-MM-dd
+~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+@Anleitung >> Erstelle eine neue Datei im Editor.
+>> Gib den folgenden Code ein:
+	>|<?xml version="1.0"?>
+	>|<PATCHSCRIPT>
+	>|  <NAME>$AKennung</NAME>
+	>|  <CODE>$PatchCode</CODE>
+	>|  <CREATOR>$BenVarKuerzel</CREATOR>
+	>|  <CREATIONDATE>$Datum</CREATIONDATE>
+	>|</PATCHSCRIPT>
+>> Speichere die Datei ab unter
+	>|$DatBasis\$AKennung.xml
+>> Rufe den Patch-Converter für die Datei auf:
+	>|$BenVarPfadTools\PatchConverter\Bin\PatchConverter.exe
+		__ "$DatBasis\$AKennung.xml"
+>>  Das fertige Patchscript
+	~AddCode  $AKennung.psc
+	~AddText  liegt unter
+	>|$DatBasis

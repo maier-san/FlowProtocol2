@@ -2165,7 +2165,7 @@ Umgekehrt gibt es auch gesetztliche Nachweispflichten, die man in Bezug auf sein
 
 Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
 
-\subsection{Personalisierung}
+\subsection{Personalisierung}\label{Personalisierung}
 Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Das Erzwingen vollständig über alle Umgebungen hinweg einheitlicher Pfade und Strukturen ist mühsam und dürfte von vielen als unnötigend beschränkend wahrgenommen werden.
 
 Als Serverdienst läuft \FPZ\ vollständig unabhängig von einer lokalen Umgebung. Trotzdem ist es mit sehr einfachen Mitteln möglich, personalisierte Elemente in Skripte einzubringen. Dazu muss man nur eine Funktionsdatei erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt. Diese könnte so aussehen:
@@ -2194,12 +2194,13 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 ~Input PatchCode: Gib den Korrekturcode ein:
 ~SetDateTime Datum=yyyy-MM-dd
 ~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~XmlEncode xPatchCode=$PatchCode
 @Anleitung >> Erstelle eine neue Datei im Editor.
 >> Gib den folgenden Code ein:
     >|<?xml version="1.0"?>
     >|<PATCHSCRIPT>
     >|  <NAME>$AKennung</NAME>
-    >|  <CODE>$PatchCode</CODE>
+    >|  <CODE>$xPatchCode</CODE>
     >|  <CREATOR>$BenVarKuerzel</CREATOR>
     >|  <CREATIONDATE>$Datum</CREATIONDATE>
     >|</PATCHSCRIPT>
@@ -2216,9 +2217,11 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 
 In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe eines internen vorhandenen Tools in ein anderes Format konvertiert wird.
 
-Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
+Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
 
 Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
+
+Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|,  sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
 
 \section{Befehlsreferenz}\label{Befehlsreferenz}
 
@@ -2575,6 +2578,9 @@ Entfernt umschließenden Whitespace aus dem Text und speichert das Ergebnis in ei
 Wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variablen.\\
 Siehe Abschnitt~\ref{ParametrisierteLinks}, verwendet in Beispiel~\ref{BspSuchlink}.
 
+\item[\fcmd{XmlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die XML-Codierung um und speichert das Ergebnis in einer Variablen. Die XML-Codierung maskiert die Zeichen \verb|<|, \verb|>|, \verb|&|, sowie die Anführungszeichen, so dass der Text innerhalb von XML-Tags stehen kann.\\
+Siehe Abschnitt~\ref{Personalisierung}, verwendet in Beispiel~\ref{BspPatchskript}.
 \end{description}
 
 \printindex

@@ -1,0 +1,14 @@
+~SetTitle XmlEncode-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~XmlEncode <VarName> = <Text> 
+~AddText  codiert den Text
+~AddCode  <Text>
+~AddText  in eine Form, so dass er innerhalb von XML-Tags verwendet werden kann und speichert das Ergebnis in der Variablen
+~AddCode  <VarName>
+~AddText .
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel codiert eine C#-Bedingung in einen XML-Tag:
+>>|~XmlEncode formel=If a<b && c>=d return "Treffer";
+>>|@Ausgabe >>|<Bedingung>$formel</Bedingung>
+~XmlEncode formel=If a<b && c>=d return "Treffer";
+@Ausgabe >>|<Bedingung>$formel</Bedingung>

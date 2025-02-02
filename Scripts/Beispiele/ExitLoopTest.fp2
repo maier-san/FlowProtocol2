@@ -1,0 +1,12 @@
+~Set anz=1
+~DoWhile $anz<3
+	>> Durchlauf $anz
+	~Split lst=A,B,C,D,E,F|,
+	~ForEach idx in lst
+		>> $idx
+		~If $anz==1 && $idx==C
+			>> Exit bei 1C
+			~ExitLoop
+	~Loop
+	~AddTo anz+=1
+~Loop

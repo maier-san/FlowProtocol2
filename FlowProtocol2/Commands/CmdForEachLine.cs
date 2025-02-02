@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
         public string Take { get; set; }
         public string IndexVar { get; set; }
         public string SectionVar { get; set; }
-        private bool Initialized { get; set; }
+        private bool IsInitialized { get; set; }
         private List<LineItem> LineItems { get; set; }
         private string ExpandedVarName { get; set; }
         private string ExpandedIndexVar { get; set; }
@@ -56,7 +56,6 @@ namespace FlowProtocol2.Commands
             Take = string.Empty;
             IndexVar = string.Empty;
             SectionVar = string.Empty;
-            Initialized = false;
             LineItems = new List<LineItem>();
             ExpandedVarName = string.Empty;
             ExpandedIndexVar = string.Empty;
@@ -67,7 +66,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            if (!Initialized)
+            if (!IsInitialized)
             {
                 string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath).Replace('|', Path.DirectorySeparatorChar);
                 string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
@@ -95,7 +94,7 @@ namespace FlowProtocol2.Commands
                 ExpandedIndexVar = ReplaceVars(rc, IndexVar.Replace("; IndexVar=", string.Empty)).Trim();
                 ExpandedSectionVar = ReplaceVars(rc, SectionVar.Replace("; SectionVar=", string.Empty)).Trim();
                 Index = 0;
-                Initialized = true;
+                IsInitialized = true;
             }
 
             LinkAssociatedLoopCommand(rc, "ForEachLine");
@@ -119,7 +118,7 @@ namespace FlowProtocol2.Commands
                 }
                 else
                 {
-                    Initialized = false;
+                    IsInitialized = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

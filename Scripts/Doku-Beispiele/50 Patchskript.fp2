@@ -3,12 +3,13 @@
 ~Input PatchCode: Gib den Korrekturcode ein:
 ~SetDateTime Datum=yyyy-MM-dd
 ~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~XmlEncode xPatchCode=$PatchCode
 @Anleitung >> Erstelle eine neue Datei im Editor.
 >> Gib den folgenden Code ein:
 	>|<?xml version="1.0"?>
 	>|<PATCHSCRIPT>
 	>|  <NAME>$AKennung</NAME>
-	>|  <CODE>$PatchCode</CODE>
+	>|  <CODE>$xPatchCode</CODE>
 	>|  <CREATOR>$BenVarKuerzel</CREATOR>
 	>|  <CREATIONDATE>$Datum</CREATIONDATE>
 	>|</PATCHSCRIPT>

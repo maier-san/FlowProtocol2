@@ -43,10 +43,12 @@ namespace FlowProtocol2.Commands
             {                
                 if (Evaluation)
                 {
+                    IsInitialized = true;
                     return NextCommand;
                 }
                 else
                 {
+                    IsInitialized = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

@@ -9,10 +9,12 @@ namespace FlowProtocol2.Commands
     public abstract class CmdLoopBaseCommand : CmdBaseCommand
     {
         public CmdLoop? AssociatedLoopCommand { get; set; }
+        public bool IsInitialized { get; set; }
                 
         public CmdLoopBaseCommand(ReadContext readcontext) : base(readcontext)
         {
             AssociatedLoopCommand = null;
+            IsInitialized = false;
         }
 
         protected void LinkAssociatedLoopCommand(RunContext rc, string commandname)
@@ -29,7 +31,7 @@ namespace FlowProtocol2.Commands
                     $"Dem {commandname}-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden.");
                 return;
             }
-            AssociatedLoopCommand.ParentDoWhileCommand = this;
+            AssociatedLoopCommand.ParentStartLoopCommand = this;
         }        
     }
 }

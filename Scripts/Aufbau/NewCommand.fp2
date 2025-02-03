@@ -141,5 +141,23 @@
 >> Fertiges Beispiel in Codeblock übernehmen
 >> Speichern unter
 	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
+@Buch erweitern >> FlowProtocol2.tex öffnen
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\FlowProtocol2.tex
+>> Zu Abschnitt Befehle gehen
+		>|\subsection{Befehle}\label{Befehle}
+>> An der für 
+	~AddCode  ~$CmdName
+	~AddText  alphabetisch richtigen Stelle einfügen:
+		>|\item[\fcmd{$CmdName}]
+		~Set verbTeil=
+		~ForEach vn in VarName
+			~AddText  $verbTeil \synvar{$vn}
+			~Set verbTeil=\verb|=|
+		~Loop
+		~AddText \\
+		>|Fügt usw.\\
+		>|%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.			
+>> Beschreibung übernehmen.
+>> Verweise anpassen oder entfernen.
 	
 

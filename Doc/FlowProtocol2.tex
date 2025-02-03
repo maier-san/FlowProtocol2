@@ -1,7 +1,8 @@
-\documentclass[12pt ,a4paper]{article}
+\documentclass[12pt, a4paper, twoside]{article}
 \usepackage[ansi]{umlaute}
 \usepackage[german]{babel}
-\usepackage{fancyheadings}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=green, urlcolor=red]{hyperref}
+\usepackage{fancyhdr}
 \usepackage{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{mathptm}
@@ -19,11 +20,18 @@
 \setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
 \geometry{lmargin=35mm,rmargin=25mm,tmargin=25mm,bmargin=25mm}
 \addtolength{\headheight}{2.5pt}
+% Fancyhdr konfigurieren
 \pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
+\fancyhf{} % Löscht alle Standard-Kopf- und Fußzeilen
+% Kopfzeilen konfigurieren
+\fancyhead[LE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
+\fancyhead[LO]{\thepage}
+\fancyhead[RO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
+\fancyhead[RE]{\thepage}
+%\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
 %\setlength{\headrulewidth}{0pt}
-\rhead{\thepage}
-\cfoot{}
+%\rhead{\thepage}
+%\cfoot{}
 %%
 %% Commands
 %%
@@ -107,7 +115,7 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 >> Hallo Welt!
 \end{verbatim}
 
-Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese direkt, oder in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
 Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
@@ -160,6 +168,8 @@ Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\ind
 
 \subsection{Die FlowProtocol-2-Befehlsreferenz}
 Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Scipts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+
+Ergänzend dazu gibt es in Abschnitt~\ref{Befehlsreferenz} ebenfalls eine Befehlsreferenz, die alle Befehle auflistet, und auch auf deren Verwendung in dieser Dokumentation hier verweist.
 
 \subsection{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an seiner Ergebnis kommt.
@@ -1448,7 +1458,7 @@ Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich au
         @Wirkungen >> Versionsabhängige Formate: Nein
 \end{verbatim}
 
-Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
+Bei der Implementierung einer Funktion, die Datensätze löscht, wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
 
 Der Umgang mit Drittkomponenten umfasst viele Aspekte, über die man einen eigenen Abschnitt schreiben könnte. Gerade im kommerziellen Umfeld gibt es viel zu beachten, angefangen von der Verträglichkeit der Lizenz, bis hin zur Dokumentation und Planung notwendiger Überwachungsaufgaben für die Sicherstellung der Aktualität und regelmäßige Prüfung auf Verwundbarkeiten. Komponenten, die für sicherheitsrelevante Funktionalität wie Verschlüsselung eingesetzt werden, müssen diesbezüglich besondere Ansprüche erfüllen. Im Beispiel oben wird dementsprechend auch nur auf eine Checkliste für Drittkomponenten verwiesen, die man natürlich ebenfalls mit \FPZ\ abbilden und hier verlinken kann. 
 
@@ -1731,6 +1741,8 @@ Das Ergebnisdokument kann mit Überschrift und allen Abschnitten auf eine eigene 
 Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sichten und auf Notwendigkeit zu prüfen. Nicht selten werden Vorgehensweisen oder Softwareprodukte eingeführt, die sich dann irgendwann von selbst ausschleichen, ohne dass eine Außerbetriebnahme stattgefunden hat, was ein schlechter Zustand ist, vor allem, wenn weiterhin Geld dafür bezahlt wird. Die jährliche Sichtung der Assets, zusammen mit den notwendigen Wartungsaufgaben ist wichtig, um z.B.\ rechtzeitig darüber informiert zu sein wenn, etwa aufgrund einer Abkündigung Nutzungseinschränkungen absehbar werden.
 
 Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
+
+Der entscheidende Vorteil bei einer interaktiven Anleitung für die Dokumentation von Dingen ist jedoch die Möglichkeit, Fragestellungen und daraus abgeleitete Maßnahmen direkt damit zu verbinden, und deren Durchführung gut zu unterstützen. So kann ein Skript, das ursprünglich nur für die Dokumentation gedacht war, und nur Informationen abgefragt hat, schrittweise bis zu einem Protokoll erweitert werden, dass am Ende garantiert, dass das Dokumentierte definierte Standards erfüllt.
 
 \subsection{Terminplanung}\label{Terminplanung}
 Unser letztes Beispiel im Abschnitt Organisationswerkzeuge ist ein kleines Terminplanungswerkzeug, das schön zeigt, wie sich mit ein bisschen Programmierung Aufgaben so lösen lassen, dass es für alle Beteiligten von Vorteil ist.
@@ -2153,7 +2165,7 @@ Umgekehrt gibt es auch gesetztliche Nachweispflichten, die man in Bezug auf sein
 
 Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
 
-\subsection{Personalisierung}
+\subsection{Personalisierung}\label{Personalisierung}
 Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Das Erzwingen vollständig über alle Umgebungen hinweg einheitlicher Pfade und Strukturen ist mühsam und dürfte von vielen als unnötigend beschränkend wahrgenommen werden.
 
 Als Serverdienst läuft \FPZ\ vollständig unabhängig von einer lokalen Umgebung. Trotzdem ist es mit sehr einfachen Mitteln möglich, personalisierte Elemente in Skripte einzubringen. Dazu muss man nur eine Funktionsdatei erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt. Diese könnte so aussehen:
@@ -2182,12 +2194,13 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 ~Input PatchCode: Gib den Korrekturcode ein:
 ~SetDateTime Datum=yyyy-MM-dd
 ~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~XmlEncode xPatchCode=$PatchCode
 @Anleitung >> Erstelle eine neue Datei im Editor.
 >> Gib den folgenden Code ein:
     >|<?xml version="1.0"?>
     >|<PATCHSCRIPT>
     >|  <NAME>$AKennung</NAME>
-    >|  <CODE>$PatchCode</CODE>
+    >|  <CODE>$xPatchCode</CODE>
     >|  <CREATOR>$BenVarKuerzel</CREATOR>
     >|  <CREATIONDATE>$Datum</CREATIONDATE>
     >|</PATCHSCRIPT>
@@ -2204,17 +2217,36 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 
 In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe eines internen vorhandenen Tools in ein anderes Format konvertiert wird.
 
-Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
+Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
 
 Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
 
-\section{Befehlsreferenz}
+Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|,  sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
+
+\section{Befehlsreferenz}\label{Befehlsreferenz}
 
 \subsection{Grundelemente}
 \begin{grundelement}\label{defBedingungen}
 Eine \emph{Bedingung}\index{Bedingungen} ist ein Ausdruck, der zu \emph{wahr} oder \emph{falsch} ausgewertet werden kann. Bedingungen werden bei verschiedenen Befehlen verwendet, z.B.\ in Do-While-Schleifen oder  bei If-Bedingungen.\par
 Eine Bedingung muss in \FPZ\ in der disjunktiven Normalform angegeben werden, also als Oder-Verknüpfung (\verb=||=) von Und-Verknüpfungen (\verb|&&|), wobei keine Klammerung notwendig ist.
-Als Literale sind die Konstanten \verb|1| (wahr), \verb|true| (wahr), \verb|0| (falsch) und \verb|false| verwendbar, sowie für Zeichenketten $s$ und $t$, Zahlen $x$ und $y$ und Variablen $v$ die folgenden Ausdrücke zulässig: \verb|s==t| ($s=t$), \verb|s!=t| ($s\neq t$), \verb|x<>y| ($x\neq y$), \verb|x<y| ($x<y$), \verb|x<=y| ($x\le y$), \verb|x>y| ($x>y$), \verb|x>=y| ($x\ge y$), \verb|s~t| ($s\subseteq t$, $s$ enthält $t$), \verb|s!~t| ($s\nsubseteq t$, $s$ enthält $t$ nicht), \verb|?v| ($v$ ist gesetzt), \verb|!?v| ($v$ ist nicht gesetzt).\\
+
+Als Literale sind die Konstanten \verb|1| (wahr), \verb|true| (wahr), \verb|0| (falsch) und \verb|false| verwendbar, sowie die folgenden Vergleichsoperatoren\index{Vergleichsoperatoren}:
+\begin{center}
+\begin{tabular}{|l|c|l|l|}\hline
+Ausdruck& Formel & Sprachform & Typenbeschränkung\\\hline\hline
+\verb|s==t| & $s=t$ & $s$ ist gleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|s!=t|  & $s\neq t$ & $s$ ist ungleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|x<>y| & $x\neq y$ & $x$ ist ungleich $y$ & für Zahlen $x$ und $y$\\
+\verb|x<y| & $x<y$ & $x$ ist kleiner $y$ & für Zahlen $x$ und $y$\\
+\verb|x<=y| & $x\le y$ & $x$ ist kleiner gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|x>y| & $x>y$ & $x$ ist größer $y$ & für Zahlen $x$ und $y$\\
+\verb|x>=y| & $x\ge y$ & $x$ ist größer gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|s~t| & $s\supseteq t$ & $s$ enthält $t$ & für Zeichenketten $s$ und $t$\\
+\verb|s!~t| & $s\nsupseteq t$ & $s$ enthält $t$ nicht & für Zeichenketten $s$ und $t$\\
+\verb|?v| && $v$ ist gesetzt & für eine Variable $v$\\
+\verb|!?v| && $v$ ist nicht gesetzt) & für eine Variable $v$\\\hline
+\end{tabular}
+\end{center}
 \end{grundelement}
 
 \begin{grundelement}\label{defDateipfad}
@@ -2546,6 +2578,9 @@ Entfernt umschließenden Whitespace aus dem Text und speichert das Ergebnis in ei
 Wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variablen.\\
 Siehe Abschnitt~\ref{ParametrisierteLinks}, verwendet in Beispiel~\ref{BspSuchlink}.
 
+\item[\fcmd{XmlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die XML-Codierung um und speichert das Ergebnis in einer Variablen. Die XML-Codierung maskiert die Zeichen \verb|<|, \verb|>|, \verb|&|, sowie die Anführungszeichen, so dass der Text innerhalb von XML-Tags stehen kann.\\
+Siehe Abschnitt~\ref{Personalisierung}, verwendet in Beispiel~\ref{BspPatchskript}.
 \end{description}
 
 \printindex

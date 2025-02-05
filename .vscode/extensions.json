@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        //Helpful for C#/.NET Development
+        "ms-ceintl.vscode-language-pack-de",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        //Only Useful if you are using Github Copilot
+        "github.copilot",
+        "github.copilot-chat",
+        "ms-azuretools.vscode-azure-github-copilot",
+        //Might be useful when using Codespaces for example on Github
+        "github.codespaces",
+        //Optional but useful for Github
+        "github.github-vscode-theme",
+        "github.vscode-pull-request-github",
+    ]
+  }

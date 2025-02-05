@@ -32,6 +32,11 @@ namespace FlowProtocol2.Commands
                 GetAssociatedLoopCommand(rc);
                 if (AssociatedLoopCommand != null)
                 {                                
+                    CmdLoopBaseCommand? loopBaseCommand = AssociatedLoopCommand.ParentStartLoopCommand;
+                    if (loopBaseCommand != null)
+                    {
+                        loopBaseCommand.IsInitialized = false;
+                    }
                     return AssociatedLoopCommand.NextCommand;                
                 }
                 rc.SetError(ReadContext, "ExitLoop ohne Loop",

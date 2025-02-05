@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
     /// </summary>
     public class CmdLoop : CmdBaseCommand
     {
-        public CmdLoopBaseCommand? ParentDoWhileCommand { get; set; }
+        public CmdLoopBaseCommand? ParentStartLoopCommand { get; set; }
         private int LoopCounter { get; set; }
 
         public static CommandParser GetComandParser()
@@ -24,14 +24,14 @@ namespace FlowProtocol2.Commands
 
         public CmdLoop(ReadContext readcontext) : base(readcontext)
         {
-            ParentDoWhileCommand = null;
+            ParentStartLoopCommand = null;
             LoopCounter = 0;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
             LoopCounter++;
-            if (ParentDoWhileCommand == null)
+            if (ParentStartLoopCommand == null)
             {
                 rc.SetError(ReadContext, "Loop ohne Schleifenbeginn",
                     "Dem Loop-Befehl kann kein Schleifenbeginn-Befehl auf gleicher Ebene zugeordnet werden.");
@@ -42,7 +42,7 @@ namespace FlowProtocol2.Commands
                     $"Die maximale Anzahl von {rc.LoopStopCounter} direkten Schleifendurchläufen wurde erreicht. Die Schleife wird beendet.");
                 return NextCommand;
             }
-            return ParentDoWhileCommand;
+            return ParentStartLoopCommand;
         }
     }
 }

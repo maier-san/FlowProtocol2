@@ -1,0 +1,68 @@
+~SetStopCounter 1000000;30000000
+~Set cmds=0
+~Set Trennzeichen=
+~Set Commands=
+~ForEachLine Zeile in FlowProtocol2.tex
+	~RegExMatch fcmd=$Zeile|.*\\fcmd{([A-Za-z]*)}*.
+	~DoWhile $fcmd(0)
+		~If $EE$fcmd(1)!=vorhanden
+			~Set Commands=$Commands$Trennzeichen$fcmd(1)
+			~Set Trennzeichen=;
+			~Set EE$fcmd(1)=vorhanden
+			~Set Refsubsection$fcmd(1)=Siehe Abschnitte~
+			~Set RefBeispiel$fcmd(1)=verwendet in Beispiel~
+		~Replace Zeile=$Zeile|\fcmd{$fcmd(1)}->xxx
+		~RegExMatch fcmd=$Zeile|.*\\fcmd{([A-Za-z]*)}*.
+	~Loop
+~Loop
+~ClearVar EE*
+~Split CListe=$Commands|$Trennzeichen
+~Sort CListe
+~Set IstBeispiel=Nein
+~ForEachLine Zeile in FlowProtocol2.tex; IndexVar=idx	
+	~RegExMatch sub=$Zeile|\\subsection{([A-ZÄÖÜa-zäöüß0-9 \-]*)}(\\label{([A-Za-z0-9]*)})?
+	~If $sub(0)
+		~Set subsection=$sub(1)		
+		~If $sub(2)~\label
+			~Set labelsubsection=$sub(3)
+			~Set LVsubsection=Ja
+		~Else
+			~Set LVsubsection=Nein
+			~CamelCase labelsubsection=$sub(1)
+	~RegExMatch bsp=$Zeile|\\Beispiel{([A-ZÄÖÜa-zäöüß0-9 \-]*)}(\\label{([A-Za-z0-9]*)})?
+	~If $bsp(0)
+		~Set IstBeispiel=Ja
+		~Set Beispiel=$bsp(1)		
+		~If $bsp(2)~\label
+			~Set LVBeispiel=Ja
+			~Set labelBeispiel=$bsp(3)
+		~Else
+			~Set LVBeispiel=Nein
+			~CamelCase labelBeispiel=Bsp$bsp(1)			
+	~If $Zeile~\end{verbatim}
+		~Set IstBeispiel=Nein
+	~ForEach cmd in CListe
+		~If $IstBeispiel==Ja && $Zeile~$cmd$Chr(32)
+			~If $EEBeispiel$cmd$Beispiel!=vorhanden
+				~If $LVBeispiel==Nein
+					@Ergänze Label >> \Beispiel{$Beispiel}
+					>|\Beispiel{$Beispiel}\label{$labelBeispiel}
+					~Set LVBeispiel=Ja
+				~Set RefBeispiel$cmd=$RefBeispiel$cmd\ref{$labelBeispiel},$Chr(32)
+				~Set EEBeispiel$cmd$Beispiel=vorhanden
+		~If $IstBeispiel==Nein && $Zeile~\fcmd{$cmd}
+			~If $EEsubsection$cmd$subsection!=vorhanden
+				~If $LVsubsection==Nein
+					@Ergänze Label >> \subsection{$subsection}
+					>|\subsection{$subsection}\label{$labelsubsection}
+					~Set LVsubsection=Ja
+				~Set Refsubsection$cmd=$Refsubsection$cmd\ref{$labelsubsection},$Chr(32)
+				~Set EEsubsection$cmd$subsection=vorhanden
+	~Loop
+~Loop
+~ClearVar EE*
+~ForEach cmd in CListe
+	~Replace Refsubi=$Refsubsection$cmd|, \ref{Befehle}->
+	@Referenzen >> $cmd
+	>|$Refsubi$RefBeispiel$cmd
+~Loop

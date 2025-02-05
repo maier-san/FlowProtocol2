@@ -1,0 +1,102 @@
+~Input KAusd: Kombinationsausdruck
+~AddHelpLine Verarbeitet werden Ausdrücke mit +, * und Klammern, z.B.
+~AddHelpLine Kaffee*(ohne Milch,+mit*(Kuhmilch,+Hafermilch,)*(nicht aufgeschäumt,+aufgeschäumt,))*(ohne Süßungsmittel.+mit Zucker.+mit Süßstoff.) 
+~AddHelpLine Zusätzlich möglich sind noch =@-Tags und Bedingungen wie {@1&&@3||@2&&@3}, z.B.
+~AddHelpLine Kaffee*(ohne Milch=@1,+mit*(Kuhmilch=@2,+Hafermilch,)*(nicht aufgeschäumt=@3,+aufgeschäumt,))*(ohne Süßungsmittel.+mit Zucker{@1||@2||@3}.+mit Süßstoff.{@1&&@3||@2&&@3}) 
+~Trim Bkombi=$KAusd
+// Mache allen Whitespace zu Leerzeicen
+~Replace Bkombi=$Bkombi|$Chr(10)->$Chr(32)
+~Replace Bkombi=$Bkombi|$Chr(13)->$Chr(32)
+~Replace Bkombi=$Bkombi|$Chr(9)->$Chr(32)
+// Entferne alle Leerzeichen vor und nach den Operatoren und den Klammern
+~DoWhile $Bkombi!=$Vkombi
+	~Set Vkombi=$Bkombi
+	~Replace Bkombi=$Bkombi|$Chr(32)+->+
+	~Replace Bkombi=$Bkombi|$Chr(32)*->*
+	~Replace Bkombi=$Bkombi|$Chr(32)(->(
+	~Replace Bkombi=$Bkombi|$Chr(32))->)
+	~Replace Bkombi=$Bkombi|+$Chr(32)->+
+	~Replace Bkombi=$Bkombi|*$Chr(32)->*
+	~Replace Bkombi=$Bkombi|($Chr(32)->(
+	~Replace Bkombi=$Bkombi|)$Chr(32)->)
+~Loop
+@Eingabe >>_ $Bkombi
+
+~Set Vkombi=!!!
+~DoWhile $Bkombi!=$Vkombi
+	~Set Vkombi=$Bkombi	
+	
+	// Wandle um: ((A*B+C*D)+ -> (A*B+C*D+ usw.
+	~RegExMatch dis=$Chr(32)$Bkombi$Chr(32)|([(+ ])\(([^()]+)\)([)+ ])
+	~If $dis(0)
+		~Replace Bkombi=$Chr(32)$Bkombi$Chr(32)|$dis(1)($dis(2))$dis(3)->$dis(1)$dis(2)$dis(3)
+		~Trim Bkombi=$Bkombi
+	//@Debug >> Nach DKlam: Bkombi=$Bkombi
+
+	// Wandle um: (A*B+C*D)*E -> (A*B+C*D)*(E)
+	~RegExMatch dis=$Bkombi|\(([^()]+)\)\*([^()+*]+)
+	~If $dis(0)
+		~Replace Bkombi=$Bkombi|($dis(1))*$dis(2)->($dis(1))*($dis(2))
+	//@Debug >> Nach RDis: Bkombi=$Bkombi
+
+	// Wandle um: A*(B*C+D*E) -> (A)*(B*C+D*E)
+	~RegExMatch dis=$Bkombi|([^()+*]+)\*\(([^()]+)\)
+	~If $dis(0)
+		~Replace Bkombi=$Bkombi|$dis(1)*($dis(2))->($dis(1))*($dis(2))
+	//@Debug >> Nach LDis: Bkombi=$Bkombi
+
+	// Wandle um (A*B+C*D)*(E*F+G*H) -> (A*B*E*F+A*B+G*H+C*D*E*F+C*D*G*H)
+	~RegExMatch dis=$Bkombi|\(([^()]+)\)\*\(([^()]+)\)
+	~If $dis(0)
+		~Split K1=$dis(1)|+
+		~Split K2=$dis(2)|+
+		~Set Prod=
+		~Set Plus=
+		~ForEach sum1 in K1
+			~ForEach sum2 in K2
+				~Set Prod=$Prod$Plus$sum1*$sum2
+				~Set Plus=+
+			~Loop
+		~Loop
+		~Replace Bkombi=$Bkombi|($dis(1))*($dis(2))->($Prod)
+	//@Debug >> Nach Prod: Bkombi=$Bkombi
+~Loop
+
+// Zusatzbedindungen anwenden
+~Set anz=0
+~Split Kombiliste=$Bkombi|+
+~ForEach kidx in Kombiliste
+	~Set AllesOK=Ja
+	~RegExMatch zbed=$kidx|\{(@[^}]+)\}	
+	~DoWhile $zbed(0)
+		~Replace kidx=$kidx|{$zbed(1)}->
+		~Split OderTerme=$zbed(1)|$Chr(124)$Chr(124)
+		~Set OderOK=Nein
+		~ForEach idxoder in OderTerme
+			~Split UndTerme=$idxoder|&&
+			~Set UndOK=Ja
+			~ForEach idxund in UndTerme
+				~If $kidx!~$Chr(61)$idxund
+					~Set UndOK=Nein
+					~ExitLoop
+			~Loop
+			~If $UndOK==Ja
+				~Set OderOK=Ja
+				~ExitLoop			
+		~Loop
+		~If $OderOK==Nein
+			~Set AllesOK=Nein
+		~RegExMatch zbed=$kidx|\{(@[^}]+)\}
+	~Loop
+	~If $AllesOK==Ja
+		~RegExReplace kidx=$kidx|=@[0-9]+->
+		~Replace kidx=$kidx|*->$Chr(32)
+		~AddTo anz+=1
+		~Set FKombiliste($anz)=$kidx
+~Loop
+~Set FKombiliste(0)=$anz
+
+// Ergebnis ausgeben
+~ForEach fidx in FKombiliste
+	@Kombinationen >> $fidx
+~Loop

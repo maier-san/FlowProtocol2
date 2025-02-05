@@ -1,12 +1,16 @@
-\documentclass[12pt ,a4paper]{article}
+\documentclass[12pt, a4paper, twoside]{article}
 \usepackage[ansi]{umlaute}
 \usepackage[german]{babel}
-\usepackage{fancyheadings}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=green, urlcolor=red]{hyperref}
+\usepackage{fancyhdr}
 \usepackage{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{mathptm}
 \usepackage{graphicx}
 \usepackage{makeidx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{theorem}
 \title{Softwareentwicklung mit FlowProtocol 2}
 \author{Wolfgang Maier}
 %%
@@ -16,11 +20,18 @@
 \setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
 \geometry{lmargin=35mm,rmargin=25mm,tmargin=25mm,bmargin=25mm}
 \addtolength{\headheight}{2.5pt}
+% Fancyhdr konfigurieren
 \pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
+\fancyhf{} % Löscht alle Standard-Kopf- und Fußzeilen
+% Kopfzeilen konfigurieren
+\fancyhead[LE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
+\fancyhead[LO]{\thepage}
+\fancyhead[RO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
+\fancyhead[RE]{\thepage}
+%\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
 %\setlength{\headrulewidth}{0pt}
-\rhead{\thepage}
-\cfoot{}
+%\rhead{\thepage}
+%\cfoot{}
 %%
 %% Commands
 %%
@@ -31,6 +42,9 @@
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
 \newcounter{bspcount}
 \newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
+\newcommand{\synvar}[1]{\ensuremath{\langle\text{#1}\rangle}}
+\theorembodyfont{\rmfamily}
+\newtheorem{grundelement}{Grundelement}[section]
 \makeindex
 \begin{document}
 \thispagestyle{empty}
@@ -101,13 +115,13 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 >> Hallo Welt!
 \end{verbatim}
 
-Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{01 Hallo Welt.fp2} und speichern diese in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese direkt, oder in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
 Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
-Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{01 Hallo Welt}.
+Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{Hallo Welt}.
 
-Als Überschrift wird standardmäßig der Dateinahme ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Die Syntax \verb|>>| gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.} erklärt.
+Als Überschrift wird standardmäßig der Dateinahme ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Der Befehl \cidxfrag{>\mbox{}>} gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.} erklärt.
 
 Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} werden immer angezeigt, wenn die Ausführung abgeschlossen ist. Mit \emph{Neue Ausführung} kann das aktuell ausgewählte Skript neu gestartet werden und mit \emph{Zurück zur Startseite} kommt man zurück zur Auswahl der Skript-Hauptgruppen, was auch mit dem Menüpunkt \emph{Start} möglich ist. Wir werden noch einige Anwendungsfälle sehen, die sich am besten mit einem Skript umsetzen lassen, das mehrmals hintereinander ausgeführt wird.
 
@@ -128,7 +142,7 @@ Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{
 Das Grundprinzip, dass auf einer oder mehreren Eingabeseiten\index{Eingabeseiten} die eventuell auch voneinander abhängigen Eingaben abgefragt werden, um dann am Ende die daraus resultierenden Ausgaben auf einer Ausgabeseite anzuzeigen, gilt für alle Skripte.
 
 Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \verb|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \verb|Q| und \verb|h|, bzw.\ \verb|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel\index{Schlüssel}. 
-Die Auswahlabfrage wird durch das \verb|?|-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \verb|#|-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
+Die Auswahlabfrage wird durch das \cidxfrag{?}-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \cidxfrag{\#}-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
 
 Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wieder aus Befehlen bestehen, die auch für sich alleine stehen können, Dieser Code wird wird nur dann ausgeführt, wenn die dazugehörende Antwortmöglichkeit ausgewählt wurde.
 
@@ -139,9 +153,9 @@ Da die Gesamtlänge der URL für Seitenaufrufe auf knapp über 2000 Zeichen begrenz
 \subsection{Allgemeine Ergänzungen zur Syntax}
 In \FPZ\ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung\index{Einrückung} am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen\index{Leerzeilen} und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen\index{Tabulatorzeichen}, also auch mit Leerzeichen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
 
-Die Zeichenfolge \verb|//| leitet einen Kommentar\index{Kommentar} ein, jedoch nur zu Beginn einer Zeile.
+Die Zeichenfolge \cidxfrag{//} leitet einen Kommentar\index{Kommentar} ein, jedoch nur zu Beginn einer Zeile.
 
-Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\index{Umbruch} durch die Zeichenfolge \verb|__| zu Beginn jeder Folgezeile kenntlich gemacht werden muss.
+Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\index{Umbruch} durch die Zeichenfolge \cidxfrag{\_\_} zu Beginn jeder Folgezeile kenntlich gemacht werden muss.
 
 \Beispiel{Syntaxergänzungen}
 \begin{verbatim}
@@ -154,6 +168,8 @@ Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\ind
 
 \subsection{Die FlowProtocol-2-Befehlsreferenz}
 Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Scipts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+
+Ergänzend dazu gibt es in Abschnitt~\ref{Befehlsreferenz} ebenfalls eine Befehlsreferenz, die alle Befehle auflistet, und auch auf deren Verwendung in dieser Dokumentation hier verweist.
 
 \subsection{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an seiner Ergebnis kommt.
@@ -293,7 +309,7 @@ Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschni
 \end{verbatim}
 
 \subsection{Unterpunkte und Absatzformate}
-Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell zwei Aufzählungsebenen, die mit den Befehlen \verb|>>| und \verb|>| angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des entsprechenden Abschnitts unter.
+Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell zwei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>} und \cidxfrag{>} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des entsprechenden Abschnitts unter.
 
 Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter Aufzählungspunkt (\verb|>>#|), nicht nummerierter Aufzählungspunkt (\verb|>>*|), einfache Textzeile (\verb|>>_|) oder Codezeile  (\texttt{>>|}) ausgegeben wird.
 
@@ -323,7 +339,7 @@ Gerade in Anleitungen wird auf Stellen im Code in Form von Klassen-, Methoden- o
 
 Als Anwendung im Browser kann \FPZ\ natürlich auch Links erzeugen, und damit den Anwender sowohl zu statischen Seiten, also auch zu anderen Anwendungen weiterleiten. Auch dieser Möglichkeit widmen wir später noch einen eigenen Abschnitt. Ein Link\index{Links} besteht dabei aus einer URL und dem anzuzeigenden Text, die in dieser Reihenfolge, getrennt von einem vertikalen Strich angegeben werden. Auch hier kann mit \fcmd{AddText} wieder weiterer Text im Anschluss angefügt werden.
 
-\Beispiel{Links und Inline-Code}
+\Beispiel{Links und Inline-Code}\label{BspLinksUndInlineCode}
 \begin{verbatim}
 @Anleitung >> Implementiere die Start-Methode
     > Gibt die Zeichenfolge 
@@ -341,10 +357,10 @@ Das Beispiel formatiert den Text \emph{override} als Code und den Text \emph{Int
 \section{Variablen und Texteingaben}
 Die erste Zielsetzung der Vorversion von \FPZ\ bestand tatsächlich nur darin, eine große Menge an möglichen Ausgaben mittels iterierten Fragestellungen auf eine spezifische Situation einzugrenzen und die damit verbundenen Anwendungsfälle abzudecken. Sehr schnell wurde jedoch klar, dass mit ein paar grundlegenden Erweiterungen noch sehr viel mehr möglich ist.
 
-\subsection{Variablen setzen und verwenden}
+\subsection{Variablen setzen und verwenden}\label{VariablenSetzenUndVerwenden}
 Unter einer Variablen\index{Variablen} versteht man kurz gesagt einen Platzhalter, der verschiedene Werte annehmen kann. Innerhalb von Programmier- oder Skriptsprachen lassen sich die Werte von Variablen setzen und auch abrufen. In \FPZ\ wird einer Variablen mit dem \fcmd{Set}-Befehl ein Wert zugewiesen. Die Variable kann dann an nahezu allen Stellen im Skript verwendet werden, indem man Sie mit vorangestelltem \verb|$|-Zeichen kennzeichnet.
 
-\Beispiel{Hallo Welt mit Variable}
+\Beispiel{Hallo Welt mit Variable}\label{BspHalloWeltMitVariable}
 \begin{verbatim}
 ?Q: Wie soll die Welt begrüßt werden?
     #h: Mit "Hallo Welt!"
@@ -360,7 +376,7 @@ Eine Variable kann aus Buchstaben (ohne Umlaute), Zahlen, runden Klammern und an
 
 Die Ersetzung von Variablen durch die jeweils zugeordneten Werte erfolgt durch einfache Ersetzung, d.h.\ das Ende der Variablen muss beim Aufruf nicht gekennzeichnet werden. Variablen, die nicht gesetzt wurden, werden auch nicht ersetzt.
 
-\Beispiel{Variablenersetzung}
+\Beispiel{Variablenersetzung}\label{BspVariablenersetzung}
 \begin{verbatim}
 ~Set X=abc
 >> X = $X
@@ -382,7 +398,7 @@ Das Beispiel in diesem Abschnitt verwendet eine Variable, um einen Zahlenwert zu
 
 Nehmen wir konkret die Bewertung von Aufgaben, die zur Stablilisierung bestimmter Programmfunktionen in einem Softwareprodukt erstellt wurden. Die Erstellung und Ausformulierung solcher Aufgaben werden meist den Entwicklern selbst überlassen, da nur diese über das Wissen und den technischen Einblick verfügen, um dort Verbesserungspotential auszumachen. Am Ende sollte es aber auch hier der Product Owner sein, der über Umfang und Priorität der Maßnahmen entscheidet, und um die dafür relevanten Aspekte der Entwicklung herauszuarbeiten, könnte er jeder dieser Aufgaben mit dem folgendem Bewertungssystem bewerten lassen:
 
-\Beispiel{Bewertungssystem}
+\Beispiel{Bewertungssystem}\label{BspBewertungssystem}
 \begin{verbatim}
 ~Set punkte=0
 @Bewertung >>* Bewertungkrterien: 
@@ -459,7 +475,7 @@ Ob man nun wie im Beispiel oben eine einfache additive Bewertung abbildet, oder 
 Viele zumeist abstrakte Fragestellungen lassen sich auf derartige Bewertungssysteme herunterbrechen: Wie stark wird durch eine Entwicklungsmaßnahme die Produktstrategie verfolgt? Welcher über die Jahre gerechnete Mehraufwand wird durch Support und Aufrechterhaltung einer Funktion notwendig sein?
 In der Regel sind es viele kleine Faktoren, wie die Abhängigkeit von Drittanbieter-Komponenten oder externen Diensten die Länge der Kommunikationswege, der Grad der Konfigurierbarkeit, das Hinzukommen neuer Strukturen mit Semantik und Bedienkonzepten und die allgemeine Komplexität und Fehlertoleranz, die dauerhaft Aufwand verursachen. Die Identifikation dieser Faktoren kann zum einen schon bei der Planung der Entwicklung helfen, die Kosten-Nutzen-Verteilung besser einzuschätzen, zum anderen können durch ein geeignetes Skript aber auch direkt geeignete Maßnahmen abgeleitet werden, um diese Dinge bestmöglich und systematisch in den Griff zu bekommen.
 
-\subsection{Texteingaben}
+\subsection{Texteingaben}\label{Texteingaben}
 Schon bei der Erstellung der ersten Skripte gab es die Assoziation zu den zahlreichen Konfigurationsportalen, mit denen man im Internet sein Fahrrad oder Auto nach Wunsch zusammenstellen konnte, und daran angelehnt auch die ersten Versuche, die Konfiguration rund um die vielfach wiederkehrenden Standardentwicklungen in gleicher Weise abzufragen und es so dem Product Owner zu erleichtern, die passende Konfiguration zu wählen. Da die Auswahl schon technisch auf auf die Menge der möglichen Konfigurationen beschränkt blieb, gleichzeitig aber alle notwendigen Entscheidungen abgefragt wurden, konnte man Aufgabenbeschreibungen generieren, die fast alle wesentlichen Konfigurationsaspekte auflisteten. Fast alle deshalb, da die Benennung der zu erstellenden Instanz eben nicht abgefragt werden konnte, und deshalb durch einen Platzhalter \emph{xxx} in der Ausgabe ersetzt werden musste, was den Komfort deutlich schmälerte.
 
 Inzwischen gehören Texteingaben\index{Texteingaben} zum Grundumfang von \FPZ\ und zusammen damit wurden auch zahlreiche Befehle hinzugefügt, um Texteingaben zu verarbeiten.
@@ -481,12 +497,12 @@ Mit der Möglichkeit, Texte oder Zahlen einzugeben lassen sich jede Menge kleine 
 \section{Weitere Formatierungsmöglichkeiten}
 In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Aufgabenkontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
 
-\subsection{Ausgabetitel und Abschnittsverschiebungen}
+\subsection{Ausgabetitel und Abschnittsverschiebungen}\label{AusgabetitelUndAbschnittsverschiebungen}
 Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auflistung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
 
 Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, verschiedene Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
 
-\Beispiel{Abschnittsverschiebung}
+\Beispiel{Abschnittsverschiebung}\label{BspAbschnittsverschiebung}
 \begin{verbatim}
 ~Input Bez: Wie soll das Feld heißen?
 @AnlEigenschaften >> Setze die Bezeichnung "$Bez"
@@ -515,7 +531,7 @@ In diesem Beispiel wird eine kleine Anleitung für den Einbau eines Feldes in ein
 
 Für dieses Minimalbeispiel hätte man die gewünschte Reihenfolge auch ohne die Verschiebung von Abschnitten hinbekommen, aber gerade bei größeren Anleitungsskripten kann eine Aufteilung helfen, die jeweils zu einem Anleitungsschritt dazugehörenden Aspekte wie Programmcode und Testpunkte im Skript eng beieinanderzuhalten.
 
-\subsection{Formatierung der Eingabe}
+\subsection{Formatierung der Eingabe}\label{FormatierungDerEingabe}
 So wie man den Titel\index{Titel} für die Ausgabeseite setzen kann, lässt sich der Titel auch für die Eingabeseiten setzen und im Laufe der Skriptausführung ändern, ebenso lassen sich auch bei der Eingabe Abschnitte einfügen, um die Eingabeseiten weiter zu gliedern. Zuletzt kann auch noch unterhalb der Überschrift eine Beschreibung des Skriptes ausgegeben werden, um auch den Anwender abzuholen, der nur durch die Skriptauswahl stöbert, und der bislang nur den Dateinamen kennt.
 
 \Beispiel{Bug-Planer}\label{BspBugPlaner}
@@ -568,12 +584,12 @@ In der Inneren Schleife wird die Indexsequenz $4,3,2,2,3,2,2,3,2,2$ durchlaufen,
 
 Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben und unten durch einen absoluten Wert begrenzt. Die Eingaben könnten damit auf die des ersten Abschnitts beschränkt werden.
 
-\subsection{Hilfezeilen}
+\subsection{Hilfezeilen}\label{Hilfezeilen}
 Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss und welche man weglassen kann, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten, und die benötigen Eingaben tätigen muss.
 
 Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch Anwender mit wenig Erfahrung in der Lage sind, das Skript auszuführen, ist eine Kunst für sich. In manchen Fällen wird das nicht möglich sein, und man wird einfach ein gewisses Systemwissen\index{Systemwissen} beim Anwender voraussetzen müssen. In den meisten Fällen wird man jedoch mit ein oder zwei Zeilen Anleitung auskommen, um zu beschreiben, wo man einen Wert findet oder wie die gestellte Frage oder einzelne Auswahlwerte genau zu interpretieren sind.
 
-\Beispiel{Hilfezeilen}
+\Beispiel{Hilfezeilen}\label{BspHilfezeilen}
 \begin{verbatim}
 ~Input Bez: Trage die Lizenz für FlowProtocol 2 ein:
 ~AddHelpLine Du findest die zugeordnete Lizenz auf der 
@@ -596,12 +612,12 @@ Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahl
 \section{Programmierung}
 Auch wenn es ursprünglich nicht die Absicht war, aus \FPZ\ eine Programmierumgebung zu machen, gab es doch immer wieder Anforderungen, die mit den grundlegenden Befehlen einer üblichen Programmiersprache gut umsetzbar gewesen wären. Der Wunsch, die Lösung dieser Anforderungen auch zentral, und für alle Mitarbeiter einfach über den Browser bereitzustellen, führte schließlich dazu, die wichtigsten Programmierbefehle auch in \FPZ\ einzubauen.
 
-\subsection{Sprünge}
-Wir starten das Thema Programmierung mit einem Befehl, der in den höheren Programmiersprachen eher selten zum Einsatz kommt, dem \fcmd{Goto}-Befehl. Dieser ermöglicht es einen Sprungmarke\index{Sprungmarke} anzuspringen, und die Skriptausführung dort fortzusetzen. Die Sprungmarke wird wiederum mit dem Befehl \fcmd{JumpMark} gesetzt. Eine Sprungmarke kann auch ganz normal als nächste Zeile in der Ausführung durchlaufen werden. Ihr Durchlaufen selbst hat keinen Effekt.
+\subsection{Sprünge}\label{Spruenge}
+Wir starten das Thema Programmierung mit einem Befehl, der in den höheren Programmiersprachen eher selten zum Einsatz kommt, dem \fcmd{GoTo}-Befehl. Dieser ermöglicht es einen Sprungmarke\index{Sprungmarke} anzuspringen, und die Skriptausführung dort fortzusetzen. Die Sprungmarke wird wiederum mit dem Befehl \fcmd{JumpMark} gesetzt. Eine Sprungmarke kann auch ganz normal als nächste Zeile in der Ausführung durchlaufen werden. Ihr Durchlaufen selbst hat keinen Effekt.
 
 Der \fcmd{GoTo}-Befehl ist für \FPZ\ dahingehend interessant, da er den eng mit dem namensgebenden Ursprung der Anwendung zusammenhängt und sehr direkt die Abbildung von Flussdiagrammen\index{Flussdiagramm} ermöglicht. Im Gegensatz zur Verschachtelung von Abfragen kann man damit weitere Muster gut umsetzen, ohne dabei Skriptcode wiederholen zu müssen, wie etwa im folgenden Beispiel:
 
-\Beispiel{Sprünge}
+\Beispiel{Sprünge}\label{BspSpruenge}
 \begin{verbatim}
 ?Q1: Um welche Art von Entwicklung handelt es sich?
     #F: Neues Framework
@@ -622,14 +638,14 @@ Zu Beginn wird nach der Kategorisierung einer Entwicklung gefragt, die entweder 
 
 Man kann Sprungmarken auch einfach dazu verwenden, um tief verschachtelte Abfragen in übersichtlicher Art und Weise als Folgen anzuordnen.
 
-\subsection{Berechnungen}
+\subsection{Berechnungen}\label{Berechnungen}
 Aus Abschnitt~\ref{BewSysteme} kennen wir schon den \fcmd{AddTo}-Befehl, mit dem man einen Wert zu einer Variablen dazuzählen kann. Später wurde der \fcmd{Calculate}-Befehl ergänzt, der eine Berechnung\index{Berechnung} mit zwei Argumenten und einem der Operatoren \verb|+|, \verb|-|, \verb|*|, \verb|/|, und \verb|%| 
 (modulo) durchführen konnte. Umfangreichere Ausdrücke mussten dementsprechend in mehreren Zeilen zerlegt und mit entsprechend vielen Hilfsvariablen berechnet werden.
 
 Mit dem Befehl \fcmd{CalculateExpression} lassen sich inzwischen auch längere Ausdrücke auf Basis der Operatoren \verb|+|, \verb|-|, \verb|*|, \verb|/|, \verb|%| 
 und \verb|^| und den Funktionen \cidxfrag{sqrt}, \cidxfrag{sin}, \cidxfrag{cos}, \cidxfrag{tan}, \cidxfrag{exp} und \cidxfrag{ln} und einer beliebigen Klammerung in einer Zeile berechnen. Die Berechnungen erfolgen nummerisch und die Ergebnisse werden in Dezimal- oder ggf.\ auch in Exponentialschreibweise\index{Exponentialschreibweise} dargestellt.
 
-\Beispiel{Berechnungen}
+\Beispiel{Berechnungen}\label{BspBerechnungen}
 \begin{verbatim}
 ~CalculateExpression U = 72 % 7
 ~CalculateExpression V = (-2,5 + 1,57)*(1,3 - 0,4)/18
@@ -645,7 +661,7 @@ und \verb|^| und den Funktionen \cidxfrag{sqrt}, \cidxfrag{sin}, \cidxfrag{cos},
 
 In die letzten Zeile vor der Ausgabe wird der Wert der Variablen \verb|X| mit dem \fcmd{Round}-Befehl auf drei Stellen hinter dem Komma gerundet und das Ergebnis der Variablen \verb|Z| zugewiesen.
 
-\subsection{Schleifen}
+\subsection{Schleifen}\label{Schleifen}
 Die große Stärke von Computern liegt darin, die gleichen Dinge in leichter Variation oft zu wiederholen, ohne sich zu langweilen und ohne in der Ausführung nachlässig zu werden. Mit Hilfe von Schleifen\index{Schleifen} lassen sich solche Mehrfachausführungen einfach implementieren.
 
 Die bekannten höheren Programmiersprachen unterscheiden drei prinzipielle Arten von Schleifen: Die \emph{For-Schleife}\index{For-Schleife} wird mit einer Zählervariablen eingeleitet, die mit einem Startwert beginnt, diesen bei jedem Durchlauf um eine Schrittlänge hoch zählt, und beendet wird, wenn ein Zielwert erreicht oder eine Abbruchbedingung erfüllt wird. Die \emph{Do-While-Schleife}\index{Do-While-Schleife} läuft dagegen so lange durch, bis eine Abbruchbedingung erfüllt ist. Schließlich gibt es noch die \emph{For-Each-Schleife}\index{For-Each-Schleife}, bei der eine vorgegebene Menge von Elementen durchlaufen wird. Eine Indexvariable nimmt dabei nacheinander den Wert dieser Elemente an.
@@ -654,7 +670,7 @@ In \FPZ\ gibt es die Beiden Befehle \fcmd{DoWhile} und \fcmd{ForEach} für die Ei
 
 In Beispiel~\ref{BspBugPlaner} hatten beide Schleifenvarianten schon einen kleinen Gastauftritt, aber um die Funktionsweise nochmal genauer anzuschauen ist die folgende Primzahlberechnung\index{Primzahlberechnung} gut geeignet:
 
-\Beispiel{Primzahlen}
+\Beispiel{Primzahlen}\label{BspPrimzahlen}
 \begin{verbatim}
 ~Set n=2
 ~Set pidx=0
@@ -687,7 +703,7 @@ Die Programmierung von Schleifen bringt immer auch mit sich, dass man versehentl
 
 Ein häufigerer Anwendungsfall, insbesondere wenn man Skripte schreibt, die Programmcode generieren, ist die Abfrage einer Sequenz von Elementen, z.B.  die Variablennamen für die Parameter einer Funktion. Im Beispiel unten wird über eine Schleife wiederholt abgefragt, ob es noch einen weiteren Parameter gibt, und wenn ja, nach dem dazugehörenden Variablenname gefragt. 
 
-\Beispiel{Abfrageschleife}
+\Beispiel{Abfrageschleife}\label{BspAbfrageschleife}
 \begin{verbatim}
 ?V1: Hat die Funktion Parameter?
     #j: Ja
@@ -714,7 +730,7 @@ Zu den wichtigsten Steuermechanismen innerhalb eines Programms gehört ganz klar 
 
 \fcmd{If} führt den darunter eingerückten Skriptcode genau dann aus, wenn die hinter dem \fcmd{If}-Befehl stehende Bedingung erfüllt ist. Mit \fcmd{ElseIf} kann über eine weitere Bedingung ein weiterer Codeblock angeschlossen werden, die aber nur dann ausgewertet, bzw.\ ausgeführt werden, wenn keine der davorstehenden Bedingungen erfüllt ist. Auf diese Weise können beliebig Viele ElseIf-Bedingungen aneinander gereiht werden. Abschließend kann mit \fcmd{Else} noch eine Codeblock angehängt werden, der nur dann ausgeführt, wenn keiner der davorstehenden Bedingungen erfüllt wurde.
 
-\Beispiel{Bewertungsschema}
+\Beispiel{Bewertungsschema}\label{BspBewertungsschema}
 \begin{verbatim}
 ~Input P: Wie hoch ist die Punktezahl (0-20)?
 ~Execute
@@ -736,12 +752,12 @@ Ein klassischer Anwendungsfall für mehrstufige If-Abfragen ist die Anwendung ein
 Die Bedingungen im Beispiel sind einfache Größer-gleich-Vergleiche\index{Vergleiche}, aber es können auch komplexere Ausdrücke formuliert werden. Die Bedingung muss dabei in der disjunktiven Normalform\index{disjunktive Normalform} angegeben werden, also als Oder-Verknüpfung\index{Oder-Verknüpfung} (\verb=||=) von Und-Verknüpfungen\index{Und-Verknüpfung} (\verb|&&|), wobei keine Klammerung notwendig ist.
 Als Literale sind die Konstanten \verb|1| (wahr), \cidxfrag{true} (wahr\index{wahr}), \verb|0| und \cidxfrag{false} (falsch\index{falsch}) verwendbar, sowie für Zeichenketten $s$ und $t$, Zahlen $x$ und $y$ und Variablen $v$ die folgenden Ausdrücke zulässig: \verb|s==t| ($s$ ist gleich $t$), \verb|s!=t| ($s$ ist ungleich $t$), \verb|x<>y| ($x$ ist ungleich $y$), \verb|x<y| ($x$ ist kleiner als $y$), \verb|x<=y| ($x$ ist kleiner oder gleich $y$), \verb|x>y| ($x$ ist größer als $y$), \verb|x>=y| ($x$ ist größer oder gleich $y$), \verb|s~t| ($s$ enthält $t$), \verb|s!~t| ($s$ enthält $t$ nicht), \verb|?$v| ($v$ ist gesetzt), \verb|!?$v| ($v$ ist nicht gesetzt). 
 
-\subsection{Funktionen}
+\subsection{Funktionen}\label{Funktionen}
 Viele spannende und mächtige Algorithmen gründen auf Funktionen\index{Funktionen}, die sich rekursiv selbst aufrufen. Es gibt Programmiersprachen wie Scheme, die einen dazu bringen, so gut wie jede Problemstellung mittels Rekursion\index{Rekursion} zu lösen. Auch \FPZ\ erlaubt die Definition von Funktionen und rekursive Aufrufe, obgleich wie schon im früheren Abschnitten erwähnt, dort nicht unbedingt der Schwerpunkt dieser Skriptsprache liegt.
 
 Das nachfolgende Beispiel zeigt den Klassiker unter den rekursiv lösbaren Aufgaben, nämlich die Türme von Hanoi\index{Türme von Hanoi}. Dabei geht es darum, einen Turm von mehreren absteigend großen Schreiben von einer Stange unter Zuhilfenahme einer zweiten Stange auf eine dritte Stange umzustapeln, wobei jeweils nur eine Scheibe bewegt werden darf und niemals eine größere Scheibe auf einer kleineren Scheibe abgelegt werden darf.
 
-\Beispiel{Türme von Hanoi}
+\Beispiel{Türme von Hanoi}\label{BspTuermeVonHanoi}
 \begin{verbatim}
 ~Set MoveFromS=A
 ~Set MoveToS=C
@@ -780,9 +796,11 @@ Das nachfolgende Beispiel zeigt den Klassiker unter den rekursiv lösbaren Aufgab
 
 Der Lösungsansatz besteht darin, das Umstapeln eines Turms mit $n$ Scheiben von Stange $a$ nach Stange $b$ in drei Schritte zu zerlegen: Zunächst stapelt man den oberen Teil des Turms aus $n-1$ Schreiben um auf die freie Stange $c$, bewegt dann die $n$te Schreibe auf die Zielstange $b$ und stapelt dann wieder denselben Turm von Stange $c$ auf Stange $b$ oben auf diese Scheibe drauf. Auf diese Weise hat man das Problem auf das Umstapeln eines kleineren Turms zurückgeführt und kann das wiederholt anwenden, bis man schließlich bei einem Turm mit $0$ Scheiben angekommen ist, bei dem nichts mehr zu tun ist.
 
-Die Definition der Funktionen erfolgt standardmäßig am Ende des Skriptes. Ihr Code wird nur durchlauben, wenn sie aufgerufen werden, trotzdem wird hier zur besseren Übersichtlichkeit die Ausführung vorher mit dem Befehl \fcmd{End} beendet. Jede Funktion wird mit dem Befehl \fcmd{DefineSub} eingeleitet und mit dem Befehl \fcmd{Return} beendet. Der dazwischen liegende, eingerückte Codeblock wird bei jedem Aufruf durchlaufen. Ein Aufruf wird mit mir im Befehl \fcmd{GoSub} in die Wege geleitet, bei dem auch der \cidxfrag{BaseKey}-Wert übergeben werden kann. Nach dem Aufruf wird das Skript in der nächsten Zeile fortgesetzt.
+Die Definition der Funktionen erfolgt standardmäßig am Ende des Skriptes. Ihr Code wird nur durchlaufen, wenn sie aufgerufen werden, trotzdem wird hier zur besseren Übersichtlichkeit die Ausführung vorher mit dem Befehl \fcmd{End} beendet. Jede Funktion wird mit dem Befehl \fcmd{DefineSub} eingeleitet und mit dem Befehl \fcmd{Return} beendet. Der dazwischen liegende, eingerückte Codeblock wird bei jedem Aufruf durchlaufen. Ein Aufruf wird mit mir im Befehl \fcmd{GoSub} in die Wege geleitet, bei dem auch der \cidxfrag{BaseKey}-Wert übergeben werden kann. Nach dem Aufruf wird das Skript in der nächsten Zeile fortgesetzt.
 
-Da es in \FPZ\ keine lokalen Variablenbereiche gibt, muss man die Variablen, die für einen bestimmten Funktionsaufruf erhalten bleiben sollen, explizit von den anderen Variablen abgrenzen. Dafür kann über die Sondervariable \cidxfrag{BaseKey} eine Zahl oder Zeichenfolge übergeben werden, die für jeden Funktionsaufruf getrennt verwaltet wird und die in den innerhalb der Funktion genutzten Variablen als Teil der Bezeichnung eingebaut werden kann, um auch diese zu trennen. In gleicherweise können auch die Funktionsargumente vor dem Funktionsaufruf als Variablen definiert werden, die sich auf den übergebenen \cidxfrag{BaseKey}-Wert beziehen. Im Beispiel wird vor dem ersten Aufruf im Skript \verb|MoveFromS=A| als einer von drei Funktionsparametern gesetzt und beim Funktionsaufruf wird \verb|BaseKey=S| übergegeben. Damit wird innerhalb der Funktion \verb|$MoveFrom$BaseKey| zu \verb|$MoveFromS| und schließlich zu \verb|A| ersetzt. Bei den rekursiven Aufrufen wird der \cidxfrag{BaseKey}-Wert dann jeweils um die Buchstaben A und B erweitert, so dass am Ende Funktionsparameter zu 15 verschiedenen \cidxfrag{BaseKey}-Werten verwaltet werden.
+In jedem Schritt muss zunächst die Stange herausgefunden werden, die aktuell weder Ausgangspunkt, noch Ziel der Umschichtung darstellt, und die als Zwischenablage verwendet werden kann. Das wird dadurch bewerkstelligt, dass man im Ausdruck \verb|ABC| die Kennungen der beiden gegebenen Stangen mit dem \fcmd{Replace}-Befehl entfernt.
+
+Da es in \FPZ\ keine lokalen Variablenbereiche gibt, muss man die Variablen, die für einen bestimmten Funktionsaufruf erhalten bleiben sollen, explizit von den anderen Variablen abgrenzen. Dafür kann über die Sondervariable \cidxfrag{BaseKey} eine Zahl oder Zeichenfolge übergeben werden, die für jeden Funktionsaufruf getrennt verwaltet wird und die in den innerhalb der Funktion genutzten Variablen als Teil der Bezeichnung eingebaut werden kann, um auch diese zu trennen. In gleicherweise können auch die Funktionsargumente vor dem Funktionsaufruf als Variablen definiert werden, die sich auf den übergebenen \cidxfrag{BaseKey}-Wert beziehen. Im Beispiel wird vor dem ersten Aufruf im Skript \verb|MoveFromS=A| als einer von drei Funktionsparametern gesetzt und beim Funktionsaufruf wird \verb|BaseKey=S| übergeben. Damit wird innerhalb der Funktion \verb|$MoveFrom$BaseKey| zu \verb|$MoveFromS| und schließlich zu \verb|A| ersetzt. Bei den rekursiven Aufrufen wird der \cidxfrag{BaseKey}-Wert dann jeweils um die Buchstaben A und B erweitert, so dass am Ende Funktionsparameter zu 15 verschiedenen \cidxfrag{BaseKey}-Werten verwaltet werden.
 
 Der Umgang mit rekursiven Funktionen ist in \FPZ\ zugegebenermaßen etwas gewöhnungsbedürftig, aber er lässt sich mit einigen Debug-Ausgaben und etwas Übung doch gut hinbekommen. Analog zu den Variablen lassen sich auch die Schlüssel für Eingaben mithilfe der \cidxfrag{BaseKey}-Variablen definieren, so das in jeder Rekursion auch Benutzerinteraktionen stattfinden können. Auf diese Weise kann zum Beispiel ein Sortieralgorithmus wie Mergesort implementiert werden, der den einzelnen Vergleich zweier Elemente an den Anwender weitergibt. Damit kann etwa die Sortierung von Projekten oder Aufgaben nach Priorität auf Einzelvergleiche heruntergebrochen werden, die sich oft mit Bauchgefühl ganz gut festlegen lassen.
 
@@ -791,12 +809,12 @@ Natürlich kann man Funktionen auch ohne Rekursion nutzen. In diesem Fall benötig
 \section{Verarbeitung von Texten}
 Der Zweck eines Skriptes ist es, eine Ausgabe zu erzeugen und der Zweck von Texteingaben liegt meist darin, diese Texte in irgendeiner Form in der Ausgabe einzuarbeiten. Sofern die Eingabe unverändert in der Ausgabe erscheinen soll, reicht es, einfach die entsprechende Variable in der Ausgabe zu verwenden. In manchen Fällen möchte man jedoch einen Text in einer bestimmten Form abwandeln oder entsprechend einer vorgegebenen Struktur zerlegen. Mit den in diesem Abschnitt beschriebenen Befehlen lassen sich die meisten Textveränderungen hinbekommen.
 
-\subsection{Texte aufteilen und neu kombinieren}
+\subsection{Texte aufteilen und neu kombinieren}\label{TexteAufteilen}
 Wie wir schon in Beispiel~\ref{BspBugPlaner} gesehen haben, Kann man mit Schleifen sehr gut Listen durchlaufen und eine Menge von Elementen bearbeiten. In diesem Beispiel wurde auch schon der \fcmd{Split}-Befehl verwendet, um aus einer kommagetrennten Aufzählung eine solche indizierte Liste zu erstellen, die mit dem \fcmd{ForEach}-Befehl durchlaufen werden kann. In der gleichen Weise kann auch eine ganze Aufzählung durch eine einzelne \fcmd{Input}-Abfrage als Benutzereingabe entgegengenommen, und in eine Liste umgewandelt werden. 
 
 Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste von Listen\index{Listen!von Listen} als Eingabe abgefragt und verarbeitet. Der \fcmd{Split}-Befehl funktioniert so, dass er den übergebenen Text anhand des angegebenen Trennzeichens aufteilt und in einer indizierten Liste speichert. 
 
-\Beispiel{Kombinator}
+\Beispiel{Kombinator}\label{BspKombinator}
 \begin{verbatim}
 ~Input C: Kombinierbare Eigenschaften
     __ (z.B.: A,B,C : X,Y,Z)
@@ -827,10 +845,10 @@ Der Umgang mit solchen kombinatorischen Auflistungen\index{kombinatorischen Aufl
 
 Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. Entsprechend empfiehlt es sich, den Kombinator so zu erweitern, dass sich zumindest die sich gegenseitig ausschließenden Kombinationen  angeben und entfernen lassen.
 
-\subsection{Ersetzungen und Zufallsgenerierung}
+\subsection{Ersetzungen und Zufallsgenerierung}\label{ErsetzungenUndZufallsgenerierung}
 Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, etwa in Beispiel~\ref{BspTextersetzung}. Die Ersetzung\index{Ersetzung} von Texten in anderen Texten ist für viele Zwecke einsetzbar. Im nachfolgende Beispiel wird die Textersetzung dazu verwendet um systematisch einen Text aufzubauen. Hierbei kommt auch der Befehl \fcmd{Random} zum Einsatz, mit dem eine Zufallszahl\index{Zufallszahl} in einem Zahlenbereich generiert werden kann.
 
-\Beispiel{Passwortgenerator}
+\Beispiel{Passwortgenerator}\label{Passwortgenerator}
 \begin{verbatim}
 ~Set L=12
 ~Random AnzZiffer=1..2
@@ -895,7 +913,7 @@ Jede Zeile hat vier Einträge, die durch Tabulatoren getrennt sind. Im ersten wir
 
 Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminologie-Tool und sieht so aus:
 
-\Beispiel{Terminologieprüfer}
+\Beispiel{Terminologieprüfer}\label{BspTerminologiepruefer}
 \begin{verbatim}
 ~Input T:Text
 @Eingabetext >>_ $T
@@ -924,7 +942,7 @@ Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \verb|ti| eine Lis
 
 Das Skript bietet noch viel Spielraum für Erweiterungen, beispielsweise könnten alle im Text vorhandenen großgeschriebenen Wörter, die noch nicht gefunden wurden als Vorschläge für die Aufnahme in die Terminologie aufgelistet werden, direkt mit einem Link zu einem Terminologieerfassungskript, das die benötigten Informationen abfragt und daraus die entsprechenden Einträge für die Terminologiedatenbank erstellt.
 
-\subsection{Parametrisierte Links generieren}
+\subsection{Parametrisierte Links generieren}\label{ParametrisierteLinks}
 Der große Vorteil von Webanwendungen liegt darin, dass man innerhalb der Programmoberfläche überall Links auf andere Programmbereiche oder sogar andere Anwendungen einbauen kann. Diese lassen sich dann bequem in neuen Tabs öffnen, um einen zwischengelagerten Arbeitsschritt auszuführen und danach kann man zu seiner ursprünglichen Aufgabe zurückkehren. Umgekehrt kann eine Webanwendung wiederum über einen parametrisierten Link\index{Link!parametrisiert} aufgerufen werden, dem man einzelne Begriffe oder auch kleinere Texte als Argumente übergeben kann.
 
 Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInline} schon gesehen. Um jedoch beliebigen Text als Parameter in einem Link einzufügen, muss man diesen in einer speziellen Form kodieren. Hierfür gibt es in \FPZ\ den Befehl \fcmd{UrlEncode}. Das nachfolgende Beispiel zeigt die Verwendung von URL-Parametern\index{URL-Parametern} am Beispiel eines Suchbegriffs, den man als Parameter an eine Suchmaschine übergeben kann, hier am Beispiel von Google und Bing.
@@ -972,7 +990,7 @@ Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Program
 
 Zielsetzung ist ein System aus Anleitungen und Unterstützungssystemen, das alle Komponenten des Frameworks in jeweils allen Phasen der Softwareentwicklung repräsentiert, angefangen bei der Auswahl der Komponenten zur Umsetzung bestimmter Anforderungen, über die Verwendung im Programmcode, bis hin zur Testphase. Alle Abhängigkeiten, die sich zwischen den verschiedenen Entwicklungsphasen ergeben, sollten weitestgehend in den Skripten abgebildet sein und automatisch Berücksichtigung finden.
 
-\subsection{Entwicklungsanleitungen}
+\subsection{Entwicklungsanleitungen}\label{Entwicklungsanleitungen}
 Entwicklungsanleitungen\index{Entwicklungsanleitungen} sind, wie der Begriff schon sagt, Anleitungen für die Entwickler. Diese beschreiben, wie Anforderungen mit Hilfe der zur Verfügung stehenden Mittel umgesetzt werden können oder sollen. 
 
 Idealerweise gibt es für jede wiederkehrende Entwicklung eine dokumentierte Best Practice\index{Best Practice}, die vorgibt, wie diese umzusetzen ist so dass unabhängig von einzelnen Entwicklern immer dieselbe Lösung herauskommen sollte, die sowohl Qualität, als auch Wartbarkeit garantiert. Die Anleitung für ein wiederkehrendes Entwicklungsmuster ist ein guter Ort um so eine Best Practice direkt zu hinterlegen und aktuell zu halten, denn die Tatsache, das einem eine solche Anleitung die Arbeit einfacher macht, stell praktisch sicher, dass diese auch verwendet wird, und damit auch die Best Practice Anwendung findet.
@@ -1031,7 +1049,7 @@ Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, die
     >|}
 \end{verbatim}
 
-Um einen Codeblock\index{Codeblock} auszugeben, der einen vorgegebenen Programmcode erzeugt, muss man lediglich vor jeder Zeile des Codes das Ausgabezeichen \verb=>|= einfügen. Bessere Editoren wie z.B.\ Notepad++ ermöglichen dies sehr einfach dadurch dass man den Cursor mit der Tastenkombination \emph{Shift + Alt +Cursor down} über mehrere Zeilen ausdehnen kann, so dass nachfolgend eingetippte Zeichen gleichzeitig in jeder einzelnen Zeile eingefügt werden.
+Um einen Codeblock\index{Codeblock} auszugeben, der einen vorgegebenen Programmcode erzeugt, muss man lediglich vor jeder Zeile des Codes das Ausgabezeichen \verb=>|= einfügen. Bessere Editoren wie z.B.\ Notepad++, bzw.\ Visual Studio Code ermöglichen dies sehr einfach dadurch, dass man den Cursor mit der Tastenkombination \emph{Shift + Alt + Cursor down}, bzw.\ \emph{Strg + Alt + Cursor down} über mehrere Zeilen ausdehnen kann, so dass nachfolgend eingetippte Zeichen gleichzeitig in jeder einzelnen Zeile eingefügt werden.
 
 Da wir natürlich nicht die Anleitung für die schon vorhandene Kurse-Archivierungsklasse benötigen, sondern eine allgemeine Anleitung haben wollen, geht es im nächsten Schritt darum, die variablen Anteile zu identifizieren und das Skript dahingehend anzupassen.
 
@@ -1051,7 +1069,7 @@ Die beiden Stufen der Aufzählung lassen sich bei Anleitungen sehr gut so verwend
 
 Am Ende bekommen wir die folgende allgemeine Anleitung:
 
-\Beispiel{Archivklasse 2}
+\Beispiel{Archivklasse 2}\label{Archivklasse2}
 \begin{verbatim}
 ~Input Bez: Bezeichnung Objekttyp (Singular)
     ~AddHelpLine Die Bezeichnung des Objekttyps,
@@ -1128,7 +1146,7 @@ Im Anleitungsskript für den Entwickler können wir auf jeden Fall schon einmal di
 
 Damit kommen folgende Zeilen in unserer Anleitung hinzu:
 
-\Beispiel{Archivklasse 3}
+\Beispiel{Archivklasse 3}\label{BspArchivklasse3}
 \begin{verbatim}
 ...
 @Testpunkte >> Ein $Bez-Objekt kann archiviert werden
@@ -1157,7 +1175,7 @@ Was mit Integrationstests in Textform möglich ist, ist je nach Art der Entwicklu
 
 Im Fall unserer Archivierungsklasse könnte z.B. die Archivierer-Kennung sehr einfach über einen Unittest geprüft werden. Das Skript könnte dazu wie folgt den entsprechenden Testcode erzeugen:
 
-\Beispiel{Archivklasse 4}
+\Beispiel{Archivklasse 4}\label{BspArchivklasse4}
 \begin{verbatim}
 ...
 @Anleitung >> Ordner ArchiviererTest öffnen.
@@ -1229,7 +1247,7 @@ Unsere Anwendungsbeispiel selbst unterstützt bei der Beschreibung einer Listenfu
 
 Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt. Genau hier liegt der Vorteil eines solchen Skiptes, das diese Punkte systematisch abfragt.
 
-\Beispiel{Listenfunktion}
+\Beispiel{Listenfunktion}\label{BspListenfunktion}
 \begin{verbatim}
 ~Input Bez: Bezeichnung der Funktion
 ~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
@@ -1440,7 +1458,7 @@ Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich au
         @Wirkungen >> Versionsabhängige Formate: Nein
 \end{verbatim}
 
-Bei der Implementierung einer Funktion, die Datensätze löscht wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
+Bei der Implementierung einer Funktion, die Datensätze löscht, wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass ein Löschung durch Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
 
 Der Umgang mit Drittkomponenten umfasst viele Aspekte, über die man einen eigenen Abschnitt schreiben könnte. Gerade im kommerziellen Umfeld gibt es viel zu beachten, angefangen von der Verträglichkeit der Lizenz, bis hin zur Dokumentation und Planung notwendiger Überwachungsaufgaben für die Sicherstellung der Aktualität und regelmäßige Prüfung auf Verwundbarkeiten. Komponenten, die für sicherheitsrelevante Funktionalität wie Verschlüsselung eingesetzt werden, müssen diesbezüglich besondere Ansprüche erfüllen. Im Beispiel oben wird dementsprechend auch nur auf eine Checkliste für Drittkomponenten verwiesen, die man natürlich ebenfalls mit \FPZ\ abbilden und hier verlinken kann. 
 
@@ -1455,7 +1473,7 @@ Die Liste solcher Aspekte liese sich noch um viele Punkte verlängern, und man mu
 \section{Organisationswerkzeuge}
 Im Drumherum der täglichen Arbeit gibt es viele kleine Aufgaben, die sich oft mehrfach täglich wiederholen, und bei denen man froh ist wenn man auf passende Hilfswerkzeuge zurückgreifen kann. In diesem Abschnitt beschreiben wir einiges solche Werkzeuge, die sich mit wenig Aufwand als \FPZb-Skript anfertigen lassen.
 
-\subsection{Zeitmessung}
+\subsection{Zeitmessung}\label{Zeitmessung}
 Zeitmessung\index{Zeitmessung} ist ein mächtiges Instrument, und meist unerlässlich, insbesondere wenn man direkt für einzelne Kunden arbeitet. Da Zeitmessung oftmals mit Leistungsmessung assoziiert wird, und damit auch als Grundlage für potentielle Kritik an der eigenen Arbeit, tut man sich oft schwer, diese für verschiedene Tätigkeiten zu etablieren.
 
 Umgekehrt finden wir durch Zeitmessung heraus in welche Art von Aufgaben unsere Arbeitszeit fließt, und können auf dieser Grundlage beurteilen, ob sie dort auch in ausreichendem Maße zur Wertschöpfung beiträgt. Stellen wir etwa fest, dass für die Bearbeitung von Supportvorgängen infolge einer unklaren Situation im Programm in Summe zwölf Stunden Zeit aufgewendet werden mussten, die man sich hätte sparen können, wenn man die entsprechende Stelle klarer ausgestaltet hätte, dann lernt man daraus auf lange Sicht und kann die Gewichtung solcher Maßnahmen für die Zukunft anpassen.
@@ -1466,7 +1484,7 @@ Aufgrund der großen Bedeutung ist Zeitmessung in vielen Systemen fest integriert
 
 Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kann man so auch zwischen der Zeitmessung für verschiedenen Aufgaben hin und her wechseln.
 
-\Beispiel{Zeitmesser}
+\Beispiel{Zeitmesser}\label{BspZeitmesser}
 \begin{verbatim}
 ~Input A: Aufgabe
 ~SetInputTitle Zeitmessung für Aufgabe $A
@@ -1515,14 +1533,14 @@ Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und ak
 
 Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das vollständige Zeitprotokoll mit den Uhrzeiten, den Differenzminuten und der Gesamtzeitdauer ausgegeben.
 
-\subsection{Meeting-Vorbereitung}
+\subsection{Meeting-Vorbereitung}\label{MeetingVorbereitung}
 Auch das nächste Beispiel verwendet Befehle zur Abfrage der Systemzeit um eine Ausgabe zu erzeugen, in diesem Fall eine Überschrift für das Protokoll des nächsten jour fixe\index{jour fixe}, der an jedem dritten Dienstag stattfindet.
 
 Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-Bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
 
 Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-Bereich verlinken könnte.
 
-\Beispiel{Jour-fixe-Planer}
+\Beispiel{Jour-fixe-Planer}\label{BspJourFixePlaner}
 \begin{verbatim}
 ~SetCulture de-DE
 ~SetDateTime dheute=yyyy-MM-dd
@@ -1567,7 +1585,7 @@ Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der T
 
 Umso einfacher Dinge sind, umso eher und öfter wird gebraucht davon gemacht. Meist sind es die kleinen Hürden, die nicht genommen werden.
 
-\subsection{Asset-Dokumentation}
+\subsection{Asset-Dokumentation}\label{AssetDokumentation}
 In einem Softwareunternehmen sollten verschiedene Arten von Assets\index{Assets} dokumentiert werden, um die Ressourcen, das geistige Eigentum und die Infrastruktur des Unternehmens zu verwalten und zu schützen. Die Dokumentation sollte gleichermaßen einen Überblick über die vorhandenen Assets geben, als auch die damit verbundenen Aufgaben beschreiben. Je nach Art des Assets sind unterschiedliche Eigenschaften relevant, die jedoch insgesamt in einheitlicher Form dokumentiert werden sollten.
 
 Sofern dafür nicht eine spezialisierte Asset-Datenbank verwendet wird, ist das Firmenwiki der richtige Ort, um diese Informationen zu verwalten. \FPZ\ kann dabei helfen, die je nach Art benötigten Detailinformationen interaktiv abzufragen und daraus das Datenblatt und die Liste der regelmäßigen oder aktuell noch ausstehenden Aufgaben zu erstellen.
@@ -1724,7 +1742,9 @@ Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sicht
 
 Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
 
-\subsection{Terminplanung}
+Der entscheidende Vorteil bei einer interaktiven Anleitung für die Dokumentation von Dingen ist jedoch die Möglichkeit, Fragestellungen und daraus abgeleitete Maßnahmen direkt damit zu verbinden, und deren Durchführung gut zu unterstützen. So kann ein Skript, das ursprünglich nur für die Dokumentation gedacht war, und nur Informationen abgefragt hat, schrittweise bis zu einem Protokoll erweitert werden, dass am Ende garantiert, dass das Dokumentierte definierte Standards erfüllt.
+
+\subsection{Terminplanung}\label{Terminplanung}
 Unser letztes Beispiel im Abschnitt Organisationswerkzeuge ist ein kleines Terminplanungswerkzeug, das schön zeigt, wie sich mit ein bisschen Programmierung Aufgaben so lösen lassen, dass es für alle Beteiligten von Vorteil ist.
 
 Die Ausgangssituation dürfte in einem Unternehmen recht häufig, aber mindestens einmal pro Jahr und Abteilung vorkommen: für eine Menge von Mitarbeiter sollen innerhalb eines Zeitraums Einzeltermine geplant werden, so dass am Ende für jeden Mitarbeiter der Menge ein Termin mit Raum eingeplant ist.
@@ -1751,7 +1771,7 @@ In diesem Fall hat der Mitarbeiter AB nur zwei Termine angegeben und GH nur eine
 
 Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingabefelder des folgenden Skriptes übertragen:
 
-\Beispiel{Terminplaner}
+\Beispiel{Terminplaner}\label{BspTerminplaner}
 \begin{verbatim}
 ~SetStopCounter 100000; 3000000
 ~Input Anz: Anzahl Termine
@@ -1867,7 +1887,7 @@ Betrachten wir die Fragestellung, unter welcher Lizenz ein Softwareprodukt berei
 
 Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, und weitere Lizenzen dann hinzuzunehmen, wenn sie tatsächlich benötigt werden. Diese Abfrage könnte man wie folgt aufbauen:
 
-\Beispiel{Lizenzabfrage}
+\Beispiel{Lizenzabfrage}\label{BspLizenzabfrage}
 \begin{verbatim}
 ?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
     #: MIT-Lizenz
@@ -1937,7 +1957,7 @@ Die Abfrage erfolgt entsprechend mit vier Texteingaben, wobei die Menge der abzu
 
 Das Ergebnis sieht wie folgt aus:
 
-\Beispiel{Meta-Erweiterung}
+\Beispiel{Meta-Erweiterung}\label{BspMetaErweiterung}
 \begin{verbatim}
 ~Input Frage: Welche Frage soll ausgegeben werden?
 ~Input Key: Schlüssel für die Frage
@@ -1998,7 +2018,7 @@ Metaskripting ist ohne Frage anspruchsvoll, aber dafür ist der Nutzen aufgrund d
 
 Auch hier verhält es sich ähnlich wie bei der Entwicklung von Anwendungscode. Wird etwas nur einmal benötigt, kann es der Spezialist machen. Wird etwas mehrfach benötigt, kann der Spezialist passendes Werkzeug dafür anfertigen, mit dem die Aufgabe einfacher umgesetzt werden kann.
 
-\subsection{Wissensdokumentation}
+\subsection{Wissensdokumentation}\label{Wissensdokumentation}
 Die Dokumentation von Wissen oder auch die Verwaltung von Wissen ist eine der wichtigsten Aufgaben in einem Unternehmen, das seine Wertschöpfung in erster Linie aus dem Wissen der Mitarbeiter generiert.
 
 Fast alle Abläufe, die im Arbeitsalltag stattfinden, setzen Wissen voraus, ebenso die meisten Anwendungen und Werkzeuge, die dabei eingesetzt werden.
@@ -2063,7 +2083,7 @@ Die Begriffe in den eckigen Klammern dienen zur thematischen Gliederung und werd
 
 Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
 
-\Beispiel{Wissensreflektion}
+\Beispiel{Wissensreflektion}\label{BspWissensreflektion}
 \begin{verbatim}
 ~ListDirectories wdir = .Wissensgebiete; Pattern=Wissen *
 ~DynamicOptionGroup WGeb:wdir;Wähle das Wissensgebiet
@@ -2144,6 +2164,424 @@ Diese Form der Stichproben-Abfrage kann mit einer etwas größeren Anzahl auch daf
 Umgekehrt gibt es auch gesetztliche Nachweispflichten, die man in Bezug auf seine Mitarbeiter wahrnehmen muss, etwa dass diese einen Führerschein haben, wenn sie mit Firmenfahrzeugen unterwegs sind. Das Zusenden der mit Ja beantworteten Reflektionsaussagen ist eine einfache Möglichkeit, das Vorhandensein des Wissens gegenüber seinen Vorgesetzten konkret zu bestätigen. Diese Vorgehensweise kann dahin gehen stressfrei gestaltet werden, dass man genügend Zeit und beliebig viele Anläufe bekommt, um eine eventuell vorgegebene Mindestquote zu erreichen, und ergänzend dazu hat man das oben beschriebene Meeting für den gemeinsamen Austausch.
 
 Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
+
+\subsection{Personalisierung}\label{Personalisierung}
+Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Das Erzwingen vollständig über alle Umgebungen hinweg einheitlicher Pfade und Strukturen ist mühsam und dürfte von vielen als unnötigend beschränkend wahrgenommen werden.
+
+Als Serverdienst läuft \FPZ\ vollständig unabhängig von einer lokalen Umgebung. Trotzdem ist es mit sehr einfachen Mitteln möglich, personalisierte Elemente in Skripte einzubringen. Dazu muss man nur eine Funktionsdatei erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt. Diese könnte so aussehen:
+
+\Beispiel{Benutzervariablen.fps}
+\begin{verbatim}
+?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
+    #AB: Anton Barium
+        ~Set BenVarKuerzel=AB
+        ~Set BenVarPfadAufgabenmappen=F:\Aufgabenmappen
+        ~Set BenVarPfadTools=E:\Tools
+    #CD: Christian Deuterium
+    #EF: Ernst Flour
+\end{verbatim}
+
+Im Beispiel sind exemplarisch die Variablen für den Benutzer AB ausformuliert, und in einer im Echtbetrieb eingesetzten Variante würde es vermutlich noch viel mehr benutzerbezogene Variablen geben.
+
+Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentlich Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
+
+Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
+
+\Beispiel{Patchskript}\label{BspPatchskript}
+\begin{verbatim}
+~Include Benutzervariablen.fps
+~Input AKennung: Gib die Aufgabenkennung ein:
+~Input PatchCode: Gib den Korrekturcode ein:
+~SetDateTime Datum=yyyy-MM-dd
+~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~XmlEncode xPatchCode=$PatchCode
+@Anleitung >> Erstelle eine neue Datei im Editor.
+>> Gib den folgenden Code ein:
+    >|<?xml version="1.0"?>
+    >|<PATCHSCRIPT>
+    >|  <NAME>$AKennung</NAME>
+    >|  <CODE>$xPatchCode</CODE>
+    >|  <CREATOR>$BenVarKuerzel</CREATOR>
+    >|  <CREATIONDATE>$Datum</CREATIONDATE>
+    >|</PATCHSCRIPT>
+>> Speichere die Datei ab unter
+    >|$DatBasis\$AKennung.xml
+>> Rufe den Patch-Converter für die Datei auf:
+    >|$BenVarPfadTools\PatchConverter\Bin\PatchConverter.exe
+        __ "$DatBasis\$AKennung.xml"
+>>  Das fertige Patchscript
+    ~AddCode  $AKennung.psc
+    ~AddText  liegt unter
+    >|$DatBasis
+\end{verbatim}
+
+In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe eines internen vorhandenen Tools in ein anderes Format konvertiert wird.
+
+Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
+
+Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
+
+Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|,  sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
+
+\section{Befehlsreferenz}\label{Befehlsreferenz}
+
+\subsection{Grundelemente}
+\begin{grundelement}\label{defBedingungen}
+Eine \emph{Bedingung}\index{Bedingungen} ist ein Ausdruck, der zu \emph{wahr} oder \emph{falsch} ausgewertet werden kann. Bedingungen werden bei verschiedenen Befehlen verwendet, z.B.\ in Do-While-Schleifen oder  bei If-Bedingungen.\par
+Eine Bedingung muss in \FPZ\ in der disjunktiven Normalform angegeben werden, also als Oder-Verknüpfung (\verb=||=) von Und-Verknüpfungen (\verb|&&|), wobei keine Klammerung notwendig ist.
+
+Als Literale sind die Konstanten \verb|1| (wahr), \verb|true| (wahr), \verb|0| (falsch) und \verb|false| verwendbar, sowie die folgenden Vergleichsoperatoren\index{Vergleichsoperatoren}:
+\begin{center}
+\begin{tabular}{|l|c|l|l|}\hline
+Ausdruck& Formel & Sprachform & Typenbeschränkung\\\hline\hline
+\verb|s==t| & $s=t$ & $s$ ist gleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|s!=t|  & $s\neq t$ & $s$ ist ungleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|x<>y| & $x\neq y$ & $x$ ist ungleich $y$ & für Zahlen $x$ und $y$\\
+\verb|x<y| & $x<y$ & $x$ ist kleiner $y$ & für Zahlen $x$ und $y$\\
+\verb|x<=y| & $x\le y$ & $x$ ist kleiner gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|x>y| & $x>y$ & $x$ ist größer $y$ & für Zahlen $x$ und $y$\\
+\verb|x>=y| & $x\ge y$ & $x$ ist größer gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|s~t| & $s\supseteq t$ & $s$ enthält $t$ & für Zeichenketten $s$ und $t$\\
+\verb|s!~t| & $s\nsupseteq t$ & $s$ enthält $t$ nicht & für Zeichenketten $s$ und $t$\\
+\verb|?v| && $v$ ist gesetzt & für eine Variable $v$\\
+\verb|!?v| && $v$ ist nicht gesetzt) & für eine Variable $v$\\\hline
+\end{tabular}
+\end{center}
+\end{grundelement}
+
+\begin{grundelement}\label{defDateipfad}
+Ein \emph{Dateipfad}\index{Dateipfad} ist eine Zeichenkette, die einen Pfad auf eine Datei oder einen Ordner angibt. Als Trennzeichen in den Pfadangaben kann das Trennzeichen des Betriebssystems verwendet werden, auf dem \FPZ\ läuft, also \verb|\| für Windows und \verb|/| für Linux, es kann aber auch \verb=|= verwendet werden, das unabhängig vom Betriebssystems richtig aufgelöst wird.\par
+Der Zugriff von \FPZ\ ist dabei beschränkt auf Dateien und Ordner, die im Skripte-Verzeichnis liegen. Die Angabe \verb|.| verweist auf den Ordner, in dem das gerade ausgeführte Skript liegt. Angaben, die mit \verb=.|= (bzw.\ \verb|.\| oder \verb|./|) beginnen, werden ausgehend vom Skripte-Verzeichnis interpretiert und alle anderen werden wieder ausgehend von dem Ordner interpretiert, in dem das gerade ausgeführte Skript liegt
+\end{grundelement}
+
+\begin{grundelement}\label{defLinks}
+Ein \emph{Link}\index{Link} ist ein im Browser angezeigter Text, der optisch meist blau und unterstrichen hervorgehoben ist, und der bei Anklicken eine im Link hinterlegte Adresse (URL) in einem Tab oder einen neuen Fenster öffnet.\\
+Links können in \FPZ\ sowohl in der Ausgabe, als auch in Hilfezeilen erzeugt werden, wobei stets eine URL und ein Anzeigetext angegeben werden können.\par
+Um die Gefahr abzuwenden, dass über Links nicht erkennbar schädliche URL-Verweise in Skripten eingebaut werden, kann man festlegen, welche URLs ausschließlich durch den Anzeigetext angezeigt werden sollen. Der Link wird im Browser ausschließlich mit dem Anzeigetext dargestellt, wenn\dots
+\begin{itemize}
+\item der Anfang der URL mit einem Eintrag der in der Konfiguration hinterlegten Whitelist (Datei appsettings.json, Eigenschaft \verb|LinkWhitelist|) übereinstimmt oder
+\item die Whitelist leer ist oder
+\item auf ein anderes \FPZb-Skript verwiesen wird oder
+\item der Anzeigetext den Link als Text enthält (ggf. auch ohne "https://").
+\end{itemize}
+Anderenfalls wird die URL dem Anzeigetext in Klammern nachgestellt.\par
+Die in \FPZ\ angezeigten Links werden standardmäßig in einem neuen Tab geöffnet.
+\end{grundelement}
+
+\begin{grundelement}\label{defListen}
+Eine \emph{Liste}\index{Listen} ist in \FPZ\ eine Folge von fortlaufend indizierten Variablen, z.B.\ \verb|V(1)|, \verb|V(2)|, \verb|V(3)|,\dots , die mit dem Index $1$ beginnt und mit dem letzten Index endet, für den eine entsprechende Variable noch gesetzt ist. Listen werden durch verschiedene Befehle erzeugt und können selbst auch als Argumente an Befehle übergeben werden. Hierbei wird dann nur der Grundname der Variable (hier also \verb|V)|) angegeben.
+\end{grundelement}
+
+\subsection{Umgebungsvariablen}
+
+\begin{description}
+\item[\cidxvar{BaseKey}] gibt innerhalb von Funktionen oder mit dem  \verb|~Include|-Befehl aufgerufene Funktionsdateien den Wert zurück, der mit dem gleichnamigen Argument beim Aufruf übergeben wurde. Diese Variable gibt auch bei rekursiv verschachtelten Selbstaufrufen immer den zum jeweiligen Aufruf passenden Wert zurückgibt. Mit ihr können Argumente und Variablen bei rekursiven Aufrufen derselben Funktion voneinander abgetrennt werden.
+
+\item[\cidxvar{BaseURL}] gibt die URL für das aktuell ausgeführte Skript ohne Parameter zurück.
+
+\item[\cidxvar{Chr(...)}] gibt das Zeichen mit dem angegebenen ANSI-Code zurück
+
+\item[\cidxvar{CRLF}] gibt die Zeichenkombination \emph{Carriage Return + Line Feed} zurück.
+
+\item[\cidxvar{LineNumber}] gibt die Zeilennummer der aktuellen Zeile zurück. Mittels Zusatz $-n$ wird direkt der um $n$ verringerte Wert zurückgegeben, z.B.\ \verb|$LineNumber-3|.
+
+\item[\cidxvar{NewGuid}] erzeugt eine Guid, z.B.\ 8bceae6b-aa8b-497e-aa3a-17a6634b7215.
+
+\item[\cidxvar{ResultURL}] gibt die URL für das aktuell ausgeführte Skript mit den aktuell gesetzten Parametern zurück.
+
+\item[\cidxvar{ScriptFilePath}] gibt den Dateipfad für das aktuell ausgeführte Skript aus Sicht der Anwendung zurück.
+
+\item[\cidxvar{ScriptPath}] gibt den Dateipfad für das Skripte-Verzeichnis\index{Skripte-Verzeichnis} aus Sicht der Anwendung zurück.
+
+\item[\cidxvar{CurrentScriptPath}] gibt den Dateipfad des Ordners für das aktuell ausgeführte Skript aus Sicht der Anwendung zurück.
+\end{description}
+
+\subsection{Befehle}\label{Befehle}
+\begin{description}
+
+\item[\cidxfrag{>\mbox{}>}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der ersten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{>}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der zweiten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\
+Erzeugt eine Auswahlabfrage mit mehreren Optionen, von der genau eine ausgewählt werden kann. Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\par
+Die Optionen werden darunter in der Form \verb|#|-Befehl angegeben.
+Über die Variablen \synvar{Schlüssel}\verb|_OptionGroupPromt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.\\
+
+\item[\cidxfrag{\#}] $[$\synvar{Optionsschlüssel}$]$ \verb|:| \synvar{Anzeigetext}\\
+Fügt eine Option zur übergeordneten Auswahlabfrage hinzu. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
+Für die jeweils gewählte Option werden die darunter eingerückten Befehle ausgeführt, für die anderen nicht.\\
+
+\item[\fcmd{AddCode}] \synvar{Text}\\
+Hängt einen Text in der für Programmcode typischen Schriftart an die letzte Ausgabezeile an. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{LinksInline}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{Archivklasse2} und \ref{BspPatchskript}.
+
+\item[\fcmd{AddHelpLine}] \synvar{Text}\\
+Fügt eine Hilfezeile für die übergeordnete Auswahlabfrage oder Texteingabe mit einem Text hinzu.\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}, \ref{Archivklasse2} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{AddHelpLink}] \synvar{URL} \verb=|= \synvar{Anzeigetext}\\
+Fügt einen Link mit der entsprechenden URL und dem Anzeigetext in der aktuellen Hilfezeile ein (siehe auch Grundelement~\ref{defLinks}).\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{AddHelpText}] \synvar{Text}\\
+Fügt den Text \synvar{Text} in der aktuellen Hilfezeile ein. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{AddLink}] \synvar{URL} \verb=|= \synvar{Anzeigetext}\\
+Fügt einen Link mit der entsprechenden URL und dem Anzeigetext in der aktuellen Ausgabezeile ein (siehe auch Grundelement~\ref{defLinks}).\\
+Siehe Abschnitt~\ref{Befehle}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{BspSuchlink}, \ref{BspJourFixePlaner} und \ref{BspLizenzabfrage}.
+
+\item[\fcmd{AddNewKey}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\
+Speichert einen Wert unter einem Schlüssel in der URL, wenn der Schlüssel dort noch nicht enthalten ist.\\
+Siehe Abschnitt~\ref{Zeitmessung}, verwendet in Beispiel~\ref{BspZeitmesser}.
+
+\item[\fcmd{AddText}] \synvar{Text}\\
+Fügt einen Text in der aktuellen Ausgabezeile ein. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{LinksInline}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{BspArchivklasse3}, \ref{BspListenfunktion}, \ref{BspJourFixePlaner} und \ref{BspPatchskript}.
+
+\item[\fcmd{AddTo}] \synvar{Variable} \verb|+=| \synvar{Zahlenwert}\\
+Addiert eine Zahlenwert zu einer Variablen dazu. Hat die Variable noch keinen Wert, so wird der Ausgangswert $0$ impliziert.\\
+Siehe Abschnitte~\ref{BewSysteme} und \ref{Berechnungen}, verwendet in Beispiel~\ref{BspBewertungssystem}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{Calculate}] \synvar{Variable} \verb|=| \synvar{Operand 1} \synvar{Operator} \synvar{Operand 2}\\
+Führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen. Als Operator stehen zur Auswahl \verb|+|, \verb|-|, \verb|*|, \verb|/| und \verb|%| (Modulo).\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}, \ref{BspPrimzahlen}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{CalculateExpression}] \synvar{Variable} \verb|=| \synvar{Ausdruck}\\
+Berechnet einen mathematischen Ausdruck, der aus den vier Grundrechenarten \verb|+|, \verb|-| , \verb|*| und \verb|/|, dem \verb|^|-Operator für die Potentenzierung, dem \verb|%|-Operator 
+für Modulo-Rechnung, sowie den Operatoren \verb|sqrt|, \verb|sin|, \verb|cos|, \verb|tan|, \verb|exp| und \verb|ln| in einer beliebigen Klammerung besteht. Das Ergebnis wird einer Variablen zugewiesen. Es gilt die Punkt-vor-Strich-Rechnung\index{Punkt-vor-Strich-Rechnung}. Die Argumente der trigonometrischen Funktionen werden im Bogenmaß interpretiert.\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}, \ref{BspPrimzahlen}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{CamelCase}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in CamelCase-Schreibweise\index{CamelCase-Schreibweise} um und speichert das Ergebnis in einer Variablen.
+Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauffolgenden Buchstaben gekennzeichnet.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}, verwendet in Beispiel~\ref{Archivklasse2} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ClearVar}] \synvar{Variablenmuster}
+Löscht alle Variablen aus den Speicher, die einem Variablenmuster entsprechen. Dies kann ein Variablenname sein oder der Anfang eines Variablennamens, gefolgt von \verb|*|, wobei im zweiten Fall alle Variablen gelöscht werden, die auf diese Weise beginnen. Die Ausführungszeit für einzelne Befehle steigt deutlich an, wenn eine große Anzahl an Variablen, also 2000 oder mehr, verwendet werden. Durch den Befehl können ganze Listen von Variablen nach Gebrauch wieder entfernt werden, so dass die Ausführungszeit für die nachfolgenden Befehle wieder sinkt.
+
+\item[\fcmd{DateAdd}] \synvar{Variable} \verb|=| \synvar{Ausgangsdatum} \verb=|= \synvar{Zahlenwert} \verb=|= \synvar{Intervall}\\
+Addiert zu einem Ausgangsdatum eine Zeitspanne hinzu, die über einen ganzzahligen Zahlenwert und ein Intervall gegeben wird. Als Intervall sind folgende Zeichen zugelassen:
+\verb|y| = Jahre, \verb|M| = Monate, \verb|w| = Wochen, \verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten\\
+Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateFormat}] \synvar{Variable} \verb|=| \synvar{Datumswert} \verb=|= \synvar{Format}\\
+Wanelt einen Datumswert in ein bestimmten Format um und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Datumswert muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateSet}] \synvar{Variable} \verb|=| \synvar{Wert} \verb=|= \synvar{Format}\\
+Interpretiert einen Text als Datum in einem vorgegebenen Format und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Ergebniswert wird im internen Format für Datumswerte\index{Datumswerte} gespeichert (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{Befehle}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DecryptText}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Schlüssel} \\
+Entschlüsselt einen mit \fcmd{EncryptText} verschlüsselten Text mit dem angegebenen Schlüssel und speichert das Ergebnis in einer Variablen.
+
+\item[\fcmd{DefineSub}] \synvar{Funktionsname}\\
+Definiert eine Funktion, die mit dem angegebenen Funktionsname, die dann mit dem \fcmd{GoSub}-Befehl aufgerufen werden kann. Die Funktion muss mit \fcmd{Return} abgeschlossen werden.
+%Siehe Abschnitte~\ref{}, \ref{} und \ref{}, verwendet in Beispiel~\ref{}, \ref{} und \ref{}.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+ 
+\item[\fcmd{DoWhile}] \synvar{Bedingung}\\
+Führt die nachfolgenden eingerückten Befehle wiederholt aus, solange die Bedingung erfüllt ist. Die Schleife wird mit dem Befehl \fcmd{Loop} auf gleicher Ebene abgeschlossen. Siehe auch Grundelement~\ref{defBedingungen}.\\
+Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspTerminplaner}.
+
+\item[\fcmd{DynamicOptionGroup}] \synvar{Schlüssel} \verb|:| \synvar{Optionenliste} \verb|;| \synvar{Fragestellung}\\
+Erzeugt eine Auswahlabfrage mit einem Schlüssel, einer Fragestellung und einer Menge von Optionen, von der genau eine ausgewählt werden kann. Im Unterschied zum \verb|?|-Befehl werden die Optionen hier zur Laufzeit aus einer Liste ausgelesen, siehe auch Grundelement~\ref{defListen}.
+Das mit dem Schlüssel in der URL gespeicherte und als Variable abrufbare Ergebnis der Auswahlabfrage ist der Index der ausgewählten Option.
+Der Schlüssel der Optiongruppe kann wie beim \verb|?|-Befehl mit \verb|'| automatisch durchnummeriert werden.
+Enthält die Variable keine indizierten Werte, wird der Befehl übersprungen.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{Else}]\mbox{}\\
+Ist eine optionale Ergänzung zu einem If-Abfrage und evtl.\ vorangehenden ElseIf-Abfragen. Er führt die nachfolgend eingerückten Befehle aus, wenn alle vorherigen Bedingungen nicht erfüllt waren. Pro If-Abfrage darf maximal eine Else-Abfrage angegeben werden.\\
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBewertungsschema}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ElseIf}] \synvar{Bedingung}\\
+Prüft eine alternative Bedingung nach einer If-Abfrage und evtl.\ anderen vorangehenden ElseIf-Abfragen. Er führt die nachfolgend eingerückten Befehle aus, wenn die angegebene Bedingung erfüllt ist und alle Bedingungen der vorangegangenen If-, und ElseIf-Befehle nicht erfüllt waren. Es können beliebig viele ElseIf-Abfragen aneinandergereiht werden.\\
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBewertungsschema} und \ref{Passwortgenerator}.
+
+\item[\fcmd{EncryptText}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Schlüssel}\\
+Verschlüsselt einen Text mit dem angegebenen Schlüssel und speichert das Ergbnis in einer Variablen.
+
+\item[\fcmd{End}]\mbox{}\\
+Beendet die Skriptausführung.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{EndParagraph}]\mbox{}\\
+Beendet den aktuellen Absatz im aktuellen Textblock der Ausgabe. Das Hinzufügen der nächsten Zeile beginnt damit automatisch einen neuen Absatz mit einem entsprechenden Abstand.
+
+\item[\fcmd{EvalExpression}] \synvar{Variable} $[$\verb|!|$]$ \verb|=| \synvar{Bedingung}\\
+Wertet eine Bedingung aus und speichert das Ergebnis in einer Variablen als \cidxfrag{true} oder \cidxfrag{false}. Mit \verb|=| wird der Wert direkt zugewiesen, mit \verb|!=| wird der Wert bei der Zuweisung negiert. Die Ergebniswerte solcher Auswertungen können in anderen Ausdrücken weiterverwendet werden. Siehe auch Grundelement~\ref{defBedingungen}.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner}.
+
+\item[\fcmd{Execute}]\mbox{}\\
+Führt alle bis zu diesem Zeitpunkt durchlaufenen Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Sind alle Eingaben vorhanden, läuft das Skript weiter.
+Mit dem Befehl kann die Menge der gleichzeitig abgefragten Eingaben reduziert werden, und es kann sichergestellt werden, dass notwendige Eingaben an einer nachfolgenden Stelle im Skriptcode vorhanden sind.\\
+Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{ExitLoop}]\mbox{}\\
+Verlässt eine Schleife und setzt die Ausführung nach dem Loop-Befehl fort.\\
+Siehe Abschnitte~\ref{Schleifen} und \ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspPrimzahlen} und \ref{BspJourFixePlaner}.
+
+\item[\fcmd{FileExists}] \synvar{Variable} \verb|=| \synvar{Dateipfad}\\
+Prüft, ob eine entsprechende Datei existiert und speichert das Ergebnis als Wahrheitswert in einer Variablen. Siehe auch Grundelement~\ref{defDateipfad}.
+
+\item[\fcmd{ForEach}] \synvar{Variable} \verb|in| \synvar{Liste}\\
+Führt die nachfolgenden eingerückten Befehle bis zum dazugehörenden \fcmd{Loop}-Befehl für jedes Element der Liste aus, siehe auch Grundelement~\ref{defListen}. Bei jedem Durchlauf wird das jeweilige Element der Variablen zugewiesen.\\ 
+Siehe Abschnitte~\ref{Schleifen} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{ForEachLine}] \synvar{Variable} \verb|in| \synvar{Dateipfad} $[$\verb|; Take=| \synvar{Anzahl} $]$\\
+$[$\verb|; IndexVar=| \synvar{Indexvariable} $][$\verb|; SectionVar=| \synvar{Abschnittsvariable} $]$\\
+Liest Zeilen der über den Dateipfad angegebenen Datei ein (siehe auch Grundelement~\ref{defDateipfad}) und führt die nachfolgenden eingerückten Befehle bis zum dazugehörenden \fcmd{Loop}-Befehl wiederholt aus. Für jede durchlaufene Zeile wird die Variable mit dem Inhalt der Zeile belegt.\par
+Mit dem optionalen \cidxfrag{Take}-Parameter kann die Anzahl der durchlaufenen Zeilen vorgegeben werden. Diese werden dann zufällig ausgewählt. 
+Bei Angabe des optionalen \cidxfrag{IndexVar}-Parameters wird die laufende Nummer in der Indexvariablen zurückgegeben und
+bei Angabe des optionalen \cidxfrag{SectionVar}-Parameters wird der jeweilige Abschnitt in der Abschnittsvariable zurückgegeben. Abschnitt-Kennungen in Textdateien werden durch eckige Klammern zu Beginn und Ende der Zeile gekennzeichnet.\\
+Siehe Abschnitte~\ref{RegUndDaten} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspTerminologiepruefer} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{GoSub}]  \synvar{Funktionsname} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
+Führt die angegebenen Funktion aus. Bei Angabe des optionalen \cidxfrag{BaseKey}-Parameters wird die gleichnamige Systemvariable auf den angegebenen Basisschlüssel gesetzt. Nachdem die Funktion durchlaufen wurde, wird die Skriptausführung in der nächsten Zeile fortgesetzt.\\
+Siehe Abschnitte~\ref{Funktionen} und \ref{POUnterstuetzung}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{GoTo}] \synvar{Sprungmarke}\\
+Setzt die Skriptausführung an der angegebenen Sprungmarke fort. Diese wird mit dem \fcmd{JumpMark}-Befehl gesetzt.\\
+Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
+
+\item[\fcmd{If}] \synvar{Bedingung}\\
+Führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist (siehe auch Grundelement~\ref{defBedingungen}). 
+Ist die Bedingung nicht erfüllt, wird der nächste Befehl auf gleicher Ebene ausgeführt.\par
+Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen und einem Else-Befehl kombiniert werden.\\
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspArchivklasse3}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+ 
+\item[\fcmd{Implies}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\
+Setzt einen Wert für einen Schlüssel in der URL. Damit können z.B. Antworten für noch ausstehende Auswahlabfragen impliziert werden.
+ 
+\item[\fcmd{Include}] \synvar{Dateipfad} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
+Führt die über den Dateipfad angegebene Funktionsdatei aus. Die standardmäßige Dateiendung für Funktionsdateien ist \emph{.fps}. Die Syntax ist diesselbe wie in den Skriptdateien.
+Bei Angabe des optionalen \cidxfrag{BaseKey}-Parameters wird die gleichnamige Systemvariable auf den angegebenen Basisschlüssel gesetzt. Nachdem die Datei durchlaufen wurde, wird die Skriptausführung in der nächsten Zeile fortgesetzt.\\
+Siehe Abschnitt~\ref{POUnterstuetzung}, verwendet in Beispiel~\ref{BspListenfunktion} und \ref{BspPatchskript}.
+
+\item[\fcmd{Input}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext}\\
+Fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\\
+Siehe Abschnitte~\ref{Texteingaben} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspTextersetzung}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspHilfezeilen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspSuchlink}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
+
+\item[\fcmd{JumpMark}] \synvar{Sprungmarke}\\
+Setzt eine Sprungmarke, die mit dem \fcmd{GoTo}-Befehl angesprungen werden kann.\\
+Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
+
+\item[\fcmd{ListDirectories}] \synvar{Listenvariable} \verb|=| \synvar{Verzeichnispfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Verzeichnisnamen im Verzeichnispfad auf, die dem Suchmuster entsprechen (siehe Grundelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Grundelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{ListFiles}] \synvar{Listenvariable} \verb|=| \synvar{Verzeichnispfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Dateinamen im Verzeichnispfad auf, die dem Suchmuster entsprechen (siehe Grundelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Grundelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{Loop}]\mbox{}\\
+Beendet einen Schleifendurchlauf und beginnt den nächsten Schleifendurchlauf. Eine Schleife kann durch verschiedene Befehle initiiert werden.\\
+Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{MoveSection}] \synvar{Ausgangsabschnitt} \verb|->| \synvar{Zielabschnitt}\\
+Überträgt den Inhalt eines Ausgangsabschnitts in einen Zielabschnitt. Der Ausgangsabschnitt wird gelöscht.
+Ist der Zielabschnitt noch nicht vorhanden, so wird dieser am Ende angelegt. Ist der Ausgangsabschnitt nicht vorhanden, so bleibt der Aufruf ohne Wirkung. Sind Ausgangsabschnitt und Zielabschnitt identisch, so wird dieser Aschnitt entfernt. Die beien aufeinandertreffenden Textblöcke werden zusammengeführt, wenn sie die gleiche Formatierung haben.\\
+Siehe Abschnitte~\ref{AusgabetitelUndAbschnittsverschiebungen} und \ref{AssetDokumentation}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{Random}] \synvar{Variable} \verb|=| \synvar{Untergrenze} \verb|..| \synvar{Obergrenze}\\
+Erzeugt eine ganze Zufallszahl im Bereich von Untergrenze bis Obergrenze und speichert diese in einer Variablen.
+Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.\\
+Siehe Abschnitt~\ref{ErsetzungenUndZufallsgenerierung}, verwendet in Beispiel~\ref{Passwortgenerator}.
+
+\item[\fcmd{RegExMatch}] \synvar{Listenvariable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck}\\
+Wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einer Liste zur angegebenen Listenvariablen. In der Variablen mit Index $0$ wird \verb|true| zurückgegeben, wenn der Text dem regulären Ausdruck entspricht, ansonsten \verb|false|. In den nachfolgenden Variablen mit den Indices $1$, $2$, \dots werden die Werte der Gruppen abgelegt, die im Ausdruck enthalten sind.\\
+Siehe Abschnitt~\ref{RegUndDaten}, verwendet in Beispiel~\ref{BspTerminologiepruefer}, \ref{Archivklasse2} und \ref{BspTerminplaner}.
+
+\item[\fcmd{RegExReplace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck} \verb|->| \synvar{Ersetzungstext}\\
+Ersetzt in einem Text alle Vorkommen, die dem regulären Ausdruck entsprechen, durch einen Ersetzungstext und speichert das Ergebnis in einer Variablen.
+ 
+\item[\fcmd{Replace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Suchtext} \verb|->| \synvar{Ersetzungstext}\\
+Ersetzt alle Vorkommen des Suchtextes in einem Text durch den Ersetzungstext und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitte~\ref{Texteingaben}, \ref{Funktionen} und \ref{ErsetzungenUndZufallsgenerierung}, verwendet in Beispiel~\ref{BspTextersetzung}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{Return}]\mbox{}\\
+Beendet eine Funktion und setzt die Skriptausführung in der nächsten Zeile des \fcmd{GoSub}-Befehls fort, an dem die Funktion aufgerufen wurde.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspArchivklasse4}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{Round}] \synvar{Variable} \verb|=| \synvar{Dezimalzahl} \verb=|= \synvar{Anzahl an Stellen}\\
+Rundet eine Dezimalzahl auf die angegebene Anzahl an Stellen und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}.
+
+\item[\fcmd{Set}] \synvar{Variable} \verb|=| \synvar{Wert}\\
+Speichert einen Wert in einer Variablen. Variablenbezeichnungen können aus Buchstaben, Ziffern und runden Klammern bestehen und auch wieder andere Variablen enthalten. Die in Variablennamen verwendeten Klammern haben keine syntaktische Bedeutung, können aber die Lesbarkeit von Variablen verbessern.\\
+Siehe Abschnitt~\ref{VariablenSetzenUndVerwenden}, verwendet in Beispiel~\ref{BspHalloWeltMitVariable}, \ref{BspVariablenersetzung}, \ref{BspBewertungssystem}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
+
+\item[\fcmd{SetCulture}] \synvar{Variable} \verb|=| \synvar{Kultur-Kennzeichen}\\
+Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B. "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{SetDateTime}] \synvar{Variable} \verb|=| \synvar{Format}\\
+Speichert das aktuelle Datum oder den aktuellen Zeitpunkt in einer vorgegebenen Formatierung in einer Variablen.\\
+Siehe Abschnitte~\ref{Zeitmessung} und \ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspPatchskript}.
+
+\item[\fcmd{SetInputDescription}] \synvar{Beschreibung}\\
+Setzt die Beschreibung für die Eingabeseiten. Diese wird dort unterhalb der Überschrift angezeigt.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner}.
+
+\item[\fcmd{SetInputSection}] \synvar{Abschnittsüberschrift}\\
+Setzt die Abschnittsüberschrift für die nachfolgenden Eingabebefehle.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{SetInputTitle}] \synvar{Titel}\\
+Setzt den Titel für die Eingabeseiten.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner} und \ref{BspZeitmesser}.
+
+\item[\fcmd{SetSection}] \synvar{Abschnittsüberschrift}\\
+Setzt die Abschnittsüberschrift für die nachfolgenden Ausgabebefehle. Der Befehl ist eine Alternative zu der \@-Syntax der Ausgabebebefehle.
+
+\item[\fcmd{SetStopCounter}] \synvar{Schleifengrenze} \verb|;| \synvar{Befehlsgrenze}\\
+Setzt die Obergrenzen für die Anzahl der Schleifendurchläufe und der durchlaufenenen Befehle pro Seitenaufruf.
+Beim Überschreiten der Grenzen bricht das Programm mit einer Fehlermeldung ab.
+Die Grenzen dienen zur Verhinderung von Endlosschleifen und Endlosrekursionen und stehen Werksseitig auf 1000 und 20000, was für die meisten Skripte ausreichen sollte.
+Ist für ein komplexes Skript absehbar, dass diese Grenzen im regulären Betrieb überschritten werden, können die Grenzen mit dem o.g.\ Befehl hochgesetzt werden.\\
+Siehe Abschnitte~\ref{Schleifen} und \ref{Terminplanung}, verwendet in Beispiel~\ref{BspTerminplaner}.
+
+\item[\fcmd{SetTitle}] \synvar{Titel}\\
+Setzt den Titel für die Ausgabeseite.\\
+Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
+
+\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|To| \synvar{Indexliste}$]$\\
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Grundelement~\ref{defListen}). Wird das \verb|To|-Attribut mit einer Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann.
+
+\item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
+Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Grundelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.
+Über den Eintrag mit dem Index 0 kann die Anzahl der Listenelemente abgerufen werden. Bei der Aufteilung wird Whitespace vor und nach den Trennzeichen standardmäßig entfernt. Wenn dieser erhalten bleiben soll, muss er mit \cidxvar{Chr(...)}-Befehlen maskiert werden.\\
+Siehe Abschnitte~\ref{TexteAufteilen} und \ref{Terminplanung}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminplaner} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ToLower}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in Kleinbuchstaben um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}, verwendet in Beispiel~\ref{Archivklasse2}.
+
+\item[\fcmd{ToUpper}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in Großbuchstaben um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}.
+
+\item[\fcmd{Trim}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Entfernt umschließenden Whitespace aus dem Text und speichert das Ergebnis in einer Variablen.
+
+\item[\fcmd{UrlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{ParametrisierteLinks}, verwendet in Beispiel~\ref{BspSuchlink}.
+
+\item[\fcmd{XmlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die XML-Codierung um und speichert das Ergebnis in einer Variablen. Die XML-Codierung maskiert die Zeichen \verb|<|, \verb|>|, \verb|&|, sowie die Anführungszeichen, so dass der Text innerhalb von XML-Tags stehen kann.\\
+Siehe Abschnitt~\ref{Personalisierung}, verwendet in Beispiel~\ref{BspPatchskript}.
+\end{description}
 
 \printindex
 \end{document}

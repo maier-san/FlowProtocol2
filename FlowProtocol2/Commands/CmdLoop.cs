@@ -9,7 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdLoop : CmdBaseCommand
     {
         public CmdLoopBaseCommand? ParentStartLoopCommand { get; set; }
-        private int LoopCounter { get; set; }
+        public int LoopCounter { get; set; }
 
         public static CommandParser GetComandParser()
         {

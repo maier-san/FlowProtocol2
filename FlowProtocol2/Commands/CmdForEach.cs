@@ -43,6 +43,7 @@ namespace FlowProtocol2.Commands
                 {
                     ForIndices[rc.BaseKey] = 0;
                     IsInitialized = true;
+                    AssociatedLoopCommand.LoopCounter = 0;
                 }
                 ForIndices[rc.BaseKey]++;
                 string currentfieldvar = $"{expandedFieldName}({ForIndices[rc.BaseKey]})";

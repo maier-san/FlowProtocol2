@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -28,10 +28,10 @@ jobs:
         run: dotnet build ./FlowProtocol2.sln --configuration Debug --no-restore
 
       - name: Run unit tests with report
-        run: dotnet test ./FlowProtocol2.Tests/FlowProtocol2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx"
+        run: dotnet test ./FlowProtocol2.Tests/FlowProtocol2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx" --results-directory ./TestResults
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
           name: TestResults
-          path: ./src/FlowProtocol2.Tests/TestResults.trx
+          path: ./TestResults/TestResults.trx

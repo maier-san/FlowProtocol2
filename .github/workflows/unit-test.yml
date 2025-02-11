@@ -1,0 +1,37 @@
+name: CI - Unit Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./FlowProtocol2/FlowProtocl2.sln
+
+      - name: Build the solution
+        run: dotnet build ./FlowProtocol2/FlowProtocl2.sln --configuration Debug --no-restore
+
+      - name: Run unit tests with report
+        run: dotnet test ./FlowProtocl2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: ./src/Test/TestResults/TestResults.trx

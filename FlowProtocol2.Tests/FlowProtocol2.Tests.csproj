@@ -1,3 +1,9 @@
+<!-- More Infos on XUnit-Testing-Framework
+
+https://learn.microsoft.com/de-de/dotnet/core/testing/unit-testing-with-dotnet-test
+https://stackoverflow.com/questions/9769047/nunit-vs-xunit
+
+-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>

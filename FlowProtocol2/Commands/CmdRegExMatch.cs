@@ -38,9 +38,10 @@ namespace FlowProtocol2.Commands
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedText = ReplaceVars(rc, Text);
             string expandedExpression = ReplaceVars(rc, Expression);
+            string safeExpandedExpression = Regex.Escape(expandedExpression);
             try
             {
-                Regex userExp = new Regex(expandedExpression);
+                Regex userExp = new Regex(safeExpandedExpression);
                 if (userExp.IsMatch(expandedText))
                 {
                     rc.InternalVars[expandedVarName + "(0)"] = "true";

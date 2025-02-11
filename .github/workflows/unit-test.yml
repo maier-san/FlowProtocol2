@@ -22,13 +22,13 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Restore dependencies
-        run: dotnet restore ./FlowProtocl2.sln
+        run: dotnet restore ./FlowProtocol2.sln
 
       - name: Build the solution
-        run: dotnet build ./FlowProtocl2.sln --configuration Debug --no-restore
+        run: dotnet build ./FlowProtocol2.sln --configuration Debug --no-restore
 
       - name: Run unit tests with report
-        run: dotnet test ./FlowProtocl2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx"
+        run: dotnet test ./FlowProtocol2.Tests/FlowProtocol2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

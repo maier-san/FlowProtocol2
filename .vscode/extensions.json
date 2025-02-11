@@ -14,5 +14,6 @@
         //Optional but useful for Github
         "github.github-vscode-theme",
         "github.vscode-pull-request-github",
+        "github.vscode-github-actions",
     ]
   }

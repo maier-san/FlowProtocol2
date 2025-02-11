@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TestResults
-          path: ./src/FlowProtocol2.Tests/TestResults/TestResults.trx
+          path: ./src/FlowProtocol2.Tests/TestResults.trx

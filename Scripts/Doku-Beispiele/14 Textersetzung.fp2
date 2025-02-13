@@ -1,6 +1,7 @@
 ~Input si: Suche in
 ~Input sn: Suche nach
 ~Input ed: Ersetze durch
+~Execute
 ~Replace erg=$si|$sn->$ed
 @Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
 @Ergebnis >> $erg

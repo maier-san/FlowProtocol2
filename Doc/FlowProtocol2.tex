@@ -35,8 +35,8 @@
 %%
 %% Commands
 %%
-\newcommand{\FPZ}{\textit{FlowProtocol 2}}
-\newcommand{\FPZb}{\textit{FlowProtocol-2}}
+\newcommand{\FPZ}{\textit{Flow\-Proto\-col 2}}
+\newcommand{\FPZb}{\textit{Flow\-Proto\-col-2}}
 \newcommand{\fcmd}[1]{\texttt{\textasciitilde #1}\index{#1@\texttt{\textasciitilde #1}}}
 \newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
@@ -98,11 +98,11 @@ Die Konfiguration erfolgt über die Datei \emph{appsettings.json}\index{appsettin
 \begin{verbatim}
 "ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
 \end{verbatim}
-In einer Firma oder Einrichtung wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
+In einem Unternehmen wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen im Umfeld der Softwareherstellung. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
 
 In den Programm- und Konfigurationsdateien \emph{launchSettings.json}\index{launchSettings.json}, \emph{appsettings.json} und \emph{Program.cs}\index{Program.cs} sind die Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
 
-Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auflistung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
+Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auf\-lis\-tung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
 
 Für die regelmäßige lokale Bereitstellung von \FPZ\ ist es am einfachsten, vom Basisrepository auf GitHub mittels Fork zu verzweigen und die lokalen Anpassungen im eigen Zweig zu verwalten.
 
@@ -117,7 +117,7 @@ In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf 
 
 Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese direkt, oder in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
-Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das dem Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auflistung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
+Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auf\-lis\-tung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
 
 Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{Hallo Welt}.
 
@@ -146,7 +146,7 @@ Die Auswahlabfrage wird durch das \cidxfrag{?}-Zeichen eingeleitet, unmittelbar 
 
 Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wieder aus Befehlen bestehen, die auch für sich alleine stehen können, Dieser Code wird wird nur dann ausgeführt, wenn die dazugehörende Antwortmöglichkeit ausgewählt wurde.
 
-Die Schlüssel für Fragen und Antworten und auch für die später noch kommenden Texteingaben können aus einem oder mehreren Buchstaben und Zahlen bestehen und dienen wie schon genannt dazu, die Eingaben des Anwenders in der URL zu speichern und auch innerhalb des Skriptes abrufbar zu machen. Der Schlüssel für eine Auswahlabfrage muss eindeutig im gesamte Skript sein, der einer Antwortmöglichkeit muss eindeutig innerhalb einer Auswahlabfrage sein.
+Die Schlüssel für Auswahlabfragen und die später noch kommenden Texteingaben können primär aus einer Folge aus Buchstaben und Ziffern, sowie runden Klammern bestehen, die Schlüssel für Auswahlwerte nur aus Buchstaben und Ziffern. Sie dienen wie schon genannt dazu, die Eingaben des Anwenders in der URL zu speichern und auch innerhalb des Skriptes abrufbar zu machen. Der Schlüssel für eine Auswahlabfrage muss eindeutig im gesamte Skript sein, der einer Antwortmöglichkeit muss eindeutig innerhalb einer Auswahlabfrage sein. 
 
 Da die Gesamtlänge der URL für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
 
@@ -274,6 +274,8 @@ Hier ist ein sehr vereinfachtes Beispiel für ein Expertensystem, das eine Proble
 \end{verbatim}
 
 Zuerst fällt auf, dass hier keine Schlüssel\index{Schlüssel} angegeben sind, weder für die Auswahlabfragen, noch für die Antwortmöglichkeiten. Tatsächlich sind diese nicht zwingend erforderlich und werden von \FPZ\ selbständig anhand der Reihenfolge im Code vergeben, wenn sie im Skript weggelassen werden. Dies ist dann möglich, wenn man sich nicht an einer anderen Stelle im Skript auf eine Auswahl beziehen oder dieses wiederholen möchte, und es ist dann besonders vorteilhaft, wenn der Baum sehr groß werden kann und permanent erweitert wird und man den Überblick über die schon vergebenen Schlüssel zu verlieren droht. Der Nachteil der impliziten Schlüsselvergabe liegt darin, dass sich durch das Einfügen einer weiteren Auswahlabfrage am Anfang alle darunter liegenden Schlüssel verschieben, und so eine URL, die die Antworten in Bezug auf die Vorversion enthält, in der neuen Version falsch interpretiert wird. 
+
+Die automatische Nummerierung\index{automatische Nummerierung} von Schlüsseln für Auswahlabfragen und Texteingabe ist auch explizit möglich, in dem man einem selbstgewählten Basisschlüssel das \verb|'|-Zeichen anschließt. Mehrere nacheinander im Scriptcode vorkommenden Schlüsselangaben \verb|Q'| werden dann intern zu \verb|Q_1|, \verb|Q_2|, \verb|Q_3| usw.\ expandiert. Durch den Unterstich werden Übereinstimmungen mit explizit vergebenen Schlüsseln vermieden.
 
 Die Ausführung dieses Beispiels zeigt darüber hinaus, wie das System mit ineinander verschachtelten Fragestellungen umgeht. In jedem Schritt werden immer genau die Fragen gestellt, die noch offen sind, und die aufgrund der vorangegangenen Schritte durchlaufen werden müssen. Sobald alle Fragen beantwortet sind, werden die gesammelten Ausgaben ausgegeben und die Ausführung des Skriptes ist abgeschlossen.
 
@@ -485,6 +487,7 @@ Inzwischen gehören Texteingaben\index{Texteingaben} zum Grundumfang von \FPZ\ un
 ~Input si: Suche in
 ~Input sn: Suche nach
 ~Input ed: Ersetze durch
+~Execute
 ~Replace erg=$si|$sn->$ed
 @Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
 @Ergebnis >> $erg
@@ -492,13 +495,15 @@ Inzwischen gehören Texteingaben\index{Texteingaben} zum Grundumfang von \FPZ\ un
 
 In diesem Beispiel werden die drei Texte für eine einfache Ersetzungsaufgabe mit dem \fcmd{Input}-Befehl abgefragt und über die zu den Schlüsseln gehörenden Variablen \verb|si|, \verb|sn| und \verb|ed| an den \fcmd{Replace}-Befehl übergeben, der das Ergebnis über die Variablen \verb|erg| bereitstellt.
 
-Mit der Möglichkeit, Texte oder Zahlen einzugeben lassen sich jede Menge kleine und größere Hilfsfunktionen realisieren, die sich direkt im Browser aufrufen lassen und damit die eine oder andere Datei auf Basis von Tabellenkalkulation überflüssig machen, besonders, wenn sie eine gute Benutzerführung aufweisen. Hierfür schauen wir uns im nächsten Abschnitt an, was für weitere Formatierungsmöglichkeiten es gibt.
+Der Befehl \fcmd{Execute} sorgt dafür, dass das Skript bis zu dieser Stelle ausgeführt wird, solange, bis alle darüber stehenden Eingabebefehle abgearbeitet wurden, und die Eingabewerte in den Variablen zur Verfügung stehen. Er ist an dieser Stelle notwendig, da Variablen ohne Wert beim \fcmd{Replace}-Befehl zu Fehlern führen würden. Der Befehl kann auch bewusst zu Formatierung der Eingabe genutzt werden wie in Abschnitt~\ref{FormatierungDerEingabe} beschrieben wird.
+
+Die Möglichkeit, Texte und Zahlen über eine einfach per Link adressierbaren Webanwendung abzufragen und zur Durchführung von Berechnungen zu verwenden, ist eine gute Alternative für so manche Kalkulationshilfe, die momentan noch in Form von Tabellenkalkulationsdateien verteilt werden.
 
 \section{Weitere Formatierungsmöglichkeiten}
 In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Aufgabenkontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
 
 \subsection{Ausgabetitel und Abschnittsverschiebungen}\label{AusgabetitelUndAbschnittsverschiebungen}
-Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auflistung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
+Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auf\-lis\-tung im Menü kürzere Titel wählen kann. Durch das Setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
 
 Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, verschiedene Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
 
@@ -841,7 +846,7 @@ Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste 
 
 Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B.\ \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jede Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
 
-Der Umgang mit solchen kombinatorischen Auflistungen\index{kombinatorischen Auflistungen} ist in der Softwareentwicklung wichtiger, als man denkt und ein großer Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann, müssen auch diese Fälle betrachtet und behandelt werden. 
+Der Umgang mit solchen kombinatorischen Auf\-lis\-tungen\index{kombinatorischen Auf\-lis\-tungen} ist in der Softwareentwicklung wichtiger, als man denkt und ein großer Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann, müssen auch diese Fälle betrachtet und behandelt werden. 
 
 Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. Entsprechend empfiehlt es sich, den Kombinator so zu erweitern, dass sich zumindest die sich gegenseitig ausschließenden Kombinationen  angeben und entfernen lassen.
 
@@ -1130,7 +1135,7 @@ Am Ende bekommen wir die folgende allgemeine Anleitung:
         ~AddCode  PruefeAufKonflikte(...)
         > bei
         ~AddCode  //ToDo: Konfliktprüfung implementieren
-        > Auflistung der Konflikte nach folgendem Muster:
+        > Auf\-lis\-tung der Konflikte nach folgendem Muster:
         >|        if (Konfliktbedingung)
         >|            return new Konflikt("Konfliktbeschreibung");
 \end{verbatim}
@@ -2035,7 +2040,7 @@ Generell sollte das vorausgesetzte Wissen auf die Punkte beschränkt werden, die 
 
 Wie aber verwaltet man dieses Wissen wie erfährt ein neuer Mitarbeiter, was er alles wissen muss? Wie lässt sich überprüfen ob ein Mitarbeiter alles weiß, was er wissen sollte? Die Verantwortung über diese Punkte liegt in der Regel beim direkten Vorgesetzten, der aber auch nicht in den einzelnen Menschen hineinschauen kann. Meist behilft man sich damit die zwingend einzuhaltenden Richtlinien schriftlich festzuhalten und für das restliche Wissen grobe Themengebiete aufzulisten, die zur Orientierung verwendet werden können. 
 
-Ein im Gegensatz dazu sehr expliziter Ansatz für die Wissensverwaltung\index{Wissensverwaltung} ist die Auflistung von Wissen in Form von Reflexionsaussagen\index{Reflexionsaussagen}. Eine Reflektionsaussage ist dabei eine Aussage in der Form \emph{Ich weiß, \dots} formuliert, z.B.\ \emph{Ich wie man in einem PowerShell-Skript auf Befehlszeilenargumente zugreift}.
+Ein im Gegensatz dazu sehr expliziter Ansatz für die Wissensverwaltung\index{Wissensverwaltung} ist die Auf\-lis\-tung von Wissen in Form von Reflexionsaussagen\index{Reflexionsaussagen}. Eine Reflektionsaussage ist dabei eine Aussage in der Form \emph{Ich weiß, \dots} formuliert, z.B.\ \emph{Ich wie man in einem PowerShell-Skript auf Befehlszeilenargumente zugreift}.
 
 Die Aussage dient, wie die Bezeichnung schon sagt, dazu das eigene Wissen zu reflektieren, also darüber nachzudenken ob man diese Aussage mit Ja oder mit Nein beantworten kann. Der große Vorteil bei dieser Form der Erfassung liegt darin, dass es sehr einfach ist, Wissen in dieser Form zu erfassen, da man ja nicht den Inhalt des Wissens erfassen muss, sondern nur einen Verweis darauf. Das ist sogar dann möglich wenn man die Aussage für sich selbst gar nicht mit Ja beantworten kann. Darüberhinaus erlaubt es die Formulierung, das abgefragte Wissen sehr genau abzugrenzen, so dass man in der Regel klar verstehen kann, was gemeint ist.
 
@@ -2135,11 +2140,11 @@ Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
 
 Es beginnt mit einer Abfrage aller Verzeichnisse im Ordner \emph{.Wissensgebiete} die mit \emph{Wissen} beginnen. Dazu wird der Befehl \fcmd{ListDirectories} verwendet, der das Ergebnis in einem Feld abspeichert.
 
-Durch den Befehl \fcmd{DynamicOptionGroup} wird diese Auflistung als Auswahl einer Auswahlabfrage angeboten, sodass der Anwender ein Wissensgebiet und damit gleichzeitig einen Ordner auswählen kann.
+Durch den Befehl \fcmd{DynamicOptionGroup} wird diese Auf\-lis\-tung als Auswahl einer Auswahlabfrage angeboten, sodass der Anwender ein Wissensgebiet und damit gleichzeitig einen Ordner auswählen kann.
 
-Im nächsten Schritt werden mit dem Befehl \fcmd{ListFiles} die Dateien innerhalb des gewählten Ordners abgefragt, die auf \emph{.txt} enden. Ähnlich wie oben wird hier eine Auswahlabfrage generiert, zuvor wird jedoch in einer Schleife eine Auflistung ohne die txt-Endungen erzeugt. Wenn in dem gewählten Ordner keine Dateien vorhanden sind, wird die Ausführung mit einer Hinweismeldung abgebrochen.
+Im nächsten Schritt werden mit dem Befehl \fcmd{ListFiles} die Dateien innerhalb des gewählten Ordners abgefragt, die auf \emph{.txt} enden. Ähnlich wie oben wird hier eine Auswahlabfrage generiert, zuvor wird jedoch in einer Schleife eine Auf\-lis\-tung ohne die txt-Endungen erzeugt. Wenn in dem gewählten Ordner keine Dateien vorhanden sind, wird die Ausführung mit einer Hinweismeldung abgebrochen.
 
-Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auflistung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \verb|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
+Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auf\-lis\-tung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \verb|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
 
 Bei \emph{Drei Reflektionsaussagen als Stichprobe} werden zufällig drei Zeilen aus der Datei ausgewählt. Die Zahl drei wird mit dem \cidxfrag{Take}-Argument angegeben. Der Seed-Wert\index{Seed-Wert} des Zufallsgenerators\index{Zufallsgenerator} wird dabei als Parameter \verb|_rseed| in der URL notiert, so dass bei erneuten Aufrufen oder ein Aktualisierung der Seite wieder die genau gleiche Zufallsfolge entsteht. Hier werden nur die mit Nein beantworteten Punkte unter der Überschrift \emph{Heute sollte ich rausfinden\dots} in leicht angepasster Form aufgelistet.
 
@@ -2424,7 +2429,7 @@ Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugP
 \item[\fcmd{Execute}]\mbox{}\\
 Führt alle bis zu diesem Zeitpunkt durchlaufenen Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Sind alle Eingaben vorhanden, läuft das Skript weiter.
 Mit dem Befehl kann die Menge der gleichzeitig abgefragten Eingaben reduziert werden, und es kann sichergestellt werden, dass notwendige Eingaben an einer nachfolgenden Stelle im Skriptcode vorhanden sind.\\
-Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+Siehe Abschnitte~\ref{Texteingaben}, \ref{FormatierungDerEingabe} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspTextersetzung}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
 
 \item[\fcmd{ExitLoop}]\mbox{}\\
 Verlässt eine Schleife und setzt die Ausführung nach dem Loop-Befehl fort.\\

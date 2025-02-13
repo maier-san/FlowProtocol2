@@ -94,10 +94,13 @@ namespace FlowProtocol2.Commands
                 ExpandedIndexVar = ReplaceVars(rc, IndexVar.Replace("; IndexVar=", string.Empty)).Trim();
                 ExpandedSectionVar = ReplaceVars(rc, SectionVar.Replace("; SectionVar=", string.Empty)).Trim();
                 Index = 0;
-                IsInitialized = true;
+                IsInitialized = true;                
+                LinkAssociatedLoopCommand(rc, "ForEachLine");
+                if (AssociatedLoopCommand != null)
+                {
+                    AssociatedLoopCommand.LoopCounter = 0;
+                }
             }
-
-            LinkAssociatedLoopCommand(rc, "ForEachLine");
             if (AssociatedLoopCommand != null)
             {
                 if (LineItems.Any())

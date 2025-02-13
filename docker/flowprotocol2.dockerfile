@@ -14,6 +14,7 @@ RUN dotnet restore
 
 # copy everything else and build app
 COPY FlowProtocol2/. ./FlowProtocol2
+COPY FlowProtocol2.Tests/. ./FlowProtocol2.Tests
 WORKDIR /source
 RUN dotnet publish ./FlowProtocol2.sln -c release -o /app --no-restore
 

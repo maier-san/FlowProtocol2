@@ -39,9 +39,11 @@ namespace FlowProtocol2.Commands
             LinkAssociatedLoopCommand(rc, "ForEach");
             if (AssociatedLoopCommand != null)
             {
-                if (!ForIndices.ContainsKey(rc.BaseKey))
+                if (!IsInitialized || !ForIndices.ContainsKey(rc.BaseKey))
                 {
                     ForIndices[rc.BaseKey] = 0;
+                    IsInitialized = true;
+                    AssociatedLoopCommand.LoopCounter = 0;
                 }
                 ForIndices[rc.BaseKey]++;
                 string currentfieldvar = $"{expandedFieldName}({ForIndices[rc.BaseKey]})";
@@ -53,6 +55,7 @@ namespace FlowProtocol2.Commands
                 else
                 {
                     ForIndices[rc.BaseKey] = 0;
+                    IsInitialized = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

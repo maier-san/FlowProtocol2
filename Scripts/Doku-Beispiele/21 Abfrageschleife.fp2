@@ -2,7 +2,7 @@
 	#j: Ja
 		~Set i=1
 		~DoWhile $V$i==j
-			~Input B$i: Variable für den $i. Paramter:
+			~Input B$i: Variable für den $i. Parameter:
 			~Set Vars($i)=$B$i
 			~AddTo i+=1
 			?V$i: Hat die Funktion einen $i. Parameter?

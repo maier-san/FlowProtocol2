@@ -1,0 +1,39 @@
+~SetStopCounter 10000;30000
+~ListFiles yyTSkripte = .; Pattern=*.fp2
+~ForEach yyf in yyTSkripte
+	~If $yyf!=X-DokuHelper.fp2
+		~Replace yyBefehl=$yyf|.fp2->	
+		~AddText \\		
+		@Doku >>|%Siehe Abschnitte~\ref{}, \ref{} und \ref{}, verwendet in Beispiel~\ref{}, \ref{} und \ref{}.
+		>>|
+		>>|\item[\fcmd{$yyBefehl}] \synvar{Var} \verb|=| \synvar{Text}\\
+		~Set yyScan=Nein
+		~ForEachLine yyZeile in $yyf
+			~Trim yyTZeile=$yyZeile
+			~If $yyZeile~@Beschreibung >>_			
+				~Set yyScan=Ja
+				~Replace yyText=$yyZeile|@Beschreibung >>_$Chr(32)->
+				>>|$yyText
+			~If $yyScan==Ja && ++$yyTZeile~++>
+				~Set yyText=++$yyTZeile
+				~Replace yyText=$yyText|++>>_->
+				~Replace yyText=$yyText|++>>->
+				~Replace yyText=$yyText|++>->
+				~Replace yyText=$yyText|++->
+				~Trim yyTText=$yyText
+				>>|$yyTText
+			~If $yyScan==Ja && $yyZeile~~AddCode
+				~RegExMatch yyToken=$yyZeile|\s*~AddCode\s*<(.+)>\s*
+				~If $yyToken(0)
+					~AddText $Chr(32)\synvar{$yyToken(1)}
+				~Else
+					~Replace yyText=$yyZeile|~AddCode$Chr(32)->
+					~Trim yyVText=$yyText
+					~AddText $Chr(32)\verb|$yyVText|
+			~If $yyScan==Ja && $yyZeile~~AddText
+				~Replace yyText=$yyZeile|~AddText$Chr(32)->
+				~AddText $yyText
+			~If $yyZeile~@Ausnahmen || $yyZeile~@Codebeispiel || $yyZeile~@Ausgabe
+				~Set yyScan=Nein
+		~Loop
+~Loop

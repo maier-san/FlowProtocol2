@@ -1,6 +1,6 @@
 ~Input T:Text
 @Eingabetext >>_ $T
-~ForEachLine z in 24 Terminologieliste.txt
+~ForEachLine z in Terminologieliste.txt
 	~RegExMatch ti=$z|([0-9]*)\t([^\t]*)\t(ja|nein)\t(.*)
 	~If $ti(0)
 		~If $ti(3)==ja

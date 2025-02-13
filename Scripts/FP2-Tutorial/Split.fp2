@@ -2,25 +2,33 @@
 @Beschreibung >>_ Der Befehl
 ~AddCode  ~Split <Variablenname> = <Text>|<Trennzeichen>
 ~AddText  teilt einen Text anhand eines Trennzeichens auf.
->>_ Das Ergebis wird in den Variablen mit Zusatz (1), (2), (3) usw. gespeichert. Die darauf folgende Variable wird entfernt, so dass die Werte in einer DoWhile-Schleife mit ?$<Variablenname> durchlaufen werden können.
+>>_ Das Ergebis wird in den Variablen mit Zusatz (1), (2), (3) usw. gespeichert. Die darauf folgende Variable wird entfernt, so dass die Werte in einer DoWhile-Schleife mit ?$<Variablenname> oder in einer ForEach-Schleife durchlaufen werden können. Über den Eintrag mit dem Index 0 kann die Anzahl abgerufen werden.
 >>_ Whitespace als Trennzeichen muss maskiert werden.
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel zerlegt eine Liste in drei einzelne Elemente.
 >>|~Set VListe = Sonne; Mond; Sterne
 >>|~Split ErgListe = $VListe|;
->>|@Ausgabe >> Liste als Aufzählung
+>>|@Ausgabe >> Anzahl=$ErgListe(0)
+>>|>> DoWhile-Schleife
 >>|~Set Index=1
 >>|~DoWhile ?$ErgListe($Index)
 >>|	> $ErgListe($Index)
 >>|	~AddTo Index+=1
 >>|~Loop
->>|>> Fertig
+>>|>> ForEach-Schleife
+>>|~ForEach idx in ErgListe
+>>|	> $idx
+>>|~Loop
 ~Set VListe = Sonne; Mond; Sterne
 ~Split ErgListe = $VListe|;
-@Ausgabe >> Liste als Aufzählung
+@Ausgabe >> Anzahl=$ErgListe(0)
+>> DoWhile-Schleife
 ~Set Index=1
 ~DoWhile ?$ErgListe($Index)
 	> $ErgListe($Index)
 	~AddTo Index+=1
 ~Loop
->> Fertig
+>> ForEach-Schleife
+~ForEach idx in ErgListe
+	> $idx
+~Loop

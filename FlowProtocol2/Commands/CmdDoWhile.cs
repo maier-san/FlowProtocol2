@@ -38,15 +38,24 @@ namespace FlowProtocol2.Commands
                 rc.ErrorItems.Add(err);
                 return null;
             }
-            LinkAssociatedLoopCommand(rc, "DoWhile");
+            if (!IsInitialized)
+            {
+                IsInitialized = true;
+                LinkAssociatedLoopCommand(rc, "DoWhile");                
+                if (AssociatedLoopCommand != null)
+                {                
+                    AssociatedLoopCommand.LoopCounter = 0;
+                }
+            }
             if (AssociatedLoopCommand != null)
             {                
                 if (Evaluation)
-                {
+                {              
                     return NextCommand;
                 }
                 else
                 {
+                    IsInitialized = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

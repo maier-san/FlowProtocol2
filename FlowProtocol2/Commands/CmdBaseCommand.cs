@@ -70,11 +70,21 @@ namespace FlowProtocol2.Commands
                     }
                 }
                 input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());
-                if (input.Contains("$Chr"))
+                if (input.Contains("$Chr("))
                 {
-                    for (int i = 1; i < 255; i++)
+                    Regex ChrExpr = new Regex(@"\$Chr\(([0-9]*)\)");
+                    while (ChrExpr.IsMatch(input))
                     {
-                        input = input.Replace($"$Chr({i})", Convert.ToChar(i).ToString());
+                        var chrmatch = ChrExpr.Match(input);
+                        int chrindex = chrmatch.Groups[0].Index;
+                        int chrlength = chrmatch.Groups[0].Length;
+                        string strAnsicode = chrmatch.Groups[1].Value.Trim();
+                        bool codeOK = int.TryParse(strAnsicode, out int ansicode);
+                        if (codeOK && ansicode > 0 && ansicode < 2048)
+                        {
+                            input = input.Remove(chrindex, chrlength);
+                            input = input.Insert(chrindex, Convert.ToChar(ansicode).ToString());
+                        }
                     }
                 }
             }
@@ -86,11 +96,29 @@ namespace FlowProtocol2.Commands
         public T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.PreviousCommand);
 
-        public T? GetFirstCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
+        /// <summary>
+        ///     Sucht einen Befehl in allen eingelesenen Skripten.
+        /// </summary>
+        /// <typeparam name="T">Typ des gesuchten Befehls</typeparam>
+        /// <param name="rc">RunContext</param>
+        /// <param name="predicate">Treffer-Prädikat</param>
+        /// <param name="stopcrit">Abbruch-Prädikat</param>
+        /// <returns></returns>
+        public T? GetFirstCommand<T>(RunContext rc, Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand
         {
             CmdBaseCommand top = GetPreviousCommand<CmdBaseCommand>(c => c.PreviousCommand == null, c => false) ?? this;
-            return top.GetNextCommand<T>(predicate, stopcrit);
+            T? cmdT = top.GetNextCommand<T>(predicate, stopcrit);
+            if (cmdT != null) return cmdT;
+            foreach (var sinfo in rc.ScriptRepository.Values)
+            {
+                if (sinfo.StartCommand != null)
+                {
+                    cmdT = sinfo.StartCommand.GetNextCommand<T>(predicate, stopcrit);
+                    if (cmdT != null) return cmdT;
+                }
+            }
+            return null;
         }
 
         private T? GetCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit,
@@ -179,7 +207,7 @@ namespace FlowProtocol2.Commands
             if (CheckCompDTerm(rc, expression, "<", (x, y) => x < y, out result, out err)) return result;
             if (CheckCompDTerm(rc, expression, ">", (x, y) => x > y, out result, out err)) return result;
             if (CheckCompSTerm(rc, expression, "!~", (x, y) => !x.Contains(y), out result, out err)) return result;
-            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;            
+            if (CheckCompSTerm(rc, expression, "~", (x, y) => x.Contains(y), out result, out err)) return result;
             err = new ErrorElement(ReadContext, "Ungültiger Vergleichsterm",
                 $"Der Ausdruck '{expression}' kann nicht als Vergleichsterm interpretiert werden.");
             return false;

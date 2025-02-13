@@ -23,7 +23,7 @@
 		~Random z=65..90
 		~AddTo AnzGross+=-1
 	~ElseIf $AnzSonder>0
-		~Random s=1..9
+		~Random s=1..$SZ(0)
 		~Set z=$SZ($s)
 		~AddTo AnzSonder+=-1
 	~Else

@@ -2,6 +2,7 @@
 ~Input Key: Schlüssel für die Frage
 ~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
 ~AddHelpLine Werte mit "?" werden als Schalter abgebildet.
+~AddHelpLine Der Wert mit "=" wird auf den Auswahlwert gesetzt.
 ~Input Tabs: Einrückung (T pro Tab, @ sonst)
 ~CamelCase CKey=$Key
 ~Set T=$Chr(9)
@@ -39,6 +40,9 @@
 				~Set ErsterSchalter=Ja
 			@IfBlocks >|$EE~If $$vidx==Ja
 			>|$EE$T//$widx
+		~ElseIf $widx~=
+			@Erweiterung >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$CKey
+			>|$EE$T$T$T~Set $vidx=$I$CKey
 		~Else			
 			@Erweiterung >|$EE$T$T$T~Input I$vidx: $widx
 			>|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$vidx

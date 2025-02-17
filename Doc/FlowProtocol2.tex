@@ -848,7 +848,23 @@ Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eige
 
 Der Umgang mit solchen kombinatorischen Auf\-lis\-tungen\index{kombinatorischen Auf\-lis\-tungen} ist in der Softwareentwicklung wichtiger, als man denkt und ein großer Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch formal möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann, müssen auch diese Fälle betrachtet und behandelt werden. 
 
-Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. Entsprechend empfiehlt es sich, den Kombinator so zu erweitern, dass sich zumindest die sich gegenseitig ausschließenden Kombinationen  angeben und entfernen lassen.
+Gerade bei der Implementierung von Formeln ist es ungeheuer wichtig, dass der komplett zulässige Definitionsbereich bei Implementierung und Test abgedeckt werden, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. 
+
+In vielen Fällen hängen weitere Teilkombinationen nur an einzelnen Werten und die Bestimmung aller Kombinationen entspricht dem ausmultiplizieren eines Terms mit  den Operationen $+$ und $\cdot$ und einer beliebigen Klammerung, nur dass die Elemente Textfragmente sind und keine Zahlen. Das folgende Beispiel zeigt, wie die Summanden des Ergebnisausdruckes am Ende die einzelnen Kombinationen bilden:
+\[
+\begin{split}
+K &= (\text{Material Holz} + \text{Material Metall})\\
+    &\quad\cdot (\text{Farbe blau} + \text{Farbe grün}\cdot (\text{einfarbig} + \text{mit gelben Streifen}))\\
+&= \text{Material Holz}\cdot\text{Farbe blau}\\
+&\quad+ \text{Material Holz}\cdot\text{Farbe grün}\cdot\text{einfarbig}\\
+&\quad+ \text{Material Holz}\cdot\text{Farbe grün}\cdot\text{mit gelben Streifen}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe blau}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe grün}\cdot\text{einfarbig}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe grün}\cdot\text{mit gelben Streifen}
+\end{split}
+\]
+Mit der in Abschnitt~\ref{RegUndDaten} beschriebenen Funktion zur Anwendung regulärer Ausdrücke lassen sich solche Klammerausdrücke wiederholt in einem Eingabetext suchen und ausmultiplizieren, bis am Ende der gesamte Ausdruck expandiert ist. Ebenso lässt sich nach definierten Textmarken suchen, die, wenn sie in einer Kombination aufeinandertreffen, diese aus dem Ergebnis entfernen. Zusätzlich lässt sich auch noch eine Textmarke für eine Ergebnisgruppierung definieren, so dass die Kombinationen als zweistufige Liste ausgegeben werden.
+
 
 \subsection{Ersetzungen und Zufallsgenerierung}\label{ErsetzungenUndZufallsgenerierung}
 Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, etwa in Beispiel~\ref{BspTextersetzung}. Die Ersetzung\index{Ersetzung} von Texten in anderen Texten ist für viele Zwecke einsetzbar. Im nachfolgende Beispiel wird die Textersetzung dazu verwendet um systematisch einen Text aufzubauen. Hierbei kommt auch der Befehl \fcmd{Random} zum Einsatz, mit dem eine Zufallszahl\index{Zufallszahl} in einem Zahlenbereich generiert werden kann.
@@ -1745,6 +1761,9 @@ Das Ergebnisdokument kann mit Überschrift und allen Abschnitten auf eine eigene 
 
 Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sichten und auf Notwendigkeit zu prüfen. Nicht selten werden Vorgehensweisen oder Softwareprodukte eingeführt, die sich dann irgendwann von selbst ausschleichen, ohne dass eine Außerbetriebnahme stattgefunden hat, was ein schlechter Zustand ist, vor allem, wenn weiterhin Geld dafür bezahlt wird. Die jährliche Sichtung der Assets, zusammen mit den notwendigen Wartungsaufgaben ist wichtig, um z.B.\ rechtzeitig darüber informiert zu sein wenn, etwa aufgrund einer Abkündigung Nutzungseinschränkungen absehbar werden.
 
+Gerade solche Rechercheaufgaben nach neuen oder abgekündigten Versionen lassen sich heute -- sofern es die Unternehmensrichtlinien zulassen -- mit einer einfachen Anfrage an einen Chatbot erledigen, z.B.\
+\emph{Für welche Versionen des Windows Server Betriebssystems läuft der Support als nächstes aus und gibt es schon Ankündigungen für neue Versionen?} Die Erzeugung des passenden Eingabe-Promptes auf Basis von Komponentenname und Komponententyp lässt sich dabei sehr gut in ein \FPZb-Skript für diese Art von Wartungsaufgaben integrieren, dessen Aufruf wiederum als Link direkt in der Asset-Dokumentation hinterlegt ist. Das Formulieren effektiver Prompts für KI-Anfragen, auch \emph{Prompt Engineering}\index{Prompt Engineering} genannt, ist eine zunehmend wichtige und auch anspruchsvolle Aufgabe, deren Ergebnis es verdient, wiederverwendet zu werden.
+
 Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Doku im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
 
 Der entscheidende Vorteil bei einer interaktiven Anleitung für die Dokumentation von Dingen ist jedoch die Möglichkeit, Fragestellungen und daraus abgeleitete Maßnahmen direkt damit zu verbinden, und deren Durchführung gut zu unterstützen. So kann ein Skript, das ursprünglich nur für die Dokumentation gedacht war, und nur Informationen abgefragt hat, schrittweise bis zu einem Protokoll erweitert werden, dass am Ende garantiert, dass das Dokumentierte definierte Standards erfüllt.
@@ -1949,7 +1968,7 @@ Für die Zusammenstellung der benötigten Informationen wird zum einen die Variabl
 
 Das Tabulatorzeichen\index{Tabulatorzeichen} für die Einrückung des auszugebenden Skriptcodes wird über die Sequenz \cidxvar{Chr(9)} angegeben, da unmaskierte Tabulatorzeichen beim Einlesen von Skripten durch vier Leerzeichen ersetzt werden.
 
-\subsection{Metaskripting}
+\subsection{Metaskripting}\label{Metaskripting}
 Jetzt kann man zu Recht bemängeln, dass der Scriptcode, der für die \emph{Nicht in Liste}-Auswahlmöglichkeit erstellt werden muss, selbst sehr komplex und relativ umfangreich ist. Die Hürde eine solche Möglichkeit zu schaffen scheint damit recht hoch zu sein, und selbst wenn man sich dafür bei einer Vorlage bedienen kann, sind immer noch einige Anpassungen notwendig, da sich die abzufragenden Variablen ja von Fall zu Fall unterscheiden.
 
 Die Lösung für dieses Problem ist, man ahnt es vermutlich schon, ist ein \FPZb-Skript, das einem diese Arbeit abnimmt.
@@ -1968,6 +1987,7 @@ Das Ergebnis sieht wie folgt aus:
 ~Input Key: Schlüssel für die Frage
 ~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
 ~AddHelpLine Werte mit "?" werden als Schalter abgebildet.
+~AddHelpLine Der Wert mit "=" wird auf den Auswahlwert gesetzt.
 ~Input Tabs: Einrückung (T pro Tab, @ sonst)
 ~CamelCase CKey=$Key
 ~Set T=$Chr(9)
@@ -2005,6 +2025,9 @@ Das Ergebnis sieht wie folgt aus:
                 ~Set ErsterSchalter=Ja
             @IfBlocks >|$EE~If $$vidx==Ja
             >|$EE$T//$widx
+        ~ElseIf $widx~=
+            @Erweiterung >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$CKey
+            >|$EE$T$T$T~Set $vidx=$I$CKey
         ~Else            
             @Erweiterung >|$EE$T$T$T~Input I$vidx: $widx
             >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$vidx
@@ -2171,9 +2194,11 @@ Umgekehrt gibt es auch gesetztliche Nachweispflichten, die man in Bezug auf sein
 Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
 
 \subsection{Personalisierung}\label{Personalisierung}
-Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Das Erzwingen vollständig über alle Umgebungen hinweg einheitlicher Pfade und Strukturen ist mühsam und dürfte von vielen als unnötigend beschränkend wahrgenommen werden.
+Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen, die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Dazu gehören in erster Linie Datei- und Ordnerpfade, mit denen sich  etwa parametrisierte Kommandozeilenaufrufe vorbereiten lassen, so dass der Anwender diese über eine Konsole oder die  Tastenkombination \emph{Win-R}\index{Win-R} ausführen kann. Dazu kommen Benutzerkürzel oder andere Kennzeichen, die sich z.B.\ in erzeugten Programmcode einarbeiten lassen. 
 
-Als Serverdienst läuft \FPZ\ vollständig unabhängig von einer lokalen Umgebung. Trotzdem ist es mit sehr einfachen Mitteln möglich, personalisierte Elemente in Skripte einzubringen. Dazu muss man nur eine Funktionsdatei erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt. Diese könnte so aussehen:
+Die Pfadstruktur könnte man vereinheitlichen, was allerdings mühsam und einschränkend ist, und die ansonsten benötigten Werte kann man abfragen, allerdings ist es gleichermaßen für Ersteller und Anwender mit viel  Aufwand verbunden, wenn dies in jedem Skript geschieht.
+
+Die Lösung besteht darin, eine einzelne Funktionsdatei zu erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt, so dass diese im ganzen Skript verfügbar sind. Diese könnte so aussehen:
 
 \Beispiel{Benutzervariablen.fps}
 \begin{verbatim}
@@ -2186,7 +2211,9 @@ Als Serverdienst läuft \FPZ\ vollständig unabhängig von einer lokalen Umgebung. 
     #EF: Ernst Flour
 \end{verbatim}
 
-Im Beispiel sind exemplarisch die Variablen für den Benutzer AB ausformuliert, und in einer im Echtbetrieb eingesetzten Variante würde es vermutlich noch viel mehr benutzerbezogene Variablen geben.
+Im Beispiel sind exemplarisch die Variablen für den Benutzer AB ausformuliert, und in einer im Echtbetrieb eingesetzten Variante würde es vermutlich noch viel mehr benutzerbezogene Variablen geben. 
+
+Mit den Hilfsmitteln aus Abschnitt~\ref{Metaskripting} könnte man auch dieses Skript ohne Mühe selbst-erweiterbar machen, so dass ein Mitarbeiter, der erstmalig mit dieser Abfrage konfrontiert wird, bei den Eingaben angeleitet und unterstützt wird.
 
 Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentlich Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
 

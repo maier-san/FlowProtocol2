@@ -24,9 +24,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./FlowProtocol2.sln
 
+      # Bauen der Solution
       - name: Build the solution
         run: dotnet build ./FlowProtocol2.sln --configuration Debug --no-restore
 
+      # Die Testausführung startet hier
       - name: Run unit tests with report
         run: dotnet test ./FlowProtocol2.Tests/FlowProtocol2.Tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=TestResults.trx" --results-directory ./TestResults
 

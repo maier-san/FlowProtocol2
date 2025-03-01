@@ -2,7 +2,7 @@
 @Beschreibung >>_ Der Befehl
 ~AddCode  [@<Abschnitt> ]>[>][<Format>] <Text>
 ~AddText  gibt Text aus.
->>_ Die Varianten mit ">>" geben Text in der ersten Ebene aus, die Varianten mit ">" geben Text in der zweiten Ebene aus.
+>>_ Die Varianten mit ">>" geben Text in der ersten Ebene aus, die Varianten mit ">" geben Text in der zweiten Ebene aus und die Varianten mit ">." geben Text in der dritten Ebene aus.
 >>_ Es stehen die Formate "_" für normale Textzeilen, "*" für unnumerierte Auflistungen, "#" für numerierte Auflistungen und "|" für Codezeilen zur Auswahl.
 >>_ Das Standardformat der ersten Ebene ist "#", das der zweiten Ebene "*". Die Nummerierung auf Ebene 1 erfolgt mit Zahlen, die auf Ebene 2 mit Kleinbuchstaben.
 >>_ Optional kann ein Abschnitt angegeben werden. Diesem werden alle nachfolgenden Eingaben zugeordnet, bis ein anderer Abschnitt angegeben wird. Auf diese Weise können verschiedene Abschnitte eines Dokuments parallel aufgebaut werden. Der aktive Abschnitt kann auch unabhängig über den Befehl
@@ -25,11 +25,11 @@
 >>|@Ausgabe >> Diese Zeile erzeugt eine numerierte Auflistung auf erster Ebene im Abschnitt "Ausgabe".
 >>|>> Diese Zeile setzt die Numerierung fort.
 >>|	># Jetzt kommt eine numerierte Unterauflistung
+>>|	>.|UndEinCodeBlock()
+>>|	>.|{
+>>|	>.|   // Mit 4 Zeilen
+>>|	>.|}
 >>|	># ...mit einem zweiten Punkt.
->>|	>|UndEinCodeBlock()
->>|	>|{
->>|	>|   // Mit 4 Zeilen
->>|	>|}
 >>|>> Und eine dritte Zeile mit einem
 >>|~AddLink https://github.com/maier-san/FlowProtocol2 | Link
 >>|~AddText  und einem  
@@ -40,12 +40,12 @@
 >>|>>_ Und ein zweiter Absatz.
 @Ausgabe >> Diese Zeile erzeugt eine numerierte Auflistung auf erster Ebene im Abschnitt "Ausgabe".
 >> Diese Zeile setzt die Numerierung fort.
-	># Jetzt kommt eine numerierte Unterauflistung
+	># Jetzt kommt eine numerierte Unterauflistung	
+	>.|UndEinCodeBlock()
+	>.|{
+	>.|   // Mit 4 Zeilen
+	>.|}
 	># ...mit einem zweiten Punkt.
-	>|UndEinCodeBlock()
-	>|{
-	>|   // Mit 4 Zeilen
-	>|}
 >> Und eine dritte Zeile mit einem
 ~AddLink https://github.com/maier-san/FlowProtocol2 | Link
 ~AddText  und einem  

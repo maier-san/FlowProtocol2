@@ -36,6 +36,26 @@ namespace FlowProtocol2.Core
             }
             var lastBlock = section.Textblocks.LastOrDefault();
             CurrentTextline = null;
+            OMTextLine? lastTextline = null;
+            OMTextBlock? lastSubblock = null;
+            OMTextLine? lastSubtextline = null;
+            OMTextBlock? lastSubsubblock = null;
+            if (lastBlock != null)
+            {
+                lastTextline = lastBlock.TextLines.LastOrDefault();
+                if (lastTextline != null)
+                {
+                    lastSubblock = lastTextline.Subblocks.LastOrDefault();
+                    if (lastSubblock != null)
+                    {
+                        lastSubtextline = lastSubblock.TextLines.LastOrDefault();
+                        if (lastSubtextline != null)
+                        {
+                            lastSubsubblock = lastSubtextline.Subblocks.LastOrDefault();
+                        }
+                    }
+                }                
+            }
             if (l == Level.Level1)
             {
                 if (lastBlock == null || lastBlock.BlockType != t || lastBlock.Closed)
@@ -51,21 +71,35 @@ namespace FlowProtocol2.Core
                 CurrentTextBlock = lastBlock;
             }
             else if (l == Level.Level2 && lastBlock != null)
-            {
-                var lastTextline = lastBlock.TextLines.LastOrDefault();
-                if (lastTextline != null)
+            {                                                 
+                if (lastTextline != null && (lastSubblock == null || lastSubblock.BlockType != t))
                 {
-                    var lastSubblock = lastTextline.Subblocks.LastOrDefault();
-                    if (lastSubblock == null || lastSubblock.BlockType != t)
-                    {
-                        lastSubblock = new OMTextBlock();
-                        lastSubblock.ID = "B" + (++IDCounter).ToString();
-                        lastSubblock.BlockType = t;
-                        lastSubblock.NumerationType = "a";
-                        lastTextline.Subblocks.Add(lastSubblock);
-                    }
-                    CurrentTextline = new OMTextLine();
-                    lastSubblock.TextLines.Add(CurrentTextline);
+                    lastSubblock = new OMTextBlock();
+                    lastSubblock.ID = "B" + (++IDCounter).ToString();
+                    lastSubblock.BlockType = t;
+                    lastSubblock.NumerationType = "a";
+                    lastTextline.Subblocks.Add(lastSubblock);
+                }
+                CurrentTextline = new OMTextLine();
+                if (lastSubblock != null)
+                {
+                    lastSubblock.TextLines.Add(CurrentTextline);            
+                }
+            }
+            else if (l == Level.Level3 && lastSubblock != null)
+            {
+                if (lastSubtextline != null && (lastSubsubblock == null || lastSubsubblock.BlockType != t))
+                {
+                    lastSubsubblock = new OMTextBlock();
+                    lastSubsubblock.ID = "B" + (++IDCounter).ToString();
+                    lastSubsubblock.BlockType = t;
+                    lastSubsubblock.NumerationType = "i";
+                    lastSubtextline.Subblocks.Add(lastSubsubblock);
+                }
+                CurrentTextline = new OMTextLine();
+                if (lastSubsubblock != null)
+                {
+                    lastSubsubblock.TextLines.Add(CurrentTextline);
                 }
             }
             if (CurrentTextline != null)

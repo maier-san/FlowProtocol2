@@ -311,7 +311,7 @@ Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschni
 \end{verbatim}
 
 \subsection{Unterpunkte und Absatzformate}
-Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell zwei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>} und \cidxfrag{>} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des entsprechenden Abschnitts unter.
+Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell drei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>}, \cidxfrag{>} und \cidxfrag{>.} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des jeweiligen Abschnitts unter und Ausgaben der dritten Ebene dementsprechend der letzten Ausgabe der zweiten Ebene.
 
 Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter Aufzählungspunkt (\verb|>>#|), nicht nummerierter Aufzählungspunkt (\verb|>>*|), einfache Textzeile (\verb|>>_|) oder Codezeile  (\texttt{>>|}) ausgegeben wird.
 
@@ -326,11 +326,12 @@ Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter A
     >| }
 >>* Implementiere die Start-Methode.
     ># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
+        >.* Der Editor bietet Methoden zur Auswahl an.
     ># und wähle in der Auswahl des Editors die Methode Start.
     ># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.
 \end{verbatim}
 
-Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind,
+Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind, der erste davon hat wiederum einen nicht nummerierten Unterpunkt.
 
 Die drei aufeinanderfolgenden Codezeilen werden zu einem Codeblock zusammengefasst, der mit der automatisch darunter angeordneten Schaltfläche \emph{In Zwischenablage kopieren} in die Zwischenablage\index{Zwischenablage} genommen werden kann.
 
@@ -2337,6 +2338,10 @@ Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt au
 
 \item[\cidxfrag{>}]$[$\synvar{Format}$]$ \synvar{Text}\\
 Gibt einen Text als Aufzählung der zweiten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{>.}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der dritten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
 Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
 
 \item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\

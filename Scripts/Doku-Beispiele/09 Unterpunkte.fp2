@@ -8,4 +8,5 @@
 >>* Implementiere die Start-Methode.
 	># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
 	># und wähle in der Auswahl des Editors die Methode Start.
+		>.* Der Editor bietet Methoden zur Auswahl an.
 	># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.

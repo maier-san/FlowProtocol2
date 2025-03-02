@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
         public string Take { get; set; }
         public string IndexVar { get; set; }
         public string SectionVar { get; set; }
-        private bool IsInitialized { get; set; }
+        public string NoFormatVar { get; set; }
         private List<LineItem> LineItems { get; set; }
         private string ExpandedVarName { get; set; }
         private string ExpandedIndexVar { get; set; }
@@ -34,7 +34,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)\s*(; Take=[A-Za-z0-9\$\(\)]*)?\s*(; IndexVar=[A-Za-z0-9\$\(\)]*)?\s*(; SectionVar=[A-Za-z0-9\$\(\)]*)?",
+            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)\s*(; Take=[A-Za-z0-9\$\(\)]*)?\s*(; IndexVar=[A-Za-z0-9\$\(\)]*)?\s*(; SectionVar=[A-Za-z0-9\$\(\)]*)?\s*(; NoFormat)?",
                 (rc, m) => CreateForEachLineCommand(rc, m));
         }
 
@@ -46,6 +46,7 @@ namespace FlowProtocol2.Commands
             cmd.Take = m.Groups[3].Value.Trim();
             cmd.IndexVar = m.Groups[4].Value.Trim();
             cmd.SectionVar = m.Groups[5].Value.Trim();
+            cmd.NoFormatVar = m.Groups[6].Value.Trim();
             return cmd;
         }
 
@@ -56,6 +57,7 @@ namespace FlowProtocol2.Commands
             Take = string.Empty;
             IndexVar = string.Empty;
             SectionVar = string.Empty;
+            NoFormatVar = string.Empty;
             LineItems = new List<LineItem>();
             ExpandedVarName = string.Empty;
             ExpandedIndexVar = string.Empty;
@@ -66,7 +68,7 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            if (!IsInitialized)
+            if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
             {
                 string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath).Replace('|', Path.DirectorySeparatorChar);
                 string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
@@ -89,12 +91,13 @@ namespace FlowProtocol2.Commands
                     }
                 }
                 RSeed = GetRSeed(rc);
-                ReadLineItems(absoluteFileName, take);
+                bool noformat = NoFormatVar.Contains("NoFormat");
+                ReadLineItems(absoluteFileName, take, noformat);
                 ExpandedVarName = ReplaceVars(rc, VarName);
                 ExpandedIndexVar = ReplaceVars(rc, IndexVar.Replace("; IndexVar=", string.Empty)).Trim();
                 ExpandedSectionVar = ReplaceVars(rc, SectionVar.Replace("; SectionVar=", string.Empty)).Trim();
                 Index = 0;
-                IsInitialized = true;                
+                IsInitialized[rc.BaseKey] = true;                
                 LinkAssociatedLoopCommand(rc, "ForEachLine");
                 if (AssociatedLoopCommand != null)
                 {
@@ -121,16 +124,16 @@ namespace FlowProtocol2.Commands
                 }
                 else
                 {
-                    IsInitialized = false;
+                    IsInitialized[rc.BaseKey] = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }
             rc.SetError(ReadContext, "ForEachLine ohne Loop",
-                "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+                "Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
             return null;
         }
 
-        private void ReadLineItems(string absoluteFileName, int take)
+        private void ReadLineItems(string absoluteFileName, int take, bool noformat)
         {
             LineItems.Clear();
             using (StreamReader sr = new StreamReader(absoluteFileName))
@@ -139,14 +142,15 @@ namespace FlowProtocol2.Commands
                 while (sr.Peek() != -1)
                 {
                     string? line = sr.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(line))
+                    if (noformat || !string.IsNullOrWhiteSpace(line))
                     {
-                        string idxline = line.Trim();
-                        if (idxline.StartsWith("//"))
+                        string idxline = line??string.Empty;
+                        if (!noformat) idxline = idxline.Trim();                        
+                        if (!noformat && idxline.StartsWith("//"))
                         {
                             // ignorieren
                         }
-                        else if (idxline.StartsWith("[") && idxline.EndsWith("]"))
+                        else if (!noformat && idxline.StartsWith("[") && idxline.EndsWith("]"))
                         {
                             section = idxline.Substring(1, idxline.Length - 2);
                         }

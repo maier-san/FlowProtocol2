@@ -39,10 +39,10 @@ namespace FlowProtocol2.Commands
             LinkAssociatedLoopCommand(rc, "ForEach");
             if (AssociatedLoopCommand != null)
             {
-                if (!IsInitialized || !ForIndices.ContainsKey(rc.BaseKey))
+                if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey] || !ForIndices.ContainsKey(rc.BaseKey))
                 {
                     ForIndices[rc.BaseKey] = 0;
-                    IsInitialized = true;
+                    IsInitialized[rc.BaseKey] = true;
                     AssociatedLoopCommand.LoopCounter = 0;
                 }
                 ForIndices[rc.BaseKey]++;
@@ -55,7 +55,7 @@ namespace FlowProtocol2.Commands
                 else
                 {
                     ForIndices[rc.BaseKey] = 0;
-                    IsInitialized = false;
+                    IsInitialized[rc.BaseKey] = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

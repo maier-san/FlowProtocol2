@@ -38,9 +38,9 @@ namespace FlowProtocol2.Commands
                 rc.ErrorItems.Add(err);
                 return null;
             }
-            if (!IsInitialized)
+            if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
             {
-                IsInitialized = true;
+                IsInitialized[rc.BaseKey] = true;
                 LinkAssociatedLoopCommand(rc, "DoWhile");                
                 if (AssociatedLoopCommand != null)
                 {                
@@ -55,7 +55,7 @@ namespace FlowProtocol2.Commands
                 }
                 else
                 {
-                    IsInitialized = false;
+                    IsInitialized[rc.BaseKey] = false;
                     return AssociatedLoopCommand.NextCommand;
                 }
             }

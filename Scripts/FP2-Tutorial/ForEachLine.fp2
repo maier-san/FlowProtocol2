@@ -1,25 +1,25 @@
 ~SetTitle ForEachLine-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>]
+~AddCode  ~ForEachLine <Variable> in <Dateiname/-pfad>[; Take=<Anzahl>][; IndexVar=<Indexvariable>][; SectionVar=<Abschnittsvariable>][; NoFormat]
 ~AddText  liest Zeilen aus einer Datei in eine Variable und führt damit die nachfolgend eingerückten Befehle aus.
 >>_ Mit dem optionalen Take-Parameter kann die Anzahl der zufällig ausgewählten Zeilen vorgegeben werden.
 >>_ Die laufende Nummer wird in der optionalen Indexvariablen zurückgegeben.
 >>_ Wird nur ein Dateiname angegeben, so wird dieser im gleichen Verzeichnis gesucht. Wir ein Pfad beginnend mit ".\" angegeben, so wird dieser unterhalb des Skript-Hauptverzeichnisses gesucht.
->>_ Die Datei kann mit "[" und "]" markierte Abschnitte enthalten. Diese werden in der optionalen Abschnittsvariablen übergeben. Mit "//" beginnende Kommentarzeilen und Leerzeilen werden ignoriert.
+>>_ Wird das 
+~AddCode  NoFormat
+~AddText -Argument weggelassen, werden die mit "//" beginnende Kommentarzeilen und Leerzeilen ignoriert, alle Zeilen getrimmt und Zeilen, die mit "[" beginnen und "]" enden als Abschnitte interpretiert. Diese werden in der optionalen Abschnittsvariablen übergeben.
 @Ausnahmen >>* Datei nicht gefunden: Die Datei ... konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.
 >>* Ungültiger Take-Parameter: Der Ausdruck ... kann nicht als Take-Parameter interpretiert werden. Die Skriptausführung wird abgebrochen.
 >>* ForEachLine ohne Loop: Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
 >>* ForEachLine ohne Loop: Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden.
-@Codebeispiel >>_ Das nachfolgende Beispiel liest vier Zeilen aus der Datei Quelldaten.txt und führt darauf eine Abfrage durch und gibt das Ergebnis aus.
->>_ Nach der zweiten Abfrage wird das Skript ausgeführt.
->>|~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=Idx; SectionVar=Abschnitt
->>|	?A$Idx: Gefällt dir $Zeile in $Abschnitt?
->>|		#j: Ja
->>|			> $Zeile gefällt mir.
->>|		#n: Nein
->>|			> $Zeile gefällt mir nicht.	
->>|	~If $Idx==2
->>|		~Execute
+@Codebeispiel >>_ Das nachfolgende Beispiel liest zuerst vier Zeilen aus der Datei Quelldaten.txt aus und liest danach nochmal die ganze Date ohne Format-Interpretation:
+>>|@Ausgabe >> Vier Zeilen als Stichprobe
+>>|~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=idx; SectionVar=Abschnitt
+>>|	@Ausgabe >* Nr. $idx, Abschnitt=$Abschnitt, Zeile: $Zeile
+>>|~Loop
+>>|@Ausgabe >> Alle Zeilen ohne Format
+>>|~ForEachLine Zeile in Quelldaten.txt; IndexVar=idx; NoFormat
+>>|	@Ausgabe >|$idx|$Zeile
 >>|~Loop
 >>_ Die Datei Quelldaten.txt hat folgenden Inhalt:
 >>|[Abschnitt 1]
@@ -30,13 +30,11 @@
 >>|Zeile 4
 >>|Zeile 5
 >>|Zeile 6
-@Ausgabe >> Meine Bewertung:
-~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=Idx; SectionVar=Abschnitt
-	?A$Idx: Gefällt dir $Zeile in $Abschnitt?
-		#j: Ja
-			> $Zeile gefällt mir.
-		#n: Nein
-			> $Zeile gefällt mir nicht.	
-	~If $Idx==2
-		~Execute
+@Ausgabe >> Vier Zeilen als Stichprobe
+~ForEachLine Zeile in Quelldaten.txt; Take=4; IndexVar=idx; SectionVar=Abschnitt
+	@Ausgabe >* Nr. $idx, Abschnitt=$Abschnitt, Zeile: $Zeile
+~Loop
+@Ausgabe >> Alle Zeilen ohne Format
+~ForEachLine Zeile in Quelldaten.txt; IndexVar=idx; NoFormat
+	@Ausgabe >|$idx|$Zeile
 ~Loop

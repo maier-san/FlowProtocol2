@@ -311,7 +311,7 @@ Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschni
 \end{verbatim}
 
 \subsection{Unterpunkte und Absatzformate}
-Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell zwei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>} und \cidxfrag{>} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des entsprechenden Abschnitts unter.
+Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell drei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>}, \cidxfrag{>} und \cidxfrag{>.} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des jeweiligen Abschnitts unter und Ausgaben der dritten Ebene dementsprechend der letzten Ausgabe der zweiten Ebene.
 
 Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter Aufzählungspunkt (\verb|>>#|), nicht nummerierter Aufzählungspunkt (\verb|>>*|), einfache Textzeile (\verb|>>_|) oder Codezeile  (\texttt{>>|}) ausgegeben wird.
 
@@ -326,11 +326,12 @@ Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter A
     >| }
 >>* Implementiere die Start-Methode.
     ># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
+        >.* Der Editor bietet Methoden zur Auswahl an.
     ># und wähle in der Auswahl des Editors die Methode Start.
     ># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.
 \end{verbatim}
 
-Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind,
+Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind, der erste davon hat wiederum einen nicht nummerierten Unterpunkt.
 
 Die drei aufeinanderfolgenden Codezeilen werden zu einem Codeblock zusammengefasst, der mit der automatisch darunter angeordneten Schaltfläche \emph{In Zwischenablage kopieren} in die Zwischenablage\index{Zwischenablage} genommen werden kann.
 
@@ -938,7 +939,7 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminol
 \begin{verbatim}
 ~Input T:Text
 @Eingabetext >>_ $T
-~ForEachLine z in Terminologieliste.txt
+~ForEachLine z in Terminologieliste.txt; NoFormat
     ~RegExMatch ti=$z|([0-9]*)\t([^\t]*)\t(ja|nein)\t(.*)
     ~If $ti(0)
         ~If $ti(3)==ja
@@ -960,6 +961,8 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminol
 Es durchläuft alle Benennungen aus der Terminologiedatenbank und prüft, ob diese im eingegebenen Text vorhanden sind. Je nachdem ob es sich um eine zulässige Benennung handelt oder nicht, wird diese dann in einem entsprechenden Abschnitt aufgelistet. Bei einer nicht zulässigen Benennung wird die zum entsprechenden Begriff empfohlene Benennung samt Definition ausgegeben, ebenso die Begründung warum die Benennung nicht verwendet werden soll. Für die Eingabe \emph{nach Eingabe des Passworts muss der Button gedrückt werden} wird \emph{Passwort} als zulässige Benennung bestätigt und \emph{Button} mit Hinweis auf \emph{Schaltfläche} und der Begründung, dass es sich um einen Anglizismus handelt, als nicht zulässige Benennung abgelehnt. 
 
 Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \verb|ti| eine Liste zurück. Das nullte Element gibt an, ob für den Ausdruck ein Treffer gefunden wurde, die nachfolgenden Elemente enthalten die Teiltexte des gefundenen Ausdrucks, die über die runden Klammern im Ausdruck als Gruppen angegeben wurden.
+
+Das \cidxfrag{NoFormat}-Argument gibt an, dass die Datei nicht das Dateilisten-Format hat und daher alle Zeilen unverändert zurückgegeben werden sollen. Beispiele für Dateilisten findet man in Beispiel~\ref{BspBasisbefehle} und \ref{BspProgrammierung}.
 
 Das Skript bietet noch viel Spielraum für Erweiterungen, beispielsweise könnten alle im Text vorhandenen großgeschriebenen Wörter, die noch nicht gefunden wurden als Vorschläge für die Aufnahme in die Terminologie aufgelistet werden, direkt mit einem Link zu einem Terminologieerfassungskript, das die benötigten Informationen abfragt und daraus die entsprechenden Einträge für die Terminologiedatenbank erstellt.
 
@@ -2073,7 +2076,7 @@ Diese Praktik lässt sich recht gut mit \FPZ\ anwenden. Die Listen mit den Reflek
 
 Im Ordner \emph{Wissen für FlowProtocol2} sind die beiden Textdateien \emph{Basisbefehle.txt} und \emph{Programmierung.txt} hinterlegt, die wie die Skripte auch, mit einem einfachen Texteditor erstellt wurden. Diese haben folgenden Inhalt:
 
-\Beispiel{Basisbefehle.txt}
+\Beispiel{Basisbefehle.txt}\label{BspBasisbefehle}
 \begin{verbatim}
 [Ausgabe]
 Ich weiß, wie man eine Ausgabe erzeugt.
@@ -2090,7 +2093,7 @@ Ich weiß, wie man einen eingegebenen Text wieder ausgibt.
 Ich weiß, wie man Auswahlabfragen ineinander verschachtelt.
 \end{verbatim}
 
-\Beispiel{Programmierung.txt}
+\Beispiel{Programmierung.txt}\label{BspProgrammierung}
 \begin{verbatim}
 [Strukturen]
 Ich weiß, wie eine If-Abfrage aufgebaut ist. 
@@ -2107,7 +2110,7 @@ Ich weiß, wie man reguläre Ausdrücke verwenden kann.
 Ich weiß, wie man Berechnungen durchführen kann.
 \end{verbatim}
 
-Die Begriffe in den eckigen Klammern dienen zur thematischen Gliederung und werden ebenfalls beim Auslesen berücksichtigt.
+Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauffolgenden Zeilen interpretiert.
 
 Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
 
@@ -2339,6 +2342,10 @@ Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt au
 Gibt einen Text als Aufzählung der zweiten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
 Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
 
+\item[\cidxfrag{>.}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der dritten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
 \item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\
 Erzeugt eine Auswahlabfrage mit mehreren Optionen, von der genau eine ausgewählt werden kann. Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
 Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\par
@@ -2471,10 +2478,12 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{TexteAufteilen}, verwendet in Beispiel
 
 \item[\fcmd{ForEachLine}] \synvar{Variable} \verb|in| \synvar{Dateipfad} $[$\verb|; Take=| \synvar{Anzahl} $]$\\
 $[$\verb|; IndexVar=| \synvar{Indexvariable} $][$\verb|; SectionVar=| \synvar{Abschnittsvariable} $]$\\
+$[$\verb|; NoFormat| $]$\\
 Liest Zeilen der über den Dateipfad angegebenen Datei ein (siehe auch Grundelement~\ref{defDateipfad}) und führt die nachfolgenden eingerückten Befehle bis zum dazugehörenden \fcmd{Loop}-Befehl wiederholt aus. Für jede durchlaufene Zeile wird die Variable mit dem Inhalt der Zeile belegt.\par
-Mit dem optionalen \cidxfrag{Take}-Parameter kann die Anzahl der durchlaufenen Zeilen vorgegeben werden. Diese werden dann zufällig ausgewählt. 
-Bei Angabe des optionalen \cidxfrag{IndexVar}-Parameters wird die laufende Nummer in der Indexvariablen zurückgegeben und
-bei Angabe des optionalen \cidxfrag{SectionVar}-Parameters wird der jeweilige Abschnitt in der Abschnittsvariable zurückgegeben. Abschnitt-Kennungen in Textdateien werden durch eckige Klammern zu Beginn und Ende der Zeile gekennzeichnet.\\
+Mit dem optionalen \cidxfrag{Take}-Parameter kann die Anzahl der durchlaufenen Zeilen vorgegeben werden. Diese werden dann zufällig ausgewählt. Bei Angabe des optionalen \cidxfrag{IndexVar}-Parameters wird die laufende Nummer in der Indexvariablen zurückgegeben.\par
+Der Befehl ist standardmäßig auf das Einlesen von Datenlisten\index{Datenlisten} ausgerichtet, also Textdateien bei denen Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen übersprungen werden, und Zeilen, die mit einer öffnenden eckigen Klammer beginnen und mit einer schließenden eckigen Klammer enden als Abschnittskennung\index{Abschnittskennung} interpretiert werden. Für alle Zeilen werden Whitespace-Zeichen an Anfang und Ende entfernt. Bei Angabe des optionalen \cidxfrag{SectionVar}-Parameters wird der jeweilige Abschnitt in der Abschnittsvariablen zurückgegeben.\par
+Mit dem \cidxfrag{NoFormat}-Argument werden alle Zeilen der Textdatei zurückgegeben, auch Leerzeilen. Es werden keine Formate wie Abschnittskennungen oder Kommentare interpretiert und keine Whitespace entfernt.
+
 Siehe Abschnitte~\ref{RegUndDaten} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspTerminologiepruefer} und \ref{BspWissensreflektion}.
 
 \item[\fcmd{GoSub}]  \synvar{Funktionsname} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
@@ -2488,7 +2497,8 @@ Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
 \item[\fcmd{If}] \synvar{Bedingung}\\
 Führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist (siehe auch Grundelement~\ref{defBedingungen}). 
 Ist die Bedingung nicht erfüllt, wird der nächste Befehl auf gleicher Ebene ausgeführt.\par
-Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen und einem Else-Befehl kombiniert werden.\\
+Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen und einem Else-Befehl kombiniert werden.
+
 Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspArchivklasse3}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
  
 \item[\fcmd{Implies}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\

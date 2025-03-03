@@ -9,12 +9,12 @@ namespace FlowProtocol2.Commands
     public abstract class CmdLoopBaseCommand : CmdBaseCommand
     {
         public CmdLoop? AssociatedLoopCommand { get; set; }
-        public bool IsInitialized { get; set; }
+        public Dictionary<string, bool> IsInitialized { get; set; }
                 
         public CmdLoopBaseCommand(ReadContext readcontext) : base(readcontext)
         {
             AssociatedLoopCommand = null;
-            IsInitialized = false;
+            IsInitialized = new Dictionary<string, bool>();
         }
 
         protected void LinkAssociatedLoopCommand(RunContext rc, string commandname)

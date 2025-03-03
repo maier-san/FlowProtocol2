@@ -35,7 +35,7 @@ namespace FlowProtocol2.Commands
                     CmdLoopBaseCommand? loopBaseCommand = AssociatedLoopCommand.ParentStartLoopCommand;
                     if (loopBaseCommand != null)
                     {
-                        loopBaseCommand.IsInitialized = false;
+                        loopBaseCommand.IsInitialized[rc.BaseKey] = false;
                     }
                     return AssociatedLoopCommand.NextCommand;                
                 }

@@ -11,7 +11,7 @@ namespace FlowProtocol2.Commands
         public string Text { get; set; }
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^(@[^>]*)?(>>?)([_\*\#\|\s]?)(.*)", (rc, m) => CreateOutputTextCommand(rc, m));
+            return new CommandParser(@"^(@[^>]*)?>(>|\.)?([_\*\#\|\s]?)(.*)", (rc, m) => CreateOutputTextCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateOutputTextCommand(ReadContext rc, Match m)
@@ -27,7 +27,7 @@ namespace FlowProtocol2.Commands
         public CmdOutputText(ReadContext readcontext) : base(readcontext)
         {
             Section = string.Empty;
-            LevelKey = ">>";
+            LevelKey = ">";
             BlockFormatKey = string.Empty;
             Text = string.Empty;
         }
@@ -47,8 +47,9 @@ namespace FlowProtocol2.Commands
             OutputType ot = OutputType.Enumeration;
             switch (LevelKey)
             {
-                case ">>": l = Level.Level1; ot = OutputType.Enumeration; break;
-                case ">": l = Level.Level2; ot = OutputType.Listing; break;
+                case ">": l = Level.Level1; ot = OutputType.Enumeration; break;
+                case "": l = Level.Level2; ot = OutputType.Listing; break;
+                case ".": l = Level.Level3; ot = OutputType.Listing; break;
             }
             switch (BlockFormatKey)
             {

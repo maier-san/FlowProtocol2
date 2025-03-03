@@ -1,0 +1,15 @@
+~Set Menge(A)=A,B,C
+~GoSub ListeAuf; BaseKey=A
+~DefineSub ListeAuf
+	~AddTo Stopzaehler+=1
+	@Debug >> Aufruf gestartet: $BaseKey für Menge $Menge($BaseKey)
+	~Split CC($BaseKey)=$Menge($BaseKey)|,
+	~ForEach idx($BaseKey) in CC($BaseKey)
+		~If $idx($BaseKey)!=X			
+			~AddTo Anz($BaseKey)+=1
+			~Set NewBK=$BaseKey$Anz($BaseKey)
+			~Replace Menge($NewBK)=$Menge($BaseKey)|$idx($BaseKey)->X
+			//@Debug >> $idx($BaseKey): Neuer Aufruf mit Menge $Menge($NewBK)
+			~GoSub ListeAuf; BaseKey=$NewBK
+	~Loop	
+~Return

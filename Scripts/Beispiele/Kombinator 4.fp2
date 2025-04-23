@@ -33,10 +33,11 @@
 	~Replace Bkombi=$Bkombi|$Chr(124)$Chr(124)$Chr(32)->$Chr(124)$Chr(124)
 	~Replace Bkombi=$Bkombi|$Chr(32)$Chr(124)$Chr(124)->$Chr(124)$Chr(124)
 ~Loop
+
 @Eingabe >>_ $Bkombi
 	>>_
 	~AddLink $ResultURL |Kombinator-4-Link
-
+	
 // Ersetze runde Klammern in Bedingungsausdrücken durch eckige Klammern
 ~Set Ckombi=$Bkombi
 ~RegExMatch kl=$Ckombi|(\{[@0-9 !\|&\(\)]+\})
@@ -47,6 +48,37 @@
 	~Replace Ckombi=$Ckombi|$kl(1)->
 	~Replace Bkombi=$Bkombi|$kl(1)->$eckig
 	~RegExMatch kl=$Ckombi|(\{[@0-9 !\|&\(\)]+\})
+~Loop
+
+// Formatiere Ausdruck mit Einrückung von Klammern und gib ihn als Code aus
+~Set PPrint=$Bkombi
+~Replace PPrint=$PPrint|+->$Chr(32)+$Chr(32)
+~Replace PPrint=$PPrint|*->$Chr(32)*$Chr(32)
+~Set IndentUnit=$Chr(9)
+~Set kebene=0
+~Set Space($kebene)=
+~Set CurrentSpace=$Space($kebene)
+~Split KlAuf=$PPrint|(
+~Set kaidx=1
+~DoWhile $kaidx<=$KlAuf(0)
+	~If $kaidx>1
+		>|$CurrentSpace(
+		~AddTo kebene+=1
+		~Set Space($kebene)=$CurrentSpace$IndentUnit
+		~Set CurrentSpace=$Space($kebene)
+	~If $KlAuf($kaidx)!=
+		~Split KlZu=$KlAuf($kaidx)|)
+		~Set kzidx=1
+		~DoWhile $kzidx<=$KlZu(0)
+			~If $KlZu($kzidx)!=
+				>|$CurrentSpace$KlZu($kzidx)
+			~If $kzidx<$KlZu(0)
+				~AddTo kebene+=-1
+				~Set CurrentSpace=$Space($kebene)
+				>|$CurrentSpace)
+			~AddTo kzidx+=1
+		~Loop				
+	~AddTo kaidx+=1	
 ~Loop
 
 // Multipliziere den Ausdruck aus

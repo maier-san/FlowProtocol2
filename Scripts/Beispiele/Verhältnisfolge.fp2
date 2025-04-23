@@ -1,0 +1,32 @@
+~Input VF: Gib die Verhältnisfolge kommagetrennt ein.
+~Execute
+~Split SV=$VF|,
+~Set Verhaeltnis=
+~Set VTrenn=
+~ForEach v in SV
+	~AddTo idx+=1
+	~Set sum($idx)=0
+	~AddTo GSum+=$SV($idx)
+	~Set Verhaeltnis=$Verhaeltnis$VTrenn$SV($idx)
+	~Set VTrenn=$Chr(32):$Chr(32)
+~Loop
+~Set anz=$idx
+~Set cidx=0
+~Set Folge=
+~Set FTrenn=
+~DoWhile $cidx<$GSum
+	~AddTo cidx+=1
+	~Set idx=0
+	~DoWhile $idx<$anz
+		~AddTo idx+=1
+		~CalculateExpression d($idx)=$cidx*$SV($idx)/$GSum-$sum($idx)		
+		~Round d($idx)=$d($idx)|5
+	~Loop
+	~Sort d -> smap
+	~Set nextidx=$smap($anz)
+	~Set Folge=$Folge$FTrenn$nextidx
+	~Set FTrenn=,
+	~AddTo sum($nextidx)+=1	
+~Loop
+@Ausgabe >> Für das Verhältnis $Verhaeltnis ergibt sich die Folge
+	>|$Folge

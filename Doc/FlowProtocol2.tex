@@ -237,9 +237,11 @@ Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt dami
 
 Für die Abarbeitung der Fehler-Aufgaben der verschiedene Schweregradstufen kann man dann klare Regeln definieren, wie z.B.\ dass Stufe-1-Fehler umgehend behoben werden und dass die Lösung aller Stufe-2-Fehler zumindest in das nächste Service Release einfließen muss.
 
-Insgesamt ist die Sortierung nach dem Schweregrad keine gute Idee, wenn sich viele Vorgänge ansammeln, da es in diesem Fall erst dann zur Bearbeitung eines Stufe-4-Fehlers kommt, wenn alle Stufe-3-Fehler abgearbeitet sind, was unter Umständen nie der Fall ist. Ein System, das die Einstufung berücksichtigt, aber gleichzeitig die Abarbeitung jeder Aufgabe sicherstellt, ist angelehnt an die Spuren der Autobahn. Die Aufgaben jeder Schweregradstufe bilden jeweils eine Queue, in der neu erstellte Aufgaben unten angefügt und die ältesten oben abgearbeitet werden. Um den Schweregrad zu berücksichtigen, lässt man die linke Spur schneller laufen, indem man die Mengen für die Abarbeitung in ein vorgegebenes Verhältnis setzt, z.B.
+Insgesamt ist die Sortierung nach dem Schweregrad keine gute Idee, wenn sich viele Vorgänge ansammeln, da es in diesem Fall erst dann zur Bearbeitung eines Stufe-4-Fehlers kommt, wenn alle Stufe-3-Fehler abgearbeitet sind, was unter Umständen nie der Fall ist. Ein System, das die Einstufung berücksichtigt, aber gleichzeitig die Abarbeitung jeder Aufgabe sicherstellt, ist angelehnt an die Spuren der Autobahn. Die Aufgaben jeder Schweregradstufe bilden jeweils eine Queue, in der neu erstellte Aufgaben unten angefügt, und die ältesten oben abgearbeitet werden. Um den Schweregrad zu berücksichtigen, lässt man die linke Spur schneller laufen, indem man die Mengen für die Abarbeitung in ein vorgegebenes Verhältnis setzt, z.B.
 \[M(2):M(3):M(4) = 6 : 3 : 1\]
 d.h.\ für eine abgearbeitete Stufe-4-Aufgabe werden drei Stufe-3-Aufgaben und sechs Stufe-2-Aufgaben abgearbeitet.
+
+In Beispiel~\ref{BspBugPlaner} wird ein Skript gegeben, dass die Menge der Vorgänge in jedem Schweregrad für eine vorgegebene Anzahl so berechnet, dass sie so gut wie möglich in diesem Verhältnis steht.
 
 \subsection{Expertensysteme}\label{Expertensystem}
 Mit Expertensystem\index{Expertensystem} oder auch Troubleshooting-System\index{Troubleshooting-System} oder Chatbot\index{Chatbot} ist hier eine Anwendung gemeint, die wie ein lebendiger Experte durch immer weiter in die Tiefe gehende Fragestellungen eine in der Regel problematische Situation möglichst genau erfasst, um dann dem Anwender dazu passende Handlungsanweisungen und Lösungsansätze aufzuzeigen und die Situation darüber hinaus auch schon mal vollständig zu beschreiben.
@@ -559,7 +561,7 @@ So wie man den Titel\index{Titel} für die Ausgabeseite setzen kann, lässt sich d
 ~Set S3=0
 ~Set S4=0
 ~Set Sum=0
-~Split Indexlist=4;3;2;2;3;2;2;3;2;2|;
+~Split Indexlist=2,3,2,4,2,3,2,2,3,2|,
 ~Set anybug = true
 ~DoWhile $Sum<$AP && $anybug
     ~ForEach idx in Indexlist
@@ -586,9 +588,13 @@ Die Berechnung selbst funktioniert wie folgt: Zunächst werden Variablen \verb|S2
 
 Die äußere \fcmd{DoWhile}-Schleife wiederholt so lange, wie diese Zwischensumme noch kleiner als die Anzahl der zu verteilenden Aufgaben ist und noch ein Vorgang zum verteilen übrig ist, was über den Befehl \fcmd{EvalExpression} getrennt ausgewertet und in der Variablen \verb|anybug| abgespeichert wird.
 
-In der Inneren Schleife wird die Indexsequenz $4,3,2,2,3,2,2,3,2,2$ durchlaufen, was die Index-Variable \verb|idx| nacheinander auf diese Werte setzt. Dies bewirkt, dass die Indices $2$, $3$ und $4$ gleichmäßig im Verhältnis $6:3:1$ durchlaufen werden. Für den jeweils ausgewählten Index wird dann die Anzahl der zu verteilenden Aufgaben $S_i$ um $1$ erhöht, sofern noch Aufgaben des jeweiligen Schweregrades übrig sind ($S_i<A_i$) und die Zwischensumme $S$ der schon verteilten Aufgaben noch kleiner ist, als die Anzahl $A$ der Aufgaben, die verteilt werden soll ($S<A$), also \verb|$S$idx<$A$idx| und \verb|$Sum<$AP|. Für jede verteilte Aufgabe wird auch die Zwischensumme um $1$ erhöht.
+In der Inneren Schleife wird die Indexsequenz $2,3,2,4,2,3,2,2,3,2$ durchlaufen, was die Index-Variable \verb|idx| nacheinander auf diese Werte setzt. Dies bewirkt, dass die Indices $2$, $3$ und $4$ gleichmäßig im Verhältnis $6:3:1$ durchlaufen werden. Für den jeweils ausgewählten Index wird dann die Anzahl der zu verteilenden Aufgaben $S_i$ um $1$ erhöht, sofern noch Aufgaben des jeweiligen Schweregrades übrig sind ($S_i<A_i$) und die Zwischensumme $S$ der schon verteilten Aufgaben noch kleiner ist, als die Anzahl $A$ der Aufgaben, die verteilt werden soll ($S<A$), also \verb|$S$idx<$A$idx| und \verb|$Sum<$AP|. Für jede verteilte Aufgabe wird auch die Zwischensumme um $1$ erhöht.
 
-Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben und unten durch einen absoluten Wert begrenzt. Die Eingaben könnten damit auf die des ersten Abschnitts beschränkt werden.
+Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dann nach oben und unten durch einen absoluten Wert begrenzt. Zusätzlich könnte man das Planungsverhältnis abfragen und das Gesamtpaket aus Prozentwert, obere und untere Grenze, sowie Verhältnis als fertige Planungsstrategie auswählbar machen. 
+
+Für ein beliebiges Verhältnis $S_0:S_1:\dots :S_{v-1}$ für die Einplanung von $v$ verschiedenen Schweregraden und eine Folge $a=(a_i)_{i\in n}$ von Indices $a_i\in v$ kann man berechnen, für welchen nächsten Index $a_n\in v$ die erweiterte Gesamtfolge $a'=(a_i)_{i\in n+1}$ die kleinste Abweichung zum Verhältnis hat:
+\[d(a')=\min_{l\in v}\left(\frac{(n+1)S_l}{\sum_{j\in v}S_j} - \sum_{i\in n+1,\, a_i=l}a_i\right)\]
+Diesen wählt man dann, um die Folge zu erweitern. Die Berechnung so oft wiederholt werden, wie man weitere Folgenglieder benötigt.
 
 \subsection{Hilfezeilen}\label{Hilfezeilen}
 Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss und welche man weglassen kann, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten, und die benötigen Eingaben tätigen muss.

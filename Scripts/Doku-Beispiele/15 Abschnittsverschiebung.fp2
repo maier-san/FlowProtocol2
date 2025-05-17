@@ -1,5 +1,5 @@
 ~Input Bez: Wie soll das Feld heißen?
-@AnlEigenschaften >> Setze die Bezeichnung "$Bez"
+@AnlEig >> Setze die Bezeichnung "$Bez"
 ?: Welche Art von Werten soll eingegeben werden?
 	#: Texte
 		~Set Klasse=TextFeld		
@@ -10,12 +10,12 @@
 	#: Werte aus einer vorgegebenen Menge
 		~Set Klasse=Auswahlfeld
 ~SetTitle Implementerung der $Klasse-Instanz $Bez
-@AnlInstanziierung >> Erstelle eine $Klasse-Instanz
+@AnlInst >> Erstelle eine $Klasse-Instanz
 ?: Kann das Feld leer gelassen werden?
 	#j: Ja
 		~Set KannLeerSein=true
 	#n: Nein
 		~Set KannLeerSein=false
-@AnlEigenschaften >> Setze KannLeerSein = $KannLeerSein
-~MoveSection AnlInstanziierung -> Anleitung
-~MoveSection AnlEigenschaften -> Anleitung
+@AnlEig >> Setze KannLeerSein = $KannLeerSein
+~MoveSection AnlInst -> Anleitung
+~MoveSection AnlEig -> Anleitung

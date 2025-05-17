@@ -11,7 +11,7 @@
 	>|        return Guid("14df603a-cb42-4560-bf6c-a740356532b6");
 	>|    }
 	>|
-	>|    // Methode zum Archivieren des Kursbesuchs
+	>|    // Methode zum Archivieren eines Kurs-Objektes
 	>|    public override void Archiviere(Kurs k)
 	>|    {
 	>|      var konflikt = PruefeAufKonflikte(k);

@@ -5,9 +5,9 @@ Ich weiß, wie man die Ausgabe in Abschnitte gliedert.
 Ich weiß, wie man die Nummerierung der Aufzählung steuert.
 Ich weiß, wie man einen Codeblock erzeugt.
 Ich weiß, wie man einen Link auf eine Internetseite erzeugt.
-Ich weiß, wie man eine Auswahlabfrage macht.
 
 [Eingabe]
+Ich weiß, wie man eine Auswahlabfrage erstellt.
 Ich weiß, wie man eine Texteingabe abfragt.
 Ich weiß, wie man einen eingegebenen Text wieder ausgibt.
 Ich weiß, wie man Auswahlabfragen ineinander verschachtelt.

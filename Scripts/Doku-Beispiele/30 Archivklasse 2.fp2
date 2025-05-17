@@ -10,16 +10,16 @@
 	#j: Ja
 		~Set KonflikteMoeglich=ja
 	#n: Nein
-~CamelCase uBez=$Bez
+~CamelCase cBez=$Bez
 ~Set AKennung=$NewGuid
 ~RegExMatch vmatch = $BezX|([A-Z])
 ~ToLower v=$vmatch(1)
 @Anleitung >> Ordner Archivierer öffnen.
 @Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
-	>|$uBezArchivierer.cs
+	>|$cBezArchivierer.cs
 @Anleitung >> Folgenden Code einfügen:
 	>|// Klasse für die Archivierung von $Bez-Objekten
-	>|public class $uBezArchivierer : BasisArchivierer<$Klasse>
+	>|public class $cBezArchivierer : BasisArchivierer<$Klasse>
 	>|{
 	>|    // Kennung der Archivierer-Klasse
 	>|    public override Guid ArchiviererKennung()
@@ -27,7 +27,7 @@
 	>|        return Guid("$AKennung");
 	>|    }
 	>|
-	>|    // Methode zum Archivieren des Kursbesuchs
+	>|    // Methode zum Archivieren eines $Bez-Objektes
 	>|    public override void Archiviere($Klasse $v)
 	>|    {
 	~If $KonflikteMoeglich==ja
@@ -53,7 +53,7 @@
 	>|}
 ~If $KonflikteMoeglich==ja
 	@Anleitung >> Konfliktprüfung implementieren
-		> in $uBezArchivierer.cs in
+		> in $cBezArchivierer.cs in
 		~AddCode  PruefeAufKonflikte(...)
 		> bei
 		~AddCode  //ToDo: Konfliktprüfung implementieren

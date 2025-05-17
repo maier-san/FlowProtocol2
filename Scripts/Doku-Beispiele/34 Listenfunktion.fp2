@@ -30,7 +30,7 @@
 	#S: Schreibrechte auf die Liste
 		~AddText  setzt Schreibrechte auf die Liste voraus.
 	#E: Die Funktion hat eigene Rechte
-		~AddText  setzt eigene Rechte auf die Liste voraus.
+		~AddText  hat eigene Rechte.
 		> Die Berechtigungsstruktur muss erweitert werden.
 		> Eingliederung unter Listenfunktionen - $Bez
 		> Das neue Recht ist zunächst nur für Admins gesetzt.

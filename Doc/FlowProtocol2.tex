@@ -1,10 +1,11 @@
-\documentclass[12pt, a4paper, twoside]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage[ansi]{umlaute}
 \usepackage[german]{babel}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=green, urlcolor=red]{hyperref}
 \usepackage{fancyhdr}
 \usepackage{geometry}
 \usepackage[T1]{fontenc}
+%
 \usepackage{mathptm}
 \usepackage{graphicx}
 \usepackage{makeidx}
@@ -24,10 +25,10 @@
 \pagestyle{fancy}
 \fancyhf{} % Löscht alle Standard-Kopf- und Fußzeilen
 % Kopfzeilen konfigurieren
-\fancyhead[LE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
-\fancyhead[LO]{\thepage}
-\fancyhead[RO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
-\fancyhead[RE]{\thepage}
+\fancyhead[RE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
+\fancyhead[RO]{\thepage}
+\fancyhead[LO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
+\fancyhead[LE]{\thepage}
 %\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
 %\setlength{\headrulewidth}{0pt}
 %\rhead{\thepage}

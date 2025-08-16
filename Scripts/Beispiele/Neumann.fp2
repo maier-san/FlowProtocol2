@@ -1,0 +1,12 @@
+~Input N:Wert für n (bitte nicht mehr als 17)
+~Execute
+~Set cn=
+~Set Komma=
+~Set i=0
+~DoWhile $i<=$N
+	@Ausgabe >> D($i) = {$cn}
+	~AddTo i+=1
+	~Set cnp={$cn}$Komma$cn	
+	~Set Komma=,
+	~Set cn=$cnp
+~Loop

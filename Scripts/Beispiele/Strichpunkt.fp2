@@ -1,0 +1,5 @@
+~Input Eingabe: Gib mehrere Begriffe srichpunktgetrennt an.
+~Split Liste=$Eingabe|;
+~ForEach element in Liste
+	>> $element
+~Loop

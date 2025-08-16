@@ -1,12 +1,12 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[10pt, twoside]{scrartcl}
 \usepackage[ansi]{umlaute}
 \usepackage[german]{babel}
-\usepackage[colorlinks=true, linkcolor=blue, citecolor=green, urlcolor=red]{hyperref}
 \usepackage{fancyhdr}
-\usepackage{geometry}
+\usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
 \usepackage[T1]{fontenc}
 %
-\usepackage{mathptm}
+\usepackage{lmodern}
+\usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{makeidx}
 \usepackage{amsmath}
@@ -19,20 +19,15 @@
 %%
 \setlength{\parindent}{0mm}
 \setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
-\geometry{lmargin=35mm,rmargin=25mm,tmargin=25mm,bmargin=25mm}
 \addtolength{\headheight}{2.5pt}
 % Fancyhdr konfigurieren
 \pagestyle{fancy}
 \fancyhf{} % Löscht alle Standard-Kopf- und Fußzeilen
 % Kopfzeilen konfigurieren
-\fancyhead[RE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
-\fancyhead[RO]{\thepage}
-\fancyhead[LO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
-\fancyhead[LE]{\thepage}
-%\renewcommand{\sectionmark}[1]{\markboth{\thesection.~#1}{}}
-%\setlength{\headrulewidth}{0pt}
-%\rhead{\thepage}
-%\cfoot{}
+\fancyhead[LE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
+\fancyhead[LO]{\thepage}
+\fancyhead[RO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
+\fancyhead[RE]{\thepage}
 %%
 %% Commands
 %%

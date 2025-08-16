@@ -1,7 +1,7 @@
 ?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
 	#AB: Anton Barium
 		~Set BenVarKuerzel=AB
-		~Set BenVarPfadAufgabenmappen=F:\Aufgabenmappen
-		~Set BenVarPfadTools=E:\Tools
+		~Set BenVarPfadAufgabenmappen=H:\Aufgabenmappen
+		~Set BenVarPfadTools=C:\Work\Tools
 	#CD: Christian Deuterium
 	#EF: Ernst Flour

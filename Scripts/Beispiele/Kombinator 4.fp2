@@ -1,0 +1,184 @@
+~Input KAusd: Kombinationsausdruck
+~AddHelpLine Verarbeitet werden Ausdrücke mit +, * und Klammern und Texten dazwischen, z.B.
+~AddHelpLine (A + B + C) * (D + E) * F
+~AddHelpLine Zusätzlich möglich sind noch =@-Tags und darauf aufbauende Bedingungen mit den Operatoren &&, || und !, wie {@1&&(!@2||@3)} 
+	__ und bis zu zwei >>>-Marker pro Summand zur Aufteilung der Ausgabe in bis zu drei Ebenen, z.B.
+~AddHelpLine (A=@1 + B + C=@2) * (D{@1} + E) * >>> * (F + G{!@2})
+~AddHelpLine Hier ein komplexeres Anwendungsbeispiel:
+~AddHelpLine Der Termin hat den Status*(geprüft=@1+ungeprüft=@2)*und liegt*(vollständig im Zeitfenster.=@3+teilweise außerhalb des Zeitfensters, genauer:*(nur der Beginn liegt außerhalb.{!@5}
+	__ +nur das Ende liegt außerhalb.{!@4}+Beginn und Ende liegen außerhalb.)+vollständig außerhalb des Zeitfensters.)*({@2||@3}
+	__ +>>> {!(@2||@3)}*(Der Termin wurde erstellt.+Nur der Beginn wurde geändert.=@4+Nur das Ende wurde geändert.=@5+Beginn und Ende wurden geändert.+Der Status wurde geändert.{@1})) 
+~Trim Bkombi=$KAusd
+
+// Mache allen Whitespace zu Leerzeichen
+~Replace Bkombi=$Bkombi|$Chr(10)->$Chr(32)
+~Replace Bkombi=$Bkombi|$Chr(13)->$Chr(32)
+~Replace Bkombi=$Bkombi|$Chr(9)->$Chr(32)
+
+// Entferne alle Leerzeichen vor und nach den Operatoren und den Klammern
+~DoWhile $Bkombi!=$Vkombi
+	~Set Vkombi=$Bkombi
+	~Replace Bkombi=$Bkombi|$Chr(32)+->+
+	~Replace Bkombi=$Bkombi|$Chr(32)*->*
+	~Replace Bkombi=$Bkombi|$Chr(32)(->(
+	~Replace Bkombi=$Bkombi|$Chr(32))->)
+	~Replace Bkombi=$Bkombi|+$Chr(32)->+
+	~Replace Bkombi=$Bkombi|*$Chr(32)->*
+	~Replace Bkombi=$Bkombi|($Chr(32)->(
+	~Replace Bkombi=$Bkombi|)$Chr(32)->)
+	~Replace Bkombi=$Bkombi|{$Chr(32)->{
+	~Replace Bkombi=$Bkombi|$Chr(32)}->}
+	~Replace Bkombi=$Bkombi|&&$Chr(32)->&&
+	~Replace Bkombi=$Bkombi|$Chr(32)&&->&&
+	~Replace Bkombi=$Bkombi|$Chr(124)$Chr(124)$Chr(32)->$Chr(124)$Chr(124)
+	~Replace Bkombi=$Bkombi|$Chr(32)$Chr(124)$Chr(124)->$Chr(124)$Chr(124)
+~Loop
+
+@Eingabe >>_ $Bkombi
+	>>_
+	~AddLink $ResultURL |Kombinator-4-Link
+	
+// Ersetze runde Klammern in Bedingungsausdrücken durch eckige Klammern
+~Set Ckombi=$Bkombi
+~RegExMatch kl=$Ckombi|(\{[@0-9 !\|&\(\)]+\})
+~DoWhile $kl(0)
+	~Set eckig=$kl(1)
+	~Replace eckig=$eckig|(->[
+	~Replace eckig=$eckig|)->]
+	~Replace Ckombi=$Ckombi|$kl(1)->
+	~Replace Bkombi=$Bkombi|$kl(1)->$eckig
+	~RegExMatch kl=$Ckombi|(\{[@0-9 !\|&\(\)]+\})
+~Loop
+
+// Formatiere Ausdruck mit Einrückung von Klammern und gib ihn als Code aus
+~Set PPrint=$Bkombi
+~Replace PPrint=$PPrint|+->$Chr(32)+$Chr(32)
+~Replace PPrint=$PPrint|*->$Chr(32)*$Chr(32)
+~Set IndentUnit=$Chr(9)
+~Set kebene=0
+~Set Space($kebene)=
+~Set CurrentSpace=$Space($kebene)
+~Split KlAuf=$PPrint|(
+~Set kaidx=1
+~DoWhile $kaidx<=$KlAuf(0)
+	~If $kaidx>1
+		>|$CurrentSpace(
+		~AddTo kebene+=1
+		~Set Space($kebene)=$CurrentSpace$IndentUnit
+		~Set CurrentSpace=$Space($kebene)
+	~If $KlAuf($kaidx)!=
+		~Split KlZu=$KlAuf($kaidx)|)
+		~Set kzidx=1
+		~DoWhile $kzidx<=$KlZu(0)
+			~If $KlZu($kzidx)!=
+				>|$CurrentSpace$KlZu($kzidx)
+			~If $kzidx<$KlZu(0)
+				~AddTo kebene+=-1
+				~Set CurrentSpace=$Space($kebene)
+				>|$CurrentSpace)
+			~AddTo kzidx+=1
+		~Loop				
+	~AddTo kaidx+=1	
+~Loop
+
+// Multipliziere den Ausdruck aus
+~Set Vkombi=!!!
+~DoWhile $Bkombi!=$Vkombi
+	~Set Vkombi=$Bkombi	
+	
+	// Wandle um: ((A*B+C*D)+ -> (A*B+C*D+ usw.
+	~RegExMatch dis=$Chr(32)$Bkombi$Chr(32)|([(+ ])\(([^()]+)\)([)+ ])
+	~If $dis(0)
+		~Replace Bkombi=$Chr(32)$Bkombi$Chr(32)|$dis(1)($dis(2))$dis(3)->$dis(1)$dis(2)$dis(3)
+		~Trim Bkombi=$Bkombi
+
+	// Wandle um: (A*B+C*D)*E -> (A*B+C*D)*(E)
+	~RegExMatch dis=$Bkombi|\(([^()]+)\)\*([^()+*]+)
+	~If $dis(0)
+		~Replace Bkombi=$Bkombi|($dis(1))*$dis(2)->($dis(1))*($dis(2))
+
+	// Wandle um: A*(B*C+D*E) -> (A)*(B*C+D*E)
+	~RegExMatch dis=$Bkombi|([^()+*]+)\*\(([^()]+)\)
+	~If $dis(0)
+		~Replace Bkombi=$Bkombi|$dis(1)*($dis(2))->($dis(1))*($dis(2))
+
+	// Wandle um (A*B+C*D)*(E*F+G*H) -> (A*B*E*F+A*B+G*H+C*D*E*F+C*D*G*H)
+	~RegExMatch dis=$Bkombi|\(([^()]+)\)\*\(([^()]+)\)
+	~If $dis(0)
+		~Split K1=$dis(1)|+
+		~Split K2=$dis(2)|+
+		~Set Prod=
+		~Set Plus=
+		~ForEach sum1 in K1
+			~ForEach sum2 in K2
+				~Set Prod=$Prod$Plus$sum1*$sum2
+				~Set Plus=+
+			~Loop
+		~Loop
+		~Replace Bkombi=$Bkombi|($dis(1))*($dis(2))->($Prod)
+~Loop
+
+// Erfasse Variablen für Zusatzbedindungen
+~Set Ckombi=$BkombiX
+~Set atvaranz=0
+~RegExMatch isat=$Ckombi|=(@[0-9]+)[^0-9]
+~DoWhile $isat(0)
+	~AddTo atvaranz+=1
+	~Set advars($atvaranz)=$isat(1)
+	~Replace Ckombi=$Ckombi|$isat(1)->
+	~RegExMatch isat=$Ckombi|=(@[0-9]+)[^0-9]
+~Loop
+
+// Wende Zusatzbedindungen an
+~Set anz=0
+~Split Kombiliste=$Bkombi|+
+~ForEach kidx in Kombiliste
+	~ForEach av in advars
+		~If $kidx~=$av
+			~Replace kidx=$kidx|=$av->
+			~Replace kidx=$kidx|$av->#TRUE#
+		~Else
+			~Replace kidx=$kidx|=$av->
+			~Replace kidx=$kidx|$av->#FALSE#
+	~Loop
+	~Set vidx=!!!
+	~DoWhile $kidx!=$vidx
+		~Set vidx=$kidx		
+		~Replace kidx=$kidx|[#TRUE#]->#TRUE#
+		~Replace kidx=$kidx|[#FALSE#]->#FALSE#
+		~Replace kidx=$kidx|!#TRUE#->#FALSE#
+		~Replace kidx=$kidx|!#FALSE#->#TRUE#
+		~Replace kidx=$kidx|#FALSE#&&#FALSE#->#FALSE#
+		~Replace kidx=$kidx|#FALSE#&&#TRUE#->#FALSE#
+		~Replace kidx=$kidx|#TRUE#&&#FALSE#->#FALSE#
+		~Replace kidx=$kidx|#TRUE#&&#TRUE#->#TRUE#
+		~Replace kidx=$kidx|#FALSE#$Chr(124)$Chr(124)#FALSE#->#FALSE#
+		~Replace kidx=$kidx|#FALSE#$Chr(124)$Chr(124)#TRUE#->#TRUE#
+		~Replace kidx=$kidx|#TRUE#$Chr(124)$Chr(124)#FALSE#->#TRUE#
+		~Replace kidx=$kidx|#TRUE#$Chr(124)$Chr(124)#TRUE#->#TRUE#
+	~Loop
+	~Replace kidx=$kidx|{#TRUE#}->	
+	~If $kidx!~{#FALSE#}
+		~Replace kidx=$kidx|*->$Chr(32)
+		~AddTo anz+=1
+		~Set FKombiliste($anz)=$kidx
+~Loop
+~Set FKombiliste(0)=$anz
+
+// Ergebnis ausgeben
+~Set Ebene1=!!!
+~Set Ebene2=!!!
+~Set Ebene3=!!!
+~ForEach fidx in FKombiliste
+	~Split ees=$fidx|>>>
+	~If $ees(1)!=$Ebene1
+		@Kombinationen >># $ees(1)
+		~Set Ebene1=$ees(1)
+	~If ?$ees(2)
+		~If $ees(2)!=$Ebene2
+			@Kombinationen ># $ees(2)
+			~Set Ebene2=$ees(2)
+	~If ?$ees(3)
+		@Kombinationen >.# $ees(3)
+		~Set Ebene3=$ees(3)
+~Loop

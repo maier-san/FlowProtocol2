@@ -21,16 +21,17 @@
 				~Set wogenau=unterhalb von "$Pos3"
 		> ...in vorhandenen Funktionen-Abschnitt $wogenau
 	#n: Nein
-		> Funktionen-Abschnitt anlegen
+		> Funktionen-Abschnitt anlegen nach Std.-funktionen
 
 @Story >> Die Funktion
 ?QRechte: Welche Rechte setzt die Funktion voraus?
+	~AddHelpLine Schreibrechte bei schreibenden Funktionen
 	#L: Leserechte auf die Liste
 		~AddText  setzt Leserechten auf die Liste voraus.
 	#S: Schreibrechte auf die Liste
 		~AddText  setzt Schreibrechte auf die Liste voraus.
 	#E: Die Funktion hat eigene Rechte
-		~AddText  setzt eigene Rechte auf die Liste voraus.
+		~AddText  hat eigene Rechte.
 		> Die Berechtigungsstruktur muss erweitert werden.
 		> Eingliederung unter Listenfunktionen - $Bez
 		> Das neue Recht ist zunächst nur für Admins gesetzt.
@@ -39,6 +40,7 @@
 ?AKont: Die Funktion ist
 	#E: ...beschränkt auf Einfachauswahl
 		~AddText  beschränkt auf Einfachauswahl.
+		> Bei Mehrfachauswahl Menüpunkt deaktivieren
 	#M: ...auch verfügbar für Mehrfachauswahl
 		~AddText  auch verfügbar für Mehrfachauswahl.
 

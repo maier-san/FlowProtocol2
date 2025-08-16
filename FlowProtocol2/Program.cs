@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Strichpunkt als Zeichen im Query-String erlauben
+AppContext.SetSwitch("System.Uri.AllowSemicolonInQuery", true);
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 

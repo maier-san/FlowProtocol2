@@ -1,0 +1,19 @@
+~SetInputDescription Aus einem Satz in der Form "xxx Tab1.Feld1 xxx, davon sind xxx Tab1.Feld2 xxx und xxx Tab1.Feld3 xxx."
+	__ wird ein SQL-Ausdruck gemacht, der den Satz auf die relevanten Teilsätze beschränkt, je nachdem welche Werte 0 sind.
+~Input Satz: Satz
+~AddHelpLine Es sind Tab1.Feld1 Dinge, davon sind etwa Tab1.Feld2 grün und vielleicht Tab1.Feld3 blau.
+~RegExMatch reg=$Satz|(.*) ([^ \.]+\.[^ \.]+) (.*), davon sind(.*) ([^ \.]+\.[^ \.]+) (.*) und(.*) ([^ \.]+\.[^ \.]+) (.*).
+~If $reg(0)
+	@Ausgabe >> Variante 1: "$reg(1) 0 $reg(3). " bleibt stehen, "$reg(1) NULL $reg(3). " nicht.
+		>|ISNULL(REPLACE('$reg(1) ' + FORMAT($reg(2), '0.#') + ' $reg(3)'
+		__ + REPLACE(' und$reg(4) ' + FORMAT(ISNULL($reg(5), 0), '0.#') + ' $reg(6)', ' und$reg(4) 0 $reg(6)', '')
+		__ + REPLACE(' und$reg(7) ' + FORMAT(ISNULL($reg(8), 0), '0.#') + ' $reg(9)', ' und$reg(7) 0 $reg(9)', ''),
+		__ ' $reg(3) und ', ' $reg(3), davon sind') + '. ', '')
+	@Ausgabe >> Variante 2: "$reg(1) 0 $reg(3). " und "$reg(1) NULL $reg(3). " bleiben nicht stehen.
+		>|REPLACE(REPLACE('$reg(1) ' + FORMAT(ISNULL($reg(2), 0), '0.#') + ' $reg(3)'
+		__ + REPLACE(' und$reg(4) ' + FORMAT(ISNULL($reg(5), 0), '0.#') + ' $reg(6)', ' und$reg(4) 0 $reg(6)', '')
+		__ + REPLACE(' und$reg(7) ' + FORMAT(ISNULL($reg(8), 0), '0.#') + ' $reg(9)', ' und$reg(7) 0 $reg(9)', ''),
+		__ ' $reg(3) und ', ' $reg(3), davon sind') + '. ', '$reg(1) 0 $reg(3). ' , '')
+~Else
+	@Fehler >> Satzstruktur passt nicht.
+		> xxx Tab1.Feld1 ###, davon sind xxx Tab1.Feld2 xxx und xxx Tab1.Feld3 xxx.

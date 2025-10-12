@@ -2230,7 +2230,7 @@ Ausdruck& Formel & Sprachform & Typenbeschränkung\\\hline\hline
 \verb|$s~$t| & $s\supseteq t$ & $s$ enthält $t$ & für Zeichenketten $s$ und $t$\\
 \verb|$s!~$t| & $s\nsupseteq t$ & $s$ enthält $t$ nicht & für Zeichenketten $s$ und $t$\\
 \verb|?$v| && $v$ ist gesetzt & für eine Variable $v$\\
-\verb|!?$v| && $v$ ist nicht gesetzt) & für eine Variable $v$\\\hline
+\verb|!?$v| && $v$ ist nicht gesetzt & für eine Variable $v$\\\hline
 \end{tabular}
 \end{center}
 \end{grundelement}
@@ -2358,8 +2358,13 @@ Löscht alle Variablen aus den Speicher, die einem Variablenmuster entsprechen. D
 \item[\fcmd{DateAdd}] \synvar{Variable} \verb|=| \synvar{Ausgangsdatum} \verb=|= \synvar{Zahlenwert} \verb=|= \synvar{Intervall}\\
 Addiert zu einem Ausgangsdatum eine Zeitspanne hinzu, die über einen ganzzahligen Zahlenwert und ein Intervall gegeben wird. Als Intervall sind folgende Zeichen zugelassen:
 \verb|y| = Jahre, \verb|M| = Monate, \verb|w| = Wochen, \verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten\\
-Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
+Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).\\
 Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateDiff}]  \synvar{Variable} \verb|=| \synvar{Zeitpunkt 1} \verb|..| \synvar{Zeitpunkt 2} \verb=|= \synvar{Intervall}\\
+Berechnet die Differenz zwischen Zeitpunkt~1 und Zeitpunkt~2 als ganzzahligen Wert in der mit Intervall angegebenen Einheit. Als Intervall sind folgende Zeichen zugelassen:
+\verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten, \verb|s| = Sekunden\\
+Beide Zeitpunkte müssen im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).
 
 \item[\fcmd{DateFormat}] \synvar{Variable} \verb|=| \synvar{Datumswert} \verb=|= \synvar{Format}\\
 Wanelt einen Datumswert in ein bestimmten Format um und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Datumswert muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\

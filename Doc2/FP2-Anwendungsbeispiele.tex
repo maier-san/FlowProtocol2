@@ -1,0 +1,130 @@
+\documentclass[10pt, twoside]{scrbook}
+\usepackage[german]{babel}
+\usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{scrlayer-scrpage}
+\usepackage{palatino}
+%
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{makeidx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{theorem}
+\title{FlowProtocol 2 -- Anwendungsbeispiele}
+\author{Wolfgang Maier}
+%%
+%% LaTeX Template for Books: Essential Guide for Self-Publishers
+%% https://www.lode.de/blog/latex-template-for-books-essential-guide-for-self-publishers
+%%
+%% Layout
+%%
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
+\addtolength{\headheight}{2.5pt}
+%%
+%% scrlayer-scrpage-Einstellungen
+%%
+\clearpairofpagestyles
+\ohead*{\headmark}  % Section title on outer headers
+\ofoot*{\pagemark}  % Page number on outer footers
+\renewcommand{\chapterpagestyle}{empty}  % No headers on chapter pages
+%%
+%% Variablen
+%%
+\newcommand{\booktitle}{FlowProtocol 2 -- Anwendungsbeispiele}
+\newcommand{\booksubtitle}{Wissensmanagement und Prozesssteuerung in der Softwareentwicklung}
+\newcommand{\authorname}{Wolfgang Maier}
+\newcommand{\isbn}{000-0-000000-00-0}
+%%
+%% Befehle
+%%
+\newcommand{\FPZ}{\textit{Flow\-Proto\-col 2}}
+\newcommand{\FPZb}{\textit{Flow\-Proto\-col-2}}
+\newcommand{\fcmd}[1]{\texttt{\textasciitilde #1}\index{#1@\texttt{\textasciitilde #1}}}
+\newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
+\newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+\newcounter{bspcount}
+\newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
+\newcommand{\synvar}[1]{\ensuremath{\langle\text{#1}\rangle}}
+\newtheorem{thmabf}{Abfrage}
+\newenvironment{abf}[2]%
+{\begin{thmabf}\label{#1}#2\begin{list}{$\bigcirc$}{%
+\setlength{\labelsep}{5pt}
+\setlength{\topsep}{3pt}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\labelwidth}{1cm}
+}}{\end{list}\end{thmabf}}
+\newcommand{\refabf}[1]{Abfrage~\ref{#1}}
+\makeindex
+%\includeonly{kap1}
+\begin{document}
+\frontmatter
+
+%-------------------------
+% Schmutztitel (rechts)
+%-------------------------
+\begin{titlepage}
+ \vspace*{\fill}
+ \begin{center}
+    \sffamily
+   \Large\booktitle
+ \end{center}
+ \vspace*{\fill}
+\end{titlepage}
+\clearpage
+
+%-------------------------
+% Frontispiz (links)
+%-------------------------
+\thispagestyle{empty}
+\vspace*{\fill}
+\newpage
+
+%-------------------------
+% Titelblatt (rechts)
+%-------------------------
+\begin{titlepage}
+ \vspace*{\fill}
+ \begin{center}
+   \sffamily
+   \Huge\booktitle\\[1em]
+   \Large\booksubtitle\\[2em]
+   \large von\\[0.5em]
+   \Large\authorname
+ \end{center}
+ \vspace*{\fill}
+\end{titlepage}
+\clearpage
+
+%-------------------------
+% Impressum (links)
+%-------------------------
+\thispagestyle{empty}
+\vspace*{\fill}
+{\small
+\noindent
+\copyright~\the\year~\authorname\\[1em]
+Druck: Libri Plureos GmbH, Friedensallee 273, 22763 Hamburg\\[1em]
+Alle Rechte vorbehalten
+ISBN: \isbn
+}
+\vspace*{2cm}
+\newpage
+
+\tableofcontents
+\mainmatter
+\include{Einleitung}
+%%
+%% Literaturverzeichnis
+%%
+\begin{thebibliography}{---}
+\bibitem{maier} \textsc{Maier, Wolfgang}: \textit{Softwareentwicklung mit FlowProtocol 2}. Selbstverlag, September 2025\\
+	\texttt{https://github.com/maier-san/FlowProtocol2/\\blob/main/Doc/FP2Book.pdf}
+\end{thebibliography}
+
+%\printindex
+\end{document}

@@ -1,15 +1,15 @@
 \section*{Vorwort}
 Die vorliegende Anleitung beschreibt Möglichkeiten, die Anwendung \FPZ\ in der professionellen Softwareentwicklung einzusetzen und damit die besonderen Herausforderungen zu meistern, die sich in diesem Bereich stellen. An vielen kleinen und auch auch größeren Beispielen wird gezeigt, wie man Skripte in \FPZ\ erstellt und welche Bandbreite an Hilfsmitteln sich damit bereitstellen lassen. Man lernt, Skripte als Ablageform für Wissen und Konventionen innerhalb eines Entwicklungsteams zu sehen und die eigenen Fähigkeiten in dieser Form weiterzugeben.
 
-\FPZ\ ist die komplett überarbeitete Nachfolgeversion von FlowProtocol, das im Winter 2021/22 entwickelt wurde. Es handelt sich um eine kleine Anwendung. die über einen Browser bedient wird, und auf der Skripte ausgeführt werden können. Die Skripte bestehen aus einfachen Textdateien, die in einem beliebigen Editor erstellt werden können. Die Verwaltung der Skripte erfolgt in einer lokalen Verzeichnisstruktur. mit der eine organisatorische oder aufgabenbezogene Gliederung abgebildet werden kann.
+\FPZ\ ist die komplett überarbeitete Nachfolgeversion von FlowProtocol, das im Winter 2021/22 entwickelt wurde. Es handelt sich um eine kleine Anwendung. die über einen Browser bedient wird, und auf der Skripte ausgeführt werden können. Die Skripte bestehen aus einfachen Textdateien, die in einem beliebigen Editor erstellt werden können. Die Verwaltung der Skripte erfolgt in einer lokalen Verzeichnisstruktur, mit der eine organisatorische oder aufgabenbezogene Gliederung abgebildet werden kann.
 
-Bei der Ausführung eines Skriptes werden Informationen über Eingabefelder abgefragt und über die Anweisungen im Skript verarbeitet. Die Ausgabe erfolgt ausschließlich als Ergebnisdokument im Browser, aus dem dann z.B. Textpassagen über die Zwischenablage weiterverwendet werden können. Alle eingegebenen Daten werden ausschließlich als Parameter in der URL verwaltet, es gibt keine angebundene Datenbank, keine Benutzerverwaltung und es werden durch die Anwendung keine Dateien erstellt und geändert.
+Bei der Ausführung eines Skriptes werden Informationen über Eingabefelder abgefragt und über die Anweisungen im Skript verarbeitet. Die Ausgabe erfolgt ausschließlich als Ergebnisdokument im Browser, aus dem dann z.B.\ Textpassagen über die Zwischenablage weiterverwendet werden können. Alle eingegebenen Daten werden ausschließlich als Parameter in der URL verwaltet, es gibt keine angebundene Datenbank, keine Benutzerverwaltung und es werden durch die Anwendung keine Dateien erstellt und geändert.
 
-Der Anwendungsfall, für den FlowProtocol ursprünglich entwickelt wurde, ist die Erstellung von Checklisten, die durch Interaktion mit dem Benutzer auf einen individuellen Fall zugeschnitten werden, und so beliebig ins Detail gehen können, ohne unnötige Einträge aufzulisten. Daran werden sich auch die ersten Beispiele in dieser Anleitung orientieren. Auf dieser Basis entstanden zahlreiche Skripte für den Product Owner, die für die  verschiedenen Standardentwicklungen alle benötigten Einstellungen und Informationen abfragten, die durch das Designsystem und die damit assoziierten Framework-Komponenten verfügbar waren. Der Vorteil für den Product Owner bestand darin, dass ihm aufgrund der in den Skripten hinterlegten Abhängigkeiten immer nur die Optionen angeboten wurden, die für den jeweiligen Fall sinnvoll waren, und er so auch an alle Entscheidungen herangeführt wurde, die an der jeweiligen Stelle getroffen werden mussten. Das Ergebnisdokument bestand in diesem Fall aus einem sehr umfangreichen Userstory-Entwurf, in dem schon alle abgefragten Informationen und Entscheidungen eingearbeitet waren, und der mehr oder weniger nur noch um einige Benennungen und Aufzählungen angereichert werden musste. Schon bald wurde FlowProtocol um die Möglichkeit erweitert, auch Texteingaben abzufragen und diese in das Ergebnisdokument einzuarbeiten.
+Der Anwendungsfall, für den FlowProtocol ursprünglich entwickelt wurde, ist die Erstellung von Checklisten, die durch Interaktion mit dem Benutzer auf einen individuellen Fall zugeschnitten werden, und so beliebig ins Detail gehen können, ohne unnötige Einträge aufzulisten. Daran werden sich auch die ersten Beispiele in dieser Anleitung orientieren. Auf dieser Basis entstanden zahlreiche Skripte für den Product Owner, die für die verschiedenen Standardentwicklungen genau die benötigten Einstellungen und Informationen abfragten, die mit den Framework-Komponenten unseres Werkzeugkastens umgesetzt werden konnten, und die in ihrer Gesamtheit und mit ihrem Zusammenspiel das Designsystem unserer Software bildeten. Der Vorteil für den Product Owner bestand darin, dass ihm aufgrund der in den Skripten hinterlegten Abhängigkeiten immer nur die Optionen angeboten wurden, die für den jeweiligen Fall sinnvoll waren, und er so auch an alle Entscheidungen herangeführt wurde, die an der jeweiligen Stelle getroffen werden mussten. Das Ergebnisdokument bestand in diesem Fall aus einem sehr umfangreichen Userstory-Entwurf, in dem schon alle abgefragten Informationen und Entscheidungen eingearbeitet waren, und der mehr oder weniger nur noch um einige Benennungen und Aufzählungen angereichert werden musste. Schon bald wurde FlowProtocol um die Möglichkeit erweitert, auch Texteingaben abzufragen und diese in das Ergebnisdokument einzuarbeiten.
 
-Die Systematik, die auf Seiten der Story-Formulierungen möglich ist, ist hauptsächlich begründet durch die Komponenten des über viele Jahre aufgebauten eigenen Frameworks und deren Möglichkeiten und die Erfahrung des Teams, also das über zahlreiche Wiederholungen aufgebaute Wissen, wie man wiederkehrende Muster umsetzt, und was dabei zu beachten ist. Entsprechend lag es nahe, ähnliche Unterstützungswerkzeuge auch auf Entwicklungsseite zu schaffen, die den Programmierer dazu anleiten, die richtigen Klassen zu verwenden und am Ende idealerweise sogar fertigen Programmcode erstellen. Zu diesem Zweck wurde die Formatierungsform als Code geschaffen, bei der man einen Block per Schaltfläche in die Zwischenablage kopieren kann, und der \fcmd{CamelCase}-Befehl, mit dem Namen für Felder, Funktionen oder Variablen erzeugen können. Die Verwendung interaktiver Anleitungen mit Code-Generierung steigert nicht nur die Effizienz bei der Umsetzung von Standardaufgaben, sie hilft auch bei der Sicherstellung von Einheitlichkeit und ist damit eine wichtige Säule in der Qualitätssicherung.
+Die sehr systematisch und mit hohem Detailgrad aufgebauten Anforderungslisten in den Userstories konnten aufgrund der  sehr engen Anlehnung an die programmtechnische Umsetzung mit den Klassen und Funktionen aus dem Framework schon fast wie eine Entwicklungsanleitung gelesen werden, was lag also näher, als analoge Unterstützungswerkzeuge auch auf Entwicklungsseite zu schaffen, die den Programmierer dazu anleiteten, die richtigen Klassen zu verwenden und die am Ende idealerweise sogar fertigen Programmcode erstellten. Zu diesem Zweck wurden die Formatierungsmöglichkeiten so erweitert, dass man auch Codeschnipsel darstellen konnte, die sich einfach über die Zwischenablage in das aktuelle Projekt übernehmen ließen. Ebenso wurde der \fcmd{CamelCase}-Befehl geschaffen, mit dem Namen für Felder, Funktionen oder Variablen aus einer beliebigen Bezeichnung erzeugt werden können. Die Verwendung interaktiver Anleitungen mit Code-Generierung steigerte nicht nur die Effizienz bei der Umsetzung von Standardaufgaben, sie half auch bei der Sicherstellung von Einheitlichkeit und ist damit bis heute eine wichtige Säule in der Qualitätssicherung.
 
-Auch wenn \FPZ\ selbst nicht direkt mit anderen Anwendungen interagiert, so kann in einem Skript praktisch jede URL mit beliebigen Parametern aufgebaut werden, so dass sowohl bei der Ausführung, als auch aus dem Ergebnisdokument der parametrisierte Aufruf anderer Web-, oder Intranet-Anwendungen möglich ist. Allen voran können Skripte auf diese Weise andere Skripte aufrufen, aber auch viele der im Entwicklungsumfeld eingesetzten Anwendungen für die Verwaltung von Vorgängen oder als Wiki bieten gute Steuerungsmöglichkeiten. Schon allein mit der Übergabe eines Suchbegriffs kommt man schon recht weit, und über einen MailTo-Link lassen sich sogar vollständig ausformulierte E-Mails vorbereiten. Die Codierung der Parameter für die URL lässt sich dabei sehr einfach mit dem UrlEncode-Befehl umsetzen.
+Auch wenn \FPZ\ selbst nicht direkt mit anderen Anwendungen interagiert, so kann in einem Skript praktisch jede URL mit beliebigen Parametern aufgebaut werden, so dass sowohl bei der Ausführung, als auch aus dem Ergebnisdokument der parametrisierte Aufruf anderer Web-, oder Intranet-Anwendungen möglich ist. Allen voran können Skripte auf diese Weise andere Skripte aufrufen, aber auch viele der im Entwicklungsumfeld eingesetzten Anwendungen für die Verwaltung von Vorgängen oder als Wiki bieten gute Steuerungsmöglichkeiten. Schon allein mit der Übergabe eines Suchbegriffs kommt man schon recht weit, und über einen MailTo-Link lassen sich sogar vollständig ausformulierte E-Mails vorbereiten. Die Codierung der Parameter für die URL lässt sich dabei sehr einfach mit dem \fcmd{UrlEncode}-Befehl umsetzen. Auch Desktop-Anwendungen lassen sich sehr gut in Anleitungen integrieren, insbesondere wenn sich damit ganze Verarbeitungsschritte allein mit geeigneten Kommandozeilenparametern ausführen lassen. Die Anleitung kann damit die kompletten Befehlszeilen vorbereiten, die man dann über die Zwischenablage ausführen kann.
 
 Inzwischen umfasst der Befehlssatz von \FPZ\ alle notwendigen Befehle für den Aufbau von Programmen, wie If-Abfragen, For-Schleifen, sowie die Definition von Funktionen, die auch rekursiv aufgerufen werden können. Zusammen mit den verschiedenen Befehlen für das Rechnen mit Zahlen und Datum-Uhrzeit-Werten und zur Manipulation von Zeichenketten lassen sich mit sehr geringem Aufwand kleinere und größere nützliche Hilfsanwendungen schreiben, die unmittelbar auf jedem Arbeitsplatz verfügbar sind.
 
@@ -29,7 +29,7 @@ Zuletzt möchte ich noch Danke sagen, an alle Kollegen bei easySoft, die \FPZ\ be
     \texttt{https://github.com/maier-san/FlowProtocol2}
 \end{center}
 
-Der Programmcode kann direkt mit Git oder der Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B. \verb|D:\Apps\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden, wobei als Zielframework\index{Zielframework} .NET 8 vorausgesetzt wird:
+Der Programmcode kann direkt mit Git oder der Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B.\ \verb|D:\Apps\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden, wobei als Zielframework\index{Zielframework} .NET 8 vorausgesetzt wird:
 \begin{verbatim}
 dotnet.exe build
     D:\Apps\FlowProtocol2/FlowProtocol2/FlowProtocol2.csproj
@@ -40,7 +40,7 @@ Die Konfiguration erfolgt über die Datei \emph{appsettings.json}\index{appsettin
 \begin{verbatim}
 "ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
 \end{verbatim}
-In einem Unternehmen wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B. indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen im Umfeld der Softwareherstellung. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
+In einem Unternehmen wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B.\ indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen im Umfeld der Softwareherstellung. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
 
 In den Programm- und Konfigurationsdateien \emph{launchSettings.json}\index{launchSettings.json}, \emph{appsettings.json} und \emph{Program.cs}\index{Program.cs} sind die Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
 
@@ -363,7 +363,7 @@ Nehmen wir konkret die Bewertung von Aufgaben, die zur Stablilisierung bestimmte
         >* Bedarf: groß (+)
         ~AddTo punkte+=50
 ?A2: Wie klar ist die durchzuführende Maßnahme beschrieben?
-    #w1: Unkrokret. Es sind noch Analysen und Vorarbeiten notwendig.
+    #w1: Unkonkret. Es sind noch weitere Analysen notwendig.
         >* Klarheit: unkonkret (-)
         ~AddTo punkte+=10
     #w2: Hinreichend konkret. Der Ansatz ist klar beschrieben,
@@ -448,7 +448,7 @@ Die Möglichkeit, Texte und Zahlen über eine einfach per Link adressierbare Weban
 In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Anwendungskontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
 
 \subsection{Ausgabetitel und Abschnittsverschiebungen}\label{AusgabetitelUndAbschnittsverschiebungen}
-Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auf\-lis\-tung im Menü kürzere Titel wählen kann. Beim setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B. über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
+Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auf\-lis\-tung im Menü kürzere Titel wählen kann. Beim setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B.\ über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
 
 Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, mehrere Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
 
@@ -520,7 +520,7 @@ So wie man den Titel\index{Titel} für die Ausgabeseite setzen kann, lässt sich d
     > $S4 von $A4 Bugs mit Schweregrad 4
 \end{verbatim}
 
-Der Bug-Planer\index{Bug-Planer} aus dem Beispiel oben ist eine schönes Beispiel für ein Berechnungsskript, bei dem Werte abgefragt, und daraus andere Werte berechnet werden. In diesem Fall wird die Anzahl der Bug-Vorgänge für jeden Schweregrad von 2 bis 4 abgefragt, der z.B. wie in Abschnitt~\ref{Kategorisierungshilfen} beschrieben festgelegt werden kann. Zusätzlich wird noch die Anzahl der einzuplanenden Bug-Vorgänge abgefragt und damit dann ein Vorschlag für eine Aufteilung berechnet, die möglichst im Verhältnis $6:3:1$ steht. Eine solche Angleichung geht natürlich nur, wenn von allen Schweregraden ausreichend viele Vorgänge vorhanden sind. Wenn nicht, wird das verplant, was da ist und das Sollverhältnis auf die anderen Schweregrade angewendet.
+Der Bug-Planer\index{Bug-Planer} aus dem Beispiel oben ist eine schönes Beispiel für ein Berechnungsskript, bei dem Werte abgefragt, und daraus andere Werte berechnet werden. In diesem Fall wird die Anzahl der Bug-Vorgänge für jeden Schweregrad von 2 bis 4 abgefragt, der z.B.\ wie in Abschnitt~\ref{Kategorisierungshilfen} beschrieben festgelegt werden kann. Zusätzlich wird noch die Anzahl der einzuplanenden Bug-Vorgänge abgefragt und damit dann ein Vorschlag für eine Aufteilung berechnet, die möglichst im Verhältnis $6:3:1$ steht. Eine solche Angleichung geht natürlich nur, wenn von allen Schweregraden ausreichend viele Vorgänge vorhanden sind. Wenn nicht, wird das verplant, was da ist und das Sollverhältnis auf die anderen Schweregrade angewendet.
 
 Für die Eingabeseite wurde hier mit \fcmd{SetInputTitle} eine eigene Überschrift gewählt. Zusätzlich wurde mit \fcmd{SetInputDescription} eine Skriptbeschreibung\index{Skriptbeschreibung} formuliert, die unterhalb der Überschrift ausgegeben wird. Die vier Eingabefelder wurden mit dem Befehl \fcmd{SetInputSection} in die beiden Abschnitte\index{Abschnitt!bei Eingabe} \emph{Vorhandene Bug-Vorgänge} und \emph{Planung} unterteilt. Man beachte, dass gleich benannte Eingabeabschnitte an verschiedenen Stellen nicht zusammengeführt werden.
 
@@ -536,7 +536,7 @@ Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtza
 
 Für ein beliebiges Verhältnis $S_0:S_1:\dots :S_{v-1}$ für die Einplanung von $v$ verschiedenen Schweregraden und eine Folge $a=(a_i)_{i\in n}$ von Indices $a_i\in v$ kann man berechnen, für welchen nächsten Index $a_n\in v$ die erweiterte Gesamtfolge $a'=(a_i)_{i\in n+1}$ die kleinste Abweichung $d(a_n)$ zum vorgegebenen Verhältnis hat, mit
 \[d(a_n)=\min_{l\in v}\left(1+ \big|\{i\in n\colon a_i=a_n\}\big|-\frac{(n+1)S_l}{\sum_{j\in v}S_j}\right)\]
-Diesen wählt man dann, um die Folge zu erweitern. Die Berechnung so oft wiederholt werden, wie man weitere Folgenglieder benötigt.
+Diesen wählt man dann, um die Folge zu erweitern. Die Berechnung kann so oft wiederholt werden, wie man weitere Folgenglieder benötigt. Um wie im Beispiel oben eine feste, wiederholbare Indexsequenz zu hinterlegen, berechnet man  auf diese Weise die Teilfolge der ersten $N=S_0+\dots+S_{v-1}$ Folgenglieder, denn damit landet man nach jeweils $N$ Schritten exakt beim vorgegebenen Verhältnis.
 
 \subsection{Hilfezeilen}\label{Hilfezeilen}
 Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss und welche man weglassen kann, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten, und die benötigen Eingaben tätigen muss.
@@ -655,7 +655,7 @@ Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige
 
 Die Programmierung von Schleifen bringt immer auch mit sich, dass man versehentlich eine Endlosschleife durchläuft, z.B.\ wenn man das Hochzählen der Variable vergisst und so die Abbruchbedingung nie erreicht wird. Um dies und auch Endlosrekursionen frühzeitig zu erkennen, werden alle Durchläufe von Schleifen im Hintergrund mitgezählt, und die Ausführung mit dem Fehler \emph{Maximale Anzahl Schleifendurchläufe erreicht} beendet, wenn der intern gesetzte Stop-Zähler\index{Stop-Zähler} für Schleifen oder die Gesamtzahl an durchlaufenen Befehlen erreicht wird. Mit dem Befehl \fcmd{SetStopCounter} lassen sich diese beiden Werte hochsetzen, wenn man abschätzen kann, dass eine reguläre Skriptanwendung so viele Durchläufe und Befehlsausführungen mit sich bringt. Raffinierte Berechnungen mit vielen Iterationen und Rekursionen sind zwar möglich, liegen aber eher am Rand der Wohlfühlzone von \FPZ.
 
-Ein häufigerer Anwendungsfall, insbesondere wenn man Skripte schreibt, die Programmcode generieren, ist die Abfrage einer Sequenz von Elementen, z.B.  die Variablennamen für die Parameter einer Funktion. Im Beispiel unten wird über eine Schleife wiederholt abgefragt, ob es noch einen weiteren Parameter gibt, und wenn ja, nach dem dazugehörenden Variablenname gefragt. 
+Ein häufigerer Anwendungsfall, insbesondere wenn man Skripte schreibt, die Programmcode generieren, ist die Abfrage einer Sequenz von Elementen, z.B.\  die Variablennamen für die Parameter einer Funktion. Im Beispiel unten wird über eine Schleife wiederholt abgefragt, ob es noch einen weiteren Parameter gibt, und wenn ja, nach dem dazugehörenden Variablenname gefragt. 
 
 \Beispiel{Abfrageschleife}\label{BspAbfrageschleife}
 \begin{verbatim}
@@ -1147,7 +1147,7 @@ Damit kommen folgende Zeilen in unserer Anleitung hinzu:
 
 Was mit Integrationstests in Textform möglich ist, ist je nach Art der Entwicklung auch noch in Form von Unittests\index{Unittests} möglich. Unitest sind im Programmcode hinterlegte Klassen und Funktionen, die nur dafür da sind, die im Produktivcode verwendeten elementaren Klassen auf Korrektheit zu testen. Die Tests selbst gehören nicht zum Produkt und haben keine Funktionen in der Produktivumgebung. Unittests werden in der Regel durch spezielle Attribute gekennzeichnet und in eigenen Projekten verwaltet.
 
-Im Fall unserer Archivierungsklasse könnte z.B. die Archivierer-Kennung sehr einfach über einen Unittest geprüft werden. Das Skript könnte dazu wie folgt den entsprechenden Testcode erzeugen:
+Im Fall unserer Archivierungsklasse könnte z.B.\ die Archivierer-Kennung sehr einfach über einen Unittest geprüft werden. Das Skript könnte dazu wie folgt den entsprechenden Testcode erzeugen:
 
 \Beispiel{Archivklasse 4}\label{BspArchivklasse4}
 \begin{verbatim}
@@ -1870,8 +1870,8 @@ Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, 
 \begin{verbatim}
 ?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
     #: MIT-Lizenz
-        ~Set BezeichnungLizenz=MIT-Lizenz
-        ~Set LinkAufLizenzbeschreibung=
+        ~Set BezLizenz=MIT-Lizenz
+        ~Set LinkLizenzbeschreibung=
             __https://de.wikipedia.org/wiki/MIT-Lizenz
         ~Set ErlaubtKomVerw=Ja
         ~Set IstKostenpflichtig=Nein
@@ -1887,11 +1887,11 @@ Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, 
                 __ Software bereitgestellt?
             >|$Chr(9)#: $ILizenz
             ~Input IBez: Bezeichnung Lizenz
-            >|$Chr(9)$Chr(9)~Set BezeichnungLizenz=$IBez
-            ~Set BezeichnungLizenz=$IBez
+            >|$Chr(9)$Chr(9)~Set BezLizenz=$IBez
+            ~Set BezLizenz=$IBez
             ~Input ILink: Link auf Lizenzbeschreibung
-            >|$Chr(9)$Chr(9)~Set LinkAufLizenzbeschreibung=$ILink
-            ~Set LinkAufLizenzbeschreibung=$ILink
+            >|$Chr(9)$Chr(9)~Set LinkLizenzbeschreibung=$ILink
+            ~Set LinkLizenzbeschreibung=$ILink
             ?QKom: Erlaubt kommerzielle Verwendung?
                 #j: Ja
                     >|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Ja
@@ -1907,10 +1907,10 @@ Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, 
                     >|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Nein
                     ~Set IstKostenpflichtig=Nein
         >> Speichere die Datei ab.
-@Ausgabe >>* Die Software wird unter der Lizenz "$BezeichnungLizenz"        
+@Ausgabe >>* Die Software wird unter der Lizenz "$BezLizenz"        
         __ bereitgestellt.
     >* Link: 
-    ~AddLink $LinkAufLizenzbeschreibung | $LinkAufLizenzbeschreibung
+    ~AddLink $LinkLizenzbeschreibung | $LinkLizenzbeschreibung
     >* Kommerzielle Verwendung möglich? - $ErlaubtKomVerw
     >* Kostenpflichtig? - $IstKostenpflichtig
 \end{verbatim}
@@ -2230,7 +2230,7 @@ Ausdruck& Formel & Sprachform & Typenbeschränkung\\\hline\hline
 \verb|$s~$t| & $s\supseteq t$ & $s$ enthält $t$ & für Zeichenketten $s$ und $t$\\
 \verb|$s!~$t| & $s\nsupseteq t$ & $s$ enthält $t$ nicht & für Zeichenketten $s$ und $t$\\
 \verb|?$v| && $v$ ist gesetzt & für eine Variable $v$\\
-\verb|!?$v| && $v$ ist nicht gesetzt) & für eine Variable $v$\\\hline
+\verb|!?$v| && $v$ ist nicht gesetzt & für eine Variable $v$\\\hline
 \end{tabular}
 \end{center}
 \end{grundelement}
@@ -2299,9 +2299,8 @@ Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt au
 
 \item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\
 Erzeugt eine Auswahlabfrage mit mehreren Optionen, von denen genau eine ausgewählt werden kann. Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
-Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\par
-Die Optionen werden darunter mit dem \verb|#|-Befehl angegeben.
-Über die beiden Variablen \synvar{Schlüssel}\verb|_OptionGroupPromt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Die Optionen werden darunter mit dem \verb|#|-Befehl angegeben.\par
+Über die automatisch befüllten Variablen \synvar{Schlüssel}\verb|_OptionGroupPromt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.
 
 \item[\cidxfrag{\#}] $[$\synvar{Optionsschlüssel}$]$ \verb|:| \synvar{Anzeigetext}\\
 Fügt eine Option zur übergeordneten Auswahlabfrage hinzu. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
@@ -2359,8 +2358,13 @@ Löscht alle Variablen aus den Speicher, die einem Variablenmuster entsprechen. D
 \item[\fcmd{DateAdd}] \synvar{Variable} \verb|=| \synvar{Ausgangsdatum} \verb=|= \synvar{Zahlenwert} \verb=|= \synvar{Intervall}\\
 Addiert zu einem Ausgangsdatum eine Zeitspanne hinzu, die über einen ganzzahligen Zahlenwert und ein Intervall gegeben wird. Als Intervall sind folgende Zeichen zugelassen:
 \verb|y| = Jahre, \verb|M| = Monate, \verb|w| = Wochen, \verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten\\
-Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
+Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).\\
 Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateDiff}]  \synvar{Variable} \verb|=| \synvar{Zeitpunkt 1} \verb|..| \synvar{Zeitpunkt 2} \verb=|= \synvar{Intervall}\\
+Berechnet die Differenz zwischen Zeitpunkt~1 und Zeitpunkt~2 als ganzzahligen Wert in der mit Intervall angegebenen Einheit. Als Intervall sind folgende Zeichen zugelassen:
+\verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten, \verb|s| = Sekunden\\
+Beide Zeitpunkte müssen im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).
 
 \item[\fcmd{DateFormat}] \synvar{Variable} \verb|=| \synvar{Datumswert} \verb=|= \synvar{Format}\\
 Wanelt einen Datumswert in ein bestimmten Format um und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Datumswert muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
@@ -2453,7 +2457,7 @@ Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen und einem Else-Befehl kom
 Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspArchivklasse3}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
  
 \item[\fcmd{Implies}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\
-Setzt einen Wert für einen Schlüssel in der URL. Damit können z.B. Antworten für noch ausstehende Auswahlabfragen impliziert werden.
+Setzt einen Wert für einen Schlüssel in der URL. Damit können z.B.\ Antworten für noch ausstehende Auswahlabfragen impliziert werden.
  
 \item[\fcmd{Include}] \synvar{Dateipfad} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
 Führt die über den Dateipfad angegebene Funktionsdatei aus. Die standardmäßige Dateiendung für Funktionsdateien ist \emph{.fps}. Die Syntax ist diesselbe wie in den Skriptdateien.
@@ -2469,12 +2473,12 @@ Siehe Abschnitte~\ref{Texteingaben} und \ref{TexteAufteilen}, verwendet in Beisp
 Setzt eine Sprungmarke, die mit dem \fcmd{GoTo}-Befehl angesprungen werden kann.\\
 Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
 
-\item[\fcmd{ListDirectories}] \synvar{Listenvariable} \verb|=| \synvar{Verzeichnispfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
-Listet alle Verzeichnisnamen im Verzeichnispfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
+\item[\fcmd{ListDirectories}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Verzeichnisnamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
 Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
 
-\item[\fcmd{ListFiles}] \synvar{Listenvariable} \verb|=| \synvar{Verzeichnispfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
-Listet alle Dateinamen im Verzeichnispfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
+\item[\fcmd{ListFiles}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Dateinamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
 Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
 
 \item[\fcmd{Loop}]\mbox{}\\
@@ -2515,7 +2519,7 @@ Speichert einen Wert in einer Variablen. Variablenbezeichnungen können aus Buchs
 Siehe Abschnitt~\ref{VariablenSetzenUndVerwenden}, verwendet in Beispiel~\ref{BspHalloWeltMitVariable}, \ref{BspVariablenersetzung}, \ref{BspBewertungssystem}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
 
 \item[\fcmd{SetCulture}] \synvar{Variable} \verb|=| \synvar{Kultur-Kennzeichen}\\
-Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B. "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\
+Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B.\ "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\
 Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
 
 \item[\fcmd{SetDateTime}] \synvar{Variable} \verb|=| \synvar{Format}\\

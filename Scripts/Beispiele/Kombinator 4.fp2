@@ -174,10 +174,13 @@
 	~If $ees(1)!=$Ebene1
 		@Kombinationen >># $ees(1)
 		~Set Ebene1=$ees(1)
+		~Set Ebene2=!!!
+		~Set Ebene3=!!!
 	~If ?$ees(2)
 		~If $ees(2)!=$Ebene2
 			@Kombinationen ># $ees(2)
-			~Set Ebene2=$ees(2)
+			~Set Ebene2=$ees(2)			
+			~Set Ebene3=!!!
 	~If ?$ees(3)
 		@Kombinationen >.# $ees(3)
 		~Set Ebene3=$ees(3)

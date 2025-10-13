@@ -16,7 +16,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~DateAdd ([A-Za-z0-9\$\(\)]*)\s*=\s*([A-Za-z0-9\$\(\)\.\-\/]*)\s*\|\s*(-?[A-Za-z0-9\$\(\)]*)\s*\|\s*([A-Za-z0-9\$\(\)]*)", (rc, m) => CreateDateAddCommand(rc, m));
+            return new CommandParser(@"^~DateAdd ([A-Za-z0-9\$\(\)]*)\s*=\s*([A-Za-z0-9\$\(\)\.\-\/: ]*)\s*\|\s*(-?[A-Za-z0-9\$\(\)]*)\s*\|\s*([A-Za-z0-9\$\(\)]*)", (rc, m) => CreateDateAddCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateDateAddCommand(ReadContext rc, Match m)

@@ -1,10 +1,10 @@
 ~Input CmdName: Befehlsname
 ~SetTitle $CmdName-Implementierung
 ~SetInputTitle Neue Command-Klasse erstellen
-~Input Varliste: Gib die Namen der Variablen strichpunktgetrennt ein, oder @, wenn es keine Variablen gibt.
+~Input Varliste: Gib die Namen der Variablen kommagetrennt ein, oder @, wenn es keine Variablen gibt.
 	~AddHelpText Konvention: Variablen für optionale Parameter sollten den Prefix "Opt" haben.
 ~If $Varliste!=@
-	~Split VarName = $Varliste|;	
+	~Split VarName = $Varliste|,	
 ~SetStopCounter 6; 500
 ?ACB: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja

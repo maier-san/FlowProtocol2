@@ -1,0 +1,22 @@
+~SetTitle DateDiff-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~DateDiff <VarName> = <Date1>..<Date2>|<Interval>
+~AddText  berechnet die Differenz zwischen deb Zeitpunkten
+~AddCode  <Date1>
+~AddText  und
+~AddCode  <Date2>
+~AddText  in Tagen, Stunden, Minuten oder Sekunden und weist das Ergebnis der Variablen
+~AddCode  <VarName>
+~AddText   zu. Mit 
+~AddCode  <Interval>
+~AddText  wird angegeben, ob die Differenz in Tagen (d), Stunden (h), Minuten (m) oder Sekunden (s) berechnet werden soll.
+@Ausnahmen >>* Falsches Datumsformat: Die Zeichenkette ... kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.
+>>* Ungültiger Intervallwert: Der Ausdruck ... entspricht keinem zulässigen Intervallwert d, h, m, s. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel berechnet mein Alter in Tagen.
+>>|~DateSet MeinGeburtstag=07.07.1974|dd.MM.yyyy
+>>|~SetDateTime heute=yyyy-MM-dd
+>>|~DateDiff d=$MeinGeburtstag..$heute 00:00:00|d
+~DateSet MeinGeburtstag=07.07.1974|dd.MM.yyyy
+~SetDateTime heute=yyyy-MM-dd
+~DateDiff d=$MeinGeburtstag..$heute 00:00:00|d
+@Ausgabe >> Ich bin $d Tage alt.

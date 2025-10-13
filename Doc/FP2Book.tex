@@ -42,13 +42,67 @@
 \theorembodyfont{\rmfamily}
 \newtheorem{grundelement}{Kernelement}[section]
 \makeindex
+\pagestyle{empty}
+
 \begin{document}
+%-------------------------
+% Schmutztitel (rechts)
+%-------------------------
+\cleardoublepage
 \thispagestyle{empty}
-\maketitle
+\vspace*{\fill}
 \begin{center}
-    \includegraphics{FlowLogo}
+    {\Large\sffamily Softwareentwicklung\\ mit\\[1ex] FlowProtocol 2}
 \end{center}
+\vspace*{\fill}
 \newpage
+
+%-------------------------
+% Frontispiz (links)
+%-------------------------
+\thispagestyle{empty}
+\vspace*{\fill}
+\newpage
+
+%-------------------------
+% Titelblatt (rechts)
+%-------------------------
+\thispagestyle{empty}
+%%\maketitle
+\vspace*{\fill}
+\begin{center}
+    \sffamily
+    {\Huge Softwareentwicklung\\ mit\\[1ex] FlowProtocol 2}\\
+    \vspace{1cm}
+    {\Large Wolfgang Maier}\\
+    \vspace{1cm}
+    {\small September 2025}\\
+    \vspace{1cm}
+    \includegraphics[width=0.6\textwidth]{FlowLogoHigh}
+\end{center}
+\vspace*{\fill}
+\newpage
+
+%-------------------------
+% Impressum (links)
+%-------------------------
+\thispagestyle{empty}
+\vspace*{\fill}
+{\small
+\noindent
+\copyright~Wolfgang Maier, 2025\\[1em]
+Druck: Libri Plureos GmbH, Friedensallee 273, 22763 Hamburg\\[1em]
+Dies ist eine unveröffentlichte Ausgabe ohne ISBN.
+}
+\vspace*{2cm}
+\newpage
+
+%-------------------------
+% Ab hier: Buchtext
+%-------------------------
+\pagestyle{plain} % Ab hier wieder normal
+\setcounter{page}{1}
+
 \tableofcontents
 \newpage
 \thispagestyle{empty}

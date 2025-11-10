@@ -70,6 +70,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdDateDiff.GetComandParser());
             CmdParser.Add(CmdSetCulture.GetComandParser());
             CmdParser.Add(CmdDynamicOptionGroup.GetComandParser());
+            CmdParser.Add(CmdSetBlockSaveFile.GetComandParser());
             CmdParser.Add(CmdToUpper.GetComandParser());
             CmdParser.Add(CmdToLower.GetComandParser());
             CmdParser.Add(CmdFileExists.GetComandParser());

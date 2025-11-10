@@ -1,0 +1,44 @@
+~SetInputDescription Hilft bei der Erstellung eines neuen FlowProtocol-2-Befehls.
+~Input cmdline: Befehlszeile
+~AddHelpLine Beginnend mit ~<Befehlsname> und Einbidung aller Tokens in runden Klammern.
+~AddHelpLine Beispiel: ~Tralala (vVarName) = (iZahl1) + (iZahl2)
+~Execute
+~RegExMatch regcmd = $cmdline|~([A-Za-z0-9]+)\s*(.*)
+~If !?$regcmd(0)
+	@Fehler >> Die Befehlszeile enthält keinen Befehl.
+	~End
+~CamelCase cmdname=$regcmd(1)
+~Set cmdargs=$regcmd(2)
+
+// Variablenname
+~Set regrepo(v)=[A-Za-z0-9\$\(\)]*
+// Funktionsname (ohne Variablenauflösung)
+~Set regrepo(t)=[A-Za-z0-9]*
+// Datumsangabe (inklusive Variablen)
+~Set regrepo(d)=[A-Za-z0-9\$\(\)\.\-\/: ]*
+// ganzzahliger Wert (inklusive Variablen)
+~Set regrepo(i)=-?[A-Za-z0-9\$\(\)]*
+// Dezimalwert (inklusive Variablen)
+~Set regrepo(f)=-?[A-Za-z0-9\$\(\)\.\,]*
+// beliebiger Text
+~Set regrepo(x)=.*
+
+~Set argidx=0
+~RegExMatch varcmd=$cmdargs|(.*)\(([vtdifx])([A-Za-z0-9]+)\)(.*)
+~DoWhile $varcmd(0)
+	~AddTo argidx+=1
+	~Set argtype($argidx)=$varcmd(2)
+	~CamelCase argname($argidx)=$varcmd(3)
+	~Set cmdargs=$varcmd(1)#$argidx#$varcmd(4)
+	~RegExMatch varcmd=$cmdargs|(.*)\(([vtdifx])([A-Za-z0-9]+)\)(.*)
+~Loop
+@Debug >> cmdargs = $cmdargs
+~RegExReplace cmdargs=$cmdargs|\s+->\s+
+@Debug >> cmdargs = $cmdargs
+~Set argAnz=$argidx
+~Set argidx=0
+~DoWhile $argidx<$argAnz
+	~AddTo argidx+=1
+	~Replace cmdargs=$cmdargs|#$argidx#->($regrepo($argtype($argidx)))
+	@Debug >> cmdargs = $cmdargs	
+~Loop

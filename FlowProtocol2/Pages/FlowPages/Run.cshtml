@@ -131,5 +131,41 @@ else
             document.execCommand('copy');
             element.removeChild(storage);
         }
+
+        async function SaveFunction(blockID, suggestedFilename) {
+            const element = document.querySelector('#' + blockID);
+            var cc = element.innerHTML;
+            cc = cc.replaceAll('&lt;', String.fromCharCode(60));
+            cc = cc.replaceAll('&gt;', String.fromCharCode(62));
+            cc = cc.replaceAll('&quot;', String.fromCharCode(34));
+            cc = cc.replaceAll('&amp;', String.fromCharCode(38));
+
+            // Prüfen, ob File System Access API unterstützt wird. Wenn ja, Dateiauswahldialog anzeigen
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: suggestedFilename || 'Datei.txt'
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(cc);
+                    await writable.close();                    
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return; // Benutzer hat abgebrochen
+                    console.error('Fehler beim Speichern:', err);
+                }
+            }
+
+            // Fallback für Firefox & Co.: Direktes herunterladen in den Download-Ordner
+            const blob = new Blob([cc], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = suggestedFilename || 'Datei.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);            
+        }
     </script>
 }

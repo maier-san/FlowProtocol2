@@ -29,6 +29,7 @@ namespace FlowProtocol2.Core
         public string NumerationType { get; set; }
         public bool Closed { get; set; }
         public string ID { get; set; }
+        public string SuggestedFilename { get; set; }
 
         /// <summary>
         /// Gibt den im Block enthaltenen Text als String zurück.
@@ -57,6 +58,7 @@ namespace FlowProtocol2.Core
             NumerationType = "1";
             TextLines = new List<OMTextLine>();
             Closed = false;
+            SuggestedFilename = string.Empty;
             ID = string.Empty;
         }
     }

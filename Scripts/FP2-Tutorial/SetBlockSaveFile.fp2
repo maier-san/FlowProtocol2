@@ -1,0 +1,24 @@
+~SetTitle SetBlockSaveFile-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~SetBlockSaveFile <FileName>
+~AddText  legt den Dateinamen fest, unter dem der aktuelle Codeblock mittels Schaltfläche gespeichert werden kann.
+@Ausnahmen >>* keine
+@Codebeispiel >>_ Das nachfolgende Beispiel leitet dazu an, einen Codeblock als Datei zu speichern:
+	>>|~Set datname=Teddy.txt
+	>>|@Ausgabe >> Übernehme folgenden Text in einen Texteditor:
+	>>|	>|Es war einmal
+	>>|	>|und ist nicht mehr
+	>>|	>|ein ausgestopfter Teddybär
+	>>|	~SetBlockSaveFile $datname
+	>>|	>> Speichere ihn unter
+	>>|	>|D:\Temp\$datname
+	>>|	>> Oder nutze dazu die "Als $datname speichern"-Schaltfläche.
+~Set datname=Teddy.txt
+@Ausgabe >> Übernehme folgenden Text in einen Texteditor:
+	>|Es war einmal
+	>|und ist nicht mehr
+	>|ein ausgestopfter Teddybär
+	~SetBlockSaveFile $datname
+	>> Speichere ihn unter
+	>|D:\Temp\$datname
+	>> Oder nutze dazu die "Als $datname speichern"-Schaltfläche.

@@ -83,7 +83,8 @@ namespace FlowProtocol2.Core
                 CurrentTextline = new OMTextLine();
                 if (lastSubblock != null)
                 {
-                    lastSubblock.TextLines.Add(CurrentTextline);            
+                    lastSubblock.TextLines.Add(CurrentTextline);
+                    CurrentTextBlock = lastSubblock;
                 }
             }
             else if (l == Level.Level3 && lastSubblock != null)
@@ -100,6 +101,7 @@ namespace FlowProtocol2.Core
                 if (lastSubsubblock != null)
                 {
                     lastSubsubblock.TextLines.Add(CurrentTextline);
+                    CurrentTextBlock = lastSubsubblock;
                 }
             }
             if (CurrentTextline != null)
@@ -161,6 +163,21 @@ namespace FlowProtocol2.Core
                 tsec.Textblocks.AddRange(fsec.Textblocks);
                 Document.Sections.Remove(fsec);
             }
+        }
+
+        public void SetBlockSaveFile(string filepath)
+        {            
+            if (CurrentTextBlock != null && CurrentTextBlock.BlockType == OutputType.Code)
+            {
+                if (!string.IsNullOrEmpty(filepath))
+                {
+                    CurrentTextBlock.SuggestedFilename = filepath;
+                }
+                else
+                {
+                    CurrentTextBlock.SuggestedFilename = string.Empty;
+                }   
+            }            
         }
     }
 }

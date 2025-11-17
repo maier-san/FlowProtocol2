@@ -141,8 +141,8 @@
 >> Fertiges Beispiel in Codeblock übernehmen
 >> Speichern unter
 	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CmdName.fp2
-@Buch erweitern >> FlowProtocol2.tex öffnen
-	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\FlowProtocol2.tex
+@Buch erweitern >> FP2Inhalt.tex öffnen
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\FP2Inhalt.tex
 >> Zu Abschnitt Befehle gehen
 		>|\subsection{Befehle}\label{Befehle}
 >> An der für 

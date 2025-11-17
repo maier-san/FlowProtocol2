@@ -68,7 +68,7 @@ Als Überschrift wird standardmäßig der Dateinahme ohne Endung ausgegeben, und da
 Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} werden immer angezeigt, wenn die Ausführung abgeschlossen ist. Mit \emph{Neue Ausführung} kann das aktuell ausgewählte Skript neu gestartet werden und mit \emph{Zurück zur Startseite} kommt man zurück zur Auswahl der Skript-Hauptgruppen, was auch mit dem Menüpunkt \emph{Start} möglich ist. Wir werden noch einige Anwendungsfälle sehen, die sich am besten mit einem Skript umsetzen lassen, das mehrmals hintereinander ausgeführt wird.
 
 \subsection{Eine erste Auswahlabfrage}
-Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausgegeben, was in Anbetracht der recht einfachen Syntax und der schönen Formatierungsmöglichkeiten auch schon Mehrwerte bieten kann, aber der Hauptnutzen von \FPZ\ liegt ganz klar in der Interaktivität. Diese lässt sich umsetzen mit Hilfe von Auswahlabfragen und Texteingaben. Das nachfolgende Beispiel zeigt eine einfache Auswahlabfrage.
+Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausgegeben, was in Anbetracht der recht einfachen Syntax und der schönen Formatierungsmöglichkeiten auch schon Mehrwerte bieten kann, aber der Hauptnutzen von \FPZ\ liegt ganz klar in der Interaktion. Diese lässt sich umsetzen mit Hilfe von Auswahlabfragen und Texteingaben. Das nachfolgende Beispiel zeigt eine einfache Auswahlabfrage.
 
 \Beispiel{Hallo Welt mit Auswahl}
 \begin{verbatim}
@@ -1928,7 +1928,7 @@ Jetzt kann man zu Recht bemängeln, dass der Scriptcode, der für die \emph{Nicht 
 
 Die Lösung für dieses Problem ist, man ahnt es vermutlich schon, ein \FPZb-Skript, das einem diese Arbeit abnimmt.
 
-Das sogenannte Metaskripting\index{Metaskripting}, also das Erstellen von Skriptcode der neuen Skriptcode erzeugt, ist ein mächtiges Instrument und lässt sich an vielen Stellen einsetzen, sogar über verschiedene Programmiersprachen hinweg. Es gibt Beispiele für produktiv eingesetzte \FPZb-Skripte, die SQL-Anweisungen erzeugen, der wiederum C\#-Code ausgegeben.
+Das sogenannte Metaskripting\index{Metaskripting}, also das Erstellen von Skriptcode der neuen Skriptcode erzeugt, ist ein mächtiges Instrument und lässt sich an vielen Stellen einsetzen, sogar über verschiedene Programmiersprachen hinweg. Es gibt Beispiele für produktiv eingesetzte \FPZb-Skripte, die SQL-Anweisungen erzeugen, die wiederum C\#-Code ausgegeben.
 
 Für unseren Anwendungsfall der angeleiteten Skript-Erweiterung benötigen wir folgende Eingaben: die Fragestellung, einen Schlüssel, eine Liste von Werten, die entweder als Texteingabe oder Schalter abgefragt werden sollen, und die Information in welcher Tiefe der Code eingerückt sein soll.
 
@@ -2518,6 +2518,11 @@ Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}.
 Speichert einen Wert in einer Variablen. Variablenbezeichnungen können aus Buchstaben, Ziffern und runden Klammern bestehen und auch wieder andere Variablen enthalten. Die in Variablennamen verwendeten Klammern haben keine syntaktische Bedeutung, können aber die Lesbarkeit von Variablen verbessern.\\
 Siehe Abschnitt~\ref{VariablenSetzenUndVerwenden}, verwendet in Beispiel~\ref{BspHalloWeltMitVariable}, \ref{BspVariablenersetzung}, \ref{BspBewertungssystem}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
 
+\item[\fcmd{SetBlockSaveFile}] \synvar{FileName}\\
+Legt einen Dateinamen fest, unter dem der aktuelle Codeblock gespeichert werden kann. Diese Festlegung bewirkt, dass in der Ausgabe zusätzlich zu der Schaltfläche \emph{In Zwischenablage kopieren} auch noch die Schaltfläche \emph{Als \dots speichern} angezeigt wird, mit den angegebenen Dateinamen. Bei Betätigung der Schaltfläche wird dann ein Dateiauswahldialog geöffnet, in dem man den passenden Dateipfad festlegen kann.\\
+Das Öffnen des Dateiauswahldialogs funktioniert leider nicht bei allen Browsern, da die hierzu verwendete \emph{File System Access API} nicht immer implementier ist. Bei Firefox etwa erfolgt deshalb ersatzweise das direkte Herunterladen in den Download-Ordner.
+%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
 \item[\fcmd{SetCulture}] \synvar{Variable} \verb|=| \synvar{Kultur-Kennzeichen}\\
 Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B.\ "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\
 Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
@@ -2552,8 +2557,8 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{Terminplanung}, verwendet in Beispiel~
 Setzt den Titel für die Ausgabeseite.\\
 Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
 
-\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|To| \synvar{Indexliste}$]$\\
-Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird das \verb|To|-Attribut mit einer Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann.
+\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$]$\\
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann.
 
 \item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
 Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Kernelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.

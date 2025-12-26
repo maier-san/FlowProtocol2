@@ -14,15 +14,15 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Include ([^;]*\.fps)\s*(; BaseKey=[A-Za-z0-9\$\(\)]*)?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
+            return new CommandParser(@"^~Include ([^;]*\.fps)(\s*;\s*BaseKey=([A-Za-z0-9\$\(\)]*))?(.*)", (rc, m) => CreateIncludeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateIncludeCommand(ReadContext rc, Match m)
         {
             CmdInclude cmd = new CmdInclude(rc);
             cmd.ScriptNameOrPath = m.Groups[1].Value.Trim();
-            cmd.BaseKey = m.Groups[2].Value.Trim();
-            cmd.Ignore = m.Groups[3].Value.Trim();
+            cmd.BaseKey = m.Groups[3].Value.Trim();
+            cmd.Ignore = m.Groups[4].Value.Trim();
             return cmd;
         }
 
@@ -57,7 +57,7 @@ namespace FlowProtocol2.Commands
             var sinfo = rc.ScriptRepository[absolutescriptfilepath];
             if (sinfo.StartCommand != null)
             {
-                string expandedBaseKey = ReplaceVars(rc, BaseKey.Replace("; BaseKey=", string.Empty)).Trim();
+                string expandedBaseKey = ReplaceVars(rc, BaseKey);
                 if (NextCommand != null) rc.ReturnStack.Push(new EntryPoint(NextCommand, rc.BaseKey));
                 rc.BaseKey = expandedBaseKey;
                 return sinfo.StartCommand;

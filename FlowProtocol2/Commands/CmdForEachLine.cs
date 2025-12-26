@@ -34,7 +34,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)\s*(; Take=[A-Za-z0-9\$\(\)]*)?\s*(; IndexVar=[A-Za-z0-9\$\(\)]*)?\s*(; SectionVar=[A-Za-z0-9\$\(\)]*)?\s*(; NoFormat)?",
+            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)(\s*;\s*Take=([A-Za-z0-9\$\(\)]*))?(\s*;\s*IndexVar=([A-Za-z0-9\$\(\)]*))?(\s*;\s*SectionVar=([A-Za-z0-9\$\(\)]*))?(\s*;\s*NoFormat)?",
                 (rc, m) => CreateForEachLineCommand(rc, m));
         }
 
@@ -43,10 +43,10 @@ namespace FlowProtocol2.Commands
             CmdForEachLine cmd = new CmdForEachLine(rc);
             cmd.VarName = m.Groups[1].Value.Trim();
             cmd.FileNameOrPath = m.Groups[2].Value.Trim();
-            cmd.Take = m.Groups[3].Value.Trim();
-            cmd.IndexVar = m.Groups[4].Value.Trim();
-            cmd.SectionVar = m.Groups[5].Value.Trim();
-            cmd.NoFormatVar = m.Groups[6].Value.Trim();
+            cmd.Take = m.Groups[4].Value.Trim();
+            cmd.IndexVar = m.Groups[6].Value.Trim();
+            cmd.SectionVar = m.Groups[8].Value.Trim();
+            cmd.NoFormatVar = m.Groups[9].Value.Trim();
             return cmd;
         }
 
@@ -78,7 +78,7 @@ namespace FlowProtocol2.Commands
                         $"Die Datei '{absoluteFileName}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
                     return null;
                 }
-                string expandedTake = ReplaceVars(rc, Take.Replace("; Take=", string.Empty)).Trim();
+                string expandedTake = ReplaceVars(rc, Take);
                 int take = -1;
                 if (!string.IsNullOrEmpty(expandedTake))
                 {
@@ -94,8 +94,8 @@ namespace FlowProtocol2.Commands
                 bool noformat = NoFormatVar.Contains("NoFormat");
                 ReadLineItems(absoluteFileName, take, noformat);
                 ExpandedVarName = ReplaceVars(rc, VarName);
-                ExpandedIndexVar = ReplaceVars(rc, IndexVar.Replace("; IndexVar=", string.Empty)).Trim();
-                ExpandedSectionVar = ReplaceVars(rc, SectionVar.Replace("; SectionVar=", string.Empty)).Trim();
+                ExpandedIndexVar = ReplaceVars(rc, IndexVar);
+                ExpandedSectionVar = ReplaceVars(rc, SectionVar);
                 Index = 0;
                 IsInitialized[rc.BaseKey] = true;                
                 LinkAssociatedLoopCommand(rc, "ForEachLine");

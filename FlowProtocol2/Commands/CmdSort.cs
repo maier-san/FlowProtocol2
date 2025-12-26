@@ -13,14 +13,14 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Sort ([A-Za-z0-9\$\(\)]*)(\s*->\s*[A-Za-z0-9\$\(\)]*)?", (rc, m) => CreateSortCommand(rc, m));
+            return new CommandParser(@"^~Sort ([A-Za-z0-9\$\(\)]*)(\s*->\s*([A-Za-z0-9\$\(\)]*))?", (rc, m) => CreateSortCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateSortCommand(ReadContext rc, Match m)
         {
             CmdSort cmd = new CmdSort(rc);
             cmd.FieldName = m.Groups[1].Value.Trim();
-            cmd.IndexField = m.Groups[2].Value.Trim();
+            cmd.IndexField = m.Groups[3].Value.Trim();
             return cmd;
         }
 
@@ -33,7 +33,7 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedFieldName = ReplaceVars(rc, FieldName);
-            string expandedIndexField = ReplaceVars(rc, IndexField.Replace("->", "").Trim());
+            string expandedIndexField = ReplaceVars(rc, IndexField);
             try
             {
                 Dictionary<int, string> sdic = new Dictionary<int, string>();

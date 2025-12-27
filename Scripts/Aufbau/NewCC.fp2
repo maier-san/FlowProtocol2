@@ -1,9 +1,10 @@
 ~SetInputDescription Hilft bei der Erstellung eines neuen FlowProtocol-2-Befehls.
 ~Input cmdline: Gib das Muster für die gewünschte Befehlszeile ein.
 ~AddHelpLine Beginnend mit ~<Befehlsname> und Einbindung aller Argumente in runden Klammern.
-~AddHelpLine Beispiel: ~Tralala (vVarName) = (iZahl1) + (iZahl2)
 ~AddHelpLine Verwende folgende Präfixe, um den Typ der Argumente anzugeben: v = Name einer Variable, t = Funktionsname (ohne Variablenauflösung), 
 	__ d = Datumsangabe (inklusive Variablen), i = ganzzahliger Wert (inklusive Variablen), f = Dezimalwert (inklusive Variablen), x = beliebiger Text
+~AddHelpLine Verwendet eckige Klammern um einzelne optionale Blöcke zu kennzeichnen.
+~AddHelpLine Beispiel: ~Tralala (vVarName) = (dDatum)[; Range=(iVon)..(iBis)]
 @Eingabe >>|$cmdline
 ?NCD: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja
@@ -13,53 +14,65 @@
 	~Set MitCB=nein
 ~Execute
 
+~RegExMatch regcmd=$cmdline)|~([A-Za-z0-9]+)( ?)(.*)
+~Set CommandName=$regcmd(1)
+~RegExReplace CmdWS=$regcmd(2)|\s+->\s+
+~Set Args=$regcmd(3)
+
 // Variablenname
-~Set reporeg(v)=[A-Za-z0-9\$\(\)]*
+~Set reporeg(v)=[A-Za-z0-9\$\(\)]+
 // Funktionsname (ohne Variablenauflösung)
-~Set reporeg(t)=[A-Za-z0-9]*
+~Set reporeg(t)=[A-Za-z0-9]+
 // Datumsangabe (inklusive Variablen)
-~Set reporeg(d)=[A-Za-z0-9\$\(\)\.\-\/: ]*
+~Set reporeg(d)=[A-Za-z0-9\$\(\)\.\-\/: ]+
 // ganzzahliger Wert (inklusive Variablen)
-~Set reporeg(i)=-?[A-Za-z0-9\$\(\)]*
+~Set reporeg(i)=-?[A-Za-z0-9\$\(\)]+
 // Dezimalwert (inklusive Variablen)
-~Set reporeg(f)=-?[A-Za-z0-9\$\(\)\.\,]*
+~Set reporeg(f)=-?[A-Za-z0-9\$\(\)\.\,]+
 // beliebiger Text
 ~Set reporeg(x)=.*
 
-~Set cmdws=$cmdline
-~RegExReplace cmdws=$cmdws|\s+\(->\s*(
-~RegExReplace cmdws=$cmdws|\)\s+->)\s*
-~Replace cmdws=$cmdws|\s*\s*->\s*
-~Split ArgList=$cmdws|(
-~Replace ArgList(1)=$ArgList(1)|\s*->$Chr(32)
-~RegExMatch regcmd = $ArgList(1)|~([A-Za-z0-9]+)(.*)
-~If $regcmd(0)!=true
-	@Fehler >> Das Skript beginnt nicht mit einem Befehl.
-	~End
-~Set CommandName=$regcmd(1)
-~Set ParserExpression=^~$CommandName$regcmd(2)
-~Set ExecptionVarList=
+~Set ParserExpression=^~$CommandName$CmdWS
+~Set ExceptionVarList=
+~Set Syntaxpassed=
+~Set ArgsWS=$Args
+~RegExReplace ArgsWS=$ArgsWS|\s+->$Chr(149)
+~Replace ArgsWS=$ArgsWS|=->$Chr(149)=$Chr(149)
+~Replace ArgsWS=$ArgsWS|[;->[$Chr(149);
+~Replace ArgsWS=$ArgsWS|$Chr(149)$Chr(149)->$Chr(149)
+~Split ArgList=$ArgsWS|(
 ~Set argidx=0
+~Split MaskSignList=$Chr(124) + - ? ^ \|$Chr(32)
 ~ForEach token in ArgList
-	~RegExMatch regarg=$token|([vtdifx])([A-Za-z0-9]+)\)(.*)
-	~If $regarg(0)
-		~AddTo argidx+=1
-		~Set argindex($argidx)=$argidx
-		~Set argtype($argidx)=$regarg(1)
-		~CamelCase argname($argidx)=$regarg(2)
-		~Trim argsyntax($argidx)=$regarg(3)
-		~Set regmask=$regarg(3)
-		~Replace regmask=$regmask|$Chr(124)->\$Chr(124)
-		~Replace regmask=$regmask|.->\.
-		~Replace regmask=$regmask|,->\,
-		~Replace regmask=$regmask|/->\/
-		~Set ParserExpression=$ParserExpression($reporeg($argtype($argidx)))$regmask
-		~Set ExecptionVarList=$ExecptionVarList expanded$argname($argidx)='{expanded$argname($argidx)}'
+	~If $token!=
+		~RegExMatch regvar=$token|([vtdifx])([^)]+)\)(.*)
+		~If $regvar(0)
+			~AddTo argidx+=1
+			~Set argindex($argidx)=$argidx
+			~Set argtype($argidx)=$regvar(1)
+			~CamelCase argname($argidx)=$regvar(2)
+			~Replace argtext($argidx)=$regvar(2)|$Chr(149)->$Chr(32)
+			~Replace argsyntax($argidx)=$regvar(3)|$Chr(149)->$Chr(32)
+			~Set synexp=$regvar(3)
+			~ForEach symbol in MaskSignList
+				~Replace synexp=$synexp|$symbol->\$symbol
+			~Loop					
+			~Set ParserExpression=$ParserExpression($reporeg($argtype($argidx)))$regvar(3)
+			~Set ExceptionVarList=$ExceptionVarList expanded$argname($argidx)='{expanded$argname($argidx)}'
+			~Split CountEKA=$Syntaxpassed|[			
+			~CalculateExpression groupindex($argidx) = $argidx + $CountEKA(0) - 1
+			~Set IsOptional($argidx)=nein
+			~If $CountEKA(0)>1
+				~Set IsOptional($argidx)=ja
+			~Set Syntaxpassed=$Syntaxpassed$regvar(3)			
 ~Loop
+~Replace ParserExpression=$ParserExpression|[->(
+~Replace ParserExpression=$ParserExpression|]->)?
+~Replace ParserExpression=$ParserExpression|$Chr(149)->\s*
 
 @Implementierung >> Klasse erstellen (Menüpunkt "New File" im Ordner Commands)
 	>|Cmd$CommandName.cs
->> Code einfügen:
+@Implementierung >> Code einfügen:
 	>|namespace FlowProtocol2.Commands
 	>|{
 	>|    using System.Globalization;
@@ -68,7 +81,7 @@
 	>|
 	>|    /// <summary>
 	>|    /// Implementiert den $CommandName-Befehl
-	>|    /// Erstellt mit NCD.fp2, Eingabe: $cmdline
+	>|    /// Erstellt mit NewCC.fp2, Eingabe: $cmdline
 	>|    /// </summary>
 	>|    public class Cmd$CommandName : CmdBaseCommand
 	>|    {
@@ -78,14 +91,15 @@
 	>|
 	>|        public static CommandParser GetComandParser()
 	>|        {
-	>|            return new CommandParser(@"$ParserExpression", (rc, m) => Create$CommandNameCommand(rc, m));
+	>|            return new CommandParser(@"$ParserExpression",
+	>|                                     (rc, m) => Create$CommandNameCommand(rc, m));
 	>|        }
 	>|
 	>|        private static CmdBaseCommand Create$CommandNameCommand(ReadContext rc, Match m)
 	>|        {
 	>|            Cmd$CommandName cmd = new Cmd$CommandName(rc);
 ~ForEach idx in argindex
-	>|            cmd.$argname($idx) = m.Groups[$idx].Value.Trim();
+	>|            cmd.$argname($idx) = m.Groups[$groupindex($idx)].Value.Trim();
 ~Loop
 	>|            return cmd;
 	>|        }
@@ -104,15 +118,24 @@
 ~Loop
 	>|            try
 	>|            {
+~Set UseVarList=...verwende folgende Variablen:
 ~ForEach idx in argindex
+	~If $IsOptional($idx)==ja
+		>|                if (string.IsNullOrWhiteSpace(expanded$argname($idx)))
+		>|                {
+		>|                    // Optionales Argument mit Variable expanded$argname($idx) wurde weggelassen
+		>|                    expanded$argname($idx) = "ToDo";
+		>|                }		
 	~If $argtype($idx)==d
 		>|                bool bOK$argname($idx) = DateTime.TryParseExact(expanded$argname($idx), "yyyy-MM-dd HH:mm:ss", rc.Culture, DateTimeStyles.None, out DateTime result$argname($idx));
 		>|                if (!bOK$argname($idx))
 		>|                {
 		>|                    rc.SetError(ReadContext, "Falsches Datumsformat",
-		>|                        $"Die Zeichenkette '{expanded$argname($idx)}' kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.");
+		>|                        $"Der Ausdruck '{expanded$argname($idx)}' kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.");
 		>|                    return null;
 		>|                }
+		~Set UseVarList=$UseVarList, result$argname($idx)
+		~Set ExceptText(d)=Falsches Datumsformat: Der Ausdruck ... kann nicht als Datum im Format 'yyyy-MM-dd HH:mm:ss' interpretiert werden. Die Ausführung wird abgebrochen.
 	~ElseIf $argtype($idx)==i
 		>|                bool bOK$argname($idx) = Int32.TryParse(expanded$argname($idx), out int result$argname($idx));
 		>|                if (!bOK$argname($idx))
@@ -121,6 +144,8 @@
 		>|                        $"Der Ausdruck '{expanded$argname($idx)}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
 		>|                    return null;
 		>|                }
+		~Set UseVarList=$UseVarList, result$argname($idx)
+		~Set ExceptText(i)=Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
 	~ElseIf $argtype($idx)==f
 		>|                bool bOK$argname($idx) = double.TryParse(expanded$argname($idx), out double result$argname($idx));
 		>|                if (!bOK$argname($idx))
@@ -129,8 +154,14 @@
 		>|                            $"Der Ausdruck '{expanded$argname($idx)}' kann nicht als Gleitkommazahl interpretiert werden. Die Ausführung wird abgebrochen.");
 		>|                    return null;
 		>|                }
+		~Set UseVarList=$UseVarList, result$argname($idx)
+		~Set ExceptText(f)=Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden. Die Ausführung wird abgebrochen.
+	~Else
+		~Set UseVarList=$UseVarList, expanded$argname($idx)
 ~Loop
 	>|                // ToDo: Befehl hier implementieren
+	~Replace UseVarList=$UseVarList|:,->:
+	>|                // $UseVarList
 	~If $argtype(1)==v
 		>|                // Ergebnis der Variablen zuweisen
 		>|                rc.InternalVars[expanded$argname(1)] = 'ToDo';
@@ -139,56 +170,73 @@
 	>|            {
 	>|                rc.SetError(ReadContext, "Verarbeitungsfehler",
 	>|                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
-	>|                    + $"Variablenwerte:$ExecptionVarList");
+	>|                    + $"Variablenwerte:$ExceptionVarList");
 	>|                return null;
 	>|            }
 	>|            return NextCommand;
 	>|        }
 	>|    }
 	>|}
->> Regulären Ausdruck in Methode 
+@Implementierung >> Regulären Ausdruck in Methode 
 	~AddCode  GetComandParser()
 	~AddText  anpassen, falls nötig.
 	>* Am besten mehrere Beispiele mit 
 	~AddLink https://regex101.com | regex101.com
 	~AddText  ausprobieren.
->> Run-Methode ausimplementieren
-	># ToDo: Run-Methode ausimplementieren bei 
+	>.|$ParserExpression
+@Implementierung >> Run-Methode ausimplementieren
+	~ForEach idx in argindex
+		~If $IsOptional($idx)==ja
+			># Standardwert/ -verhalten für optionales Argument festlegen
+			~AddCode  // Optionales Argument mit Variable expanded$argname($idx) wurde weggelassen
+	~Loop
+	># Run-Methode ausimplementieren bei 
 	~AddCode  // ToDo: Befehl hier implementieren
-	># Variablenzuweisung vervollständigen oder entfernen bei
-	~AddCode  rc.InternalVars[expanded$argname(1)] = 'ToDo';
->> Allgemeine Regeln überprüfen
+	~If $argtype(1)==v
+		># Variablenzuweisung vervollständigen oder entfernen bei
+		~AddCode  // Ergebnis der Variablen zuweisen
+@Implementierung >> Allgemeine Regeln überprüfen
 	>* Regel 1: Die in
 	~AddCode  Create$CommandNameCommand
 	~AddText  eingelesenen Eigenschaften bleiben unverändert, so dass der Befehl wiederholt ausgeführt werden kann.
 	>* Regel 2: Die Variablenersetzung erfolgt so tief wie möglich, so dass die Syntax unabhängig von den Variablenwerten ist.
-	>* Regel 3: Die Verkettung der Befehle mit NextCommand und PreviousCommand bleibt unverändert.
+	>* Regel 3: Die Verkettung der Befehle mit
+	~AddCode  NextCommand
+	~AddText  und
+	~AddCode  PreviousCommand
+	~AddText  bleibt unverändert.
 	>* Regel 4: Intern über mehrere Befehlsaufrufe gespeicherte Zustänge sollten immer in Abhängigkeit der
 	~AddCode  BaseKey
 	~AddText -Variaben als Dictionary verwaltet werden, so dass auch iterative Aufrufe möglich sind.
->> Befehl in SkriptParser hinzufügen
+@Implementierung >> Befehl in SkriptParser hinzufügen
 	>* in Datei
 	~AddCode  ScriptParser.cs
 	>* in Methode
 	~AddCode  private void LoadCommands()
-	>|CmdParser.Add(Cmd$CommandName.GetComandParser());
->> Versionsnummer hochzählen
+	>.|CmdParser.Add(Cmd$CommandName.GetComandParser());
+@Implementierung >> Versionsnummer hochzählen
 	>* in Datei 
 	~AddCode  .\FlowProtocol2\Pages\Shared\_Layout.cshtml
 	>* Hintere Nummer in Zeile 43 hochzählen. Suche nach
 	>.|&copy; 2023 MSan, Version
 
 @Dokumentation >> Neue Flow-DokuDatei anlegen
->> Code einfügen
+	>* Neue Datei in Notepad++ erstellen
+@Dokumentation >> Code einfügen
 	>|~SetTitle $CommandName-Befehl
 	>|@Beschreibung >>_ Der Befehl 
 	>|~AddCode  ~$CommandName
 	>|~AddText  ...
 ~ForEach idx in argindex
-	>|~AddCode  <$argname($idx)>
+	>|~AddCode  <$argtext($idx)>
 	>|~AddText  ...
 ~Loop	
-	>|@Ausnahmen >>* keine
+	>|@Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.	
+	~Split ExceptionTypelist=d,f,i|,
+	~ForEach type in ExceptionTypelist
+		~If ?$ExceptText($type)
+			>|    >>* $ExceptText($type)
+	~Loop
 ~If $MitCB==ja
 	>|@Codebeispiel >>_ siehe 
 	>|~Replace $RefCBURL = $Chr(36)BaseURL|$CommandName->$RefCB
@@ -197,31 +245,32 @@
 	>|@Codebeispiel >>_ Das nachfolgende Beispiel ...
 	>|>>|...
 	>|@Ausgabe >> Testausgabe
->> Vervollständigen
+@Dokumentation >> Vervollständigen
 	># Beschreibung
 	># Ausnahmen
 	># Beispielcode
->> Fertiges Beispiel in Codeblock übernehmen
->> Speichern unter
+	># Beispielbeschreibung
+@Dokumentation >> Fertiges Beispiel in Codeblock übernehmen
+@Dokumentation >> Speichern unter
 	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CommandName.fp2
 @Buch erweitern >> FP2Inhalt.tex öffnen
 	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\FP2Inhalt.tex
->> Zu Abschnitt Befehle gehen
+@Buch erweitern >> Zu Abschnitt Befehle gehen
 		>|\subsection{Befehle}\label{Befehle}
->> An der für 
+@Buch erweitern >> An der für 
 	~AddCode  ~$CommandName
 	~AddText  alphabetisch richtigen Stelle einfügen:
 		>|\item[\fcmd{$CommandName}]
 		~ForEach idx in argindex
-			~Replace syntws=$argsyntax($idx)|\s*->
+			~Trim syntws=$argsyntax($idx)
 			~Set verbmask=$Chr(124)
 			~If $syntws~$verbmask
 				~Set verbmask=$Chr(61)
 			~Replace syntex=$Chr(32)\verb$verbmask$syntws$verbmask|$Chr(32)\verb$verbmask$verbmask->
-			~AddText  \synvar{$argname($idx)}$syntex
+			~AddText  \synvar{$argtext($idx)}$syntex
 		~Loop
 		~AddText \\
 		>|Fügt usw.\\
 		>|%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.			
->> Beschreibung übernehmen.
->> Verweise anpassen oder entfernen.
+@Buch erweitern >> Beschreibung übernehmen.
+@Buch erweitern >> Verweise anpassen oder entfernen.

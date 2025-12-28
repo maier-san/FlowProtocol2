@@ -28,6 +28,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Datenschutzerklärung</a>
                         </li>
                     </ul>
+                    <form class="d-flex" asp-page="/ScriptSearch" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Skriptsuche" aria-label="Search" name="query">
+                        <button class="btn btn-outline-success" type="submit">Suchen</button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -40,7 +44,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 MSan, Version 2.45
+            &copy; 2023 MSan, Version 2.46
         </div>
     </footer>
 

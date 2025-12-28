@@ -1,0 +1,40 @@
+@page
+@model FlowProtocol2.Pages.ScriptSearchModel
+@{
+    ViewData["Title"] = "Skriptsuche";
+}
+
+<h2>@Model.Title</h2>
+<hr>
+
+@if (Model.Results.Any())
+{
+    <ul class="list-group">
+        @foreach (var result in Model.Results)
+        {
+            <li class="list-group-item">
+                <h5><a asp-page="/FlowPages/Run" asp-route-relativepath="@result.RelativePath">@result.ScriptName</a></h5>
+                <p><strong>Relativer Pfad:</strong> @result.RelativePath</p>
+                <p><strong>Anzahl der Vorkommen:</strong> @result.OccurrenceCount</p>
+                @if (result.SampleLines.Any())
+                {
+                    <p><strong>Beispielzeilen:</strong></p>
+                    <ul>
+                        @foreach (var line in result.SampleLines)
+                        {
+                            <li><code>@line</code></li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+}
+else if (!string.IsNullOrWhiteSpace(Model.Query))
+{
+    <p>Keine Skripte gefunden, die den Suchbegriff "@Model.Query" enthalten.</p>
+}
+
+<p>
+    <a asp-page="/FlowPages/SelectMain" class="btn btn-primary">Zurück zur Startseite</a>
+</p>

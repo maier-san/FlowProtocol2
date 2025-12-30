@@ -4,8 +4,8 @@ namespace FlowProtocol2.Commands
     using FlowProtocol2.Core;
 
     /// <summary>
-    /// Implementiert den Include-Befehl
-    /// </summary>
+    ///   Implementiert den Include-Befehl
+    /// </summary>    
     public class CmdInclude : CmdBaseCommand
     {
         public string ScriptNameOrPath { get; set; }

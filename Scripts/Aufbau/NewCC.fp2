@@ -2,9 +2,11 @@
 ~Input cmdline: Gib das Muster für die gewünschte Befehlszeile ein.
 ~AddHelpLine Beginnend mit ~<Befehlsname> und Einbindung aller Argumente in runden Klammern.
 ~AddHelpLine Verwende folgende Präfixe, um den Typ der Argumente anzugeben: v = Name einer Variable, t = Funktionsname (ohne Variablenauflösung), 
-	__ d = Datumsangabe (inklusive Variablen), i = ganzzahliger Wert (inklusive Variablen), f = Dezimalwert (inklusive Variablen), x = beliebiger Text
+	__ d = Datumsangabe (inklusive Variablen), i = ganzzahliger Wert (inklusive Variablen), f = Dezimalwert (inklusive Variablen), x = beliebiger Text,
+	__ s = beliebiger Text ohne Strichpunkt
 ~AddHelpLine Verwendet eckige Klammern um einzelne optionale Blöcke zu kennzeichnen.
-~AddHelpLine Beispiel: ~Tralala (vVarName) = (dDatum)[; Range=(iVon)..(iBis)]
+~AddHelpLine Variablennamen, die "File" oder "Path" enthalten werden, werden um Pfadtrennzeichenersetzungen ergänzt.
+~AddHelpLine Beispiel: ~Tralala (vVarName) = (dDatum)[; Range=(iVon)..(iBis)][; BaseKey=(vBaseKey)]
 @Eingabe >>|$cmdline
 ?NCD: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
 #j: Ja
@@ -14,11 +16,13 @@
 	~Set MitCB=nein
 ~Execute
 
+// Name des Befehls notieren
 ~RegExMatch regcmd=$cmdline)|~([A-Za-z0-9]+)( ?)(.*)
 ~Set CommandName=$regcmd(1)
 ~RegExReplace CmdWS=$regcmd(2)|\s+->\s+
 ~Set Args=$regcmd(3)
 
+// *** Reguläre Ausdrücke in Abhängigkeit bestimmter Variablentypen
 // Variablenname
 ~Set reporeg(v)=[A-Za-z0-9\$\(\)]+
 // Funktionsname (ohne Variablenauflösung)
@@ -31,45 +35,69 @@
 ~Set reporeg(f)=-?[A-Za-z0-9\$\(\)\.\,]+
 // beliebiger Text
 ~Set reporeg(x)=.*
+// beliebiger Text ohne Strichpunkt
+~Set reporeg(s)=[^;]*
+// Alle Typen
+~Set AllTypes=v t d i f x s
+~Replace AllTypeBlock=$AllTypes|$Chr(32)->
+~Split AllTypeList=$AllTypes|$Chr(32)
 
+// *** Ausdruck parsen
 ~Set ParserExpression=^~$CommandName$CmdWS
 ~Set ExceptionVarList=
 ~Set Syntaxpassed=
 ~Set ArgsWS=$Args
+// Leerzeichen durch $Chr(149) ersetzen, damit sie beim Splitten nicht weggetrimmt werden
 ~RegExReplace ArgsWS=$ArgsWS|\s+->$Chr(149)
+// Zusätzliche Leerzeichen vor und nach = und zwischen [ und ;
 ~Replace ArgsWS=$ArgsWS|=->$Chr(149)=$Chr(149)
 ~Replace ArgsWS=$ArgsWS|[;->[$Chr(149);
 ~Replace ArgsWS=$ArgsWS|$Chr(149)$Chr(149)->$Chr(149)
 ~Split ArgList=$ArgsWS|(
 ~Set argidx=0
-~Split MaskSignList=$Chr(124) + - ? ^ \|$Chr(32)
+~Split MaskSignList=\ $Chr(124) . ? * + - ^|$Chr(32)
 ~ForEach token in ArgList
-	~If $token!=
-		~RegExMatch regvar=$token|([vtdifx])([^)]+)\)(.*)
-		~If $regvar(0)
-			~AddTo argidx+=1
-			~Set argindex($argidx)=$argidx
-			~Set argtype($argidx)=$regvar(1)
-			~CamelCase argname($argidx)=$regvar(2)
-			~Replace argtext($argidx)=$regvar(2)|$Chr(149)->$Chr(32)
-			~Replace argsyntax($argidx)=$regvar(3)|$Chr(149)->$Chr(32)
-			~Set synexp=$regvar(3)
-			~ForEach symbol in MaskSignList
-				~Replace synexp=$synexp|$symbol->\$symbol
-			~Loop					
-			~Set ParserExpression=$ParserExpression($reporeg($argtype($argidx)))$regvar(3)
-			~Set ExceptionVarList=$ExceptionVarList expanded$argname($argidx)='{expanded$argname($argidx)}'
-			~Split CountEKA=$Syntaxpassed|[			
-			~CalculateExpression groupindex($argidx) = $argidx + $CountEKA(0) - 1
-			~Set IsOptional($argidx)=nein
-			~If $CountEKA(0)>1
-				~Set IsOptional($argidx)=ja
-			~Set Syntaxpassed=$Syntaxpassed$regvar(3)			
+	~RegExMatch regvar=$token|([$AllTypeBlock])([^)]+)\)(.*)
+	~If $regvar(0)
+		~AddTo argidx+=1
+		~Set argindex($argidx)=$argidx
+		~Set argtype($argidx)=$regvar(1)
+		~CamelCase argname($argidx)=$regvar(2)
+		~Replace argtext($argidx)=$regvar(2)|$Chr(149)->$Chr(32)
+		~Replace argsyntax($argidx)=$regvar(3)|$Chr(149)->$Chr(32)
+		~Set pexp=$regvar(3)
+		~Set ParserExpression=$ParserExpression(##$argtype($argidx)##)
+		~Set ExceptionVarList=$ExceptionVarList expanded$argname($argidx)='{expanded$argname($argidx)}'
+		~Split CountEKA=$Syntaxpassed|[			
+		~CalculateExpression groupindex($argidx) = $argidx + $CountEKA(0) - 1
+		~Set IsOptional($argidx)=nein
+		~If $CountEKA(0)>1
+			~Set IsOptional($argidx)=ja
+		~Set Syntaxpassed=$Syntaxpassed$regvar(3)
+	~Else
+		~Set pexp=$token
+	// Zeichen maskieren
+	~ForEach symbol in MaskSignList
+		~Replace pexp=$pexp|$symbol->\$symbol
+	~Loop
+	~Set ParserExpression=$ParserExpression$pexp
 ~Loop
+
+// *** Regulären Ausdruck für den Parser zusammensetzen
 ~Replace ParserExpression=$ParserExpression|[->(
 ~Replace ParserExpression=$ParserExpression|]->)?
+~ForEach type in AllTypeList
+	~Replace ParserExpression=$ParserExpression|##$type##->$reporeg($type)
+~Loop
 ~Replace ParserExpression=$ParserExpression|$Chr(149)->\s*
 
+// *** Flags für besondere Variablen setzen
+~ForEach idx in argindex	
+	~If $argname($idx)==BaseKey
+		~Set BKeyArgument=ja
+~Loop
+
+// *** Implementierungsanleitung ausgeben
 @Implementierung >> Klasse erstellen (Menüpunkt "New File" im Ordner Commands)
 	>|Cmd$CommandName.cs
 @Implementierung >> Code einfügen:
@@ -80,9 +108,11 @@
 	>|    using FlowProtocol2.Core;
 	>|
 	>|    /// <summary>
-	>|    /// Implementiert den $CommandName-Befehl
-	>|    /// Erstellt mit NewCC.fp2, Eingabe: $cmdline
+	>|    /// Implementiert den $CommandName-Befehl	
 	>|    /// </summary>
+	>|    /// <remarks>
+	>|    /// Erstellt mit NewCC.fp2, Eingabe: $cmdline
+	>|    /// </remarks>
 	>|    public class Cmd$CommandName : CmdBaseCommand
 	>|    {
 ~ForEach idx in argindex
@@ -112,9 +142,13 @@
 	>|        }
 	>|
 	>|        public override CmdBaseCommand? Run(RunContext rc)
-	>|        {
+	>|        {		
 ~ForEach idx in argindex
-	>|            string expanded$argname($idx) = ReplaceVars(rc, $argname($idx));
+	~If $argname($idx)~File || $argname($idx)~Path
+		>|            string expanded$argname($idx) = ReplaceVars(rc, $argname($idx)).Replace('|', Path.DirectorySeparatorChar);
+		~Set PfadArgument=ja
+	~Else
+		>|            string expanded$argname($idx) = ReplaceVars(rc, $argname($idx));
 ~Loop
 	>|            try
 	>|            {
@@ -123,7 +157,7 @@
 	~If $IsOptional($idx)==ja
 		>|                if (string.IsNullOrWhiteSpace(expanded$argname($idx)))
 		>|                {
-		>|                    // Optionales Argument mit Variable expanded$argname($idx) wurde weggelassen
+		>|                    // Optionales Argument mit Variable $argname($idx) wurde weggelassen
 		>|                    expanded$argname($idx) = "ToDo";
 		>|                }		
 	~If $argtype($idx)==d
@@ -163,8 +197,15 @@
 	~Replace UseVarList=$UseVarList|:,->:
 	>|                // $UseVarList
 	~If $argtype(1)==v
+		>|	
 		>|                // Ergebnis der Variablen zuweisen
 		>|                rc.InternalVars[expanded$argname(1)] = 'ToDo';
+	~If $BKeyArgument==ja		
+		>|
+		>|                // BaseKey-Stack aktualisieren und nächsten Befehl festlegen
+		>|                if (NextCommand != null) rc.ReturnStack.Push(new EntryPoint(NextCommand, rc.BaseKey));
+		>|                rc.BaseKey = expandedBaseKey;
+		>|                //ToDo return ???.StartCommand;			
 	>|            }
 	>|            catch (Exception ex)
 	>|            {
@@ -187,14 +228,19 @@
 @Implementierung >> Run-Methode ausimplementieren
 	~ForEach idx in argindex
 		~If $IsOptional($idx)==ja
-			># Standardwert/ -verhalten für optionales Argument festlegen
+			># Standardwert/ -verhalten für optionales Argument festlegen bei
 			~AddCode  // Optionales Argument mit Variable expanded$argname($idx) wurde weggelassen
 	~Loop
+	~If $PfadArgument==ja
+		># Pfadtrennzeichenersetzung für Pfadvariablen prüfen
+	~If $BKeyArgument==ja
+		># BaseKey-Stack-Aktualisierung prüfen und nächsten Befehl festlegen bei
+			~AddCode  // BaseKey-Stack aktualisieren und nächsten Befehl festlegen
 	># Run-Methode ausimplementieren bei 
-	~AddCode  // ToDo: Befehl hier implementieren
+		~AddCode  // ToDo: Befehl hier implementieren
 	~If $argtype(1)==v
 		># Variablenzuweisung vervollständigen oder entfernen bei
-		~AddCode  // Ergebnis der Variablen zuweisen
+			~AddCode  // Ergebnis der Variablen zuweisen
 @Implementierung >> Allgemeine Regeln überprüfen
 	>* Regel 1: Die in
 	~AddCode  Create$CommandNameCommand

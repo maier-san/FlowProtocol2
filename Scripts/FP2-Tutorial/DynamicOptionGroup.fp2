@@ -1,6 +1,6 @@
 ~SetTitle DynamicOptionGroup-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~DynamicOptionGroup <Key>: <Variable>; <Promt>
+~AddCode  ~DynamicOptionGroup <Key>: <Variable>; <Prompt>
 ~AddText  erzeugt eine Abfrage mit mehreren Optionen. Von der genau eine ausgewählt werden kann.
 	>>_ Im Unterschied zum
 ~AddCode  ?

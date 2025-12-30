@@ -3,7 +3,7 @@
 ~AddHelpLine Beginnend mit ~<Befehlsname> und Einbindung aller Argumente in runden Klammern.
 ~AddHelpLine Verwende folgende Präfixe, um den Typ der Argumente anzugeben: v = Name einer Variable, t = Funktionsname (ohne Variablenauflösung), 
 	__ d = Datumsangabe (inklusive Variablen), i = ganzzahliger Wert (inklusive Variablen), f = Dezimalwert (inklusive Variablen), x = beliebiger Text,
-	__ s = beliebiger Text ohne Strichpunkt
+	__ s = beliebiger Text ohne Strichpunkt, k = Key (inklusive Variablen)
 ~AddHelpLine Verwendet eckige Klammern um einzelne optionale Blöcke zu kennzeichnen.
 ~AddHelpLine Variablennamen, die "File" oder "Path" enthalten werden, werden um Pfadtrennzeichenersetzungen ergänzt.
 ~AddHelpLine Beispiel: ~Tralala (vVarName) = (dDatum)[; Range=(iVon)..(iBis)][; BaseKey=(vBaseKey)]
@@ -37,8 +37,10 @@
 ~Set reporeg(x)=.*
 // beliebiger Text ohne Strichpunkt
 ~Set reporeg(s)=[^;]*
+// Key
+~Set reporeg(k)=[A-Za-z0-9\$\(\)]*'?
 // Alle Typen
-~Set AllTypes=v t d i f x s
+~Set AllTypes=v t d i f x s k
 ~Replace AllTypeBlock=$AllTypes|$Chr(32)->
 ~Split AllTypeList=$AllTypes|$Chr(32)
 

@@ -9,7 +9,7 @@ namespace FlowProtocol2.Commands
     public class CmdOptionGroup : CmdInputBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }
+        public string Prompt { get; set; }
         public CmdOptionValue? SelectedOptionCommand { get; set; }
         private int InputIndex { get; set; }
 
@@ -22,14 +22,14 @@ namespace FlowProtocol2.Commands
         {
             CmdOptionGroup cmd = new CmdOptionGroup(rc);
             cmd.Key = m.Groups[1].Value.Trim();
-            cmd.Promt = m.Groups[2].Value.Trim();
+            cmd.Prompt = m.Groups[2].Value.Trim();
             return cmd;
         }
 
         public CmdOptionGroup(ReadContext readcontext) : base(readcontext)
         {
             Key = string.Empty;
-            Promt = string.Empty;
+            Prompt = string.Empty;
             SelectedOptionCommand = null;
             InputIndex = 0;
         }
@@ -63,7 +63,7 @@ namespace FlowProtocol2.Commands
                 expandedKey = expandedKey.Replace("'", "_" + InputIndex.ToString());
             }
             ogroup.Key = expandedKey;
-            ogroup.Promt = ReplaceVars(rc, Promt).Trim();
+            ogroup.Prompt = ReplaceVars(rc, Prompt).Trim();
 
             string selectedKey = string.Empty;
             if (rc.BoundVars.ContainsKey(expandedKey))
@@ -77,7 +77,7 @@ namespace FlowProtocol2.Commands
                     c => c.Indent == firstOptionValue.Indent,
                     c => c.Indent < firstOptionValue.Indent);
             int optioncount = 0;
-            string selectedOptionPromt = string.Empty;
+            string selectedOptionPrompt = string.Empty;
             foreach (var idxo in allOptions)
             {
                 IMOptionValue ov = new IMOptionValue(ogroup);
@@ -88,7 +88,7 @@ namespace FlowProtocol2.Commands
                     optionkey = "_" + optioncount.ToString();
                 }
                 ov.Key = optionkey;
-                ov.Promt = ReplaceVars(rc, idxo.Promt);
+                ov.Prompt = ReplaceVars(rc, idxo.Prompt);
                 ogroup.Options.Add(ov);
                 if (!string.IsNullOrEmpty(selectedKey) && ov.Key == selectedKey)
                 {
@@ -107,7 +107,7 @@ namespace FlowProtocol2.Commands
             if (SelectedOptionCommand != null)
             {
                 rc.GivenKeys.Add(expandedKey);
-                selectedOptionPromt = SelectedOptionCommand.Promt;
+                selectedOptionPrompt = SelectedOptionCommand.Prompt;
             }
             else
             {
@@ -118,8 +118,8 @@ namespace FlowProtocol2.Commands
             if (rc.BoundVars.ContainsKey(expandedKey))
             {
                 rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
-                rc.InternalVars[$"{plainKey}_OptionGroupPromt"] = ogroup.Promt;
-                rc.InternalVars[$"{plainKey}_SelectedOptionText"] = selectedOptionPromt;
+                rc.InternalVars[$"{plainKey}_OptionGroupPrompt"] = ogroup.Prompt;
+                rc.InternalVars[$"{plainKey}_SelectedOptionText"] = selectedOptionPrompt;
             }
             return NextCommand;
         }

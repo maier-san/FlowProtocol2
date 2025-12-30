@@ -32,7 +32,7 @@ namespace FlowProtocol2.Commands
             string expandedVarPattern = ReplaceVars(rc, VarPattern);
             try
             {
-                bool starPattern = expandedVarPattern.EndsWith("*");                
+                bool starPattern = expandedVarPattern.EndsWith('*');                
                 if (starPattern)
                 {
                     // Sternchen am Ende: Lösche alle Variable, die mit dem Muster beginnen

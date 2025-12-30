@@ -35,9 +35,19 @@ namespace FlowProtocol2.Commands
                     "Der Hilfetext-Befehl kann keinem Eingabebefehl zugeordnet werden.");
             }
             else if (parentInputCommand.AssociatedInputElement != null)
-            {
-                string textexpanded = ReplaceVars(rc, Text);
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(textexpanded);
+            {                
+                string expandedText = ReplaceVars(rc, Text);
+                try
+                {
+                    parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpLine(expandedText);
+                }
+                catch (Exception ex)
+                {
+                    rc.SetError(ReadContext, "Verarbeitungsfehler",
+                        $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                        + $"Variablenwerte: expandedText='{expandedText}'");
+                    return null;
+                }            
             }
             return NextCommand;
         }

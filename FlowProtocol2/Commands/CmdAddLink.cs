@@ -12,7 +12,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser("^~AddLink (.*)\\|(.*)", (rc, m) => CreateAddLinkCommand(rc, m));
+            return new CommandParser(@"^~AddLink\s+(.*)\|(.*)", (rc, m) => CreateAddLinkCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateAddLinkCommand(ReadContext rc, Match m)
@@ -31,11 +31,21 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string linkexpanded = ReplaceVars(rc, Link);
-            string textexpanded = ReplaceVars(rc, Text);
-            bool isonwhitelist = rc.IsOnWhitelist(linkexpanded);
-            if (string.IsNullOrWhiteSpace(textexpanded)) textexpanded = linkexpanded;
-            rc.DocumentBuilder.AddNewTextElement(textexpanded, linkexpanded, false, isonwhitelist);
+            string expandedLink = ReplaceVars(rc, Link);
+            string expandedText = ReplaceVars(rc, Text);
+            try
+            {
+                bool isonwhitelist = rc.IsOnWhitelist(expandedLink);
+                if (string.IsNullOrWhiteSpace(expandedText)) expandedText = expandedLink;
+                rc.DocumentBuilder.AddNewTextElement(expandedText, expandedLink, false, isonwhitelist);
+            }
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedLink='{expandedLink}' expandedText='{expandedText}'");
+                return null;
+            }
             return NextCommand;
         }
     }

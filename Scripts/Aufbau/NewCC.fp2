@@ -17,7 +17,7 @@
 ~Execute
 
 // Name des Befehls notieren
-~RegExMatch regcmd=$cmdline)|~([A-Za-z0-9]+)( ?)(.*)
+~RegExMatch regcmd=$cmdline|~([A-Za-z0-9]+)( ?)(.*)
 ~Set CommandName=$regcmd(1)
 ~RegExReplace CmdWS=$regcmd(2)|\s+->\s+
 ~Set Args=$regcmd(3)

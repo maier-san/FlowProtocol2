@@ -34,26 +34,36 @@ namespace FlowProtocol2.Commands
         {
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedValue = ReplaceVars(rc, Value);
-            if (!rc.InternalVars.ContainsKey(expandedVarName))
+            try
             {
-                rc.InternalVars[expandedVarName] = "0";
+                if (!rc.InternalVars.ContainsKey(expandedVarName))
+                {
+                    rc.InternalVars[expandedVarName] = "0";
+                }
+                bool bOKValue = Int32.TryParse(expandedValue, out int resultValue);
+                if (!bOKValue)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                        $"Der Ausdruck '{expandedValue}' kann nicht als ganze Zahl interpretiert werden.");
+                }
+                string expandedVarValue = ReplaceVars(rc, rc.InternalVars[expandedVarName]).Trim();
+                bool bOKVarValue = Int32.TryParse(expandedVarValue, out int iVarValue);
+                if (!bOKVarValue)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                        $"Der Ausdruck '{expandedVarValue}' kann nicht als ganze Zahl interpretiert werden.");
+                }
+                if (bOKValue && bOKVarValue)
+                {
+                    rc.InternalVars[expandedVarName] = (resultValue + iVarValue).ToString();
+                }
             }
-            bool evOK = Int32.TryParse(expandedValue, out int iValue);
-            if (!evOK)
+            catch (Exception ex)
             {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                    $"Der Ausdruck '{expandedValue}' kann nicht als ganze Zahl interpretiert werden.");
-            }
-            string expandedVarValue = ReplaceVars(rc, rc.InternalVars[expandedVarName]).Trim();
-            bool evvOK = Int32.TryParse(expandedVarValue, out int iVarValue);
-            if (!evvOK)
-            {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                    $"Der Ausdruck '{expandedVarValue}' kann nicht als ganze Zahl interpretiert werden.");
-            }
-            if (evOK && evvOK)
-            {
-                rc.InternalVars[expandedVarName] = (iValue + iVarValue).ToString();
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedValue='{expandedValue}'");
+                return null;
             }
             return NextCommand;
         }

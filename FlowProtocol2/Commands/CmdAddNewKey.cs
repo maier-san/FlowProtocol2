@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~AddNewKey ([A-Za-z0-9\$\(\)]*)\s*=(.*)", (rc, m) => CreateAddNewKeyCommand(rc, m));
+            return new CommandParser(@"^~AddNewKey\s+([A-Za-z0-9\$\(\)]+)\s*=\s*(.*)", (rc, m) => CreateAddNewKeyCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateAddNewKeyCommand(ReadContext rc, Match m)
@@ -33,18 +33,28 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedKey = ReplaceVars(rc, Key);
-            string plainKey = expandedKey;
             string expandedValue = ReplaceVars(rc, Value);
-            if (!string.IsNullOrEmpty(rc.BaseKey))
+            string plainKey = expandedKey;
+            try
             {
-                expandedKey = rc.BaseKey + "_" + expandedKey;
+                if (!string.IsNullOrEmpty(rc.BaseKey))
+                {
+                    expandedKey = rc.BaseKey + "_" + expandedKey;
+                }
+                if (!rc.BoundVars.ContainsKey(expandedKey))
+                {
+                    rc.BoundVars[expandedKey] = expandedValue;                
+                }
+                rc.GivenKeys.Add(expandedKey);
+                rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
             }
-            if (!rc.BoundVars.ContainsKey(expandedKey))
+            catch (Exception ex)
             {
-                rc.BoundVars[expandedKey] = expandedValue;                
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedValue='{expandedValue}'");
+                return null;
             }
-            rc.GivenKeys.Add(expandedKey);
-            rc.InternalVars[plainKey] = rc.BoundVars[expandedKey];
             return NextCommand;
         }
     }

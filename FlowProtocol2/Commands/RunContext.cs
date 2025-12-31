@@ -60,7 +60,7 @@ namespace FlowProtocol2.Commands
         public bool IsOnWhitelist(string link)
         {
             if (string.IsNullOrWhiteSpace(link)) return true;
-            if (LinkWhitelist == null || !LinkWhitelist.Any()) return true;
+            if (LinkWhitelist == null || LinkWhitelist.Count == 0) return true;
             if (link.StartsWith(MyDomain)) return true;
             foreach (string wle in LinkWhitelist)
             {

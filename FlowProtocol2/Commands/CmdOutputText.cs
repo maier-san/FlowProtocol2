@@ -34,34 +34,44 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string expandedsection = ReplaceVars(rc, Section).Trim();
-            if (expandedsection.StartsWith("@"))
+            string expandedSection = ReplaceVars(rc, Section).Trim();
+            string expandedText = ReplaceVars(rc, Text);            
+            try
             {
-                expandedsection = expandedsection.Substring(1);
+                if (expandedSection.StartsWith('@'))
+                {
+                    expandedSection = expandedSection[1..];
+                }
+                if (!string.IsNullOrEmpty(expandedSection))
+                {
+                    rc.DocumentBuilder.CurrentSection = expandedSection;
+                }
+                Level l = Level.Level1;
+                OutputType ot = OutputType.Enumeration;
+                switch (LevelKey)
+                {
+                    case ">": l = Level.Level1; ot = OutputType.Enumeration; break;
+                    case "": l = Level.Level2; ot = OutputType.Listing; break;
+                    case ".": l = Level.Level3; ot = OutputType.Listing; break;
+                }
+                switch (BlockFormatKey)
+                {
+                    case "*": ot = OutputType.Listing; break;
+                    case "#": ot = OutputType.Enumeration; break;
+                    case "|": ot = OutputType.Code; break;
+                    case "_": ot = OutputType.Paragraph; break;
+                }                
+                if (ot != OutputType.Code) expandedText = expandedText.Trim(); else expandedText = expandedText.TrimEnd();
+                rc.DocumentBuilder.AddNewTextLine(l, ot, expandedText);
             }
-            if (!string.IsNullOrEmpty(expandedsection))
+            catch (Exception ex)
             {
-                rc.DocumentBuilder.CurrentSection = expandedsection;
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedSection='{expandedSection}' LevelKey='{LevelKey}' BlockFormatKey='{BlockFormatKey}' expandedText='{expandedText}'");
+                return null;
             }
-            Level l = Level.Level1;
-            OutputType ot = OutputType.Enumeration;
-            switch (LevelKey)
-            {
-                case ">": l = Level.Level1; ot = OutputType.Enumeration; break;
-                case "": l = Level.Level2; ot = OutputType.Listing; break;
-                case ".": l = Level.Level3; ot = OutputType.Listing; break;
-            }
-            switch (BlockFormatKey)
-            {
-                case "*": ot = OutputType.Listing; break;
-                case "#": ot = OutputType.Enumeration; break;
-                case "|": ot = OutputType.Code; break;
-                case "_": ot = OutputType.Paragraph; break;
-            }
-            string expandedtext = ReplaceVars(rc, Text);
-            if (ot != OutputType.Code) expandedtext = expandedtext.Trim(); else expandedtext = expandedtext.TrimEnd();
-            rc.DocumentBuilder.AddNewTextLine(l, ot, expandedtext);
-            return this.NextCommand;
+            return NextCommand;
         }
     }
 }

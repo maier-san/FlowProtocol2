@@ -13,7 +13,8 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~SetDateTime ([A-Za-z0-9\$\(\)]*)\s*=(.*)", (rc, m) => CreateSetDateTimeCommand(rc, m));
+            return new CommandParser(@"^~SetDateTime\s+([A-Za-z0-9\$\(\)]+)\s*=(.*)",
+                                     (rc, m) => CreateSetDateTimeCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateSetDateTimeCommand(ReadContext rc, Match m)
@@ -32,9 +33,20 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
+            string expandedVarName = ReplaceVars(rc, VarName);
             string expandedFormatString = ReplaceVars(rc, FormatString);
-            string result = DateTime.Now.ToString(expandedFormatString);
-            rc.InternalVars[VarName] = result;
+            try
+            {
+                string result = DateTime.Now.ToString(expandedFormatString);
+                rc.InternalVars[expandedVarName] = result;
+            }
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedFormatString='{expandedFormatString}'");
+                return null;
+            }
             return NextCommand;
         }
     }

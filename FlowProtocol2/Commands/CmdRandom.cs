@@ -35,30 +35,40 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string rangeFromExpanded = ReplaceVars(rc, RangeFrom).Trim();
-            string rangeToExpanded = ReplaceVars(rc, RangeTo).Trim();
-            bool bRangeAOK = Int32.TryParse(rangeFromExpanded, out int iRangeA);
-            bool bRangeBOK = Int32.TryParse(rangeToExpanded, out int iRangeB);
-            if (!bRangeAOK)
+            string expandedVarName = ReplaceVars(rc, VarName);
+            string expandedRangeFrom = ReplaceVars(rc, RangeFrom);
+            string expandedRangeTo = ReplaceVars(rc, RangeTo);
+            try
             {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck '{rangeFromExpanded}' kann nicht als ganze Zahl interpretiert werden.");
+                bool bRangeAOK = Int32.TryParse(expandedRangeFrom, out int iRangeA);                
+                if (!bRangeAOK)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                            $"Der Ausdruck '{expandedRangeFrom}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                bool bRangeBOK = Int32.TryParse(expandedRangeTo, out int iRangeB);
+                if (!bRangeBOK)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                            $"Der Ausdruck '{expandedRangeTo}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                if (iRangeA > iRangeB)
+                {
+                    rc.SetError(ReadContext, "Ungültiger Wertebereich",
+                            $"Der Ausdruck '{expandedRangeFrom}..{expandedRangeTo}' beschreibt keinen gültigen Wertebereich. Die Ausführung wird abgebrochen.");
+                    return null;
+                }                
+                int rndval = new Random().Next(iRangeA, iRangeB + 1);                    
+                rc.InternalVars[expandedVarName] = rndval.ToString();                
             }
-            else if (!bRangeBOK)
+            catch (Exception ex)
             {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck '{rangeToExpanded}' kann nicht als ganze Zahl interpretiert werden.");
-            }
-            else if (iRangeA > iRangeB)
-            {
-                rc.SetError(ReadContext, "Ungültiger Wertebereich",
-                        $"Der Ausdruck '{rangeFromExpanded}..{rangeToExpanded}' beschreibt keinen gültigen Wertebereich.");
-            }
-            else
-            {
-                int rndval = new Random().Next(iRangeA, iRangeB + 1);
-                string expandedVarName = ReplaceVars(rc, VarName);
-                rc.InternalVars[expandedVarName] = rndval.ToString();
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedRangeFrom='{expandedRangeFrom}' expandedRangeTo='{expandedRangeTo}'");
+                return null;
             }
             return NextCommand;
         }

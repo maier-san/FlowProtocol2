@@ -22,7 +22,6 @@ namespace FlowProtocol2.Commands
             CmdTrim cmd = new CmdTrim(rc);
             cmd.VarName = m.Groups[1].Value.Trim();
             cmd.Text = m.Groups[2].Value.Trim();
-            // ToDo: Weitere Eigenschaften auslesen
             return cmd;
         }
 

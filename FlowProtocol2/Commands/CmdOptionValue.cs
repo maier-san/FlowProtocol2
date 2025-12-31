@@ -32,15 +32,25 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            if (ParentOptionGroupCommand == null)
+            try
             {
-                rc.SetError(ReadContext, "Optionswert ohne Optionsgruppe",
-                    "Dem Optionswert konnte keine übergeordnete Gruppe zugeordnet werden.");
-                return GetNextSameOrHigherLevelCommand();
+                if (ParentOptionGroupCommand == null)
+                {
+                    rc.SetError(ReadContext, "Optionswert ohne Optionsgruppe",
+                        "Dem Optionswert konnte keine übergeordnete Gruppe zugeordnet werden.");
+                    return GetNextSameOrHigherLevelCommand();
+                }
+                if (ParentOptionGroupCommand.SelectedOptionCommand == this)
+                {
+                    return NextCommand;
+                }
             }
-            if (ParentOptionGroupCommand.SelectedOptionCommand == this)
+            catch (Exception ex)
             {
-                return NextCommand;
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: Key='{Key}' Prompt='{Prompt}'");
+                return null;
             }
             return GetNextSameOrHigherLevelCommand();
         }

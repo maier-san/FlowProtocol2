@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~Round ([A-Za-z0-9\$\(\)]*)\s*=(.*)\|\s*([A-Za-z0-9\$\(\)]*)", (rc, m) => CreateRoundCommand(rc, m));
+            return new CommandParser(@"^~Round\s+([A-Za-z0-9\$\(\)]+)\s*=\s*([^|]+)\|([A-Za-z0-9\$\(\)]+)", (rc, m) => CreateRoundCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateRoundCommand(ReadContext rc, Match m)
@@ -34,26 +34,35 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            string valExpanded = ReplaceVars(rc, Value).Trim();
-            string precisionExpanded = ReplaceVars(rc, Precision).Trim();
-            bool w1OK = double.TryParse(valExpanded, out double dblValue);            
-            bool PrecisionOK = Int32.TryParse(precisionExpanded, out int iPrecision);
-            double result = 0;
-            if (!w1OK)
+            string expandedVarName = ReplaceVars(rc, VarName);
+            string expandedValue = ReplaceVars(rc, Value);
+            string expandedPrecision = ReplaceVars(rc, Precision);
+            try
             {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck '{valExpanded}' kann nicht als Gleitkommazahl interpretiert werden.");
-            }
-            else if (!PrecisionOK || iPrecision < 0)
-            {
-                rc.SetError(ReadContext, "Ungültige Rundungsgenauigkeit",
-                        $"Der Ausdruck '{precisionExpanded}' kann nicht als Gleitkommazahl interpretiert werden.");
-            }
-            else
-            {
-                result = Math.Round(dblValue, iPrecision, MidpointRounding.AwayFromZero);
-                string expandedVarName = ReplaceVars(rc, VarName);
+                double result = 0;
+                bool bOKValue = double.TryParse(expandedValue, out double resultValue);
+                if (!bOKValue)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                            $"Der Ausdruck '{expandedValue}' kann nicht als Gleitkommazahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                bool bOKPrecision = Int32.TryParse(expandedPrecision, out int resultPrecision);
+                if (!bOKPrecision || resultPrecision < 0)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                        $"Der Ausdruck '{expandedPrecision}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                result = Math.Round(resultValue, resultPrecision, MidpointRounding.AwayFromZero);
                 rc.InternalVars[expandedVarName] = result.ToString();
+            }
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedValue='{expandedValue}' expandedPrecision='{expandedPrecision}'");
+                return null;
             }
             return NextCommand;
         }

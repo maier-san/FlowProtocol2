@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~SetCulture ([A-Za-z0-9\$\(\)]*)\s*", (rc, m) => CreateSetCultureCommand(rc, m));
+            return new CommandParser(@"^~SetCulture ([A-Za-z0-9\$\(\)]*)", (rc, m) => CreateSetCultureCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateSetCultureCommand(ReadContext rc, Match m)

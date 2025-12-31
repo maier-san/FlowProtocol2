@@ -59,7 +59,7 @@ namespace FlowProtocol2.Commands
             }
             catch (Exception ex)
             {
-                rc.SetError(ReadContext, "RegEx-Ausnahme",
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
                     $"Beim Verarbeiten des regulären Ausdrucks '{expandedExpression}' kam es zur Ausnahme '{ex.Message}'. Die Skriptausführung wird abgebrochen.");
                 return null;
             }

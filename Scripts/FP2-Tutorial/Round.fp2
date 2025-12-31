@@ -1,7 +1,7 @@
 ~SetTitle Round-Befehl
 @Beschreibung >>_ Der Befehl ~Round <Variable> = <Zahl>|<Anzahl Stellen> rundet eine Dezimalzahl auf die angegebene Anzahl an Stellen und speichert das Ergebnis in einer Variable.
-@Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.
->>* Ungültige Rundungsgenauigkeit: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden.
+@Ausnahmen >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als Gleitkommazahl interpretiert werden. Die Ausführung wird abgebrochen.
+>> * Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
 @Codebeispiel >>_ Das nachfolgende Beispiel rundet den Wert 5/3 auf zwei Stellen:
 >>|~Calculate s1 = 5/3
 >>|~Round s2 = $s1|2

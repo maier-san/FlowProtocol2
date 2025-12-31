@@ -7,8 +7,8 @@
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt zwei Werte in zwei Schritten ab:
 >>|~Input w1: Gib eine Zahl ein:
 >>|~Execute
->>|~Input w2: Gib eine andere Zahl als $w1 ein:
->>|@Ausgabe >> Eingegeben wurden $w1 und $w2.
+>>|~Input w2: Gib eine andere Zahl als $Chr(36)w1 ein:
+>>|@Ausgabe >> Eingegeben wurden $Chr(36)w1 und $Chr(36)w2.
 ~Input w1: Gib eine Zahl ein:
 ~Execute
 ~Input w2: Gib eine andere Zahl als $w1 ein:

@@ -6,6 +6,9 @@ namespace FlowProtocol2.Commands
     /// <summary>
     /// Implementiert den ForEachLine-Befehl
     /// </summary>
+    /// <remarks>
+    /// Erstellt mit NewCC.fp2, Eingabe: ~ForEachLine (vVarName) in (sFileNameOrPath)[; Take=(iTake)][; IndexVar=(vIndexVar)][; SectionVar=(vSectionVar)][; (vNoFormatVar)]
+    /// </remarks>
     public class CmdForEachLine : CmdLoopBaseCommand
     {
         public string VarName { get; set; }
@@ -34,8 +37,8 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~ForEachLine ([A-Za-z0-9\$\(\)]*)\s*in\s*([^;]*)(\s*;\s*Take=([A-Za-z0-9\$\(\)]*))?(\s*;\s*IndexVar=([A-Za-z0-9\$\(\)]*))?(\s*;\s*SectionVar=([A-Za-z0-9\$\(\)]*))?(\s*;\s*NoFormat)?",
-                (rc, m) => CreateForEachLineCommand(rc, m));
+            return new CommandParser(@"^~ForEachLine\s+([A-Za-z0-9\$\(\)]+)\s+in\s+([^;]*)(\s*;\s*Take\s*=\s*(-?[A-Za-z0-9\$\(\)]+))?(\s*;\s*IndexVar\s*=\s*([A-Za-z0-9\$\(\)]+))?(\s*;\s*SectionVar\s*=\s*([A-Za-z0-9\$\(\)]+))?(\s*;\s*(NoFormat))?",
+                                     (rc, m) => CreateForEachLineCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateForEachLineCommand(ReadContext rc, Match m)
@@ -46,7 +49,7 @@ namespace FlowProtocol2.Commands
             cmd.Take = m.Groups[4].Value.Trim();
             cmd.IndexVar = m.Groups[6].Value.Trim();
             cmd.SectionVar = m.Groups[8].Value.Trim();
-            cmd.NoFormatVar = m.Groups[9].Value.Trim();
+            cmd.NoFormatVar = m.Groups[10].Value.Trim();
             return cmd;
         }
 
@@ -68,68 +71,78 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
+            string expandedVarName = ReplaceVars(rc, VarName);
+            string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath).Replace('|', Path.DirectorySeparatorChar);            
+            string expandedTake = ReplaceVars(rc, Take);
+            string expandedIndexVar = ReplaceVars(rc, IndexVar);
+            string expandedSectionVar = ReplaceVars(rc, SectionVar);            
+            try
             {
-                string expandedFileNameOrPath = ReplaceVars(rc, FileNameOrPath).Replace('|', Path.DirectorySeparatorChar);
-                string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
-                if (!fileexists)
-                {
-                    rc.SetError(ReadContext, "Datei nicht gefunden",
-                        $"Die Datei '{absoluteFileName}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
-                    return null;
-                }
-                string expandedTake = ReplaceVars(rc, Take);
-                int take = -1;
-                if (!string.IsNullOrEmpty(expandedTake))
-                {
-                    bool takeOK = Int32.TryParse(expandedTake, out take);
-                    if (!takeOK || take < 0)
+                if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
+                {                
+                    string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
+                    if (!fileexists)
                     {
-                        rc.SetError(ReadContext, "Ungültiger Take-Parameter",
-                            $"Der Ausdruck '{expandedTake}' kann nicht als Take-Parameter interpretiert werden. Die Skriptausführung wird abgebrochen.");
+                        rc.SetError(ReadContext, "Datei nicht gefunden",
+                            $"Die Datei '{absoluteFileName}' konnte nicht gefunden werden. Die Skriptausführung wird abgebrochen.");
                         return null;
                     }
+                    int take = -1;
+                    if (!string.IsNullOrEmpty(expandedTake))
+                    {
+                        bool takeOK = Int32.TryParse(expandedTake, out take);
+                        if (!takeOK || take < 0)
+                        {
+                            rc.SetError(ReadContext, "Ungültiger Take-Parameter",
+                                $"Der Ausdruck '{expandedTake}' kann nicht als Take-Parameter interpretiert werden. Die Skriptausführung wird abgebrochen.");
+                            return null;
+                        }
+                    }
+                    RSeed = GetRSeed(rc);
+                    bool noformat = NoFormatVar.Contains("NoFormat");
+                    ReadLineItems(absoluteFileName, take, noformat);                    
+                    Index = 0;
+                    IsInitialized[rc.BaseKey] = true;                
+                    LinkAssociatedLoopCommand(rc, "ForEachLine");
+                    if (AssociatedLoopCommand != null)
+                    {
+                        AssociatedLoopCommand.LoopCounter = 0;
+                    }
                 }
-                RSeed = GetRSeed(rc);
-                bool noformat = NoFormatVar.Contains("NoFormat");
-                ReadLineItems(absoluteFileName, take, noformat);
-                ExpandedVarName = ReplaceVars(rc, VarName);
-                ExpandedIndexVar = ReplaceVars(rc, IndexVar);
-                ExpandedSectionVar = ReplaceVars(rc, SectionVar);
-                Index = 0;
-                IsInitialized[rc.BaseKey] = true;                
-                LinkAssociatedLoopCommand(rc, "ForEachLine");
                 if (AssociatedLoopCommand != null)
                 {
-                    AssociatedLoopCommand.LoopCounter = 0;
+                    if (LineItems.Any())
+                    {
+                        var ret = LineItems.First();
+                        LineItems.RemoveAt(0);
+                        rc.InternalVars[expandedVarName] = ret.LineContend;
+                        if (!string.IsNullOrEmpty(expandedSectionVar))
+                        {
+                            rc.InternalVars[expandedSectionVar] = ret.Section;
+                        }
+                        if (!string.IsNullOrEmpty(expandedIndexVar))
+                        {
+                            Index++;
+                            rc.InternalVars[expandedIndexVar] = Index.ToString();
+                        }
+                        return NextCommand;
+                    }
+                    else
+                    {
+                        IsInitialized[rc.BaseKey] = false;
+                        return AssociatedLoopCommand.NextCommand;
+                    }
                 }
+                rc.SetError(ReadContext, "ForEachLine ohne Loop",
+                    "Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
             }
-            if (AssociatedLoopCommand != null)
+            catch (Exception ex)
             {
-                if (LineItems.Any())
-                {
-                    var ret = LineItems.First();
-                    LineItems.RemoveAt(0);
-                    rc.InternalVars[ExpandedVarName] = ret.LineContend;
-                    if (!string.IsNullOrEmpty(ExpandedSectionVar))
-                    {
-                        rc.InternalVars[ExpandedSectionVar] = ret.Section;
-                    }
-                    if (!string.IsNullOrEmpty(ExpandedIndexVar))
-                    {
-                        Index++;
-                        rc.InternalVars[ExpandedIndexVar] = Index.ToString();
-                    }
-                    return NextCommand;
-                }
-                else
-                {
-                    IsInitialized[rc.BaseKey] = false;
-                    return AssociatedLoopCommand.NextCommand;
-                }
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedFileNameOrPath='{expandedFileNameOrPath}' expandedTake='{expandedTake}' expandedIndexVar='{expandedIndexVar}' expandedSectionVar='{expandedSectionVar}' NoFormatVar='{NoFormatVar}'");
+                return null;
             }
-            rc.SetError(ReadContext, "ForEachLine ohne Loop",
-                "Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
             return null;
         }
 

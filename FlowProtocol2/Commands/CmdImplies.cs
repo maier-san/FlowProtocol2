@@ -32,15 +32,25 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedKey = ReplaceVars(rc, Key).Trim();
-            string plainKey = expandedKey;
             string expandedText = ReplaceVars(rc, Text);
-            if (!string.IsNullOrEmpty(rc.BaseKey))
+            try
             {
-                expandedKey = rc.BaseKey + "_" + expandedKey;
+                string plainKey = expandedKey;            
+                if (!string.IsNullOrEmpty(rc.BaseKey))
+                {
+                    expandedKey = rc.BaseKey + "_" + expandedKey;
+                }
+                rc.BoundVars[expandedKey] = expandedText;
+                rc.GivenKeys.Add(expandedKey);
+                rc.InternalVars[plainKey] = expandedText;
             }
-            rc.BoundVars[expandedKey] = expandedText;
-            rc.GivenKeys.Add(expandedKey);
-            rc.InternalVars[plainKey] = expandedText;
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedText='{expandedText}'");
+                return null;
+            }
             return NextCommand;
         }
     }

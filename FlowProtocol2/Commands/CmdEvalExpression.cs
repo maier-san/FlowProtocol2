@@ -36,14 +36,24 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedVarName = ReplaceVars(rc, VarName);
-            bool evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
-            if (err != null)
+            try
             {
-                rc.ErrorItems.Add(err);
+                bool evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
+                if (err != null)
+                {
+                    rc.ErrorItems.Add(err);
+                    return null;
+                }
+                if (Negation == "!") evaluation = !evaluation;
+                rc.InternalVars[expandedVarName] = BoolString(evaluation);
+            }
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedVarName='{expandedVarName}' Negation='{Negation}' Expression='{Expression}'");
                 return null;
             }
-            if (Negation == "!") evaluation = !evaluation;
-            rc.InternalVars[expandedVarName] = BoolString(evaluation);
             return NextCommand;
         }
     }

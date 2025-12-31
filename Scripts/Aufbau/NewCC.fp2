@@ -91,6 +91,7 @@
 ~ForEach type in AllTypeList
 	~Replace ParserExpression=$ParserExpression|##$type##->$reporeg($type)
 ~Loop
+~RegExReplace ParserExpression=$ParserExpression|$Chr(149)([a-z]{1,3})$Chr(149)->\s+$1\s+
 ~Replace ParserExpression=$ParserExpression|$Chr(149)->\s*
 
 // *** Flags für besondere Variablen setzen

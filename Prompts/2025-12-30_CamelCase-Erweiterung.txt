@@ -1,0 +1,4 @@
+Erweitere die Ersetzung der Umlaute in Zeile 39 um weitere Ersetzungen von 
+diakritischen Zeichen in den jeweiligen Ausgangsbuchstaben, bzw. in eine Zeichenfolge, 
+die man typischerweise als Ersatz verwendet, wenn man nur die 26 Buchstaben zur 
+Verfügung hat.

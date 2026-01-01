@@ -61,7 +61,7 @@ public class ScriptSearchModel : PageModel
                 var result = new SearchResult
                 {
                     ScriptName = scriptName,
-                    RelativePath = relativePathForLink,
+                    RelativePath = relativePathFull,
                     OccurrenceCount = matchingLines.Count,
                     SampleLines = matchingLines.Take(3).ToList()
                 };

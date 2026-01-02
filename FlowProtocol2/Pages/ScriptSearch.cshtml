@@ -13,7 +13,7 @@
         @foreach (var result in Model.Results)
         {
             <li class="list-group-item">
-                <h5><a asp-page="/FlowPages/Run" asp-route-relativepath="@result.RelativePath">@result.ScriptName</a></h5>
+                <h5><a asp-page="/FlowPages/Run" asp-route-relativepath="@result.RelativePathForLink">@result.ScriptName</a></h5>
                 <p><strong>Relativer Pfad:</strong> @result.RelativePath</p>
                 <p><strong>Anzahl der Vorkommen:</strong> @result.OccurrenceCount</p>
                 @if (result.SampleLines.Any())

@@ -8,11 +8,11 @@ namespace FlowProtocol2.Pages;
 
 public class ScriptSearchModel : PageModel
 {
-    private readonly IConfiguration _configuration;
+    public required string ScriptPath { get; set; }
 
     public ScriptSearchModel(IConfiguration configuration)
     {
-        _configuration = configuration;
+        ScriptPath = configuration["ScriptPath"] ?? throw new InvalidOperationException();
     }
 
     public string? Query { get; set; }
@@ -23,6 +23,8 @@ public class ScriptSearchModel : PageModel
     {
         public string? ScriptName { get; set; }
         public string? RelativePath { get; set; }
+        public string? RelativePathForLink => RelativePath?.Replace(".fp2", "").Replace(Path.DirectorySeparatorChar, '|');
+
         public int OccurrenceCount { get; set; }
         public List<string> SampleLines { get; set; } = new();
     }
@@ -35,22 +37,20 @@ public class ScriptSearchModel : PageModel
             Title = "Skriptsuche - Kein Suchbegriff eingegeben";
             return;
         }
-
-        string scriptPath = _configuration["ScriptPath"];
-        if (!Directory.Exists(scriptPath))
+        
+        if (!Directory.Exists(ScriptPath))
         {
             Title = $"Skriptsuche nach \"{Query}\" - Skriptpfad nicht gefunden";
             return;
         }
 
-        var fp2Files = Directory.GetFiles(scriptPath, "*.fp2", SearchOption.AllDirectories);
+        var fp2Files = Directory.GetFiles(ScriptPath, "*.fp2", SearchOption.AllDirectories);
         var pathMatches = new List<SearchResult>();
         var contentMatches = new List<SearchResult>();
 
         foreach (var file in fp2Files)
         {
-            var relativePathFull = Path.GetRelativePath(scriptPath, file);
-            var relativePathForLink = relativePathFull.Replace(".fp2", "").Replace(Path.DirectorySeparatorChar, '|');
+            var relativePathFull = Path.GetRelativePath(ScriptPath, file);
             var scriptName = Path.GetFileNameWithoutExtension(file);
             var lines = System.IO.File.ReadAllLines(file);
             var matchingLines = lines.Where(l => l.Contains(Query, StringComparison.OrdinalIgnoreCase)).ToList();

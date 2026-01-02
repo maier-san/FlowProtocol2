@@ -2557,8 +2557,8 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{Terminplanung}, verwendet in Beispiel~
 Setzt den Titel für die Ausgabeseite.\\
 Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
 
-\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$]$\\
-Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann.
+\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$] [$\verb|; ValueType=| \synvar{Wertetyp}$]$\\
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann. Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann als Wertetyp \verb|int|, \verb|double| oder \verb|datetime| angegeben werden. 
 
 \item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
 Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Kernelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.

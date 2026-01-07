@@ -1,0 +1,6 @@
+Erweitere den Sort-Befehl um einen weiteren optionalen Parameter "ValueType=", mit dem man die Werte 
+für die Sortierung wahlweise als ganze Zahl (int), Gleitkommazahl (double) oder Datum mit Uhrzeit (datetime) interpretieren kann. 
+Bei ValueType=datetime soll davon ausgegangen werden, dass die Werte im Format "yyyy-MM-dd HH:mm:ss" vorliegen 
+und mit einem Fehler reagiert werden, wenn dies nicht für alle Elemente der Liste der Fall ist, wobei Index und Wert 
+der ersten Abweichung genannt werden sollen. Die Implementierung kann sich an der CmdDateDiff-Klasse orientieren.
+Der Umgang mit Formatabweichungen für die Typen int und double soll analog sein.

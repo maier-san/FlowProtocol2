@@ -31,7 +31,7 @@ namespace FlowProtocol2.Core
 
     public abstract class IMBaseElement
     {
-        public string Promt { get; set; }
+        public string Prompt { get; set; }
         public string Key { get; set; }
         public string Section { get; set; }
         public IMHelpInfoBlock HelpInfoBlock { get; set; }
@@ -39,7 +39,7 @@ namespace FlowProtocol2.Core
 
         public IMBaseElement()
         {
-            Promt = string.Empty;
+            Prompt = string.Empty;
             Key = string.Empty;
             Section = string.Empty;
             HelpInfoBlock = new IMHelpInfoBlock();

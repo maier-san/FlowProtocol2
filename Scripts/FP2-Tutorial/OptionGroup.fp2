@@ -16,7 +16,7 @@
 ~AddText  angegeben. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
 >>_ Für die gewählte Option werden die darunter eingerückten Befehle ausgeführt, für die anderen nicht.
 >>_ Über die Variablen
-~AddCode  <Schlüssel>_OptionGroupPromt
+~AddCode  <Schlüssel>_OptionGroupPrompt
 ~AddText  und
 ~AddCode  <Schlüssel>_SelectedOptionText
 ~AddText  lassen sich der Text der Frage und der ausgewählten Option abrufen.
@@ -34,7 +34,7 @@
 >>|#: Was anderes
 >>|	@Ausgabe >> Ich mag was anderes
 >>|@Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!
->>|@Ausgabe >> Erg_OptionGroupPromt = $Erg_OptionGroupPromt
+>>|@Ausgabe >> Erg_OptionGroupPrompt = $Erg_OptionGroupPrompt
 >>|@Ausgabe >> Erg_SelectedOptionText = $Erg_SelectedOptionText
 ?Erg: Was ist dein Lieblingsprojekt?
 ~AddHelpLine Schwierige Wahl, ich weiß.
@@ -48,5 +48,5 @@
 #: Was anderes
 	@Ausgabe >> Ich mag was anderes
 @Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!
-@Ausgabe >> Erg_OptionGroupPromt = $Erg_OptionGroupPromt
+@Ausgabe >> Erg_OptionGroupPrompt = $Erg_OptionGroupPrompt
 @Ausgabe >> Erg_SelectedOptionText = $Erg_SelectedOptionText

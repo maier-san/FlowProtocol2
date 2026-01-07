@@ -52,7 +52,7 @@
             {
                 <div class="rendered-form">
                     <div class="formbuilder-text form-group">
-                        <label for="@inidx.Key" class="formbuilder-text-label">@inidx.Promt<br></label>
+                        <label for="@inidx.Key" class="formbuilder-text-label">@inidx.Prompt<br></label>
                         @if (tinidx.HelpInfoBlock.HelpInfoLines.Any())
                         {
                             @await Html.PartialAsync("_IMHelpInfoBlock", tinidx.HelpInfoBlock)
@@ -67,7 +67,7 @@
             @if (ogidx != null)
             {
                 <div class="formbuilder-radio-group form-group">
-                    <label class="formbuilder-radio-group-label">@ogidx.Promt</label>
+                    <label class="formbuilder-radio-group-label">@ogidx.Prompt</label>
                     @if (ogidx.HelpInfoBlock.HelpInfoLines.Any())
                     {
                         @await Html.PartialAsync("_IMHelpInfoBlock", ogidx.HelpInfoBlock)
@@ -78,7 +78,7 @@
                             <div class="formbuilder-radio">
                                 <span>
                                     <input value="@op.Key" type="radio" asp-for="BoundVars[ogidx.Key]" id="@op.UniqueKey">
-                                    <label for="@op.UniqueKey">@op.Promt</label>
+                                    <label for="@op.UniqueKey">@op.Prompt</label>
                                 </span>
                             </div>
                         }

@@ -29,7 +29,8 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            rc.InputForm.Title = ReplaceVars(rc, Title).Trim();
+            string expandedTitle = ReplaceVars(rc, Title).Trim();
+            rc.InputForm.Title = expandedTitle;
             return NextCommand;
         }
     }

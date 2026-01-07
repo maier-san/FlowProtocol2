@@ -4,13 +4,13 @@ namespace FlowProtocol2.Core
     {
         public string Key { get; set; }
         public string UniqueKey => ParentOptionGroup.Key + "_" + Key;
-        public string Promt { get; set; }
+        public string Prompt { get; set; }
         private IMOptionGroupElement ParentOptionGroup { get; set; }
         public IMOptionValue(IMOptionGroupElement parentOptionGroup)
         {
             ParentOptionGroup = parentOptionGroup;
             Key = string.Empty;
-            Promt = string.Empty;
+            Prompt = string.Empty;
         }
     }
 }

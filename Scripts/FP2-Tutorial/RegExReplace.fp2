@@ -13,6 +13,10 @@
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel ersetzt in einem Satz alle Kombinationen aus Umlaut + "l" durch "xL".
 >>|~RegExReplace SatzMitX = Hallo Welt, alles OK?|[aeiou]l+->xL
+>>|~RegExReplace SatzMitQ = Hallo Welt, alles OK?|([A-Z])->*$1*
 >>|@Ausgabe >> $SatzMitX
+>>|@Ausgabe >> $SatzMitQ
 ~RegExReplace SatzMitX = Hallo Welt, alles OK?|[aeiou]l+->xL
+~RegExReplace SatzMitQ = Hallo Welt, alles OK?|([A-Z])->*$1*
 @Ausgabe >> $SatzMitX
+@Ausgabe >> $SatzMitQ

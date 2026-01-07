@@ -90,7 +90,7 @@ namespace FlowProtocol2.Commands
                         (double w1, char wop, double w2) = GetExpressionValues(fm);
                         if (wop == '^')
                         {
-                            erg = (Math.Pow(w1, w2)).ToString();
+                            erg = Math.Pow(w1, w2).ToString();
                         }
                     }
                     else if (MExpr.IsMatch(expandedExpression))
@@ -168,8 +168,8 @@ namespace FlowProtocol2.Commands
             string v1 = fm.Groups[1].Value.Trim();
             string v2 = fm.Groups[3].Value.Trim();
             string op = fm.Groups[2].Value.Trim() + "?";
-            bool v1OK = Double.TryParse(v1, out double w1);
-            bool v2OK = Double.TryParse(v2, out double w2);
+            bool v1OK = double.TryParse(v1, out double w1);
+            bool v2OK = double.TryParse(v2, out double w2);
             if (!v1OK || !v2OK) op = "?";
             char wop = op.ToCharArray()[0];
             return (w1, wop, w2);

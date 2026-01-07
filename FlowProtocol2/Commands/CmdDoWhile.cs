@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~DoWhile (.*)", (rc, m) => CreateDoWhileCommand(rc, m));
+            return new CommandParser(@"^~DoWhile\s+(.*)", (rc, m) => CreateDoWhileCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateDoWhileCommand(ReadContext rc, Match m)
@@ -32,35 +32,45 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
-            if (err != null)
-            {
-                rc.ErrorItems.Add(err);
-                return null;
-            }
-            if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
-            {
-                IsInitialized[rc.BaseKey] = true;
-                LinkAssociatedLoopCommand(rc, "DoWhile");                
+            try
+            {                
+                Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
+                if (err != null)
+                {
+                    rc.ErrorItems.Add(err);
+                    return null;
+                }
+                if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
+                {
+                    IsInitialized[rc.BaseKey] = true;
+                    LinkAssociatedLoopCommand(rc, "DoWhile");                
+                    if (AssociatedLoopCommand != null)
+                    {                
+                        AssociatedLoopCommand.LoopCounter = 0;
+                    }
+                }
                 if (AssociatedLoopCommand != null)
                 {                
-                    AssociatedLoopCommand.LoopCounter = 0;
-                }
+                    if (Evaluation)
+                    {              
+                        return NextCommand;
+                    }
+                    else
+                    {
+                        IsInitialized[rc.BaseKey] = false;
+                        return AssociatedLoopCommand.NextCommand;
+                    }
+                }                
+                rc.SetError(ReadContext, "DoWhile ohne Loop",
+                    "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");                                
+            }        
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: Expression='{Expression}'");
+                return null;
             }
-            if (AssociatedLoopCommand != null)
-            {                
-                if (Evaluation)
-                {              
-                    return NextCommand;
-                }
-                else
-                {
-                    IsInitialized[rc.BaseKey] = false;
-                    return AssociatedLoopCommand.NextCommand;
-                }
-            }
-            rc.SetError(ReadContext, "DoWhile ohne Loop",
-                "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
             return null;
         }
     }

@@ -10,12 +10,12 @@ namespace FlowProtocol2.Commands
     {
         public string Key { get; set; }
         public string VarName { get; set; }
-        public string Promt { get; set; }
+        public string Prompt { get; set; }
         private int InputIndex { get; set; }
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~DynamicOptionGroup ([A-Za-z0-9\$\(\)]*[']?):\s*([A-Za-z0-9\$\(\)]*)\s*;(.*)", (rc, m) => CreateDynamicOptionGroupCommand(rc, m));
+            return new CommandParser(@"^~DynamicOptionGroup ([A-Za-z0-9\$\(\)]*'?):\s*([A-Za-z0-9\$\(\)]*)\s*;(.*)", (rc, m) => CreateDynamicOptionGroupCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateDynamicOptionGroupCommand(ReadContext rc, Match m)
@@ -23,7 +23,7 @@ namespace FlowProtocol2.Commands
             CmdDynamicOptionGroup cmd = new CmdDynamicOptionGroup(rc);
             cmd.Key = m.Groups[1].Value.Trim();
             cmd.VarName = m.Groups[2].Value.Trim();
-            cmd.Promt = m.Groups[3].Value.Trim();
+            cmd.Prompt = m.Groups[3].Value.Trim();
             return cmd;
         }
 
@@ -31,13 +31,13 @@ namespace FlowProtocol2.Commands
         {
             Key = string.Empty;
             VarName = string.Empty;
-            Promt = string.Empty;
+            Prompt = string.Empty;
         }
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedKey = ReplaceVars(rc, Key);
             string expandedVarName = ReplaceVars(rc, VarName);
-            string expandedPromt = ReplaceVars(rc, Promt);
+            string expandedPrompt = ReplaceVars(rc, Prompt);
             try
             {
                 IMOptionGroupElement ogroup = new IMOptionGroupElement();
@@ -59,7 +59,7 @@ namespace FlowProtocol2.Commands
                     expandedKey = expandedKey.Replace("'", "_" + InputIndex.ToString());
                 }
                 ogroup.Key = expandedKey;
-                ogroup.Promt = ReplaceVars(rc, Promt).Trim();
+                ogroup.Prompt = ReplaceVars(rc, Prompt).Trim();
                 string selectedKey = string.Empty;
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {
@@ -71,7 +71,7 @@ namespace FlowProtocol2.Commands
                 {
                     IMOptionValue ov = new IMOptionValue(ogroup);
                     ov.Key = idx.ToString();
-                    ov.Promt = ReplaceVars(rc, rc.InternalVars[$"{expandedVarName}({idx})"]);
+                    ov.Prompt = ReplaceVars(rc, rc.InternalVars[$"{expandedVarName}({idx})"]);
                     ogroup.Options.Add(ov);
                     if (!string.IsNullOrEmpty(selectedKey) && ov.Key == selectedKey)
                     {
@@ -102,7 +102,7 @@ namespace FlowProtocol2.Commands
             {
                 rc.SetError(ReadContext, "Verarbeitungsfehler",
                     $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
-                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedVarName='{expandedVarName}' expandedPromt='{expandedPromt}'");
+                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedVarName='{expandedVarName}' expandedPrompt='{expandedPrompt}'");
                 return null;
             }
             return NextCommand;

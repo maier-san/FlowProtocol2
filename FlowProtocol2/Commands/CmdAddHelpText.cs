@@ -37,8 +37,18 @@ namespace FlowProtocol2.Commands
             }
             else if (parentInputCommand.AssociatedInputElement != null)
             {
-                string textexpanded = ReplaceVars(rc, Text);
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(textexpanded, string.Empty, false);
+                string expandedText = ReplaceVars(rc, Text);
+                try
+                {
+                    parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(expandedText, string.Empty, false);
+                }
+                catch (Exception ex)
+                {
+                    rc.SetError(ReadContext, "Verarbeitungsfehler",
+                        $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                        + $"Variablenwerte: expandedText='{expandedText}'");
+                    return null;
+                }                
             }
             return NextCommand;
         }

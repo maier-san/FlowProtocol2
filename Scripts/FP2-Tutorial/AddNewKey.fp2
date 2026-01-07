@@ -8,7 +8,7 @@
 >>|~Execute
 >>|~SetDateTime Zeitpunkt=HH:mm:ss
 >>|~If !?$Chr(36)Q
->>|	~AddNewKey Q = $Zeitpunkt
+>>|	~AddNewKey Q = $Chr(36)Zeitpunkt
 >>|@Ausgabe >> Der Wert "$W" wurde um $Q Uhr eingegeben.
 ~Input W: Gib einen Wert ein.
 ~SetDateTime Zeitpunkt=HH:mm:ss

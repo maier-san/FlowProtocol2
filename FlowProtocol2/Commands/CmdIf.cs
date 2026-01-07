@@ -36,33 +36,43 @@ namespace FlowProtocol2.Commands
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            Handled[rc.BaseKey] = false;
-            Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
-            if (err != null)
+            try
             {
-                rc.ErrorItems.Add(err);
+                Handled[rc.BaseKey] = false;
+                Evaluation = EvaluateExpression(rc, Expression, out ErrorElement? err);
+                if (err != null)
+                {
+                    rc.ErrorItems.Add(err);
+                    return null;
+                }
+                CmdElse? associatedElseCommand = GetNextCommand<CmdElse>(
+                    c => c.Indent == this.Indent,
+                    c => c.Indent < this.Indent || (c.Indent == this.Indent && c is CmdIf));
+                if (associatedElseCommand != null)
+                {
+                    associatedElseCommand.ParentIfCommand = this;
+                }
+                var associatedElseIfCommands = GetNextCommands<CmdElseIf>(
+                    c => c.Indent == this.Indent,
+                    c => c.Indent < this.Indent || (c.Indent == this.Indent && (c is CmdIf || c is CmdElse)));
+                foreach (var c in associatedElseIfCommands)
+                {
+                    c.ParentIfCommand = this;
+                }
+                if (Evaluation)
+                {
+                    Handled[rc.BaseKey] = true;
+                    return NextCommand;
+                }
+                return GetNextSameOrHigherLevelCommand();
+            }
+            catch (Exception ex)
+            {
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: Expression='{Expression}'");
                 return null;
             }
-            CmdElse? associatedElseCommand = GetNextCommand<CmdElse>(
-                c => c.Indent == this.Indent,
-                c => c.Indent < this.Indent || (c.Indent == this.Indent && c is CmdIf));
-            if (associatedElseCommand != null)
-            {
-                associatedElseCommand.ParentIfCommand = this;
-            }
-            var associatedElseIfCommands = GetNextCommands<CmdElseIf>(
-                c => c.Indent == this.Indent,
-                c => c.Indent < this.Indent || (c.Indent == this.Indent && (c is CmdIf || c is CmdElse)));
-            foreach (var c in associatedElseIfCommands)
-            {
-                c.ParentIfCommand = this;
-            }
-            if (Evaluation)
-            {
-                Handled[rc.BaseKey] = true;
-                return NextCommand;
-            }
-            return GetNextSameOrHigherLevelCommand();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser("^~AddHelpLink (.*)\\|(.*)", (rc, m) => CreateAddHelpLinkCommand(rc, m));
+            return new CommandParser(@"^~AddHelpLink\s+(.*)\|(.*)", (rc, m) => CreateAddHelpLinkCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateAddHelpLinkCommand(ReadContext rc, Match m)
@@ -40,11 +40,21 @@ namespace FlowProtocol2.Commands
             }
             else if (parentInputCommand.AssociatedInputElement != null)
             {
-                string linkexpanded = ReplaceVars(rc, Link);
-                string textexpanded = ReplaceVars(rc, Text);
-                bool isonwhitelist = rc.IsOnWhitelist(linkexpanded);
-                if (string.IsNullOrWhiteSpace(textexpanded)) textexpanded = linkexpanded;
-                parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(textexpanded, linkexpanded, isonwhitelist);
+                string expandedLink = ReplaceVars(rc, Link);
+                string expandedText = ReplaceVars(rc, Text);
+                try
+                {
+                    bool isonwhitelist = rc.IsOnWhitelist(expandedLink);
+                    if (string.IsNullOrWhiteSpace(expandedText)) expandedText = expandedLink;
+                    parentInputCommand.AssociatedInputElement.HelpInfoBlock.AddHelpText(expandedText, expandedLink, isonwhitelist);
+                }
+                catch (Exception ex)
+                {
+                    rc.SetError(ReadContext, "Verarbeitungsfehler",
+                        $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                        + $"Variablenwerte: expandedLink='{expandedLink}' expandedText='{expandedText}'");
+                    return null;
+                }    
             }
             return NextCommand;
         }

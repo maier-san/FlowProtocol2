@@ -20,7 +20,6 @@ namespace FlowProtocol2.Commands
 
         public CmdExecute(ReadContext readcontext) : base(readcontext)
         {
-
         }
 
         public override CmdBaseCommand? Run(RunContext rc)

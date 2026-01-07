@@ -14,7 +14,7 @@ namespace FlowProtocol2.Commands
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~ListFiles ([A-Za-z0-9\$\(\)]*)\s*=([^;]*)\s*(; Pattern=.*)?", (rc, m) => CreateListFilesCommand(rc, m));
+            return new CommandParser(@"^~ListFiles ([A-Za-z0-9\$\(\)]*)\s*=([^;]*)(\s*;\s*Pattern=(.*))?", (rc, m) => CreateListFilesCommand(rc, m));
         }
 
         private static CmdBaseCommand CreateListFilesCommand(ReadContext rc, Match m)
@@ -22,7 +22,7 @@ namespace FlowProtocol2.Commands
             CmdListFiles cmd = new CmdListFiles(rc);
             cmd.VarName = m.Groups[1].Value.Trim();
             cmd.DirPath = m.Groups[2].Value.Trim();
-            cmd.Pattern = m.Groups[3].Value.Trim();
+            cmd.Pattern = m.Groups[4].Value.Trim();
             return cmd;
         }
 
@@ -37,7 +37,7 @@ namespace FlowProtocol2.Commands
         {
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedDirPath = ReplaceVars(rc, DirPath).Replace('|', Path.DirectorySeparatorChar);
-            string expandedPattern = ReplaceVars(rc, Pattern.Replace("; Pattern=", string.Empty));
+            string expandedPattern = ReplaceVars(rc, Pattern);
             try
             {
                 string absolutePath = $"{rc.CurrentScriptPath}";

@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
     public class CmdOptionValue : CmdBaseCommand
     {
         public string Key { get; set; }
-        public string Promt { get; set; }
+        public string Prompt { get; set; }
         public CmdOptionGroup? ParentOptionGroupCommand { get; set; }
 
         public static CommandParser GetComandParser()
@@ -20,27 +20,37 @@ namespace FlowProtocol2.Commands
         {
             CmdOptionValue cmd = new CmdOptionValue(rc);
             cmd.Key = m.Groups[1].Value.Trim();
-            cmd.Promt = m.Groups[2].Value.Trim();
+            cmd.Prompt = m.Groups[2].Value.Trim();
             return cmd;
         }
 
         public CmdOptionValue(ReadContext readcontext) : base(readcontext)
         {
             Key = string.Empty;
-            Promt = string.Empty;
+            Prompt = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
         {
-            if (ParentOptionGroupCommand == null)
+            try
             {
-                rc.SetError(ReadContext, "Optionswert ohne Optionsgruppe",
-                    "Dem Optionswert konnte keine übergeordnete Gruppe zugeordnet werden.");
-                return GetNextSameOrHigherLevelCommand();
+                if (ParentOptionGroupCommand == null)
+                {
+                    rc.SetError(ReadContext, "Optionswert ohne Optionsgruppe",
+                        "Dem Optionswert konnte keine übergeordnete Gruppe zugeordnet werden.");
+                    return GetNextSameOrHigherLevelCommand();
+                }
+                if (ParentOptionGroupCommand.SelectedOptionCommand == this)
+                {
+                    return NextCommand;
+                }
             }
-            if (ParentOptionGroupCommand.SelectedOptionCommand == this)
+            catch (Exception ex)
             {
-                return NextCommand;
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: Key='{Key}' Prompt='{Prompt}'");
+                return null;
             }
             return GetNextSameOrHigherLevelCommand();
         }

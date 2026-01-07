@@ -1,28 +1,55 @@
 ~SetTitle Sort-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~Sort <Feldname> [To <Indexfeld>]
+~AddCode  ~Sort <Feldname> [To <Indexfeld>][; ValueType=<Wertetyp>]
 ~AddText  sortiert das eindimensionales Feld 
 ~AddCode  <Feldname>
 ~AddText  alphanumerisch aufteigend. Wird das
 ~AddCode  To
 ~AddText -Attribut mit einem zweiten Feld 
 ~AddCode  <Indexfeld>
-~AddText  angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf andere Felder übertragen werden kann.
-@Ausnahmen >>* keine
-@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt zwei Felder und gibt diese sortiert nach dem ersten Feld aus:
+~AddText  angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf andere Felder übertragen werden kann. 
+~AddText  Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann mit dem Parameter
+~AddCode  ValueType=int
+~AddText  oder 
+~AddCode  ValueType=double
+~AddText  oder 
+~AddCode  ValueType=datetime
+~AddText  ein entsprechender Typ angegeben werden.
+@Ausnahmen >>* Falschen Typenformat: Der Wert bei Index ..., ... kann nicht als Wert vom Typ ... interpretert werden. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel erzeugt zwei Felder und gibt diese sortiert nach dem ersten und danach nach dem zweiten Feld aus:
+>>|@Ausgabe >> Sortiere nach Radtyp
 >>|~Split Radtypen=Rennrad;Gravel;MTB|;
 >>|~Split Spassfaktor=7;10;6|;
 >>|~Sort Radtypen -> IdxMap
 >>|~Set i=1
 >>|~DoWhile $i<=3
->>|	@Ausgabe >> $Radtypen($i): $Spassfaktor($IdxMap($i))
+>>|	> $Radtypen($i): $Spassfaktor($IdxMap($i))
 >>|	~AddTo i+=1
 >>|~Loop
+>>|@Ausgabe >> Sortiere nach Spaßfaktor
+>>|~Split Radtypen=Rennrad;Gravel;MTB|;
+>>|~Split Spassfaktor=7;10;6|;
+>>|~Sort Spassfaktor -> IdxMap; ValueType=int
+>>|~Set i=1
+>>|~DoWhile $i<=3
+>>|	> $Spassfaktor($i): $Radtypen($IdxMap($i))
+>>|	~AddTo i+=1
+>>|~Loop
+@Ausgabe >> Sortiere nach Radtyp
 ~Split Radtypen=Rennrad;Gravel;MTB|;
 ~Split Spassfaktor=7;10;6|;
 ~Sort Radtypen -> IdxMap
 ~Set i=1
 ~DoWhile $i<=3
-	@Ausgabe >> $Radtypen($i): $Spassfaktor($IdxMap($i))
+	> $Radtypen($i): $Spassfaktor($IdxMap($i))
+	~AddTo i+=1
+~Loop
+@Ausgabe >> Sortiere nach Spaßfaktor
+~Split Radtypen=Rennrad;Gravel;MTB|;
+~Split Spassfaktor=7;10;6|;
+~Sort Spassfaktor -> IdxMap; ValueType=int
+~Set i=1
+~DoWhile $i<=3
+	> $Spassfaktor($i): $Radtypen($IdxMap($i))
 	~AddTo i+=1
 ~Loop

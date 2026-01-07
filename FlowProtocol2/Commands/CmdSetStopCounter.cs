@@ -33,27 +33,33 @@ namespace FlowProtocol2.Commands
         public override CmdBaseCommand? Run(RunContext rc)
         {
             string expandedLoopStop = ReplaceVars(rc, LoopStop);
-            bool loopOK = Int32.TryParse(expandedLoopStop, out int loopstop);
-            if (loopOK)
-            {
-                rc.LoopStopCounter = loopstop;
-            }
-            else
-            {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck '{expandedLoopStop}' kann nicht als ganze Zahl interpretiert werden.");
-            }
             string expandedCommandStop = ReplaceVars(rc, CommandStop);
-            bool comOK = Int32.TryParse(expandedCommandStop, out int commandstop);
-            if (comOK)
+            try
             {
-                rc.CommandStopCounter = commandstop;
+                bool bOKLoopStop = Int32.TryParse(expandedLoopStop, out int resultLoopStop);
+                if (!bOKLoopStop)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                        $"Der Ausdruck '{expandedLoopStop}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                bool bOKCommandStop = Int32.TryParse(expandedCommandStop, out int resultCommandStop);
+                if (!bOKCommandStop)
+                {
+                    rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
+                        $"Der Ausdruck '{expandedCommandStop}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
+                    return null;
+                }
+                rc.LoopStopCounter = resultLoopStop;
+                rc.CommandStopCounter = resultCommandStop;
             }
-            else
+            catch (Exception ex)
             {
-                rc.SetError(ReadContext, "Ungültiger numerischer Ausdruck",
-                        $"Der Ausdruck '{expandedCommandStop}' kann nicht als ganze Zahl interpretiert werden.");
-            }
+                rc.SetError(ReadContext, "Verarbeitungsfehler",
+                    $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
+                    + $"Variablenwerte: expandedLoopStop='{expandedLoopStop}' expandedCommandStop='{expandedCommandStop}'");
+                return null;
+            }                    
             return NextCommand;
         }
     }

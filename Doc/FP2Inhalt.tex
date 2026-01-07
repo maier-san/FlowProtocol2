@@ -63,7 +63,7 @@ Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text 
 
 Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{Hallo Welt}.
 
-Als Überschrift wird standardmäßig der Dateinahme ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Der Befehl \cidxfrag{>\mbox{}>} gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.} erklärt.
+Als Überschrift wird standardmäßig der Dateiname ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Der Befehl \cidxfrag{>\mbox{}>} gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.}\ erklärt.
 
 Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} werden immer angezeigt, wenn die Ausführung abgeschlossen ist. Mit \emph{Neue Ausführung} kann das aktuell ausgewählte Skript neu gestartet werden und mit \emph{Zurück zur Startseite} kommt man zurück zur Auswahl der Skript-Hauptgruppen, was auch mit dem Menüpunkt \emph{Start} möglich ist. Wir werden noch einige Anwendungsfälle sehen, die sich am besten mit einem Skript umsetzen lassen, das mehrmals hintereinander ausgeführt wird.
 
@@ -156,7 +156,7 @@ Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt dami
     #k2: Der Datenschutz ist an einer wesentlichen Stelle verletzt.
         >> Stufe-1-Fehler: Datenschutzverletzung
     #k3: Die Datensicherheit ist verletzt oder gefährdet.
-        >> Stufe-1-Fehler: Datensicherheitssverletzung
+        >> Stufe-1-Fehler: Datensicherheitsverletzung
     #no: Nein, die o.g. Kriterien treffen nicht zu.
         ?S2: Treffen die Kriterien für einen Stufe-2-Fehler zu?
             #k1: Der Fehler stört zentrale Programmfunktionen.
@@ -244,7 +244,7 @@ Dieser Anwendungsfall zeigt auch schon, dass es durchaus üblich ist, dass versch
 
 Die Ausführung erzeugt einen Abschnitt\index{Abschnitt} \emph{Anleitung} mit entsprechender Überschrift und den fünf Punkten der Anleitung, gefolgt von einem Abschnitt \emph{Testpunkte} mit den beiden Testpunkten. Im Gegensatz zur Zusammenstellung erfolgt die Ausgabe Abschnittsweise, wobei die Reihenfolge durch die jeweils erste Ausgabe des Abschnitts festgelegt wird.
 
-Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschnitt für alle darauffolgenden Ausgaben, sofern diese nicht explizit einem Abschnitt zugeordnet sind. Um also nur die Anleitung auszugeben, reicht eine einzige Festlegung des Abschnitts am Anfang:
+Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschnitt für alle darauf"|folgenden Ausgaben, sofern diese nicht explizit einem Abschnitt zugeordnet sind. Um also nur die Anleitung auszugeben, reicht eine einzige Festlegung des Abschnitts am Anfang:
 
 \Beispiel{Nur ein Abschnitt}
 \begin{verbatim}
@@ -2061,7 +2061,7 @@ Ich weiß, wie man reguläre Ausdrücke verwenden kann.
 Ich weiß, wie man Berechnungen durchführen kann.
 \end{verbatim}
 
-Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauffolgenden Zeilen interpretiert.
+Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauf"|folgenden Zeilen interpretiert.
 
 Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
 
@@ -2300,7 +2300,7 @@ Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt au
 \item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\
 Erzeugt eine Auswahlabfrage mit mehreren Optionen, von denen genau eine ausgewählt werden kann. Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
 Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Die Optionen werden darunter mit dem \verb|#|-Befehl angegeben.\par
-Über die automatisch befüllten Variablen \synvar{Schlüssel}\verb|_OptionGroupPromt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.
+Über die automatisch befüllten Variablen \synvar{Schlüssel}\verb|_OptionGroupPrompt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.
 
 \item[\cidxfrag{\#}] $[$\synvar{Optionsschlüssel}$]$ \verb|:| \synvar{Anzeigetext}\\
 Fügt eine Option zur übergeordneten Auswahlabfrage hinzu. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
@@ -2311,7 +2311,7 @@ Hängt einen Text in der für Programmcode typischen Schriftart an die letzte Ausg
 Siehe Abschnitt~\ref{LinksInline}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{Archivklasse2} und \ref{BspPatchskript}.
 
 \item[\fcmd{AddHelpLine}] \synvar{Text}\\
-Fügt eine Hilfezeile für die übergeordnete Auswahlabfrage oder Texteingabe mit einem Text hinzu.\\
+Fügt eine Hilfezeile für die übergeordnete Auswahlabfrage oder Texteingabe mit einem Text hinzu. Ersatzweise kann anstelle des Befehlsname auch \cidxfrag{\&>} eingegeben werden.\\
 Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}, \ref{Archivklasse2} und \ref{BspMetaErweiterung}.
 
 \item[\fcmd{AddHelpLink}] \synvar{URL} \verb=|= \synvar{Anzeigetext}\\
@@ -2349,7 +2349,7 @@ Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen},
 
 \item[\fcmd{CamelCase}] \synvar{Variable} \verb|=| \synvar{Text}\\
 Wandelt einen Text in CamelCase-Schreibweise\index{CamelCase-Schreibweise} um und speichert das Ergebnis in einer Variablen.
-Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauffolgenden Buchstaben gekennzeichnet.\\
+Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauf"|folgenden Buchstaben gekennzeichnet.\\
 Siehe Abschnitt~\ref{Entwicklungsanleitungen}, verwendet in Beispiel~\ref{Archivklasse2} und \ref{BspMetaErweiterung}.
 
 \item[\fcmd{ClearVar}] \synvar{Variablenmuster}
@@ -2496,11 +2496,11 @@ Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.\\
 Siehe Abschnitt~\ref{ErsetzungenUndZufallsgenerierung}, verwendet in Beispiel~\ref{Passwortgenerator}.
 
 \item[\fcmd{RegExMatch}] \synvar{Listenvariable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck}\\
-Wendet einen regurären Ausdruck auf einen Text an und speichert das Ergebnis in einer Liste zur angegebenen Listenvariablen. In der Variablen mit Index $0$ wird \verb|true| zurückgegeben, wenn der Text dem regulären Ausdruck entspricht, ansonsten \verb|false|. In den nachfolgenden Variablen mit den Indices $1$, $2$, \dots werden die Werte der Gruppen abgelegt, die im Ausdruck enthalten sind.\\
+Wendet einen regurären Ausdruck\index{Regulärer Ausdruck} auf einen Text an und speichert das Ergebnis in einer Liste zur angegebenen Listenvariablen. In der Variablen mit Index $0$ wird \verb|true| zurückgegeben, wenn der Text dem regulären Ausdruck entspricht, ansonsten \verb|false|. In den nachfolgenden Variablen mit den Indices $1$, $2$, \dots werden die Werte der Gruppen abgelegt, die im Ausdruck enthalten sind.\\
 Siehe Abschnitt~\ref{RegUndDaten}, verwendet in Beispiel~\ref{BspTerminologiepruefer}, \ref{Archivklasse2} und \ref{BspTerminplaner}.
 
 \item[\fcmd{RegExReplace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck} \verb|->| \synvar{Ersetzungstext}\\
-Ersetzt in einem Text alle Vorkommen, die dem regulären Ausdruck entsprechen, durch einen Ersetzungstext und speichert das Ergebnis in einer Variablen.
+Ersetzt in einem Text alle Vorkommen, die dem regulären Ausdruck\index{Regulärer Ausdruck} entsprechen, durch einen Ersetzungstext und speichert das Ergebnis in einer Variablen. Im regulären Ausdruck können mit runden Klammern Gruppierungen gebildet werden, auf die im Ersetzungstext mit \verb|$1|, \verb|$2|, usw.\ Bezug genommen werden kann.
  
 \item[\fcmd{Replace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Suchtext} \verb|->| \synvar{Ersetzungstext}\\
 Ersetzt alle Vorkommen des Suchtextes in einem Text durch den Ersetzungstext und speichert das Ergebnis in einer Variablen.\\
@@ -2557,8 +2557,8 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{Terminplanung}, verwendet in Beispiel~
 Setzt den Titel für die Ausgabeseite.\\
 Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
 
-\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$]$\\
-Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann.
+\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$] [$\verb|; ValueType=| \synvar{Wertetyp}$]$\\
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann. Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann als Wertetyp \verb|int|, \verb|double| oder \verb|datetime| angegeben werden. 
 
 \item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
 Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Kernelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.

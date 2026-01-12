@@ -1,0 +1,22 @@
+~SetTitle AddToList-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~AddToList <Variable> += <Wert>
+~AddText  fügt der mit
+~AddCode  <Variable>
+~AddText  angegebenen Liste den Wert 
+~AddCode  <Wert>
+~AddText  am Ende hinzu. Die Liste kann zu Beginn auch noch leer sein.
+@Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel erstellt eine Liste mit drei Elementen und fügt ein weiteres hinzu:
+>>|~Split Radtypen = Rennrad, MTB, Crosser|,
+>>|~AddToList Radtypen+=Gravel
+>>|@Ausgabe >> Meine $Radtypen(0) Radtypen
+>>|~ForEach rt in Radtypen
+>>|	@Ausgabe > $rt
+>>|~Loop
+~Split Radtypen = Rennrad, MTB, Crosser|,
+~AddToList Radtypen+=Gravel
+@Ausgabe >> Meine $Radtypen(0) Radtypen
+~ForEach rt in Radtypen
+	@Ausgabe > $rt
+~Loop

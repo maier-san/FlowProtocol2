@@ -115,12 +115,16 @@ namespace FlowProtocol2.Commands
             where T : CmdBaseCommand
         {
             CmdBaseCommand top = GetPreviousCommand<CmdBaseCommand>(c => c.PreviousCommand == null, c => false) ?? this;
-            T? cmdT = top.GetNextCommand<T>(predicate, stopcrit);
+            T? cmdT = top as T;
+            if (cmdT != null && predicate(cmdT)) return cmdT;
+            cmdT = top.GetNextCommand<T>(predicate, stopcrit);
             if (cmdT != null) return cmdT;
             foreach (var sinfo in rc.ScriptRepository.Values)
             {
                 if (sinfo.StartCommand != null)
                 {
+                    cmdT = sinfo.StartCommand as T;
+                    if (cmdT != null && predicate(cmdT)) return cmdT;
                     cmdT = sinfo.StartCommand.GetNextCommand<T>(predicate, stopcrit);
                     if (cmdT != null) return cmdT;
                 }

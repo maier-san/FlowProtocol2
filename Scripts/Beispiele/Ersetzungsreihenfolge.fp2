@@ -1,12 +1,14 @@
-// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen.
-@Code >>|// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen.
+// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen
+// und wie man Ausdrücke mit $Chr(36) maskieren kann.
+@Code >>|// Das folgende Beispiel zeigt die Problematik von Variablen, die mit dem Anfang anderer Variablen übereinstimmen
+>>|// und wie man Ausdrücke mit $Chr(36)Chr(36) maskieren kann.
 >>|~Set a=x
 >>|~Set ab=yy
 >>|~Set abc=zzz
 >>|@Ausgabe >> a=$a!
 >>|@Ausgabe >> ab=$ab!
 >>|@Ausgabe >> abc=$abc!
->>|~Set Demaskierung1=$Chr(36)Chr(36)Chr(36)Chr(72)
+>>|~Set Demaskierung1=$Chr(36)Chr(36)Chr(36)Chr(36)Chr(72)
 >>|~Set Demaskierung2=$Demaskierung1
 >>|~Set Demaskierung3=$Demaskierung2
 >>|@Ausgabe >> Demaskierungen
@@ -19,7 +21,7 @@
 @Ausgabe >> a=$a!
 @Ausgabe >> ab=$ab!
 @Ausgabe >> abc=$abc!
-~Set Demaskierung1=$Chr(36)Chr(36)Chr(72)
+~Set Demaskierung1=$Chr(36)Chr(36)Chr(36)Chr(72)
 ~Set Demaskierung2=$Demaskierung1
 ~Set Demaskierung3=$Demaskierung2
 @Ausgabe >> Demaskierungen

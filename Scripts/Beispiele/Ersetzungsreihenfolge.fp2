@@ -6,9 +6,23 @@
 >>|@Ausgabe >> a=$a!
 >>|@Ausgabe >> ab=$ab!
 >>|@Ausgabe >> abc=$abc!
+>>|~Set Demaskierung1=$Chr(36)Chr(36)Chr(36)Chr(72)
+>>|~Set Demaskierung2=$Demaskierung1
+>>|~Set Demaskierung3=$Demaskierung2
+>>|@Ausgabe >> Demaskierungen
+>>|	> Demaskierung1 = $Demaskierung1
+>>|	> Demaskierung2 = $Demaskierung2
+>>|	> Demaskierung3 = $Demaskierung3
 ~Set a=x
 ~Set ab=yy
 ~Set abc=zzz
 @Ausgabe >> a=$a!
 @Ausgabe >> ab=$ab!
 @Ausgabe >> abc=$abc!
+~Set Demaskierung1=$Chr(36)Chr(36)Chr(72)
+~Set Demaskierung2=$Demaskierung1
+~Set Demaskierung3=$Demaskierung2
+@Ausgabe >> Demaskierungen
+	> Demaskierung1 = $Demaskierung1
+	> Demaskierung2 = $Demaskierung2
+	> Demaskierung3 = $Demaskierung3

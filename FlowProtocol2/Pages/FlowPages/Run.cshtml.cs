@@ -47,6 +47,7 @@ namespace FlowProtocol2.Pages.FlowPages
             }
             ScriptParser sp = new ScriptParser();
             var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);
+            RunContext.ScriptRepository[ScriptFilePath] = sinfo;
             ScriptRunner sr = new ScriptRunner();
             RunContext.BoundVars = BoundVars;
             RunContext.MyDomain = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host;

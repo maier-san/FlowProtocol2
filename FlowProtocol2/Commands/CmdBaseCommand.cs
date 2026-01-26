@@ -72,19 +72,26 @@ namespace FlowProtocol2.Commands
                 input = input.Replace("$LineNumber", ReadContext.LineNumber.ToString());
                 if (input.Contains("$Chr("))
                 {
-                    Regex ChrExpr = new Regex(@"\$Chr\(([0-9]*)\)");
-                    while (ChrExpr.IsMatch(input))
+                    Regex ChrExpr = new Regex(@"\$Chr\(([0-9]+)\)");
+                    MatchCollection chrMatches = ChrExpr.Matches(input);
+                    
+                    // Sammle alle Ersetzungen von hinten nach vorne ein, um Indexverschiebungen zu vermeiden
+                    var replacements = new List<(int index, int length, char replacement)>();
+                    foreach (Match chrmatch in chrMatches)
                     {
-                        var chrmatch = ChrExpr.Match(input);
-                        int chrindex = chrmatch.Groups[0].Index;
-                        int chrlength = chrmatch.Groups[0].Length;
                         string strAnsicode = chrmatch.Groups[1].Value.Trim();
                         bool codeOK = int.TryParse(strAnsicode, out int ansicode);
                         if (codeOK && ansicode > 0 && ansicode < 2048)
                         {
-                            input = input.Remove(chrindex, chrlength);
-                            input = input.Insert(chrindex, Convert.ToChar(ansicode).ToString());
+                            replacements.Add((chrmatch.Index, chrmatch.Length, Convert.ToChar(ansicode)));
                         }
+                    }
+                    
+                    // Wende Ersetzungen in absteigender Reihenfolge an, um Indexverschiebungen zu vermeiden
+                    for (int i = replacements.Count - 1; i >= 0; i--)
+                    {
+                        var (index, length, replacement) = replacements[i];
+                        input = input.Remove(index, length).Insert(index, replacement.ToString());
                     }
                 }
             }
@@ -108,12 +115,16 @@ namespace FlowProtocol2.Commands
             where T : CmdBaseCommand
         {
             CmdBaseCommand top = GetPreviousCommand<CmdBaseCommand>(c => c.PreviousCommand == null, c => false) ?? this;
-            T? cmdT = top.GetNextCommand<T>(predicate, stopcrit);
+            T? cmdT = top as T;
+            if (cmdT != null && predicate(cmdT)) return cmdT;
+            cmdT = top.GetNextCommand<T>(predicate, stopcrit);
             if (cmdT != null) return cmdT;
             foreach (var sinfo in rc.ScriptRepository.Values)
             {
                 if (sinfo.StartCommand != null)
                 {
+                    cmdT = sinfo.StartCommand as T;
+                    if (cmdT != null && predicate(cmdT)) return cmdT;
                     cmdT = sinfo.StartCommand.GetNextCommand<T>(predicate, stopcrit);
                     if (cmdT != null) return cmdT;
                 }

@@ -10,7 +10,8 @@ namespace FlowProtocol2.Core
             ReadContext lastReadContext = new ReadContext("nosourcefile", 0, 0, "nocodeline");
             try
             {
-                while (cmdNext != null && !rc.ExecuteNow && stepcount < rc.CommandStopCounter)
+                while (cmdNext != null && !rc.ExecuteNow 
+                        && stepcount < rc.CommandStopCounter && rc.ExampleMaxReplaceLengthExceeded == string.Empty)
                 {
                     stepcount++;
                     lastReadContext = cmdNext.ReadContext;
@@ -26,6 +27,11 @@ namespace FlowProtocol2.Core
                 {
                     rc.SetError(cmdNext.ReadContext, "Maximale Schrittzahl überschritten",
                         $"Die maximale Schrittzahl von {rc.CommandStopCounter} wurde überschritten. Die Ausführung wurde abgebrochen.");
+                }
+                if (rc.ExampleMaxReplaceLengthExceeded != string.Empty)
+                {
+                    rc.SetError(lastReadContext, "Maximale Zeichenkettenlänge überschritten",
+                        $"Eine Zeichenkette hat nach Variablenersetzung die maximale Länge von {rc.MaxReplaceLength} Zeichen überschritten. Inhalt: {rc.ExampleMaxReplaceLengthExceeded}... . Die Ausführung wurde abgebrochen.");
                 }
             }
             catch (Exception ex)

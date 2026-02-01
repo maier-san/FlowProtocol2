@@ -42,7 +42,7 @@ namespace FlowProtocol2.Commands
                             input = input.Replace("$" + v.Key, v.Value);
                         }
                     }
-                } while (compareInput != input && input.Contains('$') && iterationcount < 10);
+                } while (compareInput != input && input.Contains('$') && iterationcount < 10 && input.Length <= rc.MaxReplaceLength);
                 // Systemvariablen                
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");

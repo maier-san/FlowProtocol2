@@ -27,8 +27,6 @@ namespace FlowProtocol2.Commands
             }
             if (AssociatedLoopCommand == null)
             {
-                rc.SetError(ReadContext, $"{commandname} ohne Loop",
-                    $"Dem {commandname}-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden.");
                 return;
             }
             AssociatedLoopCommand.ParentStartLoopCommand = this;

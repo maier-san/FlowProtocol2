@@ -1,0 +1,8 @@
+~Set idx=1
+~DoWhile $idx<10
+	@Durchlauf >> $idx
+	~Set Text=$Text und mehr
+	~AddTo idx+=1	
+~Loop
+~Set Ergebnis=$Text
+@Ergebnis >> $Ergebnis

@@ -42,7 +42,7 @@ namespace FlowProtocol2.Commands
                             input = input.Replace("$" + v.Key, v.Value);
                         }
                     }
-                } while (compareInput != input && input.Contains('$') && iterationcount < 10);
+                } while (compareInput != input && input.Contains('$') && iterationcount < 10 && input.Length <= rc.MaxReplaceLength);
                 // Systemvariablen                
                 input = input.Replace("$NewGuid", Guid.NewGuid().ToString());
                 input = input.Replace("$CRLF", "\r\n");
@@ -95,9 +95,13 @@ namespace FlowProtocol2.Commands
                     }
                 }
             }
+            if (input.Length > rc.MaxReplaceLength)
+            {
+                rc.ExampleMaxReplaceLengthExceeded = input[1..100];
+                input = string.Empty;
+            }
             return input;
         }
-
         public T? GetNextCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)
             where T : CmdBaseCommand => GetCommand<T>(predicate, stopcrit, c => c.NextCommand);
         public T? GetPreviousCommand<T>(Func<T, bool> predicate, Func<CmdBaseCommand, bool> stopcrit)

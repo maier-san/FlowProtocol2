@@ -21,8 +21,10 @@ namespace FlowProtocol2.Commands
         public Stack<EntryPoint> ReturnStack { get; set; }
         public bool ExecuteNow { get; set; }
         public string BaseKey { get; set; }
-        public int LoopStopCounter { get; set; }
-        public int CommandStopCounter { get; set; }
+        public int LoopStopCounter { get; set; } = 5000;
+        public int CommandStopCounter { get; set; } = 50000;
+        public int MaxReplaceLength { get; set; } = 100000;
+        public string ExampleMaxReplaceLengthExceeded { get; set; }
         public CultureInfo Culture { get; set; }
         public List<string> LinkWhitelist { get; set; }
         public RunContext()
@@ -44,8 +46,7 @@ namespace FlowProtocol2.Commands
             BaseKey = string.Empty;
             Culture = CultureInfo.CurrentUICulture;
             LinkWhitelist = new List<string>();
-            LoopStopCounter = 1000;
-            CommandStopCounter = 20000;
+            ExampleMaxReplaceLengthExceeded = string.Empty;
         }
         public void SetError(ReadContext readcontext, string errorcode, string errortext)
         {

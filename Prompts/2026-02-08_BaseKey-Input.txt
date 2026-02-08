@@ -1,0 +1,5 @@
+Erweitere die Eigenschaft AssociatedInputElement in der Klasse CmdInputBaseCommand so, dass diese Eigenschaft zusätzlich in Abhängigkeit des gerade gesetzten rc.BaseKey-Wertes erfolgt, sowohl beim setzen, als auch beim abrufen. Passe auch alle aufrufenden Stellen an.
+
+Suche eine Lösung, bei der rc.BaseKey aus dem aufrufenden Kontext übergeben wird, denn es ist keine Eigenschaft der Klassen.
+
+--> War richtig, aber passte nicht zu den anderen ähnlichen Stellen.

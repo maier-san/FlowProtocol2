@@ -50,7 +50,7 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(inputtext);
-                    AssociatedInputElement = inputtext;
+                    AssociatedInputElements[rc.BaseKey] = inputtext;
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

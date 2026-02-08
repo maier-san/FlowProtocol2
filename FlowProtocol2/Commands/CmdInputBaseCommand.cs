@@ -4,11 +4,11 @@ namespace FlowProtocol2.Commands
 {
     public abstract class CmdInputBaseCommand : CmdBaseCommand
     {
-        public IMBaseElement? AssociatedInputElement { get; set; }        
+        public Dictionary<string, IMBaseElement?> AssociatedInputElements { get; set; }
 
         public CmdInputBaseCommand(ReadContext readcontext) : base(readcontext)
         {
-
+            AssociatedInputElements = [];
         }
     }
 }

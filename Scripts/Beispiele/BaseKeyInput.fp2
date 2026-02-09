@@ -1,0 +1,14 @@
+~GoSub Eingabe; BaseKey=A
+~GoSub Eingabe; BaseKey=B
+~GoSub Eingabe; BaseKey=C
+~ForEach e in Eingabe
+	>> $e
+~Loop
+~End
+~DefineSub Eingabe
+	~Input I: Gib was ein.
+		&> Das ist die Eingabe zu BaseKey=$BaseKey (Siehe
+			~AddHelpLink https://localhost:5001/FlowPages/Run/Beispiele%7CBaseKeyInput | BaseKeyInput
+			~AddHelpText )
+	~AddToList Eingabe+=Eingabe zu BaseKey=$BaseKey: $I
+~Return

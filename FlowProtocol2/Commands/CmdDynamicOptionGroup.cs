@@ -91,7 +91,7 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(ogroup);
-                    AssociatedInputElement = ogroup;
+                    AssociatedInputElements[rc.BaseKey] = ogroup;
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

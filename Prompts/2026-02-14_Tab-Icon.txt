@@ -1,0 +1,1 @@
+Ich hab dir unter FlowProtocol2\Supplements ein FavIcon in Form der Dateien favicon-32x32.png, icon-192x192.png, icon-512x512.png, apple-touch-icon-180x180.png und favicon.ico unter verschiedenen Auflösungen bereitgestellt. Binde dieses Icon so in die Anwendung ein, dass es im Browser-Tab angezeigt wird.

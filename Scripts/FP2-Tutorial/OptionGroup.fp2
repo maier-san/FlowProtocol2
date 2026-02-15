@@ -23,30 +23,30 @@
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel fragt dein Lieblingsprojekt ab und macht eine entsprechende Ausgabe:
 >>|?Erg: Was ist dein Lieblingsprojekt?
->>|~AddHelpLine Schwierige Wahl, ich weiß.
->>|~AddHelpLine Ein Blick auf
->>|~AddHelpLink https://github.com/maier-san/FlowProtocol2 | GitHub
->>|~AddHelpText  inspiriert dich vielleicht ;-)
->>|#: FlowProtocol
->>|	@Ausgabe >> Ich mag FlowProtocol
->>|#: FlowProtocol2 
->>|	@Ausgabe >> Ich mag FlowProtocol2 
->>|#: Was anderes
->>|	@Ausgabe >> Ich mag was anderes
+>>|	~AddHelpLine Schwierige Wahl, ich weiß.
+>>|	~AddHelpLine Ein Blick auf
+>>|	~AddHelpLink https://github.com/maier-san/FlowProtocol2 | GitHub
+>>|	~AddHelpText  inspiriert dich vielleicht ;-)
+>>|	#: FlowProtocol
+>>|		@Ausgabe >> Ich mag FlowProtocol
+>>|	#: FlowProtocol2 
+>>|		@Ausgabe >> Ich mag FlowProtocol2 
+>>|	#: Was anderes
+>>|		@Ausgabe >> Ich mag was anderes
 >>|@Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!
 >>|@Ausgabe >> Erg_OptionGroupPrompt = $Erg_OptionGroupPrompt
 >>|@Ausgabe >> Erg_SelectedOptionText = $Erg_SelectedOptionText
 ?Erg: Was ist dein Lieblingsprojekt?
-~AddHelpLine Schwierige Wahl, ich weiß.
-~AddHelpLine Ein Blick auf
-~AddHelpLink https://github.com/maier-san/FlowProtocol2 | GitHub
-~AddHelpText  inspiriert dich vielleicht ;-)
-#: FlowProtocol
-	@Ausgabe >> Ich mag FlowProtocol
-#: FlowProtocol2
-	@Ausgabe >> Ich mag FlowProtocol2
-#: Was anderes
-	@Ausgabe >> Ich mag was anderes
+	~AddHelpLine Schwierige Wahl, ich weiß.
+	~AddHelpLine Ein Blick auf
+	~AddHelpLink https://github.com/maier-san/FlowProtocol2 | GitHub
+	~AddHelpText  inspiriert dich vielleicht ;-)
+	#: FlowProtocol
+		@Ausgabe >> Ich mag FlowProtocol
+	#: FlowProtocol2
+		@Ausgabe >> Ich mag FlowProtocol2
+	#: Was anderes
+		@Ausgabe >> Ich mag was anderes
 @Ausgabe >> Unabhängig davon ist FlowProtocol2 einfach gut!
 @Ausgabe >> Erg_OptionGroupPrompt = $Erg_OptionGroupPrompt
 @Ausgabe >> Erg_SelectedOptionText = $Erg_SelectedOptionText

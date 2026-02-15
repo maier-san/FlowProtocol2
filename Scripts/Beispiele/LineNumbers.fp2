@@ -1,0 +1,9 @@
+>> Starte mit 1 = $LineNumber
+>> Zweizeiler
+	__ mit 2 = $LineNumber
+>> Zweizeiler mit Kommentar
+// Das ist der Kommentar
+	__ mit 4 = $LineNumber	
+>> Zeile vor einem Kommentar mit 7 = $LineNumber
+// Noch ein Kommentar
+>> Zeile nach einem Kommentar mit 9 = $LineNumber

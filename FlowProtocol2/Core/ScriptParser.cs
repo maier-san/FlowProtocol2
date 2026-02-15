@@ -95,10 +95,12 @@ namespace FlowProtocol2.Core
             using (StreamReader sr = new StreamReader(scriptfilepath))
             {
                 int linenumber = 0;
+                int lastlinenumber = 0;
                 string lastline = string.Empty;
                 while (sr.Peek() != -1)
                 {
-                    string? line = sr.ReadLine();                    
+                    string? line = sr.ReadLine();
+                    linenumber++;                    
                     if (!string.IsNullOrWhiteSpace(line))
                     {
                         string trline = line.TrimStart();
@@ -117,12 +119,12 @@ namespace FlowProtocol2.Core
                             if (lastline != string.Empty)
                             {
                                 ParseLine(rc, scriptfilepath, startindent, sinfo, ref currentcommand, ref previouscommand,
-                                    linenumber, lastline);
+                                    lastlinenumber, lastline);
                             }
                             lastline = line;
+                            lastlinenumber = linenumber;
                         }
-                    }
-                    linenumber++;
+                    }                    
                 }
                 if (lastline != string.Empty)
                 {

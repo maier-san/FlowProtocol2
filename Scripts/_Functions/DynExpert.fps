@@ -1,0 +1,103 @@
+// Funktionsbibliothek für ein erweiterbares Expertensystem
+// Einbindung in ein Skript wie folgt:
+//     ~Include .|...|DynExpert.fps
+//     ~Set Skriptpfad=$ScriptFilePath
+//     ~Set NFTabs=
+//     ~Calculate NFRefLine=1+$LineNumber
+//     // ***************************************************
+//     // ***************************************************
+//     ~Execute
+//     ~GoSub ErweitereSituation; BaseKey=W$NFRefLine
+//     ~End
+~DefineSub ErweitereSituation
+	~If $SkipFrage==Ja
+		~GoTo SkipFrage
+	~Set T=$Chr(9)
+	~Replace EE=$NFTabs|T->$Chr(9)
+	~Random RKey=1000..9999
+	~Set CKey=E$RKey
+	?SNeu: Gibt es ausgehend von den jetzt schon gegebenen Antworten eine Beurteilung der Situation?
+		#j: Ja
+			~Input BSit: Gib eine Beurteilung der Situation passen zu den schon gegebenen Antworten ein.
+				&> Trenne verschiedene Aspekte wie "Lösungsansätze", "Rückfragen" oder "Bewertung" mit ":" und "//" getrennt.
+				&> Etwa so: "Bewertung: Die Einschränkungen lokal nicht nachvollziehbar.//Rückfragen: Welche Parmeter wurden gesetzt?"
+			@Skript-Erweiterung >>* Erweitere das Skript um die Beurteilung der Situation:
+			~GoSub SkriptEditInfo
+				> Füge vor Zeile $NFRefLine folgenden Codeblock ein:
+			~Split BUListe=$BSit|//
+			~ForEach BUidx in BUListe
+				~Split SektIn=$BUidx|:
+				~If !?$SektIn(2)
+					@Skript-Erweiterung>.|$EE@Beurteilung >> $BUidx
+					@Beurteilung >> $BUidx
+				~Else
+					@Skript-Erweiterung>.|$EE@$SektIn(1) >> $SektIn(2)
+					@$SektIn(1) >> $SektIn(2)
+				~AddTo NFRefLine+=1
+			~Loop
+		#n: Nein
+	?QNeu: Gibt es ausgehend von den jetzt schon gegebenen Antworten eine weitere Frage ein?
+		#j: Ja
+			~Input FNeu: Wie lautet die Frage für diese Situation?
+				&> Formuliere die Frage so, dass eine Auswahl von Antworten vorgegeben werden kann.			
+			~Input FANeu: Gib zu dieser Frage eine Liste möglicher Antworten ein.
+				&> Gib die Antworten mit kommagetrennt ein. Gib "++" als letzte Antwortmöglichkeit ein, um die Auswahl erweiterbar anzulegen.			
+			@Skript-Erweiterung >>* Erweitere das Skript um die Frage "$FNeu":
+			~GoSub SkriptEditInfo
+				> Füge nach Zeile $NFRefLine folgenden Codeblock ein:
+				>.|$EE~Set NFTabs=$NFTabsTT
+				>.|$EE@Zusammenfassung >> $FNeu
+				>.|$EE?$CKey: $FNeu
+				~Split AntwListe=$FANeu|,
+				~ForEach antw in AntwListe
+					~If $antw!=++
+						~Random RAKey=1000..9999
+						~Set CAKey=A$RAKey
+						>.|$EE$T#$CAKey: $antw						
+						>.|$EE$T$T> $antw
+						>.|$EE$T$T~Set NFRefLine=$Chr(36)LineNumber
+					~Else					
+						>.|$EE$T// Oberhalb von hier neue Einträge einfügen
+						>.|$EE$T#x: Nicht in Liste
+						>.|$EE$T$T~Set NATabs=$NFTabsT
+						>.|$EE$T$T~Set NARefLine=$Chr(36)LineNumber-3
+						>.|$EE$T$T~Set NAFrage=$Chr(36)$CKey_OptionGroupPrompt
+						>.|$EE$T$T~GoSub NeueAntwort; BaseKey=$BaseKeyF
+				~Loop			
+		#n1: Nein, im Moment nicht
+		#n2: Nein, hier kommen keine Fragen mehr.
+			@Skript-Erweiterung >>* Erweitere das Skript um eine neue Erweiterungssituation:
+			~GoSub SkriptEditInfo
+				> Füge nach Zeile $NFRefLine folgenden Codeblock ein:
+			>.|$EE~Set SkipFrage=Ja
+	~If $SkriptEditInfo==ja
+		@Skript-Erweiterung >>* Setze die Ausführung fort.
+			> Speichere das Skript mit der Änderung.
+			> 🔄 - Aktualisiere das Browserfenster.				
+	~JumpMark SkipFrage
+~Return
+~DefineSub NeueAntwort	
+	~Input ANeu: Wie lautet die neue Antwortmöglichkeit auf die Frage "$NAFrage"?
+	~Random RAKey=1000..9999
+	~Set CAKey=A$RAKey
+	~Set T=$Chr(9)
+	~Replace EE=$NATabs|T->$Chr(9)
+	@Skript-Erweiterung >>* Erweitere das Skript um die neue Antwortmöglichkeit "$ANeu" auf die Frage "$NAFrage":
+	~GoSub SkriptEditInfo
+		> Füge vor Zeile $NARefLine folgenden Codeblock ein:
+		@Skript-Erweiterung >.|$EE#$CAKey: $ANeu
+			>.|$EE$T> $ANeu
+			>.|$EE$T~Set NFRefLine=$Chr(36)LineNumber
+	@Zusammenfassung > $ANeu	
+	@Skript-Erweiterung >>* Setze die Ausführung fort.
+		> Speichere das Skript mit der Änderung.
+		> 🔙🔙🔄 - Gehe im Verlauf des Browserfensters zwei Mal zurück und aktualisiere die Seite.
+		> Wähle unter den erweiterten Antworten die passende aus.
+	~Set SkipFrage=Ja
+~Return
+~DefineSub SkriptEditInfo
+	~If $SkriptEditInfo!=ja
+		> Öffne die Skriptdatei im Texteditor
+			>.|$Skriptpfad
+		~Set SkriptEditInfo=ja
+~Return

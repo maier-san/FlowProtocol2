@@ -39,30 +39,32 @@ namespace FlowProtocol2.Commands
             try
             {
                 LinkAssociatedLoopCommand(rc, "ForEach");
-                if (AssociatedLoopCommand != null)
-                {
-                    if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey] || !ForIndices.ContainsKey(rc.BaseKey))
-                    {
-                        ForIndices[rc.BaseKey] = 0;
-                        IsInitialized[rc.BaseKey] = true;
-                        AssociatedLoopCommand.LoopCounter = 0;
-                    }
-                    ForIndices[rc.BaseKey]++;
-                    string currentfieldvar = $"{expandedFieldName}({ForIndices[rc.BaseKey]})";
-                    if (rc.InternalVars.ContainsKey(currentfieldvar))
-                    {
-                        rc.InternalVars[expandedVarName] = rc.InternalVars[currentfieldvar];
-                        return NextCommand;
-                    }
-                    else
-                    {
-                        ForIndices[rc.BaseKey] = 0;
-                        IsInitialized[rc.BaseKey] = false;
-                        return AssociatedLoopCommand.NextCommand;
-                    }
+                if (AssociatedLoopCommand == null)
+                {                    
+                    rc.SetError(ReadContext, "ForEach ohne Loop",
+                        "Dem ForEach-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+                    return null;
                 }
-                rc.SetError(ReadContext, "ForEach ohne Loop",
-                    "Dem ForEach-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+            
+                if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey] || !ForIndices.ContainsKey(rc.BaseKey))
+                {
+                    ForIndices[rc.BaseKey] = 0;
+                    IsInitialized[rc.BaseKey] = true;
+                    AssociatedLoopCommand.LoopCounter = 0;
+                }
+                ForIndices[rc.BaseKey]++;
+                string currentfieldvar = $"{expandedFieldName}({ForIndices[rc.BaseKey]})";
+                if (rc.InternalVars.ContainsKey(currentfieldvar))
+                {
+                    rc.InternalVars[expandedVarName] = rc.InternalVars[currentfieldvar];
+                    return NextCommand;
+                }
+                else
+                {
+                    ForIndices[rc.BaseKey] = 0;
+                    IsInitialized[rc.BaseKey] = false;
+                    return AssociatedLoopCommand.NextCommand;
+                }                
             }
             catch (Exception ex)
             {
@@ -71,7 +73,6 @@ namespace FlowProtocol2.Commands
                     + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedFieldName='{expandedFieldName}'");
                 return null;
             }
-            return null;
         }
     }
 }

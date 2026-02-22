@@ -1,0 +1,29 @@
+~SetTitle For-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~For <VarName> = <Von> To <Bis> [Step <Schrittweite>]
+~AddText  führt die nachfolgenden, eingerückten Befehle für jeden Wert von 
+~AddCode  <VarName>
+~AddText  aus, der sich durch Hoch-, oder Runterzählen der Variable ergibt.
+@Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
+    >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
+	>>* Ungültiger Step-Wert: Der Step-Wert darf nicht 0 sein. Die Ausführung wird abgebrochen.
+	>>* For ohne Loop: Dem For-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel verschachtelt zwei solchen Schleicfen und bildet Produkte aus den Varialenwerten.
+>>|@Ausgabe >> Lustige Produkte
+>>|~For x = 1 To 5
+>>|	~For y = -4 To -12 Step -2
+>>|		~Calculate w = $x * $y
+>>|		>* $x * $y = $w
+>>|		~If $w<-20
+>>|			~ExitLoop
+>>|	~Loop
+>>|~Loop
+@Ausgabe >> Lustige Produkte
+~For x = 1 To 5
+	~For y = -4 To -12 Step -2
+		~Calculate w = $x * $y
+		>* $x * $y = $w
+		~If $w<-20
+			~ExitLoop
+	~Loop
+~Loop

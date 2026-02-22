@@ -40,29 +40,27 @@ namespace FlowProtocol2.Commands
                     rc.ErrorItems.Add(err);
                     return null;
                 }
+                LinkAssociatedLoopCommand(rc, "DoWhile");
+                if (AssociatedLoopCommand == null)
+                {
+                    rc.SetError(ReadContext, "DoWhile ohne Loop",
+                        "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+                    return null;
+                }
                 if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
                 {
-                    IsInitialized[rc.BaseKey] = true;
-                    LinkAssociatedLoopCommand(rc, "DoWhile");                
-                    if (AssociatedLoopCommand != null)
-                    {                
-                        AssociatedLoopCommand.LoopCounter = 0;
-                    }
+                    IsInitialized[rc.BaseKey] = true;        
+                    AssociatedLoopCommand.LoopCounter = 0;                    
+                }                           
+                if (Evaluation)
+                {              
+                    return NextCommand;
                 }
-                if (AssociatedLoopCommand != null)
-                {                
-                    if (Evaluation)
-                    {              
-                        return NextCommand;
-                    }
-                    else
-                    {
-                        IsInitialized[rc.BaseKey] = false;
-                        return AssociatedLoopCommand.NextCommand;
-                    }
-                }                
-                rc.SetError(ReadContext, "DoWhile ohne Loop",
-                    "Dem DoWhile-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");                                
+                else
+                {
+                    IsInitialized[rc.BaseKey] = false;
+                    return AssociatedLoopCommand.NextCommand;
+                }                                                
             }        
             catch (Exception ex)
             {
@@ -71,7 +69,6 @@ namespace FlowProtocol2.Commands
                     + $"Variablenwerte: Expression='{Expression}'");
                 return null;
             }
-            return null;
         }
     }
 }

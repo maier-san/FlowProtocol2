@@ -78,6 +78,13 @@ namespace FlowProtocol2.Commands
             string expandedSectionVar = ReplaceVars(rc, SectionVar);            
             try
             {
+                LinkAssociatedLoopCommand(rc, "ForEachLine");
+                if (AssociatedLoopCommand == null)
+                {
+                    rc.SetError(ReadContext, "ForEachLine ohne Loop",
+                        "Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+                    return null;
+                }
                 if (!IsInitialized.ContainsKey(rc.BaseKey) || !IsInitialized[rc.BaseKey])
                 {                
                     string absoluteFileName = ExpandPath(rc, expandedFileNameOrPath, out bool fileexists);
@@ -103,38 +110,29 @@ namespace FlowProtocol2.Commands
                     ReadLineItems(absoluteFileName, take, noformat);                    
                     Index = 0;
                     IsInitialized[rc.BaseKey] = true;                
-                    LinkAssociatedLoopCommand(rc, "ForEachLine");
-                    if (AssociatedLoopCommand != null)
-                    {
-                        AssociatedLoopCommand.LoopCounter = 0;
-                    }
-                }
-                if (AssociatedLoopCommand != null)
+                    AssociatedLoopCommand.LoopCounter = 0;                    
+                }                
+                if (LineItems.Any())
                 {
-                    if (LineItems.Any())
+                    var ret = LineItems.First();
+                    LineItems.RemoveAt(0);
+                    rc.InternalVars[expandedVarName] = ret.LineContend;
+                    if (!string.IsNullOrEmpty(expandedSectionVar))
                     {
-                        var ret = LineItems.First();
-                        LineItems.RemoveAt(0);
-                        rc.InternalVars[expandedVarName] = ret.LineContend;
-                        if (!string.IsNullOrEmpty(expandedSectionVar))
-                        {
-                            rc.InternalVars[expandedSectionVar] = ret.Section;
-                        }
-                        if (!string.IsNullOrEmpty(expandedIndexVar))
-                        {
-                            Index++;
-                            rc.InternalVars[expandedIndexVar] = Index.ToString();
-                        }
-                        return NextCommand;
+                        rc.InternalVars[expandedSectionVar] = ret.Section;
                     }
-                    else
+                    if (!string.IsNullOrEmpty(expandedIndexVar))
                     {
-                        IsInitialized[rc.BaseKey] = false;
-                        return AssociatedLoopCommand.NextCommand;
+                        Index++;
+                        rc.InternalVars[expandedIndexVar] = Index.ToString();
                     }
+                    return NextCommand;
                 }
-                rc.SetError(ReadContext, "ForEachLine ohne Loop",
-                    "Dem ForEachLine-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+                else
+                {
+                    IsInitialized[rc.BaseKey] = false;
+                    return AssociatedLoopCommand.NextCommand;
+                }                
             }
             catch (Exception ex)
             {
@@ -143,7 +141,6 @@ namespace FlowProtocol2.Commands
                     + $"Variablenwerte: expandedVarName='{expandedVarName}' expandedFileNameOrPath='{expandedFileNameOrPath}' expandedTake='{expandedTake}' expandedIndexVar='{expandedIndexVar}' expandedSectionVar='{expandedSectionVar}' NoFormatVar='{NoFormatVar}'");
                 return null;
             }
-            return null;
         }
 
         private void ReadLineItems(string absoluteFileName, int take, bool noformat)

@@ -268,7 +268,7 @@
 	>* in Datei 
 	~AddCode  .\FlowProtocol2\Pages\Shared\_Layout.cshtml
 	>* Hintere Nummer in Zeile 43 hochzählen. Suche nach
-	>.|&copy; 2023 MSan, Version
+	>.|&copy; 2023 Wolfgang Maier, Version
 
 @Dokumentation >> Neue Flow-DokuDatei anlegen
 	>* Neue Datei in Notepad++ erstellen

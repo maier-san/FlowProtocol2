@@ -2431,8 +2431,12 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{MeetingVorbereitung}, verwendet in Bei
 \item[\fcmd{FileExists}] \synvar{Variable} \verb|=| \synvar{Dateipfad}\\
 Prüft, ob eine entsprechende Datei existiert und speichert das Ergebnis als Wahrheitswert in einer Variablen. Siehe auch Kernelement~\ref{defDateipfad}.
 
+\item[\fcmd{For}] \synvar{Variable} \verb|=| \synvar{Von} \verb|To| \synvar{Bis} $[$\verb|Step| \synvar{Schrittweite}$]$\\
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.
+%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
 \item[\fcmd{ForEach}] \synvar{Variable} \verb|in| \synvar{Liste}\\
-Führt die nachfolgenden eingerückten Befehle bis zum dazugehörenden \fcmd{Loop}-Befehl für jedes Element der Liste aus, siehe auch Kernelement~\ref{defListen}. Bei jedem Durchlauf wird das jeweilige Element der Variablen zugewiesen.\\ 
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jedes Element der Liste aus, siehe auch Kernelement~\ref{defListen}. Bei jedem Durchlauf wird das jeweilige Element der Variablen zugewiesen.\\ 
 Siehe Abschnitte~\ref{Schleifen} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
 
 \item[\fcmd{ForEachLine}] \synvar{Variable} \verb|in| \synvar{Dateipfad} $[$\verb|; Take=| \synvar{Anzahl} $]$\\

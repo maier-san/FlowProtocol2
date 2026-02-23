@@ -1,0 +1,12 @@
+>> Start
+~GoTo MittenRein
+?T: Wie bist du an diese Stelle gekommen?	
+	#a: Hab den Goto verpasst
+		>> GoTo verpasst
+	#b: Per Goto-Express
+		~JumpMark MittenRein
+		>> GoTo Express
+	#c: Keine Ahnung
+		>> Keine Ahnung
+>> Hier geht es weiter
+	

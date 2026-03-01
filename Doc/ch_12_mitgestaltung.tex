@@ -1,0 +1,359 @@
+﻿\chapter{Mitgestaltung}
+Wie schon mehrfach beschrieben, sollte man Skripte nicht einfach nur als Programmcode sehen, der durch die Umgebung ausgeführt werden kann und mit dem sich bestimmte Aufgaben einfach lösen lassen, sondern man sollte Skripte vor allem auch als ein Medium betrachten, das es ermöglicht, fachliches Wissen so zu hinterlegen, dass es bei der Anwendung des Skriptes automatisch berücksichtigt wird. Es ist nicht notwendig, dass der Anwender weiß, wie man die Aufgabe richtig umsetzt, so lange ihm das Skript keine Möglichkeit gibt, sie falsch umzusetzen.
+
+Ausgehend davon sollte die Zielsetzung sein, möglichst viel in den Köpfen vorhandenes Wissen in so eine Form zu bringen. In diesem Abschnitt zeigen wir anhand von Beispielen, wie das möglich ist, auch ohne dass man jedem Mitarbeiter die \FPZb-Programmierung ans Herz legen muss.
+
+\section{Angeleitete Skript-Erweiterungen}
+Bei Auswahlabfragen hat man die Auswahl zwischen verschiedenen Werten. Was aber kann der Anwender machen, wenn der von ihm gewünschte Wert nicht in der Liste aufgeführt ist? Für diesem Fall könnte man einen entsprechenden zusätzlichen Auswahlwert \emph{Nicht in Liste}\index{nicht in Liste} ergänzen, und versuchen, diesen neuen Fall so gut wie möglich im Skript zu behandeln. 
+
+Meist werden in Abhängigkeit von Auswahlwerten nur bestimmte Variablen oder Schalter gesetzt, die dann in einem anderen, schon vorhandenen Teil des Skriptes, weiterverarbeitet werden. In diesem Fall kann man die entsprechenden Werte für die zu setzenden Variablen direkt abfragen und hat so den allgemeinen Fall behandelt. Schöner wäre es jedoch, wenn die verschiedenen Eingaben, die eventuell mit einigem Aufwand zusammengetragen werden müssen, für den nächsten Anwender direkt im Skript als auswählbarer Wert eingebaut wären.
+
+\FPZ\ kann selbst keine Änderung an den Skripten durchführen, aber es kann sehr gut dazu anleiten.
+
+Betrachten wir die Fragestellung, unter welcher Lizenz ein Softwareprodukt bereitgestellt wird, um daraus bestimmte Eigenschaften abzuleiten, wie die Bezeichnung, eine Link auf eine Beschreibung der Lizenz, die Information ob diese Lizenz den Einsatz im kommerziellen Umfeld erlaubt und ob sie kostenpflichtig ist.
+
+Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, und weitere Lizenzen dann hinzuzunehmen, wenn sie tatsächlich benötigt werden. Diese Abfrage könnte man wie folgt aufbauen:
+
+\Beispiel{Lizenzabfrage}\label{BspLizenzabfrage}
+\begin{verbatim}
+?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
+    #: MIT-Lizenz
+        ~Set BezLizenz=MIT-Lizenz
+        ~Set LinkLizenzbeschreibung=
+            __https://de.wikipedia.org/wiki/MIT-Lizenz
+        ~Set ErlaubtKomVerw=Ja
+        ~Set IstKostenpflichtig=Nein
+    // Oberhalb von hier neue Einträge einfügen
+    #x: Nicht in Liste
+        @Skript-Erweiterung >>_ Es wird empfohlen, das Skript
+            __ um die nicht vorhandenen Einträge zu erweitern. 
+            __ Gehe dazu wie folgt vor:
+        >> Öffne die Skriptdatei in einem Texteditor:
+            >|$ScriptFilePath
+        >> Füge vor Zeile $LineNumber-7 folgenden Codeblock ein:
+            ~Input ILizenz: Unter welcher Lizenz wird die 
+                __ Software bereitgestellt?
+            >|$Chr(9)#: $ILizenz
+            ~Input IBez: Bezeichnung Lizenz
+            >|$Chr(9)$Chr(9)~Set BezLizenz=$IBez
+            ~Set BezLizenz=$IBez
+            ~Input ILink: Link auf Lizenzbeschreibung
+            >|$Chr(9)$Chr(9)~Set LinkLizenzbeschreibung=$ILink
+            ~Set LinkLizenzbeschreibung=$ILink
+            ?QKom: Erlaubt kommerzielle Verwendung?
+                #j: Ja
+                    >|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Ja
+                    ~Set ErlaubtKomVerw=Ja
+                #n: Nein
+                    >|$Chr(9)$Chr(9)~Set ErlaubtKomVerw=Nein
+                    ~Set ErlaubtKomVerw=Nein
+            ?QKost: Ist kostenpflichtig?
+                #j: Ja
+                    >|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Ja
+                    ~Set IstKostenpflichtig=Ja
+                #n: Nein
+                    >|$Chr(9)$Chr(9)~Set IstKostenpflichtig=Nein
+                    ~Set IstKostenpflichtig=Nein
+        >> Speichere die Datei ab.
+@Ausgabe >>* Die Software wird unter der Lizenz "$BezLizenz"        
+        __ bereitgestellt.
+    >* Link: 
+    ~AddLink $LinkLizenzbeschreibung | $LinkLizenzbeschreibung
+    >* Kommerzielle Verwendung möglich? - $ErlaubtKomVerw
+    >* Kostenpflichtig? - $IstKostenpflichtig
+\end{verbatim}
+
+Die Auswahl von \emph{Nicht in Liste} fragt die benötigen Werte ab und setzt die Variablen in der gleichen Weise, wie es die anderen Einträge machen, so dass das Skript seine Aufgabe erfüllen kann, z.B.\ die Dokumentation der abgefragten Lizenz mit den ganzen Eigenschaften.
+
+Es passiert aber noch mehr. Als Teil der Ausgabe wird in einem eigenen Abschnitt \emph{Skript-Erweiterung}\index{Skript-Erweiterung} eine Schritt-für-Schritt-Anleitung gegeben, die beschreibt, wie man die neu erfasste Lizenz permanent in das Skript einbauen kann. Hierbei wird beschrieben, wo man die Skript-Datei findet, und welche Zeilen man wo einfügen muss. Der einzufügende Codeblock wird vollständig ausgegeben und kann direkt in die Zwischenablage übernommen werden. Die Erweiterung kann damit ohne jede Kenntnis der \FPZb-Programmiersprache umgesetzt werden.
+
+Für die Zusammenstellung der benötigten Informationen wird zum einen die Variable \cidxvar{ScriptFilePath} verwendet, die den Dateipfad des aktuellen Skriptes ausgibt. Dieser ist aus Sicht des Servers, auf dem \FPZ\ läuft, und muss gegebenenfalls gegen einen ausgeschriebenen Pfad ausgetauscht werden, wenn der Zugriff auf die Datei für den Anwender über einen anderen Pfad erfolgen soll. Die Zeilennummer\index{Zeilennummer} wird mit Hilfe der Variablen \cidxvar{LineNumber} abgefragt, die stets die Nummer der entsprechenden Zeile zurückgibt. Möchte man sich auf eine Zeile $n$ Zeilen darüber beziehen, kann für diese Variable direkt ein Korrekturwert von $-n$ angegeben werden.
+
+Das Tabulatorzeichen\index{Tabulatorzeichen} für die Einrückung des auszugebenden Skriptcodes wird über die Sequenz \cidxvar{Chr(9)} angegeben, da unmaskierte Tabulatorzeichen beim Einlesen von Skripten durch vier Leerzeichen ersetzt werden.
+
+\section{Metaskripting}\label{Metaskripting}
+Jetzt kann man zu Recht bemängeln, dass der Scriptcode, der für die \emph{Nicht in Liste}-Auswahlmöglichkeit erstellt werden muss, selbst sehr komplex und relativ umfangreich ist. Die Hürde eine solche Möglichkeit zu schaffen scheint damit recht hoch zu sein, und selbst wenn man sich dafür bei einer Vorlage bedienen kann, sind immer noch einige Anpassungen notwendig, da sich die abzufragenden Variablen ja von Fall zu Fall unterscheiden.
+
+Die Lösung für dieses Problem ist, man ahnt es vermutlich schon, ein \FPZb-Skript, das einem diese Arbeit abnimmt.
+
+Das sogenannte Metaskripting\index{Metaskripting}, also das Erstellen von Skriptcode der neuen Skriptcode erzeugt, ist ein mächtiges Instrument und lässt sich an vielen Stellen einsetzen, sogar über verschiedene Programmiersprachen hinweg. Es gibt Beispiele für produktiv eingesetzte \FPZb-Skripte, die SQL-Anweisungen erzeugen, die wiederum C\#-Code ausgegeben.
+
+Für unseren Anwendungsfall der angeleiteten Skript-Erweiterung benötigen wir folgende Eingaben: die Fragestellung, einen Schlüssel, eine Liste von Werten, die entweder als Texteingabe oder Schalter abgefragt werden sollen, und die Information in welcher Tiefe der Code eingerückt sein soll.
+
+Die Abfrage erfolgt entsprechend mit vier Texteingaben, wobei die Menge der abzufragenden Werte über eine kommagetrennte Aufzählung gemacht wird und die Unterscheidung zwischen Textangaben und Schaltern durch die Angabe eines Fragezeichens bei jedem Wert getroffen wird. Die Einrückung wird durch eine Sequenz von T-Zeichen angegeben, wobei später jedes T durch Tabulatorzeichen ersetzt wird.
+
+Das Ergebnis sieht wie folgt aus:
+
+\Beispiel{Meta-Erweiterung}\label{BspMetaErweiterung}
+\begin{verbatim}
+~Input Frage: Welche Frage soll ausgegeben werden?
+~Input Key: Schlüssel für die Frage
+~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
+~AddHelpLine Werte mit "?" werden als Schalter abgebildet.
+~AddHelpLine Der Wert mit "=" wird auf den Auswahlwert gesetzt.
+~Input Tabs: Einrückung (T pro Tab, @ sonst)
+~CamelCase CKey=$Key
+~Set T=$Chr(9)
+~Set ST=$Chr(36)Chr(36)Chr(9)
+~Replace EE=$Tabs|@->
+~Replace FF=$EE|T->$Chr(36)Chr(36)Chr(9)
+~Replace EE=$EE|T->$Chr(9)
+@Erweiterung >>* Auswahlabfrage
+>|$EE?$CKey: $Frage
+>|$EE$T// Oberhalb von hier neue Einträge einfügen
+>|$EE$T#x: Nicht in Liste
+>|$EE$T$T@Skript-Erweiterung >>_ Es wird empfohlen, das
+    __ Skript um die nicht vorhandenen Einträge zu erweitern.
+    __ Gehe dazu wie folgt vor:
+>|$EE$T$T>> Öffne die Skriptdatei in einem Texteditor:
+>|$EE$T$T$T>|$Chr(36)ScriptFilePath
+>|$EE$T$T>> Füge vor Zeile $Chr(36)LineNumber-5 folgenden
+    __ Codeblock ein:
+>|$EE$T$T$T~Input I$CKey: $Frage
+>|$EE$T$T$T>|$FF$ST#: $I$CKey
+~If $WListe!=@
+    ~Split Werte=$WListe|,
+    ~ForEach widx in Werte
+        ~CamelCase vidx=$widx
+        ~If $widx~?
+            @Erweiterung >|$EE$T$T$T?Q$vidx: $widx
+            >|$EE$T$T$T$T#j: Ja
+            >|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Ja
+            >|$EE$T$T$T$T$T~Set $vidx=Ja
+            >|$EE$T$T$T$T#n: Nein
+            >|$EE$T$T$T$T$T>|$FF$ST$ST~Set $vidx=Nein
+            >|$EE$T$T$T$T$T~Set $vidx=Nein
+            ~If $ErsterSchalter!=Ja
+                @IfBlocks >>* If-Abfragen für die Schalter
+                ~Set ErsterSchalter=Ja
+            @IfBlocks >|$EE~If $$vidx==Ja
+            >|$EE$T//$widx
+        ~ElseIf $widx~=
+            @Erweiterung >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$CKey
+            >|$EE$T$T$T~Set $vidx=$I$CKey
+        ~Else            
+            @Erweiterung >|$EE$T$T$T~Input I$vidx: $widx
+            >|$EE$T$T$T>|$FF$ST$ST~Set $vidx=$I$vidx
+            >|$EE$T$T$T~Set $vidx=$I$vidx
+    ~Loop
+@Erweiterung >|$EE$T$T>> Speichere die Datei ab.
+~MoveSection IfBlocks->Erweiterung
+\end{verbatim}
+
+Um den Code schmal zu halten, werden am Anfang die Hilfsvariablen \verb|T| und \verb|ST| mit den häufig benötigten Sequenzen belegt. Damit die Tabulatorzeichen (\cidxvar{Chr(9)}) im innersten Code bis zum letztendlichen Einfügen in das Zielskript noch maskiert bleiben, wird das \verb|$|-Zeichen der \cidxvar{Chr(...)}-Sequenzen teilweise wiederholt durch \cidxvar{Chr(36)} ersetzt. In gleicher Weise werden auch die \verb|$|-Zeichen in den Aufrufen der Systemvariablen \cidxvar{ScriptFilePath} und \cidxvar{LineNumber} durch \cidxvar{Chr(36)} ersetzt, so dass diese erst bei der Ausführung im Zielskript aufgelöst werden und nicht bereits in der Ausgabe dieses Skriptes.
+
+Für die Schalter, also die Werte, die mit einem Fragezeichen gekennzeichnet wurden, werden in einem zweiten Codeblock noch If-Abfragen erstellt. Damit kann man, ähnlich wie in den Beispielen~\ref{BspAsset1} bis \ref{BspAsset4}, für jeden Schalter individuellen Code ausführen, wenn dieser gesetzt ist.
+
+Metaskripting ist ohne Frage anspruchsvoll, aber dafür ist der Nutzen aufgrund der Multiplikatorwirkung recht groß, und wenn ein solches Skript am Ende dazu führt, dass alle Mitarbeiter in der Lage sind, die produktiv eingesetzten Skripte permanent zu erweitern und ihr Wissen dort einzupflegen, dann ist das den Aufwand auf jeden Fall wert.
+
+Auch hier verhält es sich ähnlich wie bei der Entwicklung von Anwendungscode. Wird etwas nur einmal benötigt, kann es der Spezialist machen. Wird etwas mehrfach benötigt, kann der Spezialist passendes Werkzeug dafür anfertigen, mit dem die Aufgabe einfacher umgesetzt werden kann.
+
+\section{Wissensdokumentation}\label{Wissensdokumentation}
+Die Dokumentation von Wissen oder auch die Verwaltung von Wissen ist eine der wichtigsten Aufgaben in einem Unternehmen, das seine Wertschöpfung in erster Linie aus dem Wissen der Mitarbeiter generiert.
+
+Fast alle Abläufe, die im Arbeitsalltag stattfinden, setzen Wissen voraus, ebenso die meisten Anwendungen und Werkzeuge, die dabei eingesetzt werden.
+
+Dort, wo dieses Wissen jeden Tag, oder zumindest einmal in der Woche benötigt wird, wird es sich von selbst verfestigen, so dass man hier keinen Aufwand betreiben muss. Anders sieht es aus bei Wissen, dass nur gelegentlich benötigt wird, und bei dem zusätzlich gar nicht offensichtlich ist, ob es hier etwas zu wissen gibt oder nicht. Wenn dieses Wissen fehlt, laufen Dinge schief, was im besten Fall nur Mehraufwand bedeutet und im schlimmsten Fall zu problematischen Fehler führen kann.
+
+Wer nicht weiß, wie eine bestimmte Art von Skript erstellt wird, wird keines erstellen können, wer nicht weiß, welches Risiko eine bestimmte Entwicklung mit sich bringt, wird nicht darauf achten können und die Eintrittswahrscheinlichkeit erhöhen, und wer nicht weiß, welche Richtlinien im Umgang mit Kundendaten zu beachten sind, wird möglicherweise einen Datenschutzverstoß verursachen.
+
+Wie schon mehrfach beschrieben, lassen sich mit Hilfe von Skripten gute Anleitungen und Hilfsmittel erstellen, die das wesentliche Detailwissen über bestimmte Arbeitsschritte enthalten und so den einzelnen Mitarbeiter auch wissensmäßig entlasten.
+
+Auch das Grundwissen zu allgemeinen Themengebieten, wie C\#-Programmierung oder Kenntnis der SQL-Syntax muss nicht unbedingt firmenspezifisch verwaltet werden, da es ja eine generelle Vorstellung davon gibt, was es bedeutet, dieses Wissen zu haben, und man es ggf.\ mit zahlreichen Schulungen oder Tutorials abgleichen und auffrischen kann.
+
+Generell sollte das vorausgesetzte Wissen auf die Punkte beschränkt werden, die unternehmensspezifisch sind, die einem helfen, die richtigen Entscheidungen zu treffen, Fehler zu vermeiden und das für bestimmte Arbeitsschritte benötigte Detailwissen, bzw.\ die Anleitungen dafür zielsicher aufzufinden. Das ist immer noch eine ganze Menge, und für jede spezielle Aufgabe und für jeden Verantwortungsbereich gibt es eigenes Wissen, das benötigt wird.
+
+Wie aber verwaltet man dieses Wissen und wie erfährt ein neuer Mitarbeiter, was er alles wissen muss? Wie lässt sich überprüfen ob ein Mitarbeiter alles weiß, was er wissen sollte? Die Verantwortung über diese Punkte liegt in der Regel beim direkten Vorgesetzten, der aber auch nicht in den einzelnen Menschen hineinschauen kann. Meist behilft man sich damit die zwingend einzuhaltenden Richtlinien schriftlich festzuhalten und für das restliche Wissen grobe Themengebiete aufzulisten, die zur Orientierung verwendet werden können. 
+
+Ein im Gegensatz dazu sehr expliziter Ansatz für die Wissensverwaltung\index{Wissensverwaltung} ist die Auf\-lis\-tung von Wissen in Form von Reflektionsaussagen\index{Reflektionsaussagen}. Eine Reflektionsaussage ist dabei eine Aussage, die in der Form \emph{Ich weiß, \dots} formuliert wird, z.B.\ \emph{Ich wie man in einem PowerShell-Skript auf Befehlszeilenargumente zugreift}.
+
+Die Aussage dient, wie die Bezeichnung schon sagt, dazu, das eigene Wissen zu reflektieren, also darüber nachzudenken, ob man diese Aussage mit Ja oder mit Nein beantworten kann. Der große Vorteil bei dieser Form der Erfassung liegt darin, dass es sehr einfach ist, Wissen in dieser Form zu erfassen, da man ja nicht den Inhalt des Wissens erfassen muss, sondern nur einen Verweis darauf. Das ist sogar dann möglich wenn man die Aussage für sich selbst gar nicht mit Ja beantworten kann. Darüberhinaus erlaubt es die Formulierung, das abgefragte Wissen sehr genau abzugrenzen, so dass man in der Regel klar verstehen kann, was gemeint ist.
+
+Genau diese Einfachheit ist wichtig, um mit möglichst wenig Aufwand möglichst alles an Wissen zu dokumentieren, das man für wichtig und relevant hält. Vor allem in dem Moment, wo man feststellt, dass aufgrund fehlenden Wissens etwas schief gelaufen ist, sollte man umgehend dafür sorgen, dass dieses fehlende Wissen in die Dokumentation aufgenommen wird.
+
+Diese Praktik lässt sich recht gut mit \FPZ\ anwenden. Die Listen mit den Reflektionsaussagen zu einzelnen Wissensgebieten lassen sich einfach als Textdateien anlegen und in einem Ordner speichern. In unserem Beispiel gibt es einen Ordner \emph{.Wissensgebiete}, der wiederum weitere Ordner für bestimmte Wissensgebiete enthält, hier \emph{Wissen Flowprotocol2} und \emph{Wissen Softwareentwicklung}. Durch die Markierung des Ordners \emph{.Wissensgebiete} mit einem Punkt am Anfang, wird dieser nicht als Skript-Unterordner im Menübaum von \FPZ\ aufgelistet.
+
+Im Ordner \emph{Wissen für FlowProtocol2} sind die beiden Textdateien \emph{Basisbefehle.txt} und \emph{Programmierung.txt} hinterlegt, die wie die Skripte auch, mit einem einfachen Texteditor erstellt wurden. Diese haben folgenden Inhalt:
+
+\Beispiel{Basisbefehle.txt}\label{BspBasisbefehle}
+\begin{verbatim}
+[Ausgabe]
+Ich weiß, wie man eine Ausgabe erzeugt.
+Ich weiß, wie man eine zweistufige Ausgabe erzeugt.
+Ich weiß, wie man die Ausgabe in Abschnitte gliedert.
+Ich weiß, wie man die Nummerierung der Aufzählung steuert.
+Ich weiß, wie man einen Codeblock erzeugt.
+Ich weiß, wie man einen Link auf eine Internetseite erzeugt.
+
+[Eingabe]
+Ich weiß, wie man eine Auswahlabfrage erstellt.
+Ich weiß, wie man eine Texteingabe abfragt.
+Ich weiß, wie man einen eingegebenen Text wieder ausgibt.
+Ich weiß, wie man Auswahlabfragen ineinander verschachtelt.
+\end{verbatim}
+
+\Beispiel{Programmierung.txt}\label{BspProgrammierung}
+\begin{verbatim}
+[Strukturen]
+Ich weiß, wie eine If-Abfrage aufgebaut ist. 
+Ich weiß, wie eine Bedingung aufgebaut ist.
+Ich weiß, wie man eine Von-1-bis-10-Schleife implementiert.
+Ich weiß, wie man eine Liste von Elementen durchläuft.
+Ich weiß, wie man eine Funktion definiert und aufruft.
+Ich weiß, wie man eine Sprungmarke definiert und anspringt.
+
+[Verarbeitung]
+Ich weiß, wie man Variablen setzt und verwendet.
+Ich weiß, wie man Texte ersetzen kann.
+Ich weiß, wie man reguläre Ausdrücke verwenden kann.
+Ich weiß, wie man Berechnungen durchführen kann.
+\end{verbatim}
+
+Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauf"|folgenden Zeilen interpretiert.
+
+Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
+
+\Beispiel{Wissensreflektion}\label{BspWissensreflektion}
+\begin{verbatim}
+~ListDirectories wdir = .Wissensgebiete; Pattern=Wissen *
+~DynamicOptionGroup WGeb:wdir;Wähle das Wissensgebiet
+~Execute
+~ListFiles wdats = .Wissensgebiete|$wdir($WGeb); Pattern=*.txt
+~Set idx=0
+~ForEach wdat in wdats
+    ~AddTo idx+=1
+    ~Replace wpak($idx)=$wdat|.txt->
+~Loop
+~If $idx==0
+    @Hinweis >>_ Im Ordner "Wissensgebiete\$wdir($WGeb)"
+    __ sind keine Dateien vorhanden. Die Ausführung
+    __ wird abgebrochen.
+    ~End
+~DynamicOptionGroup WPak:wpak;Wähle das Wissenspaket
+~Execute
+~Set WPfad=.Wissensgebiete|$wdir($WGeb)|$wdats($WPak)
+?A: Was möchtest du tun?
+    #sa: Alle Reflektionsaussagen durchgehen
+        ~ForEachLine ref in $WPfad; IndexVar=idx; SectionVar=Ab
+            ~SetInputSection $Ab
+            ?R$idx: $ref
+            #j: Ja
+                @Was ich weiß >> $ref
+            #n: Nein
+                @NN >> $ref
+            ~Calculate mod4 = $idx % 4
+            ~If $mod4==0
+                ~Execute
+        ~Loop
+        ~MoveSection  NN->Was ich nicht weiß
+    #s4: Drei Reflektionsaussagen als Stichprobe
+        ~ForEachLine ref in $WPfad; Take=3; IndexVar=idx
+            ?R$idx: $ref
+            #j: Ja
+            #n: Nein
+                ~Replace refmod=$ref|Ich weiß, ->...
+                @Heute sollte ich rausfinden... >> $refmod
+        ~Loop
+    #db: Weitere Reflektionsaussagen erfassen
+        @Anleitung >> Öffne die Wissensdatei
+            >|$CurrentScriptPath\Wissensgebiete\$wdir($WGeb)
+            __\$wdats($WPak)
+        >> Füge neue Reflektionsaussagen ein
+            > Diese sollten mit "Ich weiß, " beginnen
+            > ... und nach Möglichkeit nicht die Antwort enthalten
+\end{verbatim}
+
+Es beginnt mit einer Abfrage aller Verzeichnisse im Ordner \emph{.Wissensgebiete} die mit \emph{Wissen} beginnen. Dazu wird der Befehl \fcmd{ListDirectories} verwendet, der das Ergebnis in einem Feld abspeichert.
+
+Durch den Befehl \fcmd{DynamicOptionGroup} wird diese Auf\-lis\-tung als Auswahl einer Auswahlabfrage angeboten, sodass der Anwender ein Wissensgebiet und damit gleichzeitig einen Ordner auswählen kann.
+
+Im nächsten Schritt werden mit dem Befehl \fcmd{ListFiles} die Dateien innerhalb des gewählten Ordners abgefragt, die auf \emph{.txt} enden. Ähnlich wie oben wird hier eine Auswahlabfrage generiert, zuvor wird jedoch in einer Schleife eine Auf\-lis\-tung ohne die txt-Endungen erzeugt. Wenn in dem gewählten Ordner keine Dateien vorhanden sind, wird die Ausführung mit einer Hinweismeldung abgebrochen.
+
+Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auf\-lis\-tung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \verb|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
+
+Bei \emph{Drei Reflektionsaussagen als Stichprobe} werden zufällig drei Zeilen aus der Datei ausgewählt. Die Zahl drei wird mit dem \cidxfrag{Take}-Argument angegeben. Der Seed-Wert\index{Seed-Wert} des Zufallsgenerators\index{Zufallsgenerator} wird dabei als Parameter \verb|_rseed| in der URL notiert, so dass beim erneuten Aufrufen oder einer Aktualisierung der Seite wieder die genau gleiche Zufallsfolge entsteht. Hier werden nur die mit Nein beantworteten Punkte unter der Überschrift \emph{Heute sollte ich rausfinden\dots} in leicht angepasster Form aufgelistet.
+
+Bei \emph{Weitere Reflektionsaussagen erfassen} wird eine Anleitung ausgegeben, die dabei unterstützt, die richtige Datei zu finden und dort weitere Aussagen einzufügen. Hierbei wird für die Zusammensetzung des Pfades die Systemvariable \cidxvar{CurrentScriptPath} verwendet, die den Pfad des aktuell ausgeführten Skriptes ausgibt.
+
+Bei der Anwendung dieser Mittel gibt es verschiedene Möglichkeiten. Die Zielsetzung sollte in jedem Fall darin bestehen, dass am Ende alle Mitarbeiter die Dinge wissen, die Sie wissen müssen, um ihre Arbeit gut zu machen, und dabei sollte auch immer davon ausgegangen werden, dass die Mitarbeiter die Bereitschaft dazu mitbringen.
+
+Zu sehen, wie viel Fachwissen für die eigene Arbeit notwendig ist, unterstreicht wie anspruchsvoll diese ist, und sollte daher ein gutes Gefühl vermitteln. Besonders dann, wenn ein Großteil dieses Wissens über Jahre hinweg aus dem Team heraus aufgebaut wurde, ist die Sichtweise darauf eine andere, als wenn die Inhalte ausschließlich aus externen Quellen stammen. Der Entwickler einer Framework-Komponente hat letztendlich das gleiche Interesse daran, dass sein Kollege diese richtig verwendet, wie der Datenschutzbeauftragte daran hat, dass die Datenschutz-Richtlinien allen bekannt sind und eingehalten werden.
+
+Das Durchgehen der Reflektionsaussagen ermöglicht es jedem einzelnen, die weißen Flecken auf seiner Wissenslandkarte zu identifizieren und eventuell vorhandene Lücken zu schließen. Dafür muss er diese Lücken auch nicht gegenüber einem anderen offenlegen, denn \FPZ\ arbeitet diskret und gibt keine Informationen weiter. Zu wissen, was man nicht weiß, ist die Grundvoraussetzung dafür, um fehlendes Wissen zielgerichtet zu ergänzen. Man kann damit die benötigte Information recherchieren oder direkt bei einem Kollegen nachfragen. Durch die Reflektionsaussage hat man sogar eine kompakte Beschreibung, mit der man bei seiner Anfrage auf das Wissen Bezug nehmen kann..
+
+Generell kann man davon ausgehen, dass es etliche Punkte gibt, die noch von mehreren Mitarbeitern nicht gewusst werden, oder bei denen es aus anderen Gründen sinnvoll ist, sie nochmal in gemeinsamer Runde zu besprechen, z.B.\ um auf den gleichen Stand zu kommen. Gleichzeitig unterliegt auch das Wissen selbst einem permanenten Wandel, es kommen neue Punkte dazu und bestehendes Wissen wird eventuell nicht mehr benötigt. Von daher ist auch eine regelmäßige redaktionelle Überarbeitung notwendig und es macht Sinn beides zusammenzulegen.
+
+Unter dem Titel Wissensaktualisierung\index{Wissensaktualisierung} plant man mindestens einmal im Jahr einen Termin ein, bei dem alle Kollegen die Möglichkeit haben, sowohl ihr eigenes, als auch das gemeinsame Wissen aufzufrischen und zu aktualisieren. Idealerweise geht jeder dafür im Vorfeld die vorhandenen Listen durch und notiert die Punkte, die er im Meeting angesprochen haben möchte, sei es um sich selbst oder seine Kollegen auf den aktuellen Stand zu bringen, oder über die Herausnahme oder Überarbeitung des Reflektionsaussage zu diskutieren. 
+
+Für die Sammlung dieser Punkte kann eine eigene Variante im Wissensreflektion-Skript eingebaut werden. Die von den verschiedenen Mitarbeitern gesammelten Punkte werden dann vom Moderator des Meetings zusammengetragen und je nach Häufigkeit zu einer Agenda umgesetzt. Je nach Menge der zu besprechenden Reflektionsaussagen ist es sinnvoll, diese in Vorbereitung des Meetings noch mit Antworten oder Verweisen auf eventuelle Informationsquellen anzureichern, sodass man im Meeting selbst keine Zeit mehr dafür aufwenden muss. Die Diskussion über die zu wissenden Dinge ist ebenso wertvoll wie der Wissensaustausch selbst, und so wird jeder am Ende des Tages viel gewonnen haben.
+
+Die im Beispiel gezeigte Variante mit der Stichprobe\index{Stichprobe} aus drei Reflektionsaussagen lässt sich gut dafür einsetzen, sich jeden Morgen oder zweimal die Woche eine solche Auswahl zu generieren, und so permanent sein eigenes Wissen auf die Probe zu stellen. Die dabei gefundenen Lücken lassen sich dann ebenso beiläufig im Arbeitsalltag schließen.
+
+Diese Form der Stichproben-Abfrage kann mit einer etwas größeren Anzahl auch dafür verwendet werden, eine Art von Prüfungsbogen zu erstellen, der dann für eine Kontrolle des Wissens durch eine dritte Person verwendet wird. Hier muss man sich jedoch genau fragen, ob und unter welcher Voraussetzungen man einen derartigen Kontrollmechanismus tatsächlich einsetzen möchte.
+
+Umgekehrt gibt es auch gesetzliche Nachweispflichten, die man in Bezug auf seine Mitarbeiter wahrnehmen muss, etwa dass diese einen Führerschein haben, wenn sie mit Firmenfahrzeugen unterwegs sind. Das Zusenden der mit Ja beantworteten Reflektionsaussagen ist eine einfache Möglichkeit, das Vorhandensein von Wissen gegenüber seinen Vorgesetzten konkret zu bestätigen. Diese Vorgehensweise ist dahingehend stressfrei, da sich der Mitarbeiter ja die für sich notwendige Zeit nehmen kann, um eine eventuell vorgegebene Mindestquote zu erreichen. Ergänzend dazu gibt es ja auch noch den gemeinsamen Austausch und den Wissensaktualisierungstermin.
+
+Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
+
+\section{Personalisierung}\label{Personalisierung}
+Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen, die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Dazu gehören in erster Linie Datei- und Ordnerpfade, mit denen sich  etwa parametrisierte Kommandozeilenaufrufe vorbereiten lassen, so dass der Anwender diese über eine Konsole oder die  Tastenkombination \emph{Win-R}\index{Win-R} ausführen kann. Dazu kommen Benutzerkürzel oder andere Kennzeichen, die sich z.B.\ in erzeugten Programmcode einarbeiten lassen. 
+
+Die Pfadstruktur könnte man vereinheitlichen, was allerdings mühsam und einschränkend ist, und die ansonsten benötigten Werte kann man abfragen, allerdings ist es gleichermaßen für Ersteller und Anwender mit viel  Aufwand verbunden, wenn dies in jedem Skript geschieht.
+
+Die Lösung besteht darin, eine einzelne Funktionsdatei zu erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt, so dass diese im ganzen Skript verfügbar sind. Diese könnte so aussehen:
+
+\Beispiel{Benutzervariablen.fps}
+\begin{verbatim}
+?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
+    #AB: Anton Barium
+        ~Set BenVarKuerzel=AB
+        ~Set BenVarPfadAufgabenmappen=H:\Aufgabenmappen
+        ~Set BenVarPfadTools=C:\Work\Tools
+    #CD: Christian Deuterium
+    #EF: Ernst Flour
+\end{verbatim}
+
+Im Beispiel sind exemplarisch die Variablen für den Benutzer AB ausformuliert, und in einer im Echtbetrieb eingesetzten Variante würde es vermutlich noch viel mehr benutzerbezogene Variablen geben. 
+
+Mit den Hilfsmitteln aus Abschnitt~\ref{Metaskripting} könnte man auch dieses Skript ohne Mühe selbst-erweiterbar machen, so dass ein Mitarbeiter, der erstmalig mit dieser Abfrage konfrontiert wird, bei den Eingaben angeleitet und unterstützt wird.
+
+Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentliche Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
+
+Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
+
+\Beispiel{Patchskript}\label{BspPatchskript}
+\begin{verbatim}
+~Include Benutzervariablen.fps
+~Input AKennung: Gib die Aufgabenkennung ein:
+~Input PatchCode: Gib den Korrekturcode ein:
+~SetDateTime Datum=yyyy-MM-dd
+~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~XmlEncode xPatchCode=$PatchCode
+@Anleitung >> Erstelle eine neue Datei im Editor.
+>> Gib den folgenden Code ein:
+    >|<?xml version="1.0"?>
+    >|<PATCHSCRIPT>
+    >|  <NAME>$AKennung</NAME>
+    >|  <CODE>$xPatchCode</CODE>
+    >|  <CREATOR>$BenVarKuerzel</CREATOR>
+    >|  <CREATIONDATE>$Datum</CREATIONDATE>
+    >|</PATCHSCRIPT>
+>> Speichere die Datei ab unter
+    >|$DatBasis\$AKennung.xml
+>> Rufe den Patch-Converter für die Datei auf:
+    >|$BenVarPfadTools\PatchConverter\Bin\PatchConverter.exe
+        __ "$DatBasis\$AKennung.xml"
+>>  Das fertige Patchscript
+    ~AddCode  $AKennung.psc
+    ~AddText  liegt unter
+    >|$DatBasis
+\end{verbatim}
+
+In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe einer internen Hilfsanwendung in ein anderes Format konvertiert wird.
+
+Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
+
+Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
+
+Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|,  sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
+

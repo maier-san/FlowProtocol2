@@ -1,0 +1,383 @@
+﻿\chapter{Befehlsreferenz}\label{Befehlsreferenz}
+
+\section{Kernelemente}
+\begin{grundelement}\label{defBedingungen}
+Eine \emph{Bedingung}\index{Bedingungen} ist ein Ausdruck, der zu \emph{wahr} oder \emph{falsch} ausgewertet werden kann. Bedingungen werden bei verschiedenen Befehlen verwendet, z.B.\ in Do-While-Schleifen oder  bei If-Bedingungen.\par
+Eine Bedingung muss in \FPZ\ in der disjunktiven Normalform angegeben werden, also als Oder-Verknüpfung (\verb=||=) von Und-Verknüpfungen (\verb|&&|), wobei keine Klammerung notwendig ist.
+
+Als Literale sind die Konstanten \verb|1| und \cidxfrag{true} (wahr\index{wahr}), sowie \verb|0| und \cidxfrag{false} (falsch\index{falsch}) verwendbar, sowie die folgenden Vergleichsoperatoren\index{Vergleichsoperatoren}:
+\begin{center}
+\begin{tabular}{|l|c|l|l|}\hline
+Ausdruck& Formel & Sprachform & Typenbeschränkung\\\hline\hline
+\verb|$s==$t| & $s=t$ & $s$ ist gleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|$s!=$t|  & $s\neq t$ & $s$ ist ungleich $t$ & für Zeichenketten $s$ und $t$\\
+\verb|$x<>$y| & $x\neq y$ & $x$ ist ungleich $y$ & für Zahlen $x$ und $y$\\
+\verb|$x<$y| & $x<y$ & $x$ ist kleiner $y$ & für Zahlen $x$ und $y$\\
+\verb|$x<=$y| & $x\le y$ & $x$ ist kleiner gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|$x>$y| & $x>y$ & $x$ ist größer $y$ & für Zahlen $x$ und $y$\\
+\verb|$x>=$y| & $x\ge y$ & $x$ ist größer gleich $y$ & für Zahlen $x$ und $y$\\
+\verb|$s~$t| & $s\supseteq t$ & $s$ enthält $t$ & für Zeichenketten $s$ und $t$\\
+\verb|$s!~$t| & $s\nsupseteq t$ & $s$ enthält $t$ nicht & für Zeichenketten $s$ und $t$\\
+\verb|?$v| && $v$ ist gesetzt & für eine Variable $v$\\
+\verb|!?$v| && $v$ ist nicht gesetzt & für eine Variable $v$\\\hline
+\end{tabular}
+\end{center}
+\end{grundelement}
+
+\begin{grundelement}\label{defDateipfad}
+Ein \emph{Dateipfad}\index{Dateipfad}, bzw.\  \emph{Ordnerpfad}\index{Ordnerpfad} ist eine Zeichenkette, die einen Pfad auf eine Datei, bzw.\ einen Ordner angibt. Als Trennzeichen in den Pfadangaben kann das Trennzeichen des Betriebssystems verwendet werden, auf dem \FPZ\ läuft, also \verb|\| für Windows\index{Windows} und \verb|/| für Linux\index{Linux}, es kann aber auch \verb=|= verwendet werden, das unabhängig vom Betriebssystems richtig aufgelöst wird.\par
+Der Zugriff von \FPZ\ ist dabei beschränkt auf Dateien und Ordner, die im Skripte-Verzeichnis liegen. Die Angabe \verb|.| verweist auf den Ordner, in dem das gerade ausgeführte Skript liegt. Angaben, die mit \verb=.|= (bzw.\ \verb|.\| oder \verb|./|) beginnen, werden ausgehend vom Skripte-Verzeichnis interpretiert und alle anderen werden wieder ausgehend von dem Ordner interpretiert, in dem das gerade ausgeführte Skript liegt
+\end{grundelement}
+
+\begin{grundelement}\label{defLinks}
+Ein \emph{Link}\index{Link} ist ein im Browser angezeigter Text, der optisch meist blau und unterstrichen hervorgehoben ist, und der bei Anklicken eine im Link hinterlegte Adresse (URL) in einem Tab oder einen neuen Fenster öffnet.\\
+Links können in \FPZ\ sowohl in der Ausgabe, als auch in Hilfezeilen erzeugt werden, wobei stets eine URL und ein Anzeigetext angegeben werden können.\par
+Um die Gefahr abzuwenden, dass über Links nicht erkennbar schädliche URL-Verweise in Skripten eingebaut werden, kann man festlegen, welche URLs ausschließlich durch den Anzeigetext angezeigt werden sollen. Ein Link wird im Browser ausschließlich mit dem Anzeigetext dargestellt, wenn\dots
+\begin{itemize}
+\item der Anfang der URL mit einem Eintrag der in der Konfiguration hinterlegten Whitelist (Datei appsettings.json, Eigenschaft \verb|LinkWhitelist|) übereinstimmt oder
+\item die Whitelist leer ist oder
+\item auf ein anderes \FPZb-Skript verwiesen wird oder
+\item der Anzeigetext den Link als Text enthält (ggf. auch ohne "https://").
+\end{itemize}
+Anderenfalls wird die URL dem Anzeigetext in Klammern nachgestellt.\par
+Die in \FPZ\ angezeigten Links werden standardmäßig in einem neuen Tab geöffnet.
+\end{grundelement}
+
+\begin{grundelement}\label{defListen}
+Eine \emph{Liste}\index{Listen} ist in \FPZ\ eine Folge von fortlaufend indizierten Variablen, z.B.\ \verb|V(1)|, \verb|V(2)|, \verb|V(3)|,\dots , die mit dem Index $1$ beginnt und mit dem letzten Index endet, für den eine entsprechende Variable noch gesetzt ist. Listen werden durch verschiedene Befehle erzeugt und können selbst auch als Argumente an Befehle übergeben werden. Hierbei wird dann nur der Grundname der Variable (hier also \verb|V|) angegeben.
+\end{grundelement}
+
+\section{Umgebungsvariablen}
+
+\begin{description}
+\item[\cidxvar{BaseKey}] gibt innerhalb von Funktionen oder mit dem  \verb|~Include|-Befehl aufgerufene Funktionsdateien den Wert zurück, der mit dem gleichnamigen Argument beim Aufruf übergeben wurde. Diese Variable gibt auch bei rekursiv verschachtelten Selbstaufrufen immer den zum jeweiligen Aufruf passenden Wert zurückgibt. Mit ihr können Argumente und Variablen bei rekursiven Aufrufen derselben Funktion voneinander abgetrennt werden.
+
+\item[\cidxvar{BaseURL}] gibt die URL für das aktuell ausgeführte Skript ohne Parameter zurück.
+
+\item[\cidxvar{Chr(...)}] gibt das Zeichen mit dem angegebenen ANSI-Code zurück
+
+\item[\cidxvar{CRLF}] gibt die Zeichenkombination \emph{Carriage Return + Line Feed} zurück.
+
+\item[\cidxvar{LineNumber}] gibt die Zeilennummer der aktuellen Zeile zurück. Mittels Zusatz $-n$ wird direkt der um $n$ verringerte Wert zurückgegeben, z.B.\ \verb|$LineNumber-3|.
+
+\item[\cidxvar{NewGuid}] erzeugt eine Guid, z.B.\ 8bceae6b-aa8b-497e-aa3a-17a6634b7215.
+
+\item[\cidxvar{ResultURL}] gibt die URL für das aktuell ausgeführte Skript mit den aktuell gesetzten Parametern zurück.
+
+\item[\cidxvar{ScriptFilePath}] gibt den Dateipfad für das aktuell ausgeführte Skript aus Sicht der Anwendung zurück.
+
+\item[\cidxvar{ScriptPath}] gibt den Dateipfad für das Skripte-Verzeichnis\index{Skripte-Verzeichnis} aus Sicht der Anwendung zurück.
+
+\item[\cidxvar{CurrentScriptPath}] gibt den Dateipfad des Ordners für das aktuell ausgeführte Skript aus Sicht der Anwendung zurück.
+\end{description}
+
+\section{Befehle}\label{Befehle}
+\begin{description}
+
+\item[\cidxfrag{>\mbox{}>}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der ersten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{>}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der zweiten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{>.}]$[$\synvar{Format}$]$ \synvar{Text}\\
+Gibt einen Text als Aufzählung der dritten Ebene aus. Als Format kann zwischen \verb|#| für nummerierte Aufzählung, \verb|*| für nicht nummerierte Aufzählung, \verb|_| für Fließtext und \verb=|= für Codezeile gewählt werden. Standardmäßig wird die nicht nummerierte Aufzählung verwendet.\par
+Optional kann durch Voranstellen von \verb|@|\synvar{Abschnitt} ein Abschnitt ausgewählt werden.
+
+\item[\cidxfrag{?}] $[$\synvar{Schlüssel}$]$ \verb|:| \synvar{Text}\\
+Erzeugt eine Auswahlabfrage mit mehreren Optionen, von denen genau eine ausgewählt werden kann. Der Anzeigetext wird oberhalb der Auswahlliste angezeigt.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Die Optionen werden darunter mit dem \verb|#|-Befehl angegeben.\par
+Über die automatisch befüllten Variablen \synvar{Schlüssel}\verb|_OptionGroupPrompt| und \synvar{Schlüssel}\verb|_SelectedOptionText| lassen sich der Text der Frage und der ausgewählten Option abrufen.
+
+\item[\cidxfrag{\#}] $[$\synvar{Optionsschlüssel}$]$ \verb|:| \synvar{Anzeigetext}\\
+Fügt eine Option zur übergeordneten Auswahlabfrage hinzu. Wird der Optionsschlüssel weggelassen, wird dieser automatisch durchnummeriert.
+Für die jeweils gewählte Option werden die darunter eingerückten Befehle ausgeführt, für die anderen nicht.\\
+
+\item[\fcmd{AddCode}] \synvar{Text}\\
+Hängt einen Text in der für Programmcode typischen Schriftart an die letzte Ausgabezeile an. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{LinksInline}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{Archivklasse2} und \ref{BspPatchskript}.
+
+\item[\fcmd{AddHelpLine}] \synvar{Text}\\
+Fügt eine Hilfezeile für die übergeordnete Auswahlabfrage oder Texteingabe mit einem Text hinzu. Ersatzweise kann anstelle des Befehlsname auch \cidxfrag{\&>} eingegeben werden.\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}, \ref{Archivklasse2} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{AddHelpLink}] \synvar{URL} \verb=|= \synvar{Anzeigetext}\\
+Fügt einen Link mit der entsprechenden URL und dem Anzeigetext in der aktuellen Hilfezeile ein (siehe auch Kernelement~\ref{defLinks}).\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{AddHelpText}] \synvar{Text}\\
+Fügt den Text \synvar{Text} in der aktuellen Hilfezeile ein. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{AddLink}] \synvar{URL} \verb=|= \synvar{Anzeigetext}\\
+Fügt einen Link mit der entsprechenden URL und dem Anzeigetext in der aktuellen Ausgabezeile ein (siehe auch Kernelement~\ref{defLinks}).\\
+Siehe Abschnitt~\ref{Befehle}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{BspSuchlink}, \ref{BspJourFixePlaner} und \ref{BspLizenzabfrage}.
+
+\item[\fcmd{AddNewKey}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\
+Speichert einen Wert unter einem Schlüssel in der URL, wenn der Schlüssel dort noch nicht enthalten ist.\\
+Siehe Abschnitt~\ref{Zeitmessung}, verwendet in Beispiel~\ref{BspZeitmesser}.
+
+\item[\fcmd{AddText}] \synvar{Text}\\
+Fügt einen Text in der aktuellen Ausgabezeile ein. Um dazwischen ein Leerzeichen zu erzeugen, müssen zwischen Befehlsname und Argument zwei Leerzeichen angegeben werden.\\
+Siehe Abschnitt~\ref{LinksInline}, verwendet in Beispiel~\ref{BspLinksUndInlineCode}, \ref{BspArchivklasse3}, \ref{BspListenfunktion}, \ref{BspJourFixePlaner} und \ref{BspPatchskript}.
+
+\item[\fcmd{AddTo}] \synvar{Variable} \verb|+=| \synvar{Zahlenwert}\\
+Addiert eine Zahlenwert zu einer Variablen dazu. Hat die Variable noch keinen Wert, so wird der Ausgangswert $0$ impliziert.\\
+Siehe Abschnitte~\ref{BewSysteme} und \ref{Berechnungen}, verwendet in Beispiel~\ref{BspBewertungssystem}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{AddToList}] \synvar{Variable} \verb|+=| \synvar{Wert}\\
+Fügt einer Liste ein weiteres Element am Ende hinzu. Ist unter der Variablen noch keine Liste vorhanden, wird eine mit einem Element angelegt.\\
+Siehe Kernelement~\ref{defListen}.
+
+\item[\fcmd{Calculate}] \synvar{Variable} \verb|=| \synvar{Operand 1} \synvar{Operator} \synvar{Operand 2}\\
+Führt eine einfache Rechnung aus und speichert das Ergebnis in einer Variablen. Als Operator stehen zur Auswahl \verb|+|, \verb|-|, \verb|*|, \verb|/| und \verb|%| (Modulo).\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}, \ref{BspPrimzahlen}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{CalculateExpression}] \synvar{Variable} \verb|=| \synvar{Ausdruck}\\
+Berechnet einen mathematischen Ausdruck, der aus den vier Grundrechenarten \verb|+|, \verb|-| , \verb|*| und \verb|/|, dem \verb|^|-Operator für die Potentenzierung, dem \verb|%|-Operator 
+für Modulo-Rechnung, sowie den Operatoren \verb|sqrt|, \verb|sin|, \verb|cos|, \verb|tan|, \verb|exp| und \verb|ln| in einer beliebigen Klammerung besteht. Das Ergebnis wird einer Variablen zugewiesen. Es gilt die Punkt-vor-Strich-Rechnung\index{Punkt-vor-Strich-Rechnung}. Die Argumente der trigonometrischen Funktionen werden im Bogenmaß interpretiert.\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}, \ref{BspPrimzahlen}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{CamelCase}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in CamelCase-Schreibweise\index{CamelCase-Schreibweise} um und speichert das Ergebnis in einer Variablen.
+Hierbei werden Whitespace, Umlaute und Sonderzeichen entfernt und durch Großschreibung des darauf"|folgenden Buchstaben gekennzeichnet.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}, verwendet in Beispiel~\ref{Archivklasse2} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ClearVar}] \synvar{Variablenmuster}
+Löscht alle Variablen aus den Speicher, die einem Variablenmuster entsprechen. Dies kann ein Variablenname sein oder der Anfang eines Variablennamens, gefolgt von \verb|*|, wobei im zweiten Fall alle Variablen gelöscht werden, die auf diese Weise beginnen. Die Ausführungszeit für einzelne Befehle steigt deutlich an, wenn eine große Anzahl an Variablen, also 2000 oder mehr, verwendet werden. Durch den Befehl können ganze Listen von Variablen nach Gebrauch wieder entfernt werden, so dass die Ausführungszeit für die nachfolgenden Befehle wieder sinkt.
+
+\item[\fcmd{DateAdd}] \synvar{Variable} \verb|=| \synvar{Ausgangsdatum} \verb=|= \synvar{Zahlenwert} \verb=|= \synvar{Intervall}\\
+Addiert zu einem Ausgangsdatum eine Zeitspanne hinzu, die über einen ganzzahligen Zahlenwert und ein Intervall gegeben wird. Als Intervall sind folgende Zeichen zugelassen:
+\verb|y| = Jahre, \verb|M| = Monate, \verb|w| = Wochen, \verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten\\
+Das Ausgangsdatum muss im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateDiff}]  \synvar{Variable} \verb|=| \synvar{Zeitpunkt 1} \verb|..| \synvar{Zeitpunkt 2} \verb=|= \synvar{Intervall}\\
+Berechnet die Differenz zwischen Zeitpunkt~1 und Zeitpunkt~2 als ganzzahligen Wert in der mit Intervall angegebenen Einheit. Als Intervall sind folgende Zeichen zugelassen:
+\verb|d| = Tage, \verb|h| = Stunden, \verb|m| = Minuten, \verb|s| = Sekunden\\
+Beide Zeitpunkte müssen im internen Format für Datumswerte\index{Datumswerte} angegeben werden (yyyy-MM-dd HH:mm:ss).
+
+\item[\fcmd{DateFormat}] \synvar{Variable} \verb|=| \synvar{Datumswert} \verb=|= \synvar{Format}\\
+Wanelt einen Datumswert in ein bestimmten Format um und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Datumswert muss im internen Format für Datumswerte\index{Datumswerte} angegebe werden (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DateSet}] \synvar{Variable} \verb|=| \synvar{Wert} \verb=|= \synvar{Format}\\
+Interpretiert einen Text als Datum in einem vorgegebenen Format und speichert das Ergebnis in einer Variablen. Als Format sind die in der Programmiersprache C\# möglichen Formatzeichen zulässig. Der Ergebniswert wird im internen Format für Datumswerte\index{Datumswerte} gespeichert (yyyy-MM-dd HH:mm:ss).\\
+Siehe Abschnitt~\ref{Befehle}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{DecryptText}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Schlüssel} \\
+Entschlüsselt einen mit \fcmd{EncryptText} verschlüsselten Text mit dem angegebenen Schlüssel und speichert das Ergebnis in einer Variablen.
+
+\item[\fcmd{DefineSub}] \synvar{Funktionsname}\\
+Definiert eine Funktion mit dem angegebenen Funktionsnamen, die dann mit dem \fcmd{GoSub}-Befehl aufgerufen werden kann. Die Funktion muss mit \fcmd{Return} abgeschlossen werden.
+%Siehe Abschnitte~\ref{}, \ref{} und \ref{}, verwendet in Beispiel~\ref{}, \ref{} und \ref{}.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+ 
+\item[\fcmd{DoWhile}] \synvar{Bedingung}\\
+Führt die nachfolgenden eingerückten Befehle wiederholt aus, solange die Bedingung erfüllt ist. Die Schleife wird mit dem Befehl \fcmd{Loop} auf gleicher Ebene abgeschlossen. Siehe auch Kernelement~\ref{defBedingungen}.\\
+Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspTerminplaner}.
+
+\item[\fcmd{DynamicOptionGroup}] \synvar{Schlüssel} \verb|:| \synvar{Optionenliste} \verb|;| \synvar{Fragestellung}\\
+Erzeugt eine Auswahlabfrage mit einem Schlüssel, einer Fragestellung und einer Menge von Optionen, von denen genau eine ausgewählt werden kann. Im Unterschied zum \verb|?|-Befehl werden die Optionen hier zur Laufzeit aus einer Liste ausgelesen, siehe auch Kernelement~\ref{defListen}.
+Das mit dem Schlüssel in der URL gespeicherte und als Variable abrufbare Ergebnis der Auswahlabfrage ist der Index der ausgewählten Option.
+Der Schlüssel der Auswahlabfrage kann wie beim \verb|?|-Befehl mit \verb|'| per Durchnummerierung im Skript festgelegt werden.
+Ist die Optionenliste leer, wird der Befehl übersprungen.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{Else}]\mbox{}\\
+Ist eine optionale Ergänzung zu einer If-Abfrage und evtl.\ vorangehenden ElseIf-Abfragen. Der Befehl führt die nachfolgend eingerückten Befehle aus, wenn alle vorherigen Bedingungen nicht erfüllt waren. Pro If-Abfrage darf maximal eine Else-Abfrage angegeben werden.\\
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBewertungsschema}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ElseIf}] \synvar{Bedingung}\\
+Prüft eine alternative Bedingung nach einer If-Abfrage und evtl.\ anderen vorangehenden ElseIf-Abfragen. Der Befehl führt die nachfolgend eingerückten Befehle aus, wenn die angegebene Bedingung erfüllt ist und alle Bedingungen der vorangegangenen If-, und ElseIf-Befehle nicht erfüllt waren. Es können beliebig viele ElseIf-Abfragen aneinandergereiht werden.\\
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBewertungsschema} und \ref{Passwortgenerator}.
+
+\item[\fcmd{EncryptText}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Schlüssel}\\
+Verschlüsselt einen Text mit dem angegebenen Schlüssel und speichert das Ergbnis in einer Variablen.
+
+\item[\fcmd{End}]\mbox{}\\
+Beendet die Skriptausführung.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{EndParagraph}]\mbox{}\\
+Beendet den aktuellen Absatz im aktuellen Textblock der Ausgabe. Das Hinzufügen der nächsten Zeile beginnt damit automatisch einen neuen Absatz mit einem entsprechenden Abstand.
+
+\item[\fcmd{EvalExpression}] \synvar{Variable} $[$\verb|!|$]$ \verb|=| \synvar{Bedingung}\\
+Wertet eine Bedingung aus und speichert das Ergebnis in einer Variablen als \cidxfrag{true} oder \cidxfrag{false}. Mit \verb|=| wird der Wert direkt zugewiesen, mit \verb|!=| wird der Wert bei der Zuweisung negiert. Die Ergebniswerte solcher Auswertungen können in anderen Ausdrücken weiterverwendet werden. Siehe auch Kernelement~\ref{defBedingungen}.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner}.
+
+\item[\fcmd{Execute}]\mbox{}\\
+Führt alle bis zu dieser Stelle durchlaufenen Eingabebefehle aus, sofern für diese noch kein Wert gesetzt ist. Erst wenn alle diese Eingaben vorhanden sind, werden die nachfolgenden Befehle ausgeführt.
+Mit dem Befehl kann die Menge der gleichzeitig abgefragten Eingaben reduziert werden, und es kann sichergestellt werden, dass die nachfolgenden Befehle erst dann ausgeführt werden, wenn die von diesen benötigten Eingaben auch vorhanden sind.\\
+Siehe Abschnitte~\ref{Texteingaben}, \ref{FormatierungDerEingabe} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspTextersetzung}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspZeitmesser}, \ref{BspTerminplaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{ExitLoop}]\mbox{}\\
+Verlässt eine Schleife und setzt die Ausführung nach dem Loop-Befehl fort.\\
+Siehe Abschnitte~\ref{Schleifen} und \ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspPrimzahlen} und \ref{BspJourFixePlaner}.
+
+\item[\fcmd{FileExists}] \synvar{Variable} \verb|=| \synvar{Dateipfad}\\
+Prüft, ob eine entsprechende Datei existiert und speichert das Ergebnis als Wahrheitswert in einer Variablen. Siehe auch Kernelement~\ref{defDateipfad}.
+
+\item[\fcmd{For}] \synvar{Variable} \verb|=| \synvar{Von} \verb|To| \synvar{Bis} $[$\verb|Step| \synvar{Schrittweite}$]$\\
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.
+%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{ForEach}] \synvar{Variable} \verb|in| \synvar{Liste}\\
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jedes Element der Liste aus, siehe auch Kernelement~\ref{defListen}. Bei jedem Durchlauf wird das jeweilige Element der Variablen zugewiesen.\\ 
+Siehe Abschnitte~\ref{Schleifen} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{ForEachLine}] \synvar{Variable} \verb|in| \synvar{Dateipfad} $[$\verb|; Take=| \synvar{Anzahl} $]$\\
+$[$\verb|; IndexVar=| \synvar{Indexvariable} $][$\verb|; SectionVar=| \synvar{Abschnittsvariable} $]$\\
+$[$\verb|; NoFormat| $]$\\
+Liest Zeilen der über den Dateipfad angegebenen Datei ein (siehe auch Kernelement~\ref{defDateipfad}) und führt die nachfolgenden eingerückten Befehle bis zum dazugehörenden \fcmd{Loop}-Befehl wiederholt aus. Für jede durchlaufene Zeile wird die Variable mit dem Inhalt der Zeile belegt.\par
+Mit dem optionalen \cidxfrag{Take}-Parameter kann die Anzahl der durchlaufenen Zeilen vorgegeben werden. Diese werden dann zufällig ausgewählt. Bei Angabe des optionalen \cidxfrag{IndexVar}-Parameters wird die laufende Nummer in der Indexvariablen zurückgegeben.\par
+Der Befehl ist standardmäßig auf das Einlesen von Datenlisten\index{Datenlisten} ausgerichtet, also Textdateien bei denen Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen übersprungen werden, und Zeilen, die mit einer öffnenden eckigen Klammer beginnen und mit einer schließenden eckigen Klammer enden als Abschnittskennung\index{Abschnittskennung} interpretiert werden. Für alle Zeilen werden Whitespace-Zeichen an Anfang und Ende entfernt. Bei Angabe des optionalen \cidxfrag{SectionVar}-Parameters wird der jeweilige Abschnitt in der Abschnittsvariablen zurückgegeben.\par
+Mit dem \cidxfrag{NoFormat}-Argument werden alle Zeilen der Textdatei zurückgegeben, auch Leerzeilen. Es werden keine Formate wie Abschnittskennungen oder Kommentare interpretiert und kein Whitespace entfernt.
+
+Siehe Abschnitte~\ref{RegUndDaten} und \ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspTerminologiepruefer} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{GoSub}]  \synvar{Funktionsname} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
+Führt die angegebene Funktion aus. Bei Angabe des optionalen \cidxfrag{BaseKey}-Pa\-ra\-me\-ters wird die gleichnamige Systemvariable auf den angegebenen Basisschlüssel gesetzt. Nachdem die Funktion durchlaufen wurde, wird die Skriptausführung in der nächsten Zeile fortgesetzt.\\
+Siehe Abschnitte~\ref{Funktionen} und \ref{POUnterstuetzung}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{GoTo}] \synvar{Sprungmarke}\\
+Setzt die Skriptausführung an der angegebenen Sprungmarke fort. Diese wird mit dem \fcmd{JumpMark}-Befehl gesetzt.\\
+Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
+
+\item[\fcmd{If}] \synvar{Bedingung}\\
+Führt die nachfolgend eingerückten Befehle genau dann aus, wenn die Bedingung erfüllt ist (siehe auch Kernelement~\ref{defBedingungen}). 
+Ist die Bedingung nicht erfüllt, wird der nächste Befehl auf gleicher Ebene ausgeführt.\par
+Der If-Befehl kann mit beliebig vielen ElseIf-Befehlen und einem Else-Befehl kombiniert werden.
+
+Siehe Abschnitt~\ref{IfUndBedingungen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspArchivklasse3}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+ 
+\item[\fcmd{Implies}] \synvar{Schlüssel} \verb|=| \synvar{Wert}\\
+Setzt einen Wert für einen Schlüssel in der URL. Damit können z.B.\ Antworten für noch ausstehende Auswahlabfragen impliziert werden.
+ 
+\item[\fcmd{Include}] \synvar{Dateipfad} $[$\verb|; BaseKey=| \synvar{Basisschlüssel}$]$\\
+Führt die über den Dateipfad angegebene Funktionsdatei aus. Die standardmäßige Dateiendung für Funktionsdateien ist \emph{.fps}. Die Syntax ist diesselbe wie in den Skriptdateien.
+Bei Angabe des optionalen \cidxfrag{BaseKey}-Parameters wird die gleichnamige Systemvariable auf den angegebenen Basisschlüssel gesetzt. Nachdem die Datei durchlaufen wurde, wird die Skriptausführung in der nächsten Zeile fortgesetzt.\\
+Siehe Abschnitt~\ref{POUnterstuetzung}, verwendet in Beispiel~\ref{BspListenfunktion} und \ref{BspPatchskript}.
+
+\item[\fcmd{Input}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext}\\
+Fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\\
+Siehe Abschnitte~\ref{Texteingaben} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspTextersetzung}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspHilfezeilen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspSuchlink}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
+
+\item[\fcmd{JumpMark}] \synvar{Sprungmarke}\\
+Setzt eine Sprungmarke, die mit dem \fcmd{GoTo}-Befehl angesprungen werden kann.\\
+Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
+
+\item[\fcmd{ListDirectories}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Verzeichnisnamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{ListFiles}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
+Listet alle Dateinamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
+Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
+
+\item[\fcmd{Loop}]\mbox{}\\
+Beendet einen Schleifendurchlauf und beginnt den nächsten Schleifendurchlauf. Eine Schleife kann durch verschiedene Befehle initiiert werden.\\
+Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{MoveSection}] \synvar{Ausgangsabschnitt} \verb|->| \synvar{Zielabschnitt}\\
+Überträgt den Inhalt eines Ausgangsabschnitts in einen Zielabschnitt. Der Ausgangsabschnitt wird gelöscht.
+Ist der Zielabschnitt noch nicht vorhanden, so wird dieser am Ende angelegt. Ist der Ausgangsabschnitt nicht vorhanden, so bleibt der Aufruf ohne Wirkung. Sind Ausgangsabschnitt und Zielabschnitt identisch, so wird dieser Aschnitt entfernt. Die beien aufeinandertreffenden Textblöcke werden zusammengeführt, wenn sie die gleiche Formatierung haben.\\
+Siehe Abschnitte~\ref{AusgabetitelUndAbschnittsverschiebungen} und \ref{AssetDokumentation}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{Random}] \synvar{Variable} \verb|=| \synvar{Untergrenze} \verb|..| \synvar{Obergrenze}\\
+Erzeugt eine ganze Zufallszahl im Bereich von Untergrenze bis Obergrenze und speichert diese in einer Variablen.
+Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.\\
+Siehe Abschnitt~\ref{ErsetzungenUndZufallsgenerierung}, verwendet in Beispiel~\ref{Passwortgenerator}.
+
+\item[\fcmd{RegExMatch}] \synvar{Listenvariable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck}\\
+Wendet einen regurären Ausdruck\index{Regulärer Ausdruck} auf einen Text an und speichert das Ergebnis in einer Liste zur angegebenen Listenvariablen. In der Variablen mit Index $0$ wird \verb|true| zurückgegeben, wenn der Text dem regulären Ausdruck entspricht, ansonsten \verb|false|. In den nachfolgenden Variablen mit den Indices $1$, $2$, \dots werden die Werte der Gruppen abgelegt, die im Ausdruck enthalten sind.\\
+Siehe Abschnitt~\ref{RegUndDaten}, verwendet in Beispiel~\ref{BspTerminologiepruefer}, \ref{Archivklasse2} und \ref{BspTerminplaner}.
+
+\item[\fcmd{RegExReplace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Regulärer Ausdruck} \verb|->| \synvar{Ersetzungstext}\\
+Ersetzt in einem Text alle Vorkommen, die dem regulären Ausdruck\index{Regulärer Ausdruck} entsprechen, durch einen Ersetzungstext und speichert das Ergebnis in einer Variablen. Im regulären Ausdruck können mit runden Klammern Gruppierungen gebildet werden, auf die im Ersetzungstext mit \verb|$1|, \verb|$2|, usw.\ Bezug genommen werden kann.
+ 
+\item[\fcmd{Replace}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Suchtext} \verb|->| \synvar{Ersetzungstext}\\
+Ersetzt alle Vorkommen des Suchtextes in einem Text durch den Ersetzungstext und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitte~\ref{Texteingaben}, \ref{Funktionen} und \ref{ErsetzungenUndZufallsgenerierung}, verwendet in Beispiel~\ref{BspTextersetzung}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{Return}]\mbox{}\\
+Beendet eine Funktion und setzt die Skriptausführung in der nächsten Zeile des \fcmd{GoSub}-Befehls fort, an dem die Funktion aufgerufen wurde.\\
+Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi}, \ref{BspArchivklasse4}, \ref{BspZeitmesser} und \ref{BspTerminplaner}.
+
+\item[\fcmd{Round}] \synvar{Variable} \verb|=| \synvar{Dezimalzahl} \verb=|= \synvar{Anzahl an Stellen}\\
+Rundet eine Dezimalzahl auf die angegebene Anzahl an Stellen und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Berechnungen}, verwendet in Beispiel~\ref{BspBerechnungen}.
+
+\item[\fcmd{Set}] \synvar{Variable} \verb|=| \synvar{Wert}\\
+Speichert einen Wert in einer Variablen. Variablenbezeichnungen können aus Buchstaben, Ziffern und runden Klammern bestehen und auch wieder andere Variablen enthalten. Die in Variablennamen verwendeten Klammern haben keine syntaktische Bedeutung, können aber die Lesbarkeit von Variablen verbessern.\\
+Siehe Abschnitt~\ref{VariablenSetzenUndVerwenden}, verwendet in Beispiel~\ref{BspHalloWeltMitVariable}, \ref{BspVariablenersetzung}, \ref{BspBewertungssystem}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspTuermeVonHanoi}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminologiepruefer}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
+
+\item[\fcmd{SetBlockSaveFile}] \synvar{Dateiname} $[ $\verb|; Encoding =| \synvar{Codierung} $]$\\
+Legt einen Dateinamen fest, unter dem der aktuelle Codeblock gespeichert werden kann. Diese Festlegung bewirkt, dass in der Ausgabe zusätzlich zu der Schaltfläche \emph{In Zwischenablage kopieren} auch noch die Schaltfläche \emph{Als \dots speichern} angezeigt wird, mit den angegebenen Dateinamen. Bei Betätigung der Schaltfläche wird dann ein Dateiauswahldialog geöffnet, in dem man den passenden Dateipfad festlegen kann. Optional kann auch noch die Codierung\index{Codierung} festgelegt werden, mit der die Datei gespeichert werden soll. Zu Auswahl stehen \emph{utf-16}, \emph{ascii}, \emph{windows-1252}, \emph{latin1}, \emph{iso-8859-1} und \emph{utf-8}\index{UTF-8}, was der Standardwert ist. \\
+Das Öffnen des Dateiauswahldialogs funktioniert leider nicht bei allen Browsern, da die hierzu verwendete \emph{File System Access API} nicht immer implementier ist. Bei Firefox etwa erfolgt deshalb ersatzweise das direkte Herunterladen in den Download-Ordner.
+%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
+\item[\fcmd{SetCulture}] \synvar{Variable} \verb|=| \synvar{Kultur-Kennzeichen}\\
+Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B.\ "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\
+Siehe Abschnitt~\ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspJourFixePlaner}.
+
+\item[\fcmd{SetDateTime}] \synvar{Variable} \verb|=| \synvar{Format}\\
+Speichert das aktuelle Datum oder den aktuellen Zeitpunkt in einer vorgegebenen Formatierung in einer Variablen.\\
+Siehe Abschnitte~\ref{Zeitmessung} und \ref{MeetingVorbereitung}, verwendet in Beispiel~\ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspPatchskript}.
+
+\item[\fcmd{SetInputDescription}] \synvar{Beschreibung}\\
+Setzt die Beschreibung für die Eingabeseiten. Diese wird dort unterhalb der Überschrift angezeigt.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner}.
+
+\item[\fcmd{SetInputSection}] \synvar{Abschnittsüberschrift}\\
+Setzt die Abschnittsüberschrift für die nachfolgenden Eingabebefehle.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner} und \ref{BspWissensreflektion}.
+
+\item[\fcmd{SetInputTitle}] \synvar{Titel}\\
+Setzt den Titel für die Eingabeseiten.\\
+Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugPlaner} und \ref{BspZeitmesser}.
+
+\item[\fcmd{SetSection}] \synvar{Abschnittsüberschrift}\\
+Setzt die Abschnittsüberschrift für die nachfolgenden Ausgabebefehle. Der Befehl ist eine Alternative zu der \verb|@|-Syntax der Ausgabebebefehle.
+
+\item[\fcmd{SetStopCounter}] \synvar{Schleifengrenze} \verb|;| \synvar{Befehlsgrenze} $[$ \verb|MaxLength=| \synvar{max. Zeichenkettenlänge}$]$\\
+Setzt die Obergrenzen für die Anzahl der Schleifendurchläufe und der durchlaufenenen Befehle pro Seitenaufruf. Zusätzlich kann die maximale Zeichenkettenlänge festgelegt werden, die jeweils nach dem Ersetzen von Variablen geprüft wird.
+Beim Überschreiten der Grenzen bricht das Programm mit einer Fehlermeldung ab.
+Die Grenzen dienen zur Verhinderung von Endlosschleifen und Endlosrekursionen und stehen Werksseitig auf $5000$, $50000$ und $100000$, was für die meisten Skripte ausreichen sollte.
+Ist für ein komplexes Skript absehbar, dass diese Grenzen im regulären Betrieb überschritten werden, können die Grenzen mit dem o.g.\ Befehl hochgesetzt werden.\\
+Siehe Abschnitte~\ref{Schleifen} und \ref{Terminplanung}, verwendet in Beispiel~\ref{BspTerminplaner}.
+
+\item[\fcmd{SetTitle}] \synvar{Titel}\\
+Setzt den Titel für die Ausgabeseite.\\
+Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
+
+\item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$] [$\verb|; ValueType=| \synvar{Wertetyp}$]$\\
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann. Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann als Wertetyp \verb|int|, \verb|double| oder \verb|datetime| angegeben werden. 
+
+\item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
+Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Kernelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.
+Über den Eintrag mit dem Index 0 kann die Anzahl der Listenelemente abgerufen werden. Bei der Aufteilung wird Whitespace vor und nach den Trennzeichen standardmäßig entfernt. Wenn dieser erhalten bleiben soll, muss er mit \cidxvar{Chr(...)}-Befehlen maskiert werden.\\
+Siehe Abschnitte~\ref{TexteAufteilen} und \ref{Terminplanung}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspKombinator}, \ref{Passwortgenerator}, \ref{BspTerminplaner} und \ref{BspMetaErweiterung}.
+
+\item[\fcmd{ToLower}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in Kleinbuchstaben um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}, verwendet in Beispiel~\ref{Archivklasse2}.
+
+\item[\fcmd{ToUpper}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in Großbuchstaben um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{Entwicklungsanleitungen}.
+
+\item[\fcmd{Trim}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Entfernt umschließenden Whitespace aus dem Text und speichert das Ergebnis in einer Variablen.
+
+\item[\fcmd{UrlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die URL-Codierung um und speichert das Ergebnis in einer Variablen.\\
+Siehe Abschnitt~\ref{ParametrisierteLinks}, verwendet in Beispiel~\ref{BspSuchlink}.
+
+\item[\fcmd{XmlEncode}] \synvar{Variable} \verb|=| \synvar{Text}\\
+Wandelt einen Text in die XML-Codierung um und speichert das Ergebnis in einer Variablen. Die XML-Codierung maskiert die Zeichen \verb|<|, \verb|>|, \verb|&|, sowie die Anführungszeichen, so dass der Text innerhalb von XML-Tags stehen kann.\\
+Siehe Abschnitt~\ref{Personalisierung}, verwendet in Beispiel~\ref{BspPatchskript}.
+\end{description}

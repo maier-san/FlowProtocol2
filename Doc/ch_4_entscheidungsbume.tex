@@ -1,0 +1,88 @@
+﻿\chapter{Entscheidungsbäume}
+Aus mehreren ineinander verschachtelten Auswahlabfragen lassen sich große Entscheidungsbäume und Flussdiagramme aufbauen, deren Stärke darin liegt, an jeder Stelle im Skriptcode die vollständige bis dahin getroffene Auswahl zu kennen, und so die nächste Fragestellung ganz exakt auf diese Situation abzustimmen. Die Anwendungsfälle dafür sind enorm vielfältig, aber um im Bereich der Softwareentwicklung zu bleiben, sind hier einige typische Beispiele.
+
+\section{Strukturabbildung einer Software}\label{Strukturabbildung}
+Durch den Nachbau der Struktur, bzw.\ des Menübaums\index{Menübaum} einer Software von der Programmoberfläche aus betrachtet, kann man es dem Anwender des Skriptes enorm erleichtern, eine Stelle innerhalb dieses Softwareproduktes eindeutig zu benennen. Der daraus resultierende Pfad oder eine diesem zugeordnete Kennung kann für die Suche nach Vorgängen und Informationen verwendet werden. Da diese Art von Information oft Teil abteilungsübergreifender Kommunikation ist, können mit einer solchen Auswahl sowohl Missverständnissen vermieden und auch längerer Tastatureingaben eingespart werden.
+
+Beispiel~\ref{BspProgrammauswahl} zeigt, wie man einen solchen Auswahlbaum als wiederverwendbare Komponente anlegt.
+
+\section{Kategorisierungshilfen}\label{Kategorisierungshilfen}
+Eine wohl in allen Softwarehäusern stattfindende Kategorisierung\index{Kategorisierung} ist die des Schweregrades von neu erfassten Fehlern. Diese variieren in der Regel von \emph{hoch kritisch} bis hin zu \emph{niedrig} oder einer numerischen Abstufung mit dieser Entsprechung. Die subjektive und oft situationsbedingte Einschätzung der beteiligten Personen sollte hierbei nicht der Gradmesser sein, sondern vielmehr die objektiven Kriterien und der Vergleich mit Referenzbeispielen. Auf diese Weise können die verfügbaren Ressourcen zielgerichtet eingesetzt werden.
+
+Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt damit, explizit nach Kriterien für die höchste Einstufung zu fragen und geht weiter zu den Kriterien der zweiten Stufe, wenn diese nicht zutreffen. Nach der zweiten Stufe wird direkt nach Kriterien für die unterste Stufe gefragt, so dass automatisch für alles die Zuordnung zu Stufe 3 erfolgt, was auch dort nicht zugeordnet werden kann. Das macht die Aufstellung der Kriterien leichter, da sich einfacher Kriterien für die ganz niedrige Priorität finden lassen, als für die vorgelagerte Stufe.
+
+\Beispiel{Schweregradeinstufung}
+\begin{verbatim}
+?S1: Treffen die Kriterien für einen Stufe-1-Fehler zu?    
+    #k1: Ausgegebene Werte entsprechen nicht der Spezifikation.
+        >> Stufe-1-Fehler: Spezifikationsverletzung
+    #k2: Der Datenschutz ist an einer wesentlichen Stelle verletzt.
+        >> Stufe-1-Fehler: Datenschutzverletzung
+    #k3: Die Datensicherheit ist verletzt oder gefährdet.
+        >> Stufe-1-Fehler: Datensicherheitsverletzung
+    #no: Nein, die o.g. Kriterien treffen nicht zu.
+        ?S2: Treffen die Kriterien für einen Stufe-2-Fehler zu?
+            #k1: Der Fehler stört zentrale Programmfunktionen.
+                >> Stufe-2-Fehler: Störung zentraler Funktion.
+            #k2: Es gibt zwei oder mehr Supportanfragen zu 
+                __ diesem Fehler.
+                >> Stufe-2-Fehler: Mindestens zwei Supportanfragen
+            #no: Nein, die o.g. Kriterien treffen nicht zu.
+                ?S4: Treffen die Kriterien für einen 
+                    __ Stufe-4-Fehler zu?
+                    #k1: Es handelt sich um einen erkennbaren
+                        __ Tippfehler.
+                        >> Stufe-4-Fehler: Tippfehler
+                    #k2: Der Fehler tritt nur bei unsinnigen
+                        __ Eingaben auf.
+                        >> Stufe-4-Fehler: unsinnige Eingaben
+                    #no: Nein, die o.g. Kriterien treffen nicht zu.
+                        >> Stufe-3-Fehler
+\end{verbatim}
+
+Für die Abarbeitung der Fehler-Aufgaben der verschiedenen Schweregradstufen kann man dann klare Regeln definieren, wie z.B.\ dass Stufe-1-Fehler umgehend behoben werden und dass die Lösung aller Stufe-2-Fehler zumindest in das nächste Service Release einfließen muss.
+
+Insgesamt ist die Sortierung nach dem Schweregrad keine gute Idee, wenn sich viele Vorgänge ansammeln, da es in diesem Fall erst dann zur Bearbeitung eines Stufe-4-Fehlers kommt, wenn alle Stufe-3-Fehler abgearbeitet sind, was unter Umständen nie der Fall ist. Ein System, das die Einstufung berücksichtigt, aber gleichzeitig die Abarbeitung jeder Aufgabe sicherstellt, ist angelehnt an die Spuren der Autobahn. Die Aufgaben jeder Schweregradstufe bilden jeweils eine Queue, in der neu erstellte Aufgaben unten angefügt, und die ältesten oben abgearbeitet werden. Um den Schweregrad zu berücksichtigen, lässt man die linke Spur schneller laufen, indem man die Mengen für die Abarbeitung in ein vorgegebenes Verhältnis setzt, z.B.
+\[M(2):M(3):M(4) = 6 : 3 : 1\]
+d.h.\ für eine abgearbeitete Stufe-4-Aufgabe werden drei Stufe-3-Aufgaben und sechs Stufe-2-Aufgaben abgearbeitet.
+
+In Beispiel~\ref{BspBugPlaner} wird ein Skript gegeben, dass die Menge der Vorgänge in jedem Schweregrad für eine vorgegebene Anzahl so berechnet, dass sie so gut wie möglich in diesem Verhältnis steht.
+
+\section{Expertensysteme}\label{Expertensystem}
+Mit Expertensystem\index{Expertensystem} oder auch Troubleshooting-System\index{Troubleshooting-System} oder Chatbot\index{Chatbot} ist hier eine Anwendung gemeint, die wie ein lebendiger Experte durch immer weiter in die Tiefe gehende Fragestellungen eine in der Regel problematische Situation möglichst genau erfasst, um dann dem Anwender dazu passende Handlungsanweisungen und Lösungsansätze aufzuzeigen. Dort wo diese nicht gelingt, lässt sich anhand der beantworteten Fragen zumindest eine gute und aufs Wesentliche beschränkte Beschreibung der Problemsituation erstellen.
+Probleme gibt es überall und die zur Lösung befähigten Experten erkennt man zuallererst daran, dass sie die richtigen Fragen stellen. Die Möglichkeit, einen großen Teil der Probleme auch in Abwesenheit menschlicher Experten lösen zu können, ist unheimlich wertvoll, insbesondere dann, wenn eine gut gemachte Anleitung Zeit spart und die Sicherheit gibt, nicht irgendetwas riskantes auszuprobieren.
+
+Wie schon bei dem zuletzt genannten Beispiel, das auch mit dem Expertensystem kombiniert werden kann, zeigt sich der enorme Nutzen, der sich schon aus diesen wenigen Skriptbausteinen ergibt. Der Grund dafür ist nicht, dass diese Befehle irgendetwas raffiniert technisches machen, sondern dass sie es ermöglichen, strukturelles oder fachliches Wissen in eine Form zu bringen, so dass dieses Wissen vom Anwender unmittelbar genutzt werden kann, ohne dass er sich dieses Wissen aneignen muss. \FPZ\ übernimmt die Anwendung des Wissens und der Anwender selbst muss sich immer nur mit einer einzelnen und idealerweise für ihn verständlichen Fragestellung auseinandersetzen, bekommt Führung und Anleitung und muss nicht selbst mühsam zum Experten werden.
+
+Der Umfang solcher Entscheidungsbäume\index{Entscheidungsbäume} kann riesig werden und trotzdem muss der Anwender am Ende nur eine Handvoll Fragen beantworten, um zum Ziel zu kommen.
+
+Hier ist ein sehr vereinfachtes Beispiel für ein Expertensystem, das eine Problemsituation analysiert und eine Handlungsempfehlung gibt:
+\Beispiel{Mini-Expertensystem}\label{Bsp04}
+\begin{verbatim}
+?: Startet die Anwendung?
+    #: Ja
+        >> Anwendung startet
+        ?: Ist eine Benutzeranmeldung möglich?
+            #: Ja
+                >> Benutzeranmeldung möglich.
+                >> Wo liegt das Problem?
+            #: Nein
+                >> Benutzeranmeldung nicht möglich
+                >> Empfehlung: Passwort zurücksetzen
+    #: Nein
+        >> Anwendung startet nicht
+        ?: Wurde das System schon neu gestartet?
+            #: Ja
+                >> System wurde schon neu gestartet.
+                >> Empfehlung: 2nd-Level-Support kontaktieren
+            #: Nein
+                >> System wurde noch nicht neu gestartet.
+                >> Empfehlung: System neu starten
+\end{verbatim}
+
+Zuerst fällt auf, dass hier keine Schlüssel\index{Schlüssel} angegeben sind, weder für die Auswahlabfragen, noch für die Antwortmöglichkeiten. Tatsächlich sind diese nicht zwingend erforderlich und werden von \FPZ\ selbständig anhand der Reihenfolge im Code vergeben, wenn sie im Skript weggelassen werden. Dies ist dann möglich, wenn man sich nicht an einer anderen Stelle im Skript auf eine Auswahl beziehen oder dieses wiederholen möchte, und es ist dann besonders vorteilhaft, wenn der Baum sehr groß werden kann und permanent erweitert wird und man den Überblick über die schon vergebenen Schlüssel zu verlieren droht. Der Nachteil der impliziten Schlüsselvergabe liegt darin, dass sich durch das Einfügen einer weiteren Auswahlabfrage am Anfang alle darunter liegenden Schlüssel verschieben, und so eine URL, die die Antworten in Bezug auf die Vorversion enthält, in der neuen Version falsch interpretiert wird. 
+
+Die automatische Nummerierung\index{automatische Nummerierung} von Schlüsseln für Auswahlabfragen und Texteingabe ist auch explizit möglich, in dem man einem selbstgewählten Basisschlüssel das \verb|'|-Zeichen anschließt. Mehrere nacheinander im Scriptcode vorkommenden Schlüsselangaben \verb|Q'| werden dann intern zu \verb|Q_1|, \verb|Q_2|, \verb|Q_3| usw.\ expandiert. Durch den Unterstrich werden Übereinstimmungen mit explizit vergebenen Schlüsseln vermieden.
+
+Die Ausführung dieses Beispiels zeigt darüber hinaus, wie das System mit ineinander verschachtelten Fragestellungen umgeht. In jedem Schritt werden immer genau die Fragen gestellt, die noch offen sind, und die aufgrund der vorangegangenen Schritte durchlaufen werden müssen. Sobald alle Fragen beantwortet sind, werden die gesammelten Ausgaben ausgegeben und die Ausführung des Skriptes ist abgeschlossen.
+

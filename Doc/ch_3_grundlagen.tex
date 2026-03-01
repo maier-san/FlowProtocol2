@@ -1,0 +1,87 @@
+﻿\chapter{Grundlagen}
+\section{Das erste Beispiel}
+In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf beschränkt, dass wohl jeder, der in dieser Branche tätig ist, schon an dem einen oder anderen Hallo-Welt-Beispiel vorbeigekommen ist. In dieser Tradition starten auch wir und beginnen mit dem einfachsten aller Beispiele:
+
+\Beispiel{Hallo Welt}
+\begin{verbatim}
+>> Hallo Welt!
+\end{verbatim}
+
+Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese direkt, oder in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
+
+Nach erfolgreicher Konfiguration wird man von \FPZ\ nach dem Start mit dem Text \emph{Willkommen bei FlowProtocol 2} begrüßt und man sieht das Logo, das auch das Titelblatt dieser Anleitung ziert. Über die Schaltfläche \emph{Zur Skriptauswahl} oder dem Menüpunkt \emph{Start} gelangt man von dort aus zur Auf\-lis\-tung der Skript-Hauptgruppen, also den Ordnern im Skripte-Verzeichnis. Für das Durcharbeiten dieser Anleitung ist es am besten, man kopiert den Ordner \emph{Doku-Beispiele} in das Skripte-Verzeichnis, so dass man die einzelnen Beispiele direkt aufrufen kann.
+
+Die Ausführung des oben genannten Beispiels führt zur Ausgabe des Textes \emph{1.\ Hallo Welt!} unter der Überschrift \emph{Hallo Welt}.
+
+Als Überschrift wird standardmäßig der Dateiname ohne Endung ausgegeben, und da wir keinen Befehl angegeben haben, der explizit eine Überschrift setzt, ist das auch hier der Fall. Der Befehl \cidxfrag{>\mbox{}>} gibt den dahinter stehenden Text aus, standardmäßig als nummerierte Aufzählung, was die \emph{1.}\ erklärt.
+
+Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} werden immer angezeigt, wenn die Ausführung abgeschlossen ist. Mit \emph{Neue Ausführung} kann das aktuell ausgewählte Skript neu gestartet werden und mit \emph{Zurück zur Startseite} kommt man zurück zur Auswahl der Skript-Hauptgruppen, was auch mit dem Menüpunkt \emph{Start} möglich ist. Wir werden noch einige Anwendungsfälle sehen, die sich am besten mit einem Skript umsetzen lassen, das mehrmals hintereinander ausgeführt wird.
+
+\section{Eine erste Auswahlabfrage}
+Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausgegeben, was in Anbetracht der recht einfachen Syntax und der schönen Formatierungsmöglichkeiten auch schon Mehrwerte bieten kann, aber der Hauptnutzen von \FPZ\ liegt ganz klar in der Interaktion. Diese lässt sich umsetzen mit Hilfe von Auswahlabfragen und Texteingaben. Das nachfolgende Beispiel zeigt eine einfache Auswahlabfrage.
+
+\Beispiel{Hallo Welt mit Auswahl}
+\begin{verbatim}
+?Q: Wie soll die Welt begrüßt werden?
+    #h: Mit "Hallo Welt!"
+        >> Hallo Welt!
+    #a: Mit "Aloah Welt!"
+        >> Aloah Welt!
+\end{verbatim}
+
+Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{Wie soll die Welt begrüßt werden?} konfrontiert, mit den beiden Antwortmöglichkeiten \emph{Mit ''Hallo Welt!''} und \emph{Mit ''Aloah Welt!''}. Es muss einer der beiden vorgegebenen Auswahlmöglichkeiten gewählt werden, denn wenn man die Skriptausführung mit \emph{Weiter} fortsetzt, werden die nicht beantworten Fragen einfach erneut gestellt und man gelangt nicht zur Ausgabeseite.  Nach getroffener Wahl wird auf der Ausgabeseite dann entweder \emph{1.\ Hallo Welt!} oder \emph{1.\ Aloah Welt!} ausgegeben. Dort hat man dann die Möglichkeit, das eben ausgeführte Skript mittels \emph{Neue Ausführung} erneut auszuführen oder zur Startseite der Skriptauswahl zu wechseln.
+
+Das Grundprinzip, dass auf einer oder mehreren Eingabeseiten\index{Eingabeseiten} die eventuell auch voneinander abhängigen Eingaben abgefragt werden, um dann am Ende die daraus resultierenden Ausgaben auf einer Ausgabeseite anzuzeigen, gilt für alle Skripte.
+
+Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \verb|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \verb|Q| und \verb|h|, bzw.\ \verb|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel\index{Schlüssel}. 
+Die Auswahlabfrage wird durch das \cidxfrag{?}-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \cidxfrag{\#}-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
+
+Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wieder aus Befehlen bestehen, die auch für sich alleine stehen können, Dieser Code wird wird nur dann ausgeführt, wenn die dazugehörende Antwortmöglichkeit ausgewählt wurde.
+
+Die Schlüssel für Auswahlabfragen und die später noch kommenden Texteingaben können primär aus einer Folge aus Buchstaben und Ziffern, sowie runden Klammern bestehen, die Schlüssel für Auswahlwerte nur aus Buchstaben und Ziffern. Sie dienen wie schon beschreiben dazu, die Eingaben des Anwenders in der URL zu speichern und auch innerhalb des Skriptes abrufbar zu machen. Der Schlüssel für eine Auswahlabfrage muss eindeutig innerhalb des gesamten Skriptes sein, der einer Antwortmöglichkeit muss eindeutig innerhalb einer Auswahlabfrage sein. 
+
+Da die Gesamtlänge der URL für Seitenaufrufe auf knapp über 2000 Zeichen begrenzt ist, muss man sich über die Länge von Schlüsseln erst Gedanken machen, wenn man wirklich viele Auswahlabfragen in ein Skript einbaut.
+
+\section{Allgemeine Ergänzungen zur Syntax}
+In \FPZ\ wird jede nicht leere Zeile einem Befehl zugeordnet. Die Einrückung\index{Einrückung} am Anfang wird getrennt erfasst und verarbeitet, Leerzeilen\index{Leerzeilen} und Leerraum am Ende wird ignoriert. Die Einrückung kann sowohl mit dem Tabulatorzeichen\index{Tabulatorzeichen}, also auch mit Leerzeichen erfolgen, wobei das Tabulatorzeichen intern in vier Leerzeichen umgerechnet wird. Es sollte also vermieden werden, innerhalb einer Skriptdatei sowohl mit Tabulatorzeichen, als auch mit Lerzeichen einzurücken.
+
+Die Zeichenfolge \cidxfrag{//} leitet einen Kommentar\index{Kommentar} ein, jedoch nur zu Beginn einer Zeile.
+
+Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\index{Umbruch} durch die Zeichenfolge \cidxfrag{\_\_} zu Beginn jeder Folgezeile kenntlich gemacht werden muss.
+
+\Beispiel{Syntaxergänzungen}
+\begin{verbatim}
+// Das ist ein Kommentar
+
+>> Das ist eine Ausgabe,
+    __ die im Scriptcode
+    __ auf drei Zeilen verteilt wird.
+\end{verbatim}
+
+\section{Die FlowProtocol-2-Befehlsreferenz}
+Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Scipts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
+
+Ergänzend dazu gibt es in Abschnitt~\ref{Befehlsreferenz} ebenfalls eine Befehlsreferenz, die alle Befehle auf\-listet, und auch auf deren Verwendung in dieser Dokumentation hier verweist.
+
+\section{Fehlermeldungen und Debug-Techniken}
+Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an sein Ergebnis kommt.
+
+\FPZ\ kann zwar nicht mit einem syntaxunterstützenden Editor aufwarten, liefert dafür aber klare Hinweise auf Syntax- und Laufzeitfehler. Diese werden mit Dateiname und Zeilennummer benannt. Der am häufigsten auftretende Fehler dürfte die \emph{Parsing Exception}\index{Parsing Exception} sein, also das Problem, dass eine Zeile nicht interpretiert werden kann. Da in \FPZ\ jeder Befehl in einer eigenen Zeile angegeben wird, muss man dementsprechend nur noch schauen, welchen Befehl man in der jeweiligen Zeile verwenden wollte, und wo die Zeile syntaktisch abweicht.
+
+Hier ein Beispiel für so einen Fehler:
+
+\Beispiel{Fehler im Skript}
+\begin{verbatim}
+?W: Wo ist der Fehler?
+    #A: In Antwort A
+        >> Antwort A
+    #B: In Antwort B
+        Antwort B
+\end{verbatim}
+
+Laufzeitfehler\index{Laufzeitfehler} treten dagegen meist im Zusammenhang mit Variablen auf, z.B.\ wenn mit diesen Rechenoperationen durchgeführt werden sollen, diese aber keinen Zahlenwert enthalten. Auch hier kann man anhand der Angaben in der Fehlermeldung die Stelle lokalisieren und sich an die Klärung der Ursache machen.
+
+In den meisten restlichen Fällen erscheint keine Fehlermeldung, aber das Skript produziert nicht die gewünschte Ausgabe. Und dann geht es an das Debuggen\index{Debuggen}, also das Entfernen der Fehler. Hier gibt es bei \FPZ\ den großen Vorteil, dass das Feedback nach einer Änderung sehr schnell zu bekommen ist. Man ändert einfach eine Stelle im Skriptcode, speichert und drückt die Aktualisieren-Schaltfläche im Browser und erhält umgehend das Resultat der aktualisierten Version. Man muss weder neu kompilieren, noch irgendwelche Eingaben wiederholen.
+
+Der beste Ansatz, um inhaltlichen Fehlern auf die Spur zu kommen, besteht darin, an vielen Stellen Hilfsausgaben zu erzeugen, z.B.\ mit den Werten von Variablen, der Information, ob eine bestimmten Stelle durchlaufen wurde, und so weiter. Diese können ganz normal als Ausgaben in das Skript eingebaut werden, idealerweise gesammelt in einem eigenen Debug-Abschnitt (siehe Abschnitt~\ref{Abschnitte}). Sobald die Entwicklung des Skriptes abgeschlossen ist, werden diese Hilfsausgaben auskommentiert oder entfernt.
+

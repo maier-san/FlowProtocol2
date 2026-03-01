@@ -1,0 +1,143 @@
+﻿\chapter{Variablen und Texteingaben}
+Die erste Zielsetzung der Vorversion von \FPZ\ bestand tatsächlich nur darin, eine große Menge an möglichen Ausgaben mittels iterierten Fragestellungen auf eine spezifische Situation einzugrenzen und die damit verbundenen Anwendungsfälle abzudecken. Sehr schnell wurde jedoch klar, dass mit ein paar grundlegenden Erweiterungen noch sehr viel mehr möglich ist.
+
+\section{Variablen setzen und verwenden}\label{VariablenSetzenUndVerwenden}
+Unter einer Variablen\index{Variablen} versteht man kurz gesagt einen Platzhalter, der verschiedene Werte annehmen kann. Innerhalb von Programmier- oder Skriptsprachen lassen sich die Werte von Variablen setzen und auch abrufen. In \FPZ\ wird einer Variablen mit dem \fcmd{Set}-Befehl ein Wert zugewiesen. Die Variable kann dann an nahezu allen Stellen im Skript verwendet werden, indem man Sie mit vorangestelltem \verb|$|-Zeichen kennzeichnet.
+
+\Beispiel{Hallo Welt mit Variable}\label{BspHalloWeltMitVariable}
+\begin{verbatim}
+?Q: Wie soll die Welt begrüßt werden?
+    #h: Mit "Hallo Welt!"
+        ~Set Gruss=Hallo
+    #a: Mit "Aloah Welt!"
+        ~Set Gruss=Aloah
+>> $Gruss Welt!
+\end{verbatim}
+
+Das Beispiel setzt  die Variable \verb|Gruss| je nach Auswahl auf den Wert \emph{Hallo} oder \emph{Aloah} und ruft den Wert in der Ausgabe am Ende auf, so dass entweder \emph{Hallo Welt!} oder \emph{Aloah Welt!} ausgegeben wird.
+
+Eine Variable kann aus Buchstaben (ohne Umlaute), Zahlen, runden Klammern und anderen Variablen zusammengesetzt werden. Der Wert einer Variable kann jede beliebige Zeichenkette sein. 
+
+Die Ersetzung von Variablen durch die jeweils zugeordneten Werte erfolgt durch einfache Ersetzung, d.h.\ das Ende der Variablen muss beim Aufruf nicht gekennzeichnet werden. Variablen, die nicht gesetzt wurden, werden auch nicht ersetzt.
+
+\Beispiel{Variablenersetzung}\label{BspVariablenersetzung}
+\begin{verbatim}
+~Set X=abc
+>> X = $X
+>> Z = $Z (Z wurde nie zugeweisen)
+>> XY = $XY (vor der Zuweisung von XY)
+~Set XY=def
+>> XY = $XY (nach der Zuweisung von XY)
+~Set i=5
+~Set F($i)=ghi
+>> F(i) = F($i) = $F($i)
+\end{verbatim}
+
+Dieses Beispiel zeigt den Umgang mit Variablen, deren Anfang identisch mit einer anderen Variable ist, in diesem Fall \verb|XY|. Die Ersetzung erfolgt in diesem Fall absteigend sortiert, sodass \verb|$XY| vor \verb|$X| ersetzt wird. Die Verwendung der Variablen \verb|$i| im Ausdruck \verb|$F($i)| gibt schon einen Ausblick darauf, dass man auch ganze Felder von Variablen anlegen und durchlaufen kann. Bei der Auswertung wird hierbei zunächst \verb|$i| durch \verb|5| und dann \verb|$F(5)| durch \verb|ghi| ersetzt. Die runden Klammern sind hier übrigens nur semantischer Zucker, um den Index-Teil der Variablen hervorzuheben und vom Feldnamen abzugrenzen.
+
+Wir werden später noch viele andere Befehle kennenlernen, die Zeichenketten verarbeiten und die das Ergebnis in einer Variablen zurückgeben und lernen auch selbst Funktionen zu schreiben, die ihre Eingabewerte über Variablen übergeben bekommen. 
+
+\section{Bewertungssysteme}\label{BewSysteme}
+Das Beispiel in diesem Abschnitt verwendet eine Variable, um einen Zahlenwert zu verwalten und in Abhängigkeit der Auswahlwerte Werte zu addieren. Dies ist z.B.\ dann erforderlich, wenn man mehrere gleichartige Dinge nach einem formalen Bewertungssystem\index{Bewertungssystem} bewerten möchte, um sie anschließend anhand der daran angeschlossenen Metrik in eine Rangfolge zu bringen. 
+
+Nehmen wir konkret die Bewertung von Aufgaben, die zur Stablilisierung bestimmter Programmfunktionen in einem Softwareprodukt erstellt wurden. Die Erstellung und Ausformulierung solcher Aufgaben werden meist den Entwicklern selbst überlassen, da nur diese über das Wissen und den technischen Einblick verfügen, um dort Verbesserungspotential auszumachen. Am Ende sollte es aber auch hier der Product Owner sein, der über Umfang und Priorität der Maßnahmen entscheidet, und um die dafür relevanten Aspekte der Entwicklung herauszuarbeiten, könnte er jeder dieser Aufgaben mit dem folgendem Bewertungssystem bewerten lassen:
+
+\Beispiel{Bewertungssystem}\label{BspBewertungssystem}
+\begin{verbatim}
+~Set punkte=0
+@Bewertung >>* Bewertungkrterien: 
+?A1: Wie groß ist der Verbesserungsbedarf an dieser Stelle?
+    #w1: Gering. Es gibt wenig Meldungen zu Einschränkungen an
+        __ dieser Stelle.
+        >* Bedarf: gering (-)
+        ~AddTo punkte+=10
+    #w2: Mittel. Es gibt immer wieder Meldungen zu spürbaren 
+        __  Einschränkungen an dieser Stelle.
+        >* Bedarf: mittel
+        ~AddTo punkte+=25
+    #w3: Groß. Es gibt permanent Meldungen zu störenden
+        __ Einschränkungen an dieser Stelle.
+        >* Bedarf: groß (+)
+        ~AddTo punkte+=50
+?A2: Wie klar ist die durchzuführende Maßnahme beschrieben?
+    #w1: Unkonkret. Es sind noch weitere Analysen notwendig.
+        >* Klarheit: unkonkret (-)
+        ~AddTo punkte+=10
+    #w2: Hinreichend konkret. Der Ansatz ist klar beschrieben,
+        __ aber noch nicht erprobt.
+        >* Klarheit: konkret
+        ~AddTo punkte+=25
+    #w3: Übertragbar. Der Ansatz kann von einer anderen Stelle
+        __ hierher übertragen werden.
+        >* Klarheit: übertragbar (+)
+        ~AddTo punkte+=50
+?A3: Wie effektiv wird die Maßnahmen voraussichtlich sein?
+    #w1: Unklar. Der tatsächliche Effekt ist erst nach der
+        __ Umsetzung erkennbar.
+        >* Effektivität: unklar (-)
+        ~AddTo punkte+=10
+    #w2: Gering bis mittel. Es bleiben Einschränkungen, aber
+        __ weniger oft und weniger groß.
+        >* Effektivität: gering bis mittel
+        ~AddTo punkte+=25
+    #w3: Mittel bis gut. Die vorhandenen Einschränkungen werden
+        __ weitestgehend behoben.
+        >* Effektivität: mittel bis gut (+)
+        ~AddTo punkte+=50
+?A4: Wie aufwändig ist die Umsetzung der Maßnahme?
+    #w1: Sehr aufwändig. 20 Storypunkte oder mehr.
+        >* Aufwand: hoch (-)
+        ~AddTo punkte+=10
+    #w2: Aufwändig. 13-20 Storypunkte.
+        >* Aufwand: mäßig hoch
+        ~AddTo punkte+=25
+    #w3: Im Rahmen. Maximal 8 Storypunkte.
+        >* Aufwand: im Rahmen (+)
+        ~AddTo punkte+=50
+?A5: Wie gut ist die Wiederverwendbarkeit?
+    #w1: Gering. Die Lösung ist speziell auf diese eine Stelle
+        __ zugeschnitten.
+        >* Wiederverwendbarkeit: gering (-)
+        ~AddTo punkte+=10
+    #w2: Übertragbar. Die Lösung kann auf andere Stellen
+        __ übertragen werden.
+        >* Wiederverwendbarkeit: übertragbar
+        ~AddTo punkte+=25
+    #w3: Umfassend. Die Lösung wird zentral eingebaut und
+        __ wirkt sich an mehren Stellen aus.
+        >* Wiederverwendbarkeit: umfassend (+)
+        ~AddTo punkte+=50
+@Bewertung >>* Gesamtbewertung: $punkte Punkte.
+\end{verbatim}
+
+Am Anfang wird die Variable \verb|punkte| auf den Wert 0 gesetzt, was man auch weglassen könnte, und danach folgen fünf Fragen, die jeweils ein Kriterium der in der Aufgabe beschriebenen Entwicklungsmaßnahme abfragen. Für jede Frage werden drei Auswahlmöglichkeiten angeboten, die jeweils aufsteigend eine geringe bis gute Erfüllung des genannten Kriteriums beschreiben. Der ausgewählte Wert wird dann sowohl in einer Zusammenfassung in Textform ausgegeben, als auch in der Gesamtpunktezahl berücksichtigt, indem zu dem in der Punkte-Variablen vorhandenen Wert mehr oder weniger hinzugezählt wird. Die Erhöhung einer Variablen um einen Wert erfolgt dabei mit dem Befehl \fcmd{AddTo}. Die Gesamtpunktezahl wird dann ebenfalls am Ende ausgegeben.
+
+Die Verwendung eines solchen Bewertungsskriptes hat primär den Vorteil, dass die Bewertung sehr objektiv ausfällt, da die Einschätzung in Bezug auf einzelnen Kriterien schon von sich aus reflektiert passieren muss und nicht mittels Bauchgefühl, was zusätzlich dadurch verstärkt werden kann, dass die Formulierung der Auswahlwerte eine gewisse Belegbarkeit assoziiert, die insbesondere bei einer gemeinsamen Bewertung im Team auch ausdiskutiert werden kann. Durch das Festhalten der ausgewählten Kriterien zusammen mit der Bewertung ist deren Begründung zudem gut dokumentiert. Die wiederholte Auseinandersetzung mit den zum größten Teil wirtschaftlichen Kriterien schärft in diesem Beispiel auch gleich die Sichtweise der Entwickler auf diese Aspekte, so dass diese bei der Suche nach Verbesserungen immer mehr in den Fokus gelangen.
+
+Ob man nun wie im Beispiel oben eine einfache additive Bewertung abbildet, oder komplexere Formeln verwendet, die auch berücksichtigen, dass sich Faktoren gegenseitig verstärken können, bleibt der eigenen Kreativität überlassen. Mit \FPZ\ lassen sich alle Formeln realisieren.
+
+Viele zumeist abstrakte Fragestellungen lassen sich auf derartige Bewertungssysteme herunterbrechen: Wie stark wird durch eine Entwicklungsmaßnahme die Produktstrategie verfolgt? Welcher über die Jahre gerechnete Mehraufwand wird durch Support und Aufrechterhaltung einer Funktion notwendig sein?
+In der Regel sind es viele kleine Faktoren, wie die Abhängigkeit von Drittanbieter-Komponenten oder externen Diensten die Länge der Kommunikationswege, der Grad der Konfigurierbarkeit, das Hinzukommen neuer Strukturen mit Semantik und Bedienkonzepten und die allgemeine Komplexität und Fehlertoleranz, die dauerhaft Aufwand verursachen. Die Identifikation dieser Faktoren kann zum einen schon bei der Planung der Entwicklung helfen, die Kosten-Nutzen-Verteilung besser einzuschätzen, zum anderen können durch ein geeignetes Skript aber auch direkt geeignete Maßnahmen abgeleitet werden, um diese Dinge bestmöglich und systematisch in den Griff zu bekommen.
+
+\section{Texteingaben}\label{Texteingaben}
+Schon bei der Erstellung der ersten Skripte gab es die Assoziation zu den zahlreichen Konfigurationsportalen, mit denen man im Internet sein Fahrrad oder Auto nach Wunsch zusammenstellen konnte, und daran angelehnt auch die ersten Versuche, die Konfiguration rund um die vielfach wiederkehrenden Standardentwicklungen in gleicher Weise abzufragen, um es so dem Product Owner zu erleichtern, die passende Konfiguration zu wählen. Da die Auswahl schon technisch auf auf die Menge der möglichen Konfigurationen beschränkt blieb, gleichzeitig aber alle notwendigen Entscheidungen abgefragt wurden, konnte man so Aufgabenbeschreibungen generieren, die fast alle wesentlichen Konfigurationsaspekte auf\-listeten. Manuell nachgearbeitet werden mussten individuelle Beschreibungstexte und eben Begriffe und Benennungen, die dafür meist mit einem gut erkennbaren Platzhalter \emph{xxx} in der Ausgabe ersetzt wurden, was insbesondere bei den wiederholt vorkommenden Begriffen den Komfort schmälerte.
+
+Inzwischen gehören Texteingaben\index{Texteingaben} zum Grundumfang von \FPZ\ und zusammen damit wurden auch zahlreiche Befehle hinzugefügt, um Texteingaben zu verarbeiten.
+
+\Beispiel{Textersetzung}\label{BspTextersetzung}
+\begin{verbatim}
+~Input si: Suche in
+~Input sn: Suche nach
+~Input ed: Ersetze durch
+~Execute
+~Replace erg=$si|$sn->$ed
+@Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
+@Ergebnis >> $erg
+\end{verbatim}
+
+In diesem Beispiel werden die drei Texte für eine einfache Ersetzungsaufgabe mit dem \fcmd{Input}-Befehl abgefragt und über die zu den Schlüsseln gehörenden Variablen \verb|si|, \verb|sn| und \verb|ed| an den \fcmd{Replace}-Befehl übergeben, der das Ergebnis über die Variablen \verb|erg| bereitstellt.
+
+Der Befehl \fcmd{Execute} sorgt dafür, dass das Skript bis zu dieser Stelle ausgeführt wird, solange, bis alle darüber stehenden Eingabebefehle abgearbeitet wurden, und die Eingabewerte in den Variablen zur Verfügung stehen. Er ist an dieser Stelle notwendig, da Variablen ohne Wert beim \fcmd{Replace}-Befehl zu Fehlern führen würden. Der Befehl kann auch bewusst zu Formatierung der Eingabe genutzt werden wie in Abschnitt~\ref{FormatierungDerEingabe} beschrieben wird.
+
+Die Möglichkeit, Texte und Zahlen über eine einfach per Link adressierbare Webanwendung abzufragen und zur Durchführung von Berechnungen zu verwenden, ist eine gute Alternative für so manche Kalkulationshilfe, die momentan noch in Form von Tabellenkalkulationsdateien verteilt werden.
+

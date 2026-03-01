@@ -1,0 +1,119 @@
+﻿\chapter{Weitere Formatierungsmöglichkeiten}
+In Abschnitt~\ref{FormatierungAusgabe} haben wir ja schon gesehen, wie man das Format der Aufzählung variieren, und die Ausgabe in Abschnitte unterteilen kann. Hier gibt es nur noch wenig zu ergänzen. Mindestens in gleicher Weise wichtig sind jedoch die Formatierungsmöglichkeiten, bei den Seiten, in denen die Eingabe abgefragt wird. Sie müssen den Bogen zum Anwendungskontext schließen und genau erklären und dem Anwender dabei helfen, die richtigen Daten einzugeben und die korrekte Auswahl zu treffen.
+
+\section{Ausgabetitel und Abschnittsverschiebungen}\label{AusgabetitelUndAbschnittsverschiebungen}
+Der Titel\index{Titel}, der auf der Ausgabeseite angezeigt wird, kann mit dem Befehl \fcmd{SetTitle} unabhängig vom Dateinamen gesetzt werden, so dass man als Dateinamen und damit auch für die Auf\-lis\-tung im Menü kürzere Titel wählen kann. Beim setzen des Titels im Scriptcode lassen sich auch Variablen verwenden, die die gemachten Eingaben berücksichtigen. Gerade wenn man die Ergebnisseite eines Skriptes an jemand anderen weitergeben möchte, z.B.\ über den Link mit den Parametern, kann ein möglichst passender Titel helfen, um das Dokument einzuordnen.
+
+Beim Verschieben eines Abschnitts\index{Abschnitt!verschieben} wird der Inhalt eines Abschnitts an einen anderen Abschnitt angehängt, wobei dieser ggf.\ zuvor erstellt wird. Dies ermöglicht es, mehrere Informationen zunächst parallel in verschiedenen Abschnitten zu sammeln und diese dann in einem Abschnitt aneinanderzufügen. Das ist besonders nützlich, wenn die Reihenfolge der Informationen in der Ausgabe eine andere ist als in der Abfrage.
+
+\Beispiel{Abschnittsverschiebung}\label{BspAbschnittsverschiebung}
+\begin{verbatim}
+~Input Bez: Wie soll das Feld heißen?
+@AnlEig >> Setze die Bezeichnung "$Bez"
+?: Welche Art von Werten soll eingegeben werden?
+    #: Texte
+        ~Set Klasse=TextFeld        
+    #: Zahlen
+        ~Set Klasse=Zahlenfeld
+    #: Datumsangaben
+        ~Set Klasse=Datumsfeld
+    #: Werte aus einer vorgegebenen Menge
+        ~Set Klasse=Auswahlfeld
+~SetTitle Implementerung der $Klasse-Instanz $Bez
+@AnlInst >> Erstelle eine $Klasse-Instanz
+?: Kann das Feld leer gelassen werden?
+    #j: Ja
+        ~Set KannLeerSein=true
+    #n: Nein
+        ~Set KannLeerSein=false
+@AnlEig >> Setze KannLeerSein = $KannLeerSein
+~MoveSection AnlInst -> Anleitung
+~MoveSection AnlEig -> Anleitung
+\end{verbatim}
+
+In diesem Beispiel wird eine kleine Anleitung für den Einbau eines Feldes in ein Programm erstellt. Hierbei werden Bezeichnung, Typ und die Eigenschaft, ob das Feld leer gelassen werden kann, abgefragt. Sobald Bezeichnung und Typ festgelegt sind, wird der Titel unter Verwendung dieser Informationen neu gesetzt. Die Anleitung wird zunächst in zwei Abschnitten getrennt zusammengestellt, \verb|@AnlEig| für die beiden Eigenschaften und \verb|@AnlInst| für die Instanziierung. Am Ende werden die beiden Abschnitte  mit dem \fcmd{MoveSection}-Befehl nacheinander in den neuen Abschnitt \emph{Anleitung} überführt, so dass die Punkte dort in einer logischen Reihenfolge stehen.
+
+Für dieses Minimalbeispiel hätte man die gewünschte Reihenfolge auch ohne die Verschiebung von Abschnitten hinbekommen, aber gerade bei größeren Anleitungsskripten kann eine Aufteilung helfen, die jeweils zu einem Anleitungsschritt dazugehörenden Aspekte wie Programmcode und Testpunkte im Skript eng beieinanderzuhalten.
+
+\section{Formatierung der Eingabe}\label{FormatierungDerEingabe}
+So wie man den Titel\index{Titel} für die Ausgabeseite setzen kann, lässt sich der Titel auch für die Eingabeseiten setzen und im Laufe der Skriptausführung ändern, ebenso lassen sich auch bei der Eingabe Abschnitte einfügen, um die Eingabeseiten weiter zu gliedern. Zuletzt kann auch noch unterhalb der Überschrift eine Beschreibung des Skriptes ausgegeben werden, um auch den Anwender abzuholen, der nur durch die Skriptauswahl stöbert, und der bislang nur den Dateinamen kennt.
+
+\Beispiel{Bug-Planer}\label{BspBugPlaner}
+\begin{verbatim}
+~SetTitle Bug-Planer
+~SetInputTitle Bug-Planer 6-3-1
+~SetInputDescription Der Bug-Planer berechnet
+    __ für eine Anzahl von Bugs, wie viele Bugs von
+    __ jedem Schweregrad eingeplant werden müssen,
+    __ damit diese im Verhältnis 6:3:1 liegen.
+~SetInputSection Vorhandene Bug-Vorgänge
+~Input A2: Anzahl Bugs mit Schweregrad 2
+~Input A3: Anzahl Bugs mit Schweregrad 3
+~Input A4: Anzahl Bugs mit Schweregrad 4
+~SetInputSection Planung
+~Input AP: Wie viele Bugs möchtest du einplanen?
+~Execute
+~Set S2=0
+~Set S3=0
+~Set S4=0
+~Set Sum=0
+~Split Indexlist=2,3,2,4,2,3,2,2,3,2|,
+~Set anybug = true
+~DoWhile $Sum<$AP && $anybug
+    ~ForEach idx in Indexlist
+        ~If $Sum<$AP && $S$idx<$A$idx
+            ~AddTo S$idx+=1        
+            ~AddTo Sum+=1
+    ~Loop
+    ~EvalExpression anybug = $S4<$A4 || $S3<$A3 || $S2<$A2
+~Loop
+@Ergebnis >>* Eingeplant werden sollen $AP Vorgänge.
+>>* Folgende Aufteilung wird vorgeschlagen:
+    > $S2 von $A2 Bugs mit Schweregrad 2
+    > $S3 von $A3 Bugs mit Schweregrad 3
+    > $S4 von $A4 Bugs mit Schweregrad 4
+\end{verbatim}
+
+Der Bug-Planer\index{Bug-Planer} aus dem Beispiel oben ist eine schönes Beispiel für ein Berechnungsskript, bei dem Werte abgefragt, und daraus andere Werte berechnet werden. In diesem Fall wird die Anzahl der Bug-Vorgänge für jeden Schweregrad von 2 bis 4 abgefragt, der z.B.\ wie in Abschnitt~\ref{Kategorisierungshilfen} beschrieben festgelegt werden kann. Zusätzlich wird noch die Anzahl der einzuplanenden Bug-Vorgänge abgefragt und damit dann ein Vorschlag für eine Aufteilung berechnet, die möglichst im Verhältnis $6:3:1$ steht. Eine solche Angleichung geht natürlich nur, wenn von allen Schweregraden ausreichend viele Vorgänge vorhanden sind. Wenn nicht, wird das verplant, was da ist und das Sollverhältnis auf die anderen Schweregrade angewendet.
+
+Für die Eingabeseite wurde hier mit \fcmd{SetInputTitle} eine eigene Überschrift gewählt. Zusätzlich wurde mit \fcmd{SetInputDescription} eine Skriptbeschreibung\index{Skriptbeschreibung} formuliert, die unterhalb der Überschrift ausgegeben wird. Die vier Eingabefelder wurden mit dem Befehl \fcmd{SetInputSection} in die beiden Abschnitte\index{Abschnitt!bei Eingabe} \emph{Vorhandene Bug-Vorgänge} und \emph{Planung} unterteilt. Man beachte, dass gleich benannte Eingabeabschnitte an verschiedenen Stellen nicht zusammengeführt werden.
+
+Nach der vierten Eingabe steht der Befehl \fcmd{Execute}, der ebenfalls zur Formatierung verwendet werden kann. Der Befehl bewirkt, dass der Aufbau der Eingabeseite an diesem Punkt abgebrochen, und die Eingabeseite im aktuellen Zustand angezeigt wird. Erst wenn alle Abfragen und Eingaben bis zu diesem Punkt getätigt wurden, läuft das Skript weiter bis zum Ende oder bis zum nächsten \fcmd{Execute}-Befehl. Bei Skripten mit sehr vielen Abfragen kann man diesen Befehl nutzen, um die Fragen so aufzuteilen, dass sie jeweils auf einen Bildschirm passen oder man kann erzwingen, dass die von einer Auswahl abhängigen Eingaben zuerst vollständig abgefragt werden, bevor der nachfolgenden Block ausgeführt wird. Im Beispiel oben sorgt der Befehl dafür, dass die Berechnungen in der zweiten Hälfte des Skriptes erst ausgeführt werden, wenn die an die Eingaben gebundenen Variablen mit Werten belegt sind. Ansonsten würden die ersten mit diesen Variablen durchgeführten Vergleiche zu einem Fehler führen.
+
+Die Berechnung selbst funktioniert wie folgt: Zunächst werden Variablen \verb|S2|, \verb|S3| und \verb|S4| für die Zahl der zu verteilenden Aufgaben des jeweiligen Schweregrades auf $0$ gesetzt, ebenso eine Variable \verb|Sum| für die Zwischensumme der insgesamt schon verteilten Aufgaben. 
+
+Die äußere \fcmd{DoWhile}-Schleife wiederholt so lange, wie diese Zwischensumme noch kleiner als die Anzahl der zu verteilenden Aufgaben ist, und noch ein Bug-Vorgang zum verteilen übrig ist. Letzteres wird mit dem Befehl \fcmd{EvalExpression} getrennt ausgewertet und in der Variablen \verb|anybug| abgespeichert.
+
+In der Inneren Schleife wird die Indexsequenz $2,3,2,4,2,3,2,2,3,2$ durchlaufen, was die Index-Variable \verb|idx| nacheinander auf diese Werte setzt. Dies bewirkt, dass die Indices $2$, $3$ und $4$ gleichmäßig im Verhältnis $6:3:1$ durchlaufen werden. Für den jeweils ausgewählten Index wird dann die Anzahl der zu verteilenden Aufgaben $S_i$ um $1$ erhöht, sofern noch Aufgaben des jeweiligen Schweregrades übrig sind ($S_i<A_i$) und die Zwischensumme $S$ der schon verteilten Aufgaben noch kleiner ist, als die Anzahl $A$ der Aufgaben, die verteilt werden soll ($S<A$), also \verb|$S$idx<$A$idx| und \verb|$Sum<$AP|. Für jede verteilte Aufgabe wird auch die Zwischensumme um $1$ erhöht.
+
+Eine nette Erweiterung dieses Skriptes könnte so aussehen, dass man die Gesamtzahl der zu verplanenden Vorgänge nicht abfragt, sondern prozentual aus der Zahl der vorhandenen Bugs berechnet und dabei nach oben und unten durch einen absoluten Wert begrenzt. Zusätzlich könnte man das Planungsverhältnis abfragen und das Gesamtpaket aus Prozentwert, obere und untere Grenze, sowie Verhältnis als fertige Planungsstrategie auswählbar machen. 
+
+Für ein beliebiges Verhältnis $S_0:S_1:\dots :S_{v-1}$ für die Einplanung von $v$ verschiedenen Schweregraden und eine Folge $a=(a_i)_{i\in n}$ von Indices $a_i\in v$ kann man berechnen, für welchen nächsten Index $a_n\in v$ die erweiterte Gesamtfolge $a'=(a_i)_{i\in n+1}$ die kleinste Abweichung $d(a_n)$ zum vorgegebenen Verhältnis hat, mit
+\[d(a_n)=\min_{l\in v}\left(1+ \big|\{i\in n\colon a_i=a_n\}\big|-\frac{(n+1)S_l}{\sum_{j\in v}S_j}\right)\]
+Diesen wählt man dann, um die Folge zu erweitern. Die Berechnung kann so oft wiederholt werden, wie man weitere Folgenglieder benötigt. Um wie im Beispiel oben eine feste, wiederholbare Indexsequenz zu hinterlegen, berechnet man  auf diese Weise die Teilfolge der ersten $N=S_0+\dots+S_{v-1}$ Folgenglieder, denn damit landet man nach jeweils $N$ Schritten exakt beim vorgegebenen Verhältnis.
+
+\section{Hilfezeilen}\label{Hilfezeilen}
+Einer der großen Vorteile einer interaktiven Anleitung liegt darin, dass man eben nicht wissen muss, welche Schritte man ausführen muss und welche man weglassen kann, weil das die Anleitung ja zusammen mit dem Anwender herausarbeitet. Die Informationen, unter welcher Bedingung welcher Schritt erforderlich ist, und was dabei genau zu tun ist, kann alles vom Ersteller in die Struktur und die Ausgaben des Skriptes gepackt werden, so dass der Anwender nur noch richtig auf die gestellten Fragen antworten, und die benötigen Eingaben tätigen muss.
+
+Diese Fragen und Eingaben so einfach und verständlich zu halten, so dass auch Anwender mit wenig Erfahrung in der Lage sind, das Skript auszuführen, ist eine Kunst für sich. In manchen Fällen wird das nicht möglich sein, und man wird einfach ein gewisses Systemwissen\index{Systemwissen} beim Anwender voraussetzen müssen. In den meisten Fällen wird man jedoch mit ein oder zwei Zeilen Anleitung auskommen, um zu beschreiben, wo man einen Wert findet oder wie die gestellte Frage oder einzelne Auswahlwerte genau zu interpretieren sind.
+
+\Beispiel{Hilfezeilen}\label{BspHilfezeilen}
+\begin{verbatim}
+~Input Bez: Trage die Lizenz für FlowProtocol 2 ein:
+~AddHelpLine Du findest die zugeordnete Lizenz auf der 
+~AddHelpLink https://github.com/maier-san/FlowProtocol2
+    __| FlowProtocol2-Seite
+~AddHelpText  bei GitHub auf der rechten Seite als 
+    __ zweiten Punkt unter "About".
+?K: Handelt es sich um eine freie Lizenz?
+    ~AddHelpLine Suche im Internet nach Details der Lizenz.
+    ~AddHelpLine "Freie Lizenz" bedeutet in diesem
+        __ Zusammenhang, dass für die Nutzung der Software
+        __ auch im kommerziellen Umfeld keine Kosten anfallen.
+    #: Ja
+    #: Nein
+\end{verbatim}
+
+Einzelne Hilfezeilen\index{Hilfezeilen} lassen sich für Texteingaben und Auswahlabfragen mit dem Befehl \fcmd{AddHelpLine} hinzufügen. Mit \fcmd{AddHelpLink} lassen sich, analog wie bei den Ausgaben, auch Links\index{Links} einbauen, so dass man auf Wiki-Seiten oder andere \FPZb-Skripte verweisen kann. Danach kann man mit \fcmd{AddHelpText} wieder normalen Text an die letzte Zeile anhängen.
+
+

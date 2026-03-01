@@ -1,0 +1,190 @@
+﻿\chapter{Verarbeitung von Texten}
+Der Zweck eines Skriptes ist es, eine Ausgabe zu erzeugen und der Zweck von Texteingaben liegt meist darin, diese Texte in irgendeiner Form in der Ausgabe einzuarbeiten. Sofern die Eingabe unverändert in der Ausgabe erscheinen soll, reicht es, einfach die entsprechende Variable in der Ausgabe zu verwenden. In manchen Fällen möchte man jedoch einen Text in einer bestimmten Form abwandeln oder entsprechend einer vorgegebenen Struktur zerlegen. Mit den in diesem Abschnitt beschriebenen Befehlen lassen sich die meisten Textveränderungen hinbekommen.
+
+\section{Texte aufteilen und neu kombinieren}\label{TexteAufteilen}
+Wie wir schon in Beispiel~\ref{BspBugPlaner} gesehen haben, Kann man mit Schleifen sehr gut Listen durchlaufen und eine Menge von Elementen bearbeiten. In diesem Beispiel wurde auch schon der \fcmd{Split}-Befehl verwendet, um aus einer kommagetrennten Aufzählung eine solche indizierte Liste zu erstellen, die mit dem \fcmd{ForEach}-Befehl durchlaufen werden kann. In der gleichen Weise kann auch eine ganze Aufzählung durch eine einzelne \fcmd{Input}-Abfrage als Benutzereingabe entgegengenommen, und in eine Liste umgewandelt werden. 
+
+Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste von Listen\index{Listen!von Listen} als Eingabe abgefragt und verarbeitet. Der \fcmd{Split}-Befehl funktioniert so, dass er den übergebenen Text anhand des angegebenen Trennzeichens aufteilt und in einer indizierten Liste speichert. 
+
+\Beispiel{Kombinator}\label{BspKombinator}
+\begin{verbatim}
+~Input C: Kombinierbare Eigenschaften
+    __ (z.B.: A,B,C : X,Y,Z)
+~Split A=$C|:
+~Set aidx=1
+~Set QAnz(1)=1
+~Set Q(1)(1)=#Start#
+~ForEach a in A
+    ~Set aprev=$aidx
+    ~AddTo aidx+=1
+    ~Split W=$a|,
+    ~Set widx=0
+    ~ForEach q in Q($aprev)
+        ~ForEach w in W
+            ~AddTo widx+=1
+            ~Replace Q($aidx)($widx)=$q - $w|#Start# -->
+        ~Loop
+    ~Loop
+~Loop
+~ForEach q in Q($aidx)
+    @Kombinationen >> $q
+~Loop
+\end{verbatim}
+
+Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B.\ \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jeder Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
+
+Der Umgang mit solchen kombinatorischen Auf\-lis\-tungen\index{kombinatorischen Auf\-lis\-tungen} ist in der Softwareentwicklung wichtiger, als man denkt, und ein großer Teil aller Fehler bei der Implementierung von Programmfunktionalität geht darauf zurück, dass Fälle übersehen oder vergessen werden. Dies passiert oft schon beim Entwurf der Userstory, in der hauptsächlich die Geradeaus-Fälle betrachtet werden, und Fälle, die keinem normalen Anwendungsfall entsprechen, oft außer Acht gelassen werden. Wenn solche Fälle jedoch theoretisch möglich sind, muss auch die Software damit in irgendeiner Form umgehen können, und damit sie das kann, müssen auch diese Fälle von Anfang an betrachtet und behandelt werden. 
+
+Gerade bei der Umsetzung von Formeln ist es ungeheuer wichtig, dass der komplette zulässige Definitionsbereich bei Implementierung und Test abgedeckt sind, und dass systematisch sichergestellt wird, dass alle nicht zulässigen Eingaben und Fälle sauber und für den Benutzer transparent durch die Programmoberfläche abgefangen werden. Eine solche Systematik bekommt man am besten dadurch hin, dass man zunächst die vorhandenen Fälle in ihre Eigenschaften zerlegt und diese dann mit Hilfe so eines Werkzeugs zu allen Fallunterscheidungen kombiniert, was allerdings recht umfangreich werden kann. 
+
+In vielen Fällen hängen weitere Teilkombinationen nur an einzelnen Werten und die Bestimmung aller Kombinationen entspricht dem ausmultiplizieren eines Terms mit  den Operationen $+$ und $\cdot$ und einer beliebigen Klammerung, nur dass die Elemente Textfragmente sind und keine Zahlen. Das folgende Beispiel zeigt, wie die Summanden des Ergebnisausdruckes am Ende die einzelnen Kombinationen bilden:
+\[
+\begin{split}
+K &= (\text{Material Holz} + \text{Material Metall})\\
+    &\quad\cdot (\text{Farbe blau} + \text{Farbe grün}\cdot (\text{einfarbig} + \text{mit gelben Streifen}))\\
+&= \text{Material Holz}\cdot\text{Farbe blau}\\
+&\quad+ \text{Material Holz}\cdot\text{Farbe grün}\cdot\text{einfarbig}\\
+&\quad+ \text{Material Holz}\cdot\text{Farbe grün}\cdot\text{mit gelben Streifen}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe blau}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe grün}\cdot\text{einfarbig}\\
+&\quad+ \text{Material Metall}\cdot\text{Farbe grün}\cdot\text{mit gelben Streifen}
+\end{split}
+\]
+Mit der in Abschnitt~\ref{RegUndDaten} beschriebenen Funktion zur Anwendung regulärer Ausdrücke lassen sich solche Klammerausdrücke wiederholt in einem Eingabetext suchen und ausmultiplizieren, bis am Ende der gesamte Ausdruck expandiert ist. Ebenso lässt sich nach definierten Textmarken suchen, die, wenn sie in einer Kombination aufeinandertreffen, diese aus dem Ergebnis entfernen. Zusätzlich lässt sich auch noch eine Textmarke für eine Ergebnisgruppierung definieren, so dass die Kombinationen als zweistufige Liste ausgegeben werden.
+
+
+\section{Ersetzungen und Zufallsgenerierung}\label{ErsetzungenUndZufallsgenerierung}
+Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, etwa in Beispiel~\ref{BspTextersetzung}. Die Ersetzung\index{Ersetzung} von Texten in anderen Texten ist für viele Zwecke einsetzbar. Im nachfolgende Beispiel wird die Textersetzung dazu verwendet um systematisch einen Text aufzubauen. Hierbei kommt auch der Befehl \fcmd{Random} zum Einsatz, mit dem eine Zufallszahl\index{Zufallszahl} in einem Zahlenbereich generiert werden kann.
+
+\Beispiel{Passwortgenerator}\label{Passwortgenerator}
+\begin{verbatim}
+~Set L=12
+~Random AnzZiffer=1..2
+~Random AnzGross=1..2
+~Random AnzSonder=1..2
+~Split SZ=33,35,36,37,38,42,43,47,64|,
+~Set M="
+~Set i=0
+~DoWhile $i<$L
+    ~Random r=0..$i
+    ~AddTo i+=1
+    ~If $r==0
+        ~Set M="+$i$M
+    ~Else
+        ~Replace M=$M|"+$r"->"+$r"+$i"
+~Loop
+~Set i=0
+~DoWhile $i<$L
+    ~AddTo i+=1
+    ~If $AnzZiffer>0
+        ~Random z=48..57
+        ~AddTo AnzZiffer+=-1
+    ~ElseIf $AnzGross>0
+        ~Random z=65..90
+        ~AddTo AnzGross+=-1
+    ~ElseIf $AnzSonder>0
+        ~Random s=1..$SZ(0)
+        ~Set z=$SZ($s)
+        ~AddTo AnzSonder+=-1
+    ~Else
+        ~Random z=97..122
+    ~Replace M=$M|"+$i"->"$Chr($z)"
+~Loop
+~Replace PW=$M|"->
+@Ausgabe >>* Passwortvorschlag
+    >|$PW
+\end{verbatim}
+
+Das Beispiel zeigt einen Passwortgenerator\index{Passwortgenerator}, der für eine vorgegebene Länge ein Passwort aus zufälligen Zeichen erzeugt. Die von den meisten Passwortrichtlinien geforderten Zusatzbedingungen, dass das Passwort auch Ziffern, Großbuchstaben und Sonderzeichen enthalten muss, sind ebenfalls berücksichtigt. Da diese Zeichen zum Eintippen oftmals lästig sind, kann ihre Anzahl hier beschränkt werden. Ebenso kann die Menge der Sonderzeichen festgelegt werden, die zum Einsatz kommen soll.
+
+Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr(...)}-Befehl verwendet der das Zeichen mit dem dazu gehörenden ANSI-Code\index{ANSI-Code} erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
+
+Für die Erzeugung der Sonderzeichen wird zunächst eine Zufallszahl von $1$ bis zur Länge der Liste \verb|SZ| generiert, wobei diese mit \verb|$SZ(0)| abgerufen wird. Mit dieser Zahl wird der entsprechende Listeneintrag ausgelesen, der dann in gleicher Weise wie die anderen Codes in ein Zeichen umgewandelt wird. Damit kann die Liste um weitere Codes ergänzt werden, ohne dass an anderer Stelle die Anzahl der Liste angepasst werden muss.
+
+\section{Reguläre Ausdrücke und Datenabfragen}\label{RegUndDaten}
+Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich auch die Chatbots der großen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
+
+Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die irgendwo im Skripte-Verzeichnis liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber man kann sie auslesen. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
+
+Das nachfolgende Beispiel ist ein einfaches Werkzeug zur Anwendung einer Terminologie\index{Terminologie} auf einen Eingabetext. Die Terminologie für einen bestimmten Kontext beschreibt die dort relevanten Begriffe und gibt an, welche der jeweils möglichen Benennungen innerhalb des Kontextes zulässig sind und welche nicht. In der Regel einigt man sich für jeden Begriff auf eine zulässige Benennung und schließt mehrere andere aus. So entsteht mit der Zeit eine Terminologiedatenbank aus Begriffen, Benennungen, Definitionen, Beschreibungen und Ausschlussbegründungen, die in einem sehr einfachen Fall so aussehen könnte:
+
+\Beispiel{Terminologieliste.txt}
+\begin{verbatim}
+1    Passwort    ja  Zeichenfolge, deren Kenntnis Zugang...
+1    Kennwort    nein    Weniger üblich.
+2    Schaltfläche    ja  Steuerelement, das bei Klick eine...
+2    Button  nein    Anglizismus.
+2    Knopf   nein    Wird eher mit Geräten assoziiert.
+\end{verbatim}
+
+Jede Zeile hat vier Einträge, die durch Tabulatoren getrennt sind. In der ersten Spalte wird die ID des Begriffes angegeben, und da ein Begriff mehrere Benennungen haben kann, können auch mehrere Zeilen zur selben ID vorhanden sein. Die zweite Spalte gibt eine Benennung an. Die dritte Spalte enthält entweder den Inhalt \emph{ja} oder \emph{nein} und gibt an, ob die jeweilige Benennung zulässig ist oder nicht. Im ersten Fall gibt die vierte Spalte die Definition oder Beschreibung des Begriffs an, im zweiten Fall enthält sie die Begründung, warum die entsprechende Benennung nicht verwendet werden soll. Für die Verarbeitung ist es wichtig, dass die zulässige Benennung immer in der ersten Zeile für jede ID steht und dass alle Zeilen zur selben ID aufeinander folgen.
+
+Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminologie-Tool und sieht so aus:
+
+\Beispiel{Terminologieprüfer}\label{BspTerminologiepruefer}
+\begin{verbatim}
+~Input T:Text
+@Eingabetext >>_ $T
+~ForEachLine z in Terminologieliste.txt; NoFormat
+    ~RegExMatch ti=$z|([0-9]*)\t([^\t]*)\t(ja|nein)\t(.*)
+    ~If $ti(0)
+        ~If $ti(3)==ja
+            ~Set EmpfBen=$ti(2)
+            ~Set DefBegr=$ti(4)
+        ~If $T~$ti(2) && $ti(3)==ja
+            @Erlaubte Benennungen >> $ti(2)
+                > ID: $ti(1)
+                > Definition: $ti(4)
+        ~If $T~$ti(2) && $ti(3)==nein
+            @Nicht erlaubte Benennungen >> $ti(2)
+                > ID: $ti(1)
+                > Empfohlen: $EmpfBen
+                > Definition: $DefBegr
+                > Begründung: $ti(4)
+~Loop
+\end{verbatim}
+
+Der Terminologieprüfer durchläuft alle Benennungen aus der Terminologiedatenbank und prüft, ob diese im eingegebenen Text vorhanden sind. Je nachdem ob es sich um eine zulässige Benennung handelt oder nicht, wird diese dann in einem entsprechenden Abschnitt aufgelistet. Bei einer nicht zulässigen Benennung wird die zum entsprechenden Begriff empfohlene Benennung samt Definition ausgegeben, ebenso die Begründung warum die Benennung nicht verwendet werden soll. Für die Eingabe \emph{nach Eingabe des Passworts muss der Button gedrückt werden} wird \emph{Passwort} als zulässige Benennung bestätigt und \emph{Button} mit Hinweis auf \emph{Schaltfläche} und der Begründung, dass es sich um einen Anglizismus handelt, als nicht zulässige Benennung abgelehnt. 
+
+Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \verb|ti| eine Liste zurück. Das nullte Element \verb|ti(0)| gibt an, ob für den Ausdruck ein Treffer gefunden wurde, die nachfolgenden Elemente enthalten die Teiltexte des gefundenen Ausdrucks, die über die runden Klammern im Ausdruck als Gruppen angegeben wurden.
+
+Das \cidxfrag{NoFormat}-Argument gibt an, dass die Datei nicht das Dateilisten-Format hat und daher alle Zeilen unverändert zurückgegeben werden sollen. Beispiele für Dateilisten findet man in Beispiel~\ref{BspBasisbefehle} und \ref{BspProgrammierung}.
+
+Das Skript bietet noch viel Spielraum für Erweiterungen, beispielsweise könnten alle im Text vorhandenen großgeschriebenen Wörter, die noch nicht gefunden wurden als Vorschläge für die Aufnahme in die Terminologie aufgelistet werden, direkt mit einem Link zu einem Terminologieerfassungskript, das die benötigten Informationen abfragt und daraus die entsprechenden Einträge für die Terminologiedatenbank erstellt.
+
+\section{Parametrisierte Links generieren}\label{ParametrisierteLinks}
+Der große Vorteil von Webanwendungen liegt darin, dass man innerhalb der Programmoberfläche überall Links auf andere Programmbereiche oder sogar andere Anwendungen einbauen kann. Diese lassen sich dann bequem in neuen Tabs öffnen, um einen zwischengelagerten Arbeitsschritt auszuführen und danach kann man zu seiner ursprünglichen Aufgabe zurückkehren. Umgekehrt kann eine Webanwendung wiederum über einen parametrisierten Link\index{Link!parametrisiert} aufgerufen werden, dem man einzelne Begriffe oder auch kleinere Texte als Argumente übergeben kann.
+
+Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInline} schon gesehen. Um jedoch beliebigen Text als Parameter in einem Link einzufügen, muss man diesen in einer speziellen Form kodieren. Hierfür gibt es in \FPZ\ den Befehl \fcmd{UrlEncode}. Das nachfolgende Beispiel zeigt die Verwendung von URL-Parametern\index{URL-Parametern} am Beispiel eines Suchbegriffs, den man als Parameter an eine Suchmaschine übergeben kann, hier am Beispiel von Google und Bing.
+
+\Beispiel{Suchlink-E-Mail}\label{BspSuchlink}
+\begin{verbatim}
+~Input S:Suchbegriff
+~UrlEncode uS=$S
+@Suchanfragen >>
+    ~AddLink https://www.google.com/search?q=$uS |
+    __Suche "$S" bei Google
+>>
+    ~AddLink https://www.bing.com/search?q=$uS |
+    __ Suche "$S" bei Bing
+~UrlEncode usub=Suchlinks zu "$S"
+~UrlEncode ubody=Hallo,$CRLF
+    __hier sind zwei Suchlinks zu "$S":$CRLF
+    __https://www.google.com/search?q=$uS$CRLF
+    __https://www.bing.com/search?q=$uS$CRLF
+    __MfG
+>> Suchanfragen
+    ~AddLink mailto:a@bc.de?subject=$usub&body=$ubody |
+    __ per E-Mail verschicken
+\end{verbatim}
+
+Zuerst wird ein Suchbegriff abgefragt. Dieser wird mittels \fcmd{UrlEncode} in die Variable \verb|uS| in codierter Form abgelegt. Für den mailto-Link\index{mailto-Link} werden nacheinander Betreff (\emph{subject}) und Inhalt (\emph{body}) der E-Mail\index{E-Mail} in gleicher Weise in die beiden Variablen \verb|usub| und \verb|ubody| codiert und am Ende in den Link eingebaut.
+
+Das Beispiel zeigt zum einen den Einsatz von Zeilenumbrüche\index{Zeilenumbrüche}, die man mit dem Befehl \cidxvar{CRLF} erzeugen kann, was die Zeichenkombination \emph{Carriage Return + Line Feed} ausgibt, und zum anderen, dass auch kodierte Texte wie die Suchlinks wieder Bestandteil von Codierungen sein können. 
+
+Analog zu \emph{mailto} verfügen auch manche Ticketsysteme über Adressen, mit denen sich Vorgänge über parametrisierte Aufrufe vollständig vorbereiten lassen, so dass alle relevanten Felder ausgefüllt sind. In gleicher Weise können auch spezialisierte Suchen im selben Ticketsystem in Form von Links bereitgestellt werden, so dass direkt innerhalb der richtigen Projekt- oder Aufgabenkategorie gesucht wird. Ein klassisches Beispiel ist die Einrichtung einer Metasuche\index{Metasuche}, die für einen eingegebenen Suchbegriff ähnlich wie das Beispiel oben verschiedene Links in den verschiedenen Firmensystemen wie Wiki, Programmdokumentation und dem Ticketsystem bereitstellt, und in letzterem noch zusätzlich unter verschiedenen Suchparametern.
+
+Oft müssen solche Tickets oder andere Vorgänge durch Personen außerhalb des Fachbereichs erstellt werden, die sich besonders schwer damit tun alle Eigenschaften in der für die Bearbeitung gewünschten Art und Weise zu setzen. Wenn hier mit einem Skript soweit unterstützt werden kann, dass am Ende die Erstellung des Vorgangs direkt über einen Link möglich ist, hat man viel gewonnen. Idealerweise kombiniert man so ein Erstellungsskript mit einem Expertensystem (siehe Abschnitt~\ref{Expertensystem}) und der angeleiteten Suche nach eventuell schon vorhandenen Tickets zum Thema.
+
+Eine weitere Anwendungsmöglichkeit für parametrisierte Links sind natürlich die Aufrufe anderer \FPZb-Skripte. Wie schon beschrieben, müssen für komplexe Aufgaben oftmals Werte und Informationen abgefragt werden, die sich nicht so ohne weiteres herausfinden lassen, und für deren Bestimmung eigene Anleitungen hilfreich wären. Diese könnten dann ebenfalls als Skripte bereitgestellt und über die Hilfezeilen der entsprechenden Felder mit Parametern verlinkt werden.
+

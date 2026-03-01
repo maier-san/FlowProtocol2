@@ -1,0 +1,404 @@
+﻿\chapter{Organisationswerkzeuge}
+Im Drumherum der täglichen Arbeit gibt es viele kleine Aufgaben, die sich oft mehrfach täglich wiederholen, und bei denen man froh ist, wenn man auf passende Hilfswerkzeuge zurückgreifen kann. In diesem Abschnitt beschreiben wir einige solche Werkzeuge, die sich mit wenig Aufwand als \FPZb-Skript anfertigen lassen.
+
+\section{Zeitmessung}\label{Zeitmessung}
+Zeitmessung\index{Zeitmessung} ist ein mächtiges Instrument, und meist unerlässlich, insbesondere wenn man direkt für einzelne Kunden arbeitet. Da Zeitmessung oftmals mit Leistungsmessung assoziiert wird, und damit auch als Argument für Kritik an der eigenen Leistungsfähigkeit herangezogen werden kann, tut man sich oft schwer, diese für verschiedene Tätigkeiten zu etablieren.
+
+Umgekehrt finden wir durch Zeitmessung heraus, in welche Arten von Aufgaben unsere Arbeitszeit fließt, und können auf dieser Grundlage beurteilen, ob sie dort auch in ausreichendem Maße zur Wertschöpfung beiträgt. Stellen wir etwa fest, dass viele Stunden Zeit für Supportunterstützung aufgewendet werden müssen, weil die Benutzerführung missverständlich ist, können wir gezielt gegensteuern und mehr Zeit für dahingehende Maßnahmen investieren. 
+
+Darüber hinaus erlaubt uns die Zeitmessung das sogenannte Controlling\index{Controlling}, also die permanente Überprüfung ob jüngere Anpassungen der Arbeitsweise den beabsichtigten Effekt haben.
+
+Aufgrund der großen Bedeutung ist Zeitmessung in vielen Systemen fest integriert und muss nicht durch ein zusätzliches Hilfsmittel ergänzt werden. Das nachfolgende Beispiel zeigt eine einfache Zeitmessung über ein \FPZb-Skript. Dieses ermöglicht es, die Zeitmessung zu pausieren und fortzusetzen und gibt am Ende ein minutengenaues Zeitprotokoll aus.
+
+Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kann man so auch zwischen der Zeitmessung für verschiedenen Aufgaben hin und her wechseln.
+
+\Beispiel{Zeitmesser}\label{BspZeitmesser}
+\begin{verbatim}
+~Input A: Aufgabe
+~SetInputTitle Zeitmessung für Aufgabe $A
+~Set idx=0
+~GoSub NotiereZeit
+~Set Status=läuft
+~Set Aktion=pausieren
+~Set Summe=0
+~Set fertig=Nein
+~DoWhile $fertig!=Ja
+    ~Set pri=$idx
+    ?A($idx): Zeitmessung $Status (Summe: $Summe Minuten)
+        #P: Zeitmessung $Aktion    
+        #A: Zeitmessung abschließen    
+            ~Set fertig=Ja
+    ~Execute
+    ~GoSub NotiereZeit    
+    ~If $Status==läuft
+        ~Replace ZTerm=$ZP($idx) - ($ZP($pri))|:-> * 60 +
+        ~CalculateExpression Diff = $ZTerm
+        ~AddTo Summe += $Diff
+        @Zeitprotokoll für Aufgabe $A >>|$ZP($pri)-$ZP($idx) Uhr
+            __ - $Diff Minuten
+        ~Set Status=pausiert
+        ~Set Aktion=fortsetzten        
+    ~Else
+        ~Set Status=läuft
+        ~Set Aktion=pausieren
+~Loop
+@Zeitprotokoll für Aufgabe $A >>|Summe: $Summe Minuten
+
+~DefineSub NotiereZeit
+    ~AddTo idx+=1
+    ~SetDateTime Zeit = HH:mm
+    ~AddNewKey ZP($idx) = $Zeit
+~Return
+\end{verbatim}
+
+Das Skript funktioniert wie folgt: nach Abfrage der Aufgabe, damit diese als Titel dargestellt werden kann, wird wiederholt eine Schleife durchlaufen, bis die Zeitmessung abgeschlossen wird. In jedem Schleifendurchlauf hat man die Wahl zwischen \emph{Zeitmessung pausieren} und \emph{Zeitmessung abschließen} oder \emph{Zeitmessung fortsetzen} und \emph{Zeitmessung abschließen}, je nachdem ob die Zeitmessung gerade läuft oder pausiert. Die Implementierung entspricht also einem Kippschalter\index{Kippschalter} mit dem zwischen diesen beiden Zuständen hin und her geschaltet werden kann.
+
+Bei jeder Aktion wird die Funktion \verb|NotiereZeit| durchlaufen, die mit Hilfe des Befehls \fcmd{SetDateTime} die Uhrzeit notiert und diese mit \fcmd{AddNewKey} als Teil der URL speichert, wobei der fortlaufenden Schlüssel \verb|ZP(...)| verwendet wird.
+
+Der Befehl \fcmd{SetDateTime} speichert die Systemzeit\index{Systemzeit} in einem vorgegebenen Format in einer Variable und der Befehl \fcmd{AddNewKey} funktioniert so, dass er den Wert nur dann als Teil der URL speichert, wenn dort noch kein Wert für diesen Schlüssel vorhanden ist. Er verhält sich damit analog zu den Auswahlabfragen und Texteingaben, die auch nur dann eine Eingabe verlangen, wenn der Wert noch nicht in der URL vorhanden ist. Die Zeitpunkte aller Aktionen werden damit in der URL gespeichert.
+
+Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und aktueller Aktion die Zeitdifferenz in Minuten berechnet und zu einer Summe aufaddiert. Für die Differenzberechnung wird dabei etwas trickreich der Doppelpunkt der Uhrzeiten einfach durch die Zeichenfolge \verb|* 60 +| ersetzt, sodass sich beispielsweise aus dem Ausdruck \verb|12:36 - (11:51)| der Rechenterm $12\cdot 60+36 -(11\cdot 60+51)$ ergibt, der die Differenz der Uhrzeiten in Minuten, also $45$ berechnet.
+
+Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das vollständige Zeitprotokoll mit den Uhrzeiten, den Differenzminuten und der Gesamtzeitdauer ausgegeben.
+
+\section{Meeting-Vorbereitung}\label{MeetingVorbereitung}
+Auch das nächste Beispiel verwendet Befehle zur Abfrage der Systemzeit um eine Ausgabe zu erzeugen, in diesem Fall eine Überschrift für das Protokoll des nächsten Jour fixe\index{Jour fixe}, der an jedem dritten Dienstag stattfindet.
+
+Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, was man am besten in einem Wiki-Bereich macht, in dem man für jedes Meeting eine eigene Protokollseite anlegt, die nach einer festen Konvention mit dem Datum als Teil der Überschrift benannt wird.
+
+Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-Bereich verlinken könnte.
+
+\Beispiel{Jour-fixe-Planer}\label{BspJourFixePlaner}
+\begin{verbatim}
+~SetCulture de-DE
+~SetDateTime dheute=yyyy-MM-dd
+~SetDateTime Jahr = yyyy
+~DateSet tag = 06.01.$Jahr|dd.MM.yyyy
+~Set z=0
+~Set nr=0
+~DoWhile true
+    ~DateAdd tag = $tag|1|d    
+    ~DateFormat dvgl=$tag|yyyy-MM-dd
+    ~If $dvgl == $dheute
+        ~Set zukunft=ja
+    ~DateFormat wotag=$tag|ddd
+    ~If $wotag==Di
+        ~AddTo z+=1
+        ~If $z==3
+            ~Set z=0
+            ~AddTo nr+=1
+            ~If $zukunft==ja
+                ~ExitLoop
+~Loop
+~DateFormat erg=$tag|dd.MM.yyyy
+@jour fixe WM-XX >>* Wiki-Bereich
+    ~AddLink ... | jour fixe WM-XX
+    ~AddText  öffnen.
+>>* Falls nicht vorhanden, neue Seite anlegen:
+    >|$erg - Jour fixe WM-XX (Nr. $nr/$Jahr)
+>>* (findet an jedem 3ten Dienstag statt)
+\end{verbatim}
+
+Das Beispiel des \emph{Jour-fixe-Planers}\index{Jour-fixe-Planer} zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
+
+In unserem Beispiel werden mit \verb|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \verb|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
+
+Die eigentliche Berechnung erfolgt in einer Schleife, in der die \verb|tag|-Variable mit dem Befehl \fcmd{DateAdd} sukzessive um einen Tag hochgezählt wird. Für den Vergleicht wird dieses Datum mit dem \fcmd{DateFormat}-Befehl auf das gleiche Format gebracht wie \verb|dheute|. Sobald das aktuelle Datum erreicht wird, wird die Variable \verb|zukunft| auf \verb|ja| gesetzt, danach wird der Wochentag über das Format \verb|ddd| bestimmt.
+
+In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Dienstag handelt, und wenn ja, wird ein Zähler \verb|z| bis auf maximal drei hochgezählt. Sobald ein dritter Dienstag gefunden ist, der in der Zukunft liegt, wird die Schleife mit \fcmd{ExitLoop} verlassen. Die Termine werden zusätzlich über das Jahr hinweg durchgezählt.
+
+Das gefundene Datum wird dann zusammen mit der laufenden Nummer in die Überschrift für die Protokollseite eingebaut und als Codeblock ausgegeben, so dass alles direkt in die Zwischenablage kopiert werden kann.
+
+Auch dieses Skript lässt sich nach Belieben anpassen z.B.\ durch Variation der Terminregeln, die zusätzliche Ausgabe der letzten vergangenen oder weiterer zukünftigen Termine, durch Ausgabe eines Such-Links, ähnlich wie in Beispiel~\ref{BspSuchlink}, der direkt nach der entsprechenden Seite im Wiki sucht, oder durch die Ausgabe einer Standard-Agenda, die man auf die neu erstellte Seite übernehmen kann. Diese könnte sogar als Jahres-Agenda in einer Datei verwaltet werden und die wiederkehrenden Punkte zum richtigen Zeitpunkt auf den Plan bringen.
+
+Umso einfacher Dinge sind, umso eher und öfter wird gebraucht davon gemacht. Meist sind es die kleinen Hürden, die nicht genommen werden.
+
+\section{Asset-Dokumentation}\label{AssetDokumentation}
+In einem Softwareunternehmen sollten verschiedene Arten von Assets\index{Assets} dokumentiert werden, um die Ressourcen, das geistige Eigentum und die Infrastruktur des Unternehmens zu verwalten und zu schützen. Die Dokumentation sollte gleichermaßen einen Überblick über die vorhandenen Assets geben, als auch die damit verbundenen Aufgaben beschreiben. Je nach Art des Assets sind unterschiedliche Eigenschaften relevant, die jedoch insgesamt in einheitlicher Form dokumentiert werden sollten.
+
+Sofern dafür nicht eine spezialisierte Asset-Datenbank verwendet wird, ist das Firmenwiki der richtige Ort, um diese Informationen zu verwalten. \FPZ\ kann dabei helfen, die je nach Art benötigten Detailinformationen interaktiv abzufragen und daraus das Datenblatt und die Liste der regelmäßigen oder aktuell noch ausstehenden Aufgaben zu erstellen.
+
+Das dazugehörende Beispiel beginnt mit der Abfrage der allgemeinen Rahmendaten des Assets, zu denen Bezeichnung, Verwendungszweck und vor allem die Art gehören, von der die Menge der weiteren Eigenschaften abhängt. Das am Ende erstellte Dokument wird Teil des integrierten Managementsystems\index{integriertes Managementsystems} (IMS\index{IMS}) und sollte demzufolge auch einen Dokumenteigentümer haben, der das Dokument regelmäßig sichtet und aktuell hält.
+
+\Beispiel{Asset-Dokumentation (Teil 1)}\label{BspAsset1}
+\begin{verbatim}
+~Input Bez: Bezeichnung des neuen Assets
+?Asset: Welche Art von Asset soll dokumentiert werden?        
+    #: Drittanbieterkomponente
+    #: Dienst (produktiv)
+    #: Dienst (intern)
+        ~Set ArtAsset=Dienst (intern)
+        ~Set WirdProduktivEingesetzt=Nein        
+        ~Set HatLizenz=Ja
+        ~Set HatAufrufURL=Ja
+        ~Set HatLokaleAdministratoren=Ja
+        ~Set HatLokaleInstallation=Nein
+        ~Set IstEinCloudDienst=Ja
+        ~Set IstInformationsquelle=Nein
+        ~Set IstEinGeraet=Nein
+        ~Set SetztFachwissenVoraus=Ja
+    #: Server (produktiv)
+    #: Server (intern)    
+    #: Datenblatt
+    #: Software
+    #: Anleitung/Beschreibung
+    #: Wissensdokumentation
+    #: Manueller Prozess
+    #: Mobiles Endgerät
+
+~Input DEig: Dokumenteigentümer (Mitarbeiterkürzel)
+~Input VZweck: Wozu wird dass Asset verwendet?
+~SetTitle Asset "$Bez"
+@Datenblatt >>* Dokumenteigentümer: $DEig
+@Offboarding >> Dokumenteigentümer prüfen
+@Datenblatt >>* Art: $ArtAsset
+@Datenblatt >>* Verwendungszweck
+    >* $VZweck
+@Jährl. Aufgaben >> Verwendung/Bedarf prüfen
+@Außerbetriebenahme >> Asset-Dokumentation archivieren
+~Execute
+\end{verbatim}
+
+Je nach Art gibt es bestimmte Eigenschaften oder Aspekte, die für die Dokumentation relevant sind oder sein können, und die abgefragt werden müssen. Ob eine Eigenschaften für eine Art relevant ist oder nicht, wird über eine entsprechend benannte Variable gesetzt, die im späteren Verlauf abgefragt werden. Durch die Verwendung dieser Schalter\index{Schalter} muss jede Eigenschaft oder jeder Aspekt nur einmalig im Skript implementiert werden und die Reihenfolge bleibt einheitlich.
+
+Im Beispiel oben ist nur der Fall des intern genutzten Dienstes ausimplementiert. Für alle anderen Typen würde man entsprechende Schalter setzen, z.B.\ für den Typ \emph{Software} die Eigenschaft \verb|HatLokaleInstallation=Ja|.
+
+Die Implementierung der einzelnen Aspekte sieht prinzipiell so aus, dass man die dafür benötigten Eigenschaften abfragt und im Datenblatt auflistet. Hier können wieder untergeordnete Aspekte eine Rolle spielen, wie z.B.\ verschiedene Arten von Lizenzen, die man ebenfalls mit Schaltern abbilden kann. Für Assets mit Lizenz sind im Beispiel schon mal zwei Arten hinterlegt:
+
+\Beispiel{Asset-Dokumentation (Teil 2)}\label{BspAsset2}
+\begin{verbatim}
+~If $HatLizenz==Ja    
+    ?Liz: Welche Art von Lizenz liegt vor?
+        #: Frei, kommerziell nutzbar
+            ~Set ArtLizenz=Frei, kommerziell nutzbar
+            ~Set KommerziellNutzbar=Ja
+            ~Set Benutzerbezogen=Nein
+            ~Set Kostenpflichtig=Nein
+        #: Abo-Lizenz, benutzerbezogen
+            ~Set ArtLizenz=Abo-Lizenz, benutzerbezogen
+            ~Set KommerziellNutzbar=Ja
+            ~Set Benutzerbezogen=Ja
+            ~Set Kostenpflichtig=Ja
+    @Datenblatt >>* Lizenz
+        >* Art: $ArtLizenz
+        >* Kommerziell nutzbar: $KommerziellNutzbar
+        >* Benutzerbezogen: $Benutzerbezogen
+        >* Kostenpflichtig: $Kostenpflichtig
+    ~If $Benutzerbezogen==Ja
+        @Jährl. Aufgaben >> Lizenzumfang abgleichen
+        @Offboarding >> Lizenzumfang anpassen
+    ~If $Kostenpflichtig==Ja
+        @Jährl. Aufgaben >> Preis-Leistung prüfen
+        @Außerbetriebenahme >> Lizenz kündigen
+        ~Set ALGegenstand=Lizenzverwaltung
+        ~Set ALKey=LIV
+        ~GoSub AssetLink
+\end{verbatim}
+
+Die meisten Informationen landen im Datenblatt. Bei benutzerbezogenen und kostenpflichtigen Lizenzen leiten sich zusätzlich Aufgaben für die jährliche Überprüfung, das Offboarding und die Außerbetriebnahme ab. So kann z.B.\ eine Lizenz zurückgegeben oder stillgelegt werden, wenn der nutzende Mitarbeiter das Unternehmen verlässt. Der Funktionsaufruf \verb|AssetLink| am Ende wird in diesem Skript noch häufiger verwendet. Er ruft die folgende Funktion auf:
+
+\Beispiel{Asset-Dokumentation (Teil 3)}
+\begin{verbatim}
+~DefineSub AssetLink
+    ?QAL$ALKey: Ist ein Asset für "$ALGegenstand" vorhanden?
+    #j: Ja
+        ~Input AL$ALKey: Link auf Asset für "$ALGegenstand"
+        @Datenblatt > $ALGegenstand:
+        ~AddLink $AL$ALKey| als Asset erfasst
+    #n: Nein
+        @Datenblatt > $ALGegenstand:
+        @ToDos >> Asset für $ALGegenstand erfassen
+~Return
+\end{verbatim}
+
+Diese fragt eine bestimmte variable Eigenschaft des Assets ab, die vorzugsweise wieder als eigenes Asset angelegt sein sollte, so dass mittels Link darauf verwiesen werden kann. In diesem Fall ist es die Lizenzverwaltung, also die Information über die Anzahl, Art und Zuteilung der vorhandenen, kostenpflichtigen Lizenzen. Um die Komplexität überschaubar zu halten, ist es sinnvoll, möglichst viele Teilsysteme als eigene Assets zu erfassen und jeweils darauf zu verweisen. Auf diese Weise spart man sich die verschachtelte Abfrage der damit verbundenen Eigenschaften und Aufgaben und bekommt eine sehr homogene Dokumentation.
+
+Wenn man mit einer derartigen Dokumentation beginnt, muss man davon ausgehen, dass einige der abgefragten Dinge zunächst nicht vorhanden sind und der Ist-Zustand des Assets nicht alle Anforderungen erfüllt. Entsprechend sollte man diese Möglichkeit in den Auswahlabfragen grundsätzlich berücksichtigen. Wenn dann auf diese Weise festgestellt wird, dass wichtige Dinge fehlen, kann daraus eine Aufgabe in einem ToDo-Abschnitt abgeleitet werden. In gleicher Weise leiten sich aus bestimmten Eigenschaften oder Antworten Aufgaben ab, die regelmäßig, z.B.\ jährlich im Zusammenhang mit dem Asset durchgeführt werden sollten, und solche, die dann notwendig werden, wenn die mit dem Asset verbundenen Mitarbeiter das Unternehmen verlassen. Am Ende gibt es auch noch Aufgaben, die bei der Außerbetriebnahme des Assets durchzuführen sind, wie die Archivierung der Asset-Dokumentation selbst.
+
+Für die restlichen oben gesetzten Schalter könnte die Erfassung in sehr vereinfachter Form so aussehen:
+
+\Beispiel{Asset-Dokumentation (Teil 4)}\label{BspAsset4}
+\begin{verbatim}
+~If $HatAufrufURL==Ja
+    ~Input AufrufURL: Unter welcher URL wird der Dienst aufgerufen?
+    @Datenblatt >>* Aufruf
+    >* URL:
+    ~AddLink $AufrufURL | $AufrufURL
+    @Jährl. Aufgaben >> Verfügbarkeit prüfen
+~If $HatLokaleAdministratoren==Ja
+    ~Input Admins: Mitarbeiter mit Admin-Zugang und -kenntnissen:
+    @Datenblatt >>* Administration
+        > Mitarbeiter mit Zugang und Wissen: $Admins
+    ~Set ALGegenstand=Admin-Wissen
+    ~Set ALKey=ADW
+    ~GoSub AssetLink
+    @Offboarding >> Admin-Zugang übergeben
+    ~Set ALGegenstand=Admin-Notfallzugang
+    ~Set ALKey=ANZ
+    ~GoSub AssetLink
+~If $IstEinCloudDienst==Ja
+    ~Input AnbCloudName: Anbieter des Cloud-Dienstes
+    ~Input AnbCloudWeb: Internetseite Anbieter
+    @Datenblatt >>* Anbieter
+    >* Name: $AnbCloudName
+    >* Webseite:
+    ~AddLink $AnbCloudWeb| $AnbCloudWeb
+    @Jährl. Aufgaben >> Weitere Verfügbarkeit prüfen
+    @Datenblatt >>* Risiko: Wegfall des Dienstes
+    ~Set ALGegenstand=Wegfall-Notfallplan
+    ~Set ALKey=WNP
+    ~GoSub AssetLink
+    @Außerbetriebenahme >> Konfigurationsdaten sichern
+~If $SetztFachwissenVoraus==Ja
+    ~Set ALGegenstand=Nutzungswissen
+    ~Set ALKey=WFN
+    ~GoSub AssetLink
+
+~MoveSection Jährl. Aufgaben->Jährliche Aufgaben
+~MoveSection Offboarding->Offboarding-Aufgaben
+~MoveSection Außerbetriebenahme->Aufgaben bei Außerbetriebenahme
+~MoveSection ToDos->Aktuelle ToDos
+\end{verbatim}
+
+Die Menge der abgefragten Informationen sollte sich primär daran orientieren, was in Ausnahmesituationen benötigt wird, um den Kernbetrieb am Laufen zu halten. Auch das Ausfallrisiko auf Mitarbeiterseite ist nicht zu unterschätzen. Mitarbeiter, die zentrales Wissen oder Zugänge zu essentiellen Diensten haben, können verunfallen und für längere Zeit vollständig ausfallen. Insofern sollte immer darauf geachtet werden, dass relevantes Wissen festgehalten wird und dass essentielle Zugänge notfallmäßig hinterlegt werden.
+
+Die vier \fcmd{MoveSection}-Befehle am Ende stellen sicher, dass die einzelnen Abschnitte immer in der gleichen Reihenfolge aufgelistet werden. Zusätzlich wird dabei die Abschnittsüberschrift komplett ausgeschrieben.
+
+Das Ergebnisdokument kann mit Überschrift und allen Abschnitten auf eine eigene Wiki-Seite innerhalb der Asset-Dokumentation übernommen werden. Der vorzugsweise nach Art gegliederte Unterbereich innerhalb der Dokumentation und die genaue Vorgehensweise könnten hierbei in einem eigenen Anleitungsabschnitt beschrieben werden. Ebenso sollte man die Abfragen und Texteingaben im Skript noch durch zusätzliche Hilfezeilen selbsterklärender gestalten, so dass man am Ende ein Skript bekommt, mit dem die jetzt schon für das entsprechende Asset verantwortlichen Mitarbeitern direkt in die Lage versetzt werden, diese in der gewünschten Form zu dokumentieren.
+
+Diese Dokumentation ermöglicht es dann, jährlich die vorhandenen Assets zu sichten und auf Notwendigkeit zu prüfen. Nicht selten werden Vorgehensweisen oder Softwareprodukte eingeführt, die sich dann irgendwann von selbst ausschleichen, ohne dass eine Außerbetriebnahme stattgefunden hat. Das ist vor allem dann unschön, wenn weiterhin Geld dafür bezahlt wird. Die jährliche Sichtung der Assets, zusammen mit den notwendigen Wartungsaufgaben ist wichtig, um z.B.\ rechtzeitig darüber informiert zu sein wenn, etwa aufgrund einer Abkündigung, Nutzungseinschränkungen absehbar werden.
+
+Gerade solche Rechercheaufgaben nach neuen oder abgekündigten Versionen lassen sich heute -- sofern es die Unternehmensrichtlinien zulassen -- mit einer einfachen Anfrage an einen Chatbot erledigen, z.B.\
+\emph{Für welche Versionen des Windows Server Betriebssystems läuft der Support als nächstes aus und gibt es schon Ankündigungen für neue Versionen?} Die Erzeugung des passenden Eingabe-Promptes auf Basis von Komponentenname und Komponententyp lässt sich dabei sehr gut in ein \FPZb-Skript für diese Art von Wartungsaufgaben integrieren, dessen Aufruf wiederum als Link direkt in der Asset-Dokumentation hinterlegt ist. Das Formulieren effektiver Prompts für KI-Anfragen, auch \emph{Prompt Engineering}\index{Prompt Engineering} genannt, ist eine zunehmend wichtige und auch anspruchsvolle Aufgabe, und wenn man einmal einen guten Prompt im Zusammenhand mit einer wiederholt auftretenden Aufgabenstellung gefunden hat, sollte man diesen unbedingt in die dazugehörende Anleitung integrieren.
+
+Durch die hohe Flexibilität eines solchen Skriptes, lassen sich die abgefragten Aspekte so anpassen, dass sie punktgenau auf die für ein Unternehmen bedeutsamen Assets und die dafür angelegten Strukturen ausgerichtet sind. Die Dokumentation im Wiki kann dann bei Änderungen unabhängig von dem Skript, mit dem sie erstellt wurde, angepasst werden.
+
+Der entscheidende Vorteil bei einer interaktiven Anleitung für die Dokumentation von Dingen ist jedoch die Möglichkeit, Fragestellungen und daraus abgeleitete Maßnahmen direkt damit zu verbinden, und deren Durchführung gut zu unterstützen. So kann ein Skript, das ursprünglich nur für die Dokumentation gedacht war, und nur Informationen abgefragt hat, schrittweise bis zu einem Protokoll erweitert werden, dass am Ende garantiert, dass das Dokumentierte definierte Standards erfüllt.
+
+\section{Terminplanung}\label{Terminplanung}
+Unser letztes Beispiel im Abschnitt Organisationswerkzeuge ist ein kleines Terminplanungswerkzeug, das schön zeigt, wie sich mit ein bisschen Programmierung Aufgaben so lösen lassen, dass es für alle Beteiligten von Vorteil ist.
+
+Die Ausgangssituation dürfte in einem Unternehmen recht häufig, aber mindestens einmal pro Jahr und Abteilung vorkommen: für eine Menge von Mitarbeiter sollen innerhalb eines Zeitraums Einzeltermine geplant werden, so dass am Ende für jeden Mitarbeiter der Menge ein Termin mit Raum eingeplant ist.
+
+Die normale Vorgehensweise wäre nun, mit Hilfe des eigenen Terminkalenders und denen der Mitarbeiter und Räume einen Termin nach dem anderen zu planen, was bedeutet, dass man mindestens immer drei Kalender offen haben muss. Unschön wird das ganze dann gegen Ende der Planung, wenn man für die verbleibenden Mitarbeiter keine möglichen Termine mehr findet, und man somit Anfang und Mittelteil der Planung wieder umstellen muss.
+
+Die deutlich einfachere Vorgehensweise besteht darin, zunächst nur Termine für sich selbst und den Raum einzuplanen, dafür eventuell auch einen mehr als benötigt wird. Anschließend veröffentlicht man die Liste dieser Termine im Wiki und bittet die Mitarbeiter, sich dort Ihre Wunschtermine auszuwählen, also je nach Gesamtzahl drei bis fünf Wunschtermine pro Mitarbeiter. Hierzu trägt sich der Mitarbeiter einfach in die Tabelle mit seinem Kürzel hinter dem jeweiligen Termin ein.
+
+Bei der Auswahl kann zusätzlich noch eine Präferenz angegeben werden, um auszudrücken, ob der jeweilige Termin die erste, zweite oder dritte Wahl für den Mitarbeiter ist. Dies wird einfach durch die entsprechende Ziffer hinter dem Kürzel angegeben.
+
+Für eine Auswahl von fünf Terminen könnten die Wünsche von vier Mitarbeitern mit den Kürzeln AB, CD, EF und GH wie folgt aussehen:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& AB2\\
+Termin 2& CD, EF1\\
+Termin 3& EF2, AB1\\
+Termin 4& GH, CD\\
+Termin 5& CD, EF3\\ \hline
+\end{tabular}
+\end{center}
+
+In diesem Fall hat der Mitarbeiter AB nur zwei Termine angegeben und GH nur einen, eventuell weil er von auswärts anreisen muss. Der Mitarbeiter CD hat keine Präferenzen, die drei von ihm gewählten Termine sind für ihn gleichwertig.
+
+Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingabefelder des folgenden Skriptes übertragen:
+
+\Beispiel{Terminplaner}\label{BspTerminplaner}
+\begin{verbatim}
+~SetStopCounter 100000; 3000000
+~Input Anz: Anzahl Termine
+~Execute
+@Terminpräferenzen >>_ $Anz Termine
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    ~Input Prf$idx: Termin $idx - Präferenzen (kommagetrennt)
+    >>* Termin $idx: $Prf$idx    
+~Loop
+~Set BestPSum=10000
+~Set BestAnzV=0
+~Set TidxS=1
+~Set MAVS=
+~Set AnzVS=0
+~Set PSumS=0
+~GoSub SucheLoesung; BaseKey=S
+@Ergebnis >>_ $BestAnzV Termine verplant, $BestPSum Punkte
+~Set idx=0
+~DoWhile $idx<$Anz
+    ~AddTo idx+=1
+    >>* Termin $idx: $FErg($idx)
+~Loop
+
+// Tidx$BaseKey = Nächster Terminindex
+// MAV$BaseKey = Liste der schon verplanten Mitarbeiter
+// PSum$BaseKey = Aktuelle Präferenz-Summe
+// Rückgabe: FErg(1..Anz) = Belegung der Termine
+~DefineSub SucheLoesung    
+    ~Split VerplanteMA=$MAV$BaseKey|/
+    ~Calculate AnzV$BaseKey=$VerplanteMA(0)-1
+    ~If $Tidx$BaseKey<=$Anz
+        ~Split pr$BaseKey=$Prf$Tidx$BaseKey|,        
+        ~ForEach pi in pr$BaseKey
+            ~RegExMatch pw = $pi|([A-Z][A-Z][a-z]*)([0-9]?)
+            ~If $pw(0)
+                ~Set ku=$pw(1)
+                ~Set va=$pw(2)
+                ~If $va==
+                    ~Set va=1
+                ~If $MAV$BaseKey/!~/$ku/
+                    ~Set Erg($Tidx$BaseKey)=$ku                    
+                    ~Calculate Tidx$BaseKeyX$ku=$Tidx$BaseKey+1
+                    ~Calculate PSum$BaseKeyX$ku=$PSum$BaseKey+$va
+                    ~Set MAV$BaseKeyX$ku=$MAV$BaseKey/$ku
+                    ~GoSub SucheLoesung; BaseKey=$BaseKeyX$ku
+        ~Loop
+        ~CalculateExpression restpot=$Anz-$BestAnzV
+            __-($Tidx$BaseKey-$AnzV$BaseKey)
+        ~If $restpot>=0
+            ~Set Erg($Tidx$BaseKey)=Nicht besetzt
+            ~Calculate Tidx$BaseKey0=$Tidx$BaseKey+1
+            ~Set PSum$BaseKey0=$PSum$BaseKey
+            ~Set MAV$BaseKey0=$MAV$BaseKey
+            ~GoSub SucheLoesung; BaseKey=$BaseKey0        
+    ~Else
+        ~If $AnzV$BaseKey>$BestAnzV || $AnzV$BaseKey==$BestAnzV
+            __ && $PSum$BaseKey<$BestPSum            
+            ~Set BestAnzV=$AnzV$BaseKey
+            ~Set BestPSum=$PSum$BaseKey    
+            ~Set idx=0
+            ~DoWhile $idx<$Anz
+                ~AddTo idx+=1
+                ~Set FErg($idx)=$Erg($idx)
+            ~Loop        
+~Return
+\end{verbatim}
+
+Da das Skript zur Lösungsfindung exponentiell viele Variationen durchprobiert, werden gleich zu Beginn die Stop-Zähler\index{Stop-Zähler} für die maximale Anzahl an Schleifendurchläufen und Befehlsausführungen mit dem Befehls \fcmd{SetStopCounter} auf sehr große Werte gesetzt.
+
+Zuerst wird die Anzahl der Termine abgefragt, dann für jeden Termin die Präferenzen, wie üblich kommagetrennt.
+
+Die Suche nach der passenden Lösung erfolgt mit Hilfe der Funktion \verb|SucheLoesung|, die als Übergabeparameter den Index des nächsten zu planenden Termins, die Liste der schon verplanten Mitarbeiter und die Zwischensumme der Präferenzwerte übergeben bekommt.  Die Anzahl der schon verplanten Termine wird mit Hilfe des \fcmd{Split}-Befehls aus der Aufzählung der schon verplanten Mitarbeiter berechnet. 
+
+Immer wenn der Index des letzten Termins erreicht ist, wird die aktuelle Lösung mit der bisher besten Lösung verglichen, wobei primär die Anzahl der geplanten Termine zählt, und bei gleicher Anzahl eine möglichst geringe Präferenzsumme. Ist eine neue beste Lösung gefunden, wird diese in das Feld \verb|FErg(...)| übertragen.
+
+Ansonsten werden alle Mitarbeiter durchlaufen die sich für den als nächstes zur Planung anstehenden Termin eingetragen haben. Die Kürzel werden mit Hilfe eines regulären Ausdrucks vom Präferenzwert getrennt. Wenn keiner angegeben ist, wird der Wert 1 gesetzt. Mit Hilfe des Enthält-nicht-Operators\index{Enthält-nicht-Operator} \verb|!~| wird dann geprüft, ob der entsprechende Mitarbeiter noch nicht in der Menge der bisher verplanten Mitarbeiter enthalten ist, wobei das Trennzeichen \verb|/| verwendet wird. In diesem Fall werden die Parameter für einen weiteren Funktionsaufruf gesetzt, wobei die \verb|BaseKey|-Variable um den Buchstaben X und das Mitarbeiterkürzel erweitert werden.
+
+Nach Durchlauf aller Mitarbeiter wird auch noch die Variante geprüft, bei der der anstehende Termin nicht besetzt wird. Gerade wenn mehr Termine angeboten werden, als Mitarbeiter vorhanden sind, müssen Termine unbesetzt bleiben.
+
+Da dadurch die Menge der zu untersuchende Lösungen noch mal deutlich erhöht wird, wird hier noch zusätzlich das Restpotenzial $R$ abgeprüft. Dieses berechnet sich über die Formel $R=A-A_B-(i-A_T)$, wobei $A$ die Anzahl der angebotenen Termine ist, $A_B$, die Anzahl der verplanten Termine der bislang besten Lösung, $i$ der aktuelle Index und $A_T$ die Anzahl der bis jetzt verplanten Termine. Ist $R\ge0$, kann trotz nicht besetzen des anstehenden Termins potentiell noch eine bessere Lösung gefunden werden, ansonsten ist das ausgeschlossen und diese Variante muss nicht weiterverfolgt werden.
+
+Am Ende wird die beste gefundene Lösung als Ergebnis ausgegeben. Das Skript kann auch mit den Daten aus unserem Beispiel oben umgehen und findet zielsicher die beste Lösung mit vier verplanten Terminen und einer Präferenzsumme von 4, d.h.\ jeder Mitarbeiter bekommt einen Termin seiner ersten Wahl:
+
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+Termin 1& nicht besetzt\\
+Termin 2& EF\\
+Termin 3& AB\\
+Termin 4& GH\\
+Termin 5& CD\\ \hline
+\end{tabular}
+\end{center}
+
+Der Vorteil dieser Methode liegt darin, dass die lästige Suche nach freien Terminen auf die einzelnen Mitarbeiter aufgeteilt wird, die aber dafür nur jeweils ihren eigenen Kalender sichten müssen. Als Ausgleich dafür bekommen sie die Möglichkeit, mit der Präferenz Einfluss auf die Terminauswahl zu nehmen.
+
+Dadurch, dass auch die Reihenfolge, in der die Wünsche eingetragen werden so gut wie keine Rolle spielt, ist dieser Ansatz auch besser als die Startschuss-Variante, bei dem sich jeder nur für genau einen Termin eintragen darf, der noch nicht gewählt wurde, so dass die Mitarbeiter benachteiligt werden, die nicht unmittelbar auf die Aufforderung reagieren können.
+

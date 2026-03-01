@@ -2,6 +2,7 @@
 // Einbindung in ein Skript wie folgt:
 //     ~Include .|...|DynExpert.fps
 //     ~Set Skriptpfad=$ScriptFilePath
+//     ~Set VorgeseheneAbschnitte=Bewertung, Weitere Vorgehensweise, Fazit
 //     ~Set NFTabs=
 //     ~Calculate NFRefLine=1+$LineNumber
 //     // ***************************************************
@@ -19,8 +20,10 @@
 	?SNeu: Gibt es ausgehend von den jetzt schon gegebenen Antworten eine Beurteilung der Situation?
 		#j: Ja
 			~Input BSit: Gib eine Beurteilung der Situation passen zu den schon gegebenen Antworten ein.
-				&> Trenne verschiedene Aspekte wie "Lösungsansätze", "Rückfragen" oder "Bewertung" mit ":" und "//" getrennt.
+				&> Gib verschiedene Aspekte wie "Bewertung" oder "Rückfragen" mit ":" und "//" getrennt ein, sodass jeweils eigene Abschnitte entstehen.
 				&> Etwa so: "Bewertung: Die Einschränkungen lokal nicht nachvollziehbar.//Rückfragen: Welche Parmeter wurden gesetzt?"
+				~If ?$VorgeseheneAbschnitte
+					&> Vorgesehene Abschnitte: $VorgeseheneAbschnitte
 			@Skript-Erweiterung >>* Erweitere das Skript um die Beurteilung der Situation:
 			~GoSub SkriptEditInfo
 				> Füge vor Zeile $NFRefLine folgenden Codeblock ein:
@@ -41,14 +44,14 @@
 			~Input FNeu: Wie lautet die Frage für diese Situation?
 				&> Formuliere die Frage so, dass eine Auswahl von Antworten vorgegeben werden kann.			
 			~Input FANeu: Gib zu dieser Frage eine Liste möglicher Antworten ein.
-				&> Gib die Antworten mit kommagetrennt ein. Gib "++" als letzte Antwortmöglichkeit ein, um die Auswahl erweiterbar anzulegen.			
+				&> Gib die Antworten mit "//" getrennt ein. Gib "++" als letzte Antwortmöglichkeit ein, um die Auswahl erweiterbar anzulegen.			
 			@Skript-Erweiterung >>* Erweitere das Skript um die Frage "$FNeu":
 			~GoSub SkriptEditInfo
 				> Füge nach Zeile $NFRefLine folgenden Codeblock ein:
 				>.|$EE~Set NFTabs=$NFTabsTT
 				>.|$EE@Zusammenfassung >> $FNeu
 				>.|$EE?$CKey: $FNeu
-				~Split AntwListe=$FANeu|,
+				~Split AntwListe=$FANeu|//
 				~ForEach antw in AntwListe
 					~If $antw!=++
 						~Random RAKey=1000..9999
@@ -73,7 +76,7 @@
 	~If $SkriptEditInfo==ja
 		@Skript-Erweiterung >>* Setze die Ausführung fort.
 			> Speichere das Skript mit der Änderung.
-			> 🔄 - Aktualisiere das Browserfenster.				
+			> 🔙🔙🔄 - Gehe im Verlauf des Browserfensters zwei Mal zurück und aktualisiere die Seite.
 	~JumpMark SkipFrage
 ~Return
 ~DefineSub NeueAntwort	

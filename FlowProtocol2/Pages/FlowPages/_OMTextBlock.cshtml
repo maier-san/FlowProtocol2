@@ -44,7 +44,7 @@
             <button class="btn btn-secondary btn-sm" onclick="CopyFunction('@Model.ID')">In Zwischenablage kopieren</button>
             @if (!string.IsNullOrEmpty(Model.SuggestedFilename))
             {
-                <button class="btn btn-secondary btn-sm" onclick="SaveFunction('@Model.ID', '@Model.SuggestedFilename')">Als @Model.SuggestedFilename speichern</button>
+                <button class="btn btn-secondary btn-sm" onclick="SaveFunction('@Model.ID', '@Model.SuggestedFilename', '@Model.SuggestedEncoding')">Als @Model.SuggestedFilename speichern</button>
             }
         </div>
     }

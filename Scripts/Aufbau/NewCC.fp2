@@ -317,10 +317,12 @@
 			~If $syntws~$verbmask
 				~Set verbmask=$Chr(61)
 			~Replace syntex=$Chr(32)\verb$verbmask$syntws$verbmask|$Chr(32)\verb$verbmask$verbmask->
+			~Replace syntex=$syntex|\verb$verbmask[$Chr(32)->$[$ \verb$verbmask
+			~Replace syntex=$syntex|\verb$verbmask]$verbmask->$]$
 			~AddText  \synvar{$argtext($idx)}$syntex
 		~Loop
 		~AddText \\
 		>|Fügt usw.\\
-		>|%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.			
+		>|%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
 @Buch erweitern >> Beschreibung übernehmen.
 @Buch erweitern >> Verweise anpassen oder entfernen.

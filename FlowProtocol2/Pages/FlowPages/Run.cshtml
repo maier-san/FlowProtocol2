@@ -132,13 +132,41 @@ else
             element.removeChild(storage);
         }
 
-        async function SaveFunction(blockID, suggestedFilename) {
+        async function SaveFunction(blockID, suggestedFilename, suggestedEncoding) {
             const element = document.querySelector('#' + blockID);
             var cc = element.innerHTML;
             cc = cc.replaceAll('&lt;', String.fromCharCode(60));
             cc = cc.replaceAll('&gt;', String.fromCharCode(62));
             cc = cc.replaceAll('&quot;', String.fromCharCode(34));
             cc = cc.replaceAll('&amp;', String.fromCharCode(38));
+            // Normalisiere Zeilenumbrüche zu CRLF
+            cc = cc.replace(/\r?\n/g, '\r\n');
+            // Erzeuge encoded data je nach gewünschter Codierung
+            let dataToWrite;
+            let blob;
+            const enc = (suggestedEncoding || '').toLowerCase();
+            if (enc && enc.indexOf('utf-16') === 0) {
+                // UTF-16 LE mit BOM
+                const buf = new Uint8Array(2 + cc.length * 2);
+                buf[0] = 0xFF; buf[1] = 0xFE;
+                for (let i = 0; i < cc.length; i++) {
+                    const code = cc.charCodeAt(i);
+                    buf[2 + i * 2] = code & 0xFF;
+                    buf[2 + i * 2 + 1] = (code >> 8) & 0xFF;
+                }
+                dataToWrite = buf;
+                blob = new Blob([dataToWrite], { type: 'text/plain' });
+            } else if (enc && (enc === 'ascii' || enc === 'windows-1252' || enc === 'latin1' || enc === 'iso-8859-1')) {
+                const arr = new Uint8Array(cc.length);
+                for (let i = 0; i < cc.length; i++) arr[i] = cc.charCodeAt(i) & 0xFF;
+                dataToWrite = arr;
+                blob = new Blob([dataToWrite], { type: 'text/plain' });
+            } else {
+                // default UTF-8
+                const te = new TextEncoder();
+                dataToWrite = te.encode(cc);
+                blob = new Blob([dataToWrite], { type: 'text/plain;charset=utf-8' });
+            }
 
             // Prüfen, ob File System Access API unterstützt wird. Wenn ja, Dateiauswahldialog anzeigen
             if (window.showSaveFilePicker) {
@@ -147,7 +175,7 @@ else
                         suggestedName: suggestedFilename || 'Datei.txt'
                     });
                     const writable = await handle.createWritable();
-                    await writable.write(cc);
+                    await writable.write(dataToWrite);
                     await writable.close();                    
                     return;
                 } catch (err) {
@@ -157,7 +185,6 @@ else
             }
 
             // Fallback für Firefox & Co.: Direktes herunterladen in den Download-Ordner
-            const blob = new Blob([cc], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -165,7 +192,7 @@ else
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url);            
+            URL.revokeObjectURL(url);
         }
     </script>
 }

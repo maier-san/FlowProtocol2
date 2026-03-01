@@ -1,6 +1,7 @@
 ~SetInputDescription Baue ein Expertensystem aus in sich verschachtelten Fragen auf und erweiter es kontinuerlich.
 ~Include .\_Functions\DynExpert.fps
 ~Set Skriptpfad=D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\Beispiele\Expertito2.fp2
+~Set VorgeseheneAbschnitte=Bewertung, Weitere Vorgehensweise, Fazit
 ~Set NFTabs=
 ~Calculate NFRefLine=1+$LineNumber
 // ***************************************************

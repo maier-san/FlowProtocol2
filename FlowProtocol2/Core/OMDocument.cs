@@ -30,6 +30,7 @@ namespace FlowProtocol2.Core
         public bool Closed { get; set; }
         public string ID { get; set; }
         public string SuggestedFilename { get; set; }
+        public string SuggestedEncoding { get; set; }
 
         /// <summary>
         /// Gibt den im Block enthaltenen Text als String zurück.
@@ -59,6 +60,7 @@ namespace FlowProtocol2.Core
             TextLines = new List<OMTextLine>();
             Closed = false;
             SuggestedFilename = string.Empty;
+            SuggestedEncoding = string.Empty;
             ID = string.Empty;
         }
     }

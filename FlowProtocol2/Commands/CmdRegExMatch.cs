@@ -37,7 +37,7 @@ namespace FlowProtocol2.Commands
         {
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedText = ReplaceVars(rc, Text);
-            string expandedExpression = ReplaceVars(rc, Expression);
+            string expandedExpression = ReplaceVars(rc, Expression);            
             try
             {
                 Regex userExp = new Regex(expandedExpression);

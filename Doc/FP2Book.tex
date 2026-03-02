@@ -1,9 +1,10 @@
-\documentclass[10pt, twoside]{scrartcl}
-\usepackage[ansi]{umlaute}
+\documentclass[10pt, twoside]{scrbook}
 \usepackage[german]{babel}
-\usepackage{fancyhdr}
 \usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{scrlayer-scrpage}
+\usepackage{palatino}
 %
 \usepackage{lmodern}
 \usepackage{microtype}
@@ -15,21 +16,39 @@
 \title{Softwareentwicklung mit FlowProtocol 2}
 \author{Wolfgang Maier}
 %%
+%% LaTeX Template for Books: Essential Guide for Self-Publishers
+%% https://www.lode.de/blog/latex-template-for-books-essential-guide-for-self-publishers
+%%
 %% Layout
 %%
 \setlength{\parindent}{0mm}
 \setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
 \addtolength{\headheight}{2.5pt}
-% Fancyhdr konfigurieren
-\pagestyle{fancy}
-\fancyhf{} % Löscht alle Standard-Kopf- und Fußzeilen
-% Kopfzeilen konfigurieren
-\fancyhead[LE]{\nouppercase{\rightmark}} % Section auf geraden Seiten rechts (L=left, E=even)
-\fancyhead[LO]{\thepage}
-\fancyhead[RO]{\nouppercase{\leftmark}} % Subsection auf ungeraden Seiten links (R=right, O=odd)
-\fancyhead[RE]{\thepage}
 %%
-%% Commands
+%% ensure header text is not italicized
+%%
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\renewcommand{\subsectionmark}[1]{\markleft{\thesubsection\ #1}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%%
+%% scrlayer-scrpage-Einstellungen
+%%
+\clearpairofpagestyles
+% Kopfzeilen normal formatieren (nicht kursiv)
+\renewcommand*{\headfont}{\normalfont}
+\ohead*{\headmark}  % Section title on outer headers
+\ofoot*{\pagemark}  % Page number on outer footers
+\renewcommand{\chapterpagestyle}{empty}  % No headers on chapter pages
+%%
+%% Variablen
+%%
+\newcommand{\booktitle}{Softwareentwicklung mit FlowProtocol 2}
+\newcommand{\booksubtitle}{2. Auf\-lage}
+\newcommand{\authorname}{Wolfgang Maier}
+\newcommand{\releasedate}{Dezember 2026}
+\newcommand{\isbn}{000-0-000000-00-0}
+%%
+%% Befehle
 %%
 \newcommand{\FPZ}{\textit{Flow\-Proto\-col 2}}
 \newcommand{\FPZb}{\textit{Flow\-Proto\-col-2}}
@@ -45,17 +64,22 @@
 \pagestyle{empty}
 
 \begin{document}
+\frontmatter
+
 %-------------------------
 % Schmutztitel (rechts)
 %-------------------------
-\cleardoublepage
-\thispagestyle{empty}
-\vspace*{\fill}
-\begin{center}
-    {\Large\sffamily Softwareentwicklung\\ mit\\[1ex] FlowProtocol 2}
-\end{center}
-\vspace*{\fill}
-\newpage
+\begin{titlepage}
+ \vspace*{\fill}
+ \begin{center}
+    \sffamily
+   {\Large Softwareentwicklung\\[0.4ex]
+   	mit\\[1.4ex]
+   	FlowProtocol 2}
+ \end{center}
+ \vspace*{\fill}
+\end{titlepage}
+\clearpage
 
 %-------------------------
 % Frontispiz (links)
@@ -67,21 +91,21 @@
 %-------------------------
 % Titelblatt (rechts)
 %-------------------------
-\thispagestyle{empty}
-%%\maketitle
-\vspace*{\fill}
-\begin{center}
-    \sffamily
-    {\Huge Softwareentwicklung\\ mit\\[1ex] FlowProtocol 2}\\
-    \vspace{1cm}
-    {\Large Wolfgang Maier}\\
-    \vspace{1cm}
-    {\small September 2025}\\
-    \vspace{1cm}
+\begin{titlepage}
+ \vspace*{\fill}
+ \begin{center}
+   {\Huge\sffamily  Softwareentwicklung\\[0.4ex]
+   	mit\\[1.4ex]
+   	FlowProtocol 2}\\[1cm]
+   {\Large\sffamily  2.~Auf\-lage}\\[0.7cm]
+   {\large von}\\[0.3cm]
+   {\Large\authorname}\\[0.5cm]
+   {\large\releasedate }\\[0.7cm]
     \includegraphics[width=0.6\textwidth]{FlowLogoHigh}
-\end{center}
-\vspace*{\fill}
-\newpage
+ \end{center}
+ \vspace*{\fill}
+\end{titlepage}
+\clearpage
 
 %-------------------------
 % Impressum (links)
@@ -90,22 +114,36 @@
 \vspace*{\fill}
 {\small
 \noindent
-\copyright~Wolfgang Maier, 2025\\[1em]
+\copyright~\the\year~\authorname\\[1em]
 Druck: Libri Plureos GmbH, Friedensallee 273, 22763 Hamburg\\[1em]
-Dies ist eine unveröffentlichte Ausgabe ohne ISBN.
+Alle Rechte vorbehalten
+ISBN: \isbn
 }
 \vspace*{2cm}
 \newpage
 
+\tableofcontents
+\mainmatter
 %-------------------------
 % Ab hier: Buchtext
 %-------------------------
 \pagestyle{plain} % Ab hier wieder normal
 \setcounter{page}{1}
 
-\tableofcontents
 \newpage
 \thispagestyle{empty}
-\include{FP2Inhalt}
+\include{ch_1_vorwort}
+\include{ch_2_bezugundkonfiguration}
+\include{ch_3_grundlagen}
+\include{ch_4_entscheidungsbume}
+\include{ch_5_formatierungderausgabe}
+\include{ch_6_variablenundtexteingaben}
+\include{ch_7_weitereformatierungsmglichkeiten}
+\include{ch_8_programmierung}
+\include{ch_9_verarbeitungvontexten}
+\include{ch_10_systementwicklung}
+\include{ch_11_organisationswerkzeuge}
+\include{ch_12_mitgestaltung}
+\include{ch_13_befehlsreferenz}
 \printindex
 \end{document}

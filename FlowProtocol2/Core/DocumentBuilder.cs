@@ -165,7 +165,7 @@ namespace FlowProtocol2.Core
             }
         }
 
-        public void SetBlockSaveFile(string filepath)
+        public void SetBlockSaveFile(string filepath, string encodingName = "")
         {            
             if (CurrentTextBlock != null && CurrentTextBlock.BlockType == OutputType.Code)
             {
@@ -177,6 +177,7 @@ namespace FlowProtocol2.Core
                 {
                     CurrentTextBlock.SuggestedFilename = string.Empty;
                 }   
+                CurrentTextBlock.SuggestedEncoding = encodingName ?? string.Empty;
             }            
         }
     }

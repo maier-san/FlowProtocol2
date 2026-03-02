@@ -1,7 +1,12 @@
 ~SetTitle SetBlockSaveFile-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~SetBlockSaveFile <FileName>
+~AddCode  ~SetBlockSaveFile <FileName>[; Encoding=<Codierung>]
 ~AddText  legt den Dateinamen fest, unter dem der aktuelle Codeblock mittels Schaltfläche gespeichert werden kann.
+~AddText  Optional kann auch noch die Codierung festgelegt werden, in der die Datei gespeichert wird.
+>>_ Zur Auswahl stehen
+	>* utf-16 (UTF-16 LE mit BOM)
+	>* ascii, windows-1252, latin1, iso-8859-1
+	>* utf-8 (UTF-8, Standardwert)
 @Ausnahmen >>* keine
 @Codebeispiel >>_ Das nachfolgende Beispiel leitet dazu an, einen Codeblock als Datei zu speichern:
 	>>|~Set datname=Teddy.txt
@@ -9,7 +14,7 @@
 	>>|	>|Es war einmal
 	>>|	>|und ist nicht mehr
 	>>|	>|ein ausgestopfter Teddybär
-	>>|	~SetBlockSaveFile $datname
+	>>|	~SetBlockSaveFile $datname; Encoding=latin1
 	>>|	>> Speichere ihn unter
 	>>|	>|D:\Temp\$datname
 	>>|	>> Oder nutze dazu die "Als $datname speichern"-Schaltfläche.
@@ -18,7 +23,7 @@
 	>|Es war einmal
 	>|und ist nicht mehr
 	>|ein ausgestopfter Teddybär
-	~SetBlockSaveFile $datname
+	~SetBlockSaveFile $datname; Encoding=latin1
 	>> Speichere ihn unter
 	>|D:\Temp\$datname
 	>> Oder nutze dazu die "Als $datname speichern"-Schaltfläche.

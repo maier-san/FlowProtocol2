@@ -1,0 +1,496 @@
+﻿\chapter{Systementwicklung}
+In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode. Auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
+
+\section{Zielsetzung der Systementwicklung}
+Die Überschrift lautet bewusst Systementwicklung\index{Systementwicklung}, da viele Softwarehäuser über Jahre hinweg ein umfangreiches System aufbauen und weiterentwickeln, dass auf einem ebenso umfangreichen und durchdachten Framework aufbaut, das wiederum durchgängig auf einem Designsystem gründet. Jeder Teil der Anwendung sieht damit einheitlich aus, folgt den gleichen Bedienprinzipien sowie der für den Domänenkontext festgelegten Terminologie.
+
+Die Erweiterung des Frameworks für ein solches System ist aufwendig, da all diese Punkte berücksichtigt werden müssen. Die Erweiterung der Anwendung auf Basis des vorhandenen Frameworks ist dagegen recht einfach, oder sollte es zumindest sein, da in diesem Fall keine technischen Probleme mehr gelöst werden müssen, sondern nur noch die richtigen Komponenten in der richtigen Art und Weise zusammengebaut, und nach den Vorgaben des Product Owners konfiguriert werden müssen. Und je besser das Framework ist, desto weniger Spielraum gibt es beim Anwenden und damit auch weniger Fragen, weniger Abweichungen und weniger Fehler.
+
+Wer bis hierher durchgehalten hat, wird zustimmen, dass der Aufbau neuer Programmbereiche auf Basis eines vorhandenen Frameworks geradezu prädestiniert ist für den Einsatz von \FPZb-Skripten und dass diese Methode hier sowohl von der Effizienz als auch von der Qualität her punkten kann.
+
+Zielsetzung ist ein System aus Anleitungen und Unterstützungssystemen, das alle Komponenten des Frameworks in jeweils allen Phasen der Softwareentwicklung repräsentiert, angefangen bei der Auswahl der Komponenten zur Umsetzung bestimmter Anforderungen, über die Verwendung im Programmcode, bis hin zur Testphase. Alle Abhängigkeiten, die sich zwischen den verschiedenen Entwicklungsphasen ergeben, sollten weitestgehend in den Skripten abgebildet sein und automatisch Berücksichtigung finden.
+
+\section{Entwicklungsanleitungen}\label{Entwicklungsanleitungen}
+Entwicklungsanleitungen\index{Entwicklungsanleitungen} sind, wie der Begriff schon sagt, Anleitungen für die Entwickler. Sie beschreiben, wie Anforderungen mit Hilfe der zur Verfügung stehenden Mittel umgesetzt werden können oder sollen. 
+
+Idealerweise gibt es für jede wiederkehrende Entwicklung eine dokumentierte Best Practice\index{Best Practice}, die vorgibt, wie diese umzusetzen ist, so dass unabhängig vom ausführenden Entwickler immer dieselbe Lösung herauskommen sollte, die sowohl Qualität, als auch Wartbarkeit garantiert. Die Anleitung für ein wiederkehrendes Entwicklungsmuster ist ein guter Ort, um so eine Best Practice direkt zu hinterlegen und aktuell zu halten, denn die Tatsache, dass einem eine solche Anleitung die Arbeit leichter macht, stellt auch praktisch sicher, dass diese verwendet wird und damit die Best Practice Anwendung findet.
+
+Auch wenn die eigentliche Arbeit an einer Entwicklung beim Product Owner beginnt, ist es sinnvoll, beim Aufbau solcher Anleitungen bei der Entwicklung zu beginnen. Zum einen sind die Entwickler diejenigen, die am wenigsten Berührungsängste mit der Skriptentwicklung haben dürften, zum anderen ist durch das Vorhandensein von Framework-Komponenten schon eine sehr weit fortgeschrittene Systematisierung der wiederkehrenden Entwicklungen vorhanden, die nur noch in Skriptform gebracht werden muss.
+
+Die Vorgehensweise hierfür ist relativ einfach und folgt dem Top-Down-Ansatz. Idealerweise nutzt man einen konkreten Anwendungsfall, um eine Anleitung zu erstellen, also die angeforderte Umsetzung einer entsprechenden Aufgabe. Ohne Anleitung würde man sich hierbei vermutlich an einem früheren Beispiel derselben Art orientieren und versuchen, daraus mit der Methode \emph{kopieren, einfügen, anpassen} die gewünschte neue Instanz zu erzeugen. Die Erstellung der Anleitung geht im Prinzip denselben Weg.
+
+Im ersten Schritt erzeugt man zunächst ein Skript, dass nur 1-zu-1 den Programmcode erzeugt, der das frühere Beispiel ausmacht, also ohne Verallgemeinerungen und ohne Platzhalter. Nun geht man diesen Stück für Stück durch und prüft, was man für die geforderte Instanz anpassen würde, z.B.\ kontextbezogene Benennungen, bestimmte IDs, Änderungen aufgrund anderer Anforderungen oder Voraussetzungen.
+
+Die Idee ist, diese Dinge nun so zu systematisieren, dass sie durch das Skript auf jeden gegebenen Anwendungsfall hin angepasst werden können, und der Programmcode den Anwendungsfall am Ende so gut wie möglich vollständig abbildet. Bezeichnungen, sowie das Vorhandensein bestimmter Voraussetzungen oder Anforderungen können abgefragt werden und benötigte IDs können nach Anleitung ermittelt oder mittels Zufallsgenerator generiert werden. Stück für Stück wird so aus einem Skript, das konkreten Programmcode ausgibt, ein Skript, das die vorliegende Situation abfragt, und für diese den passenden Programmcode samt Einbauanleitung generiert.
+
+Die große Kunst dabei ist es, die Abfrage der Situation so niederschwellig wie möglich zu gestalten, so dass die gestellten Fragen und geforderten Eingaben mit so wenig technischem Wissen wie möglich getätigt werden können. Wenn also eine Eigenschaft $x$ nur in bestimmten Fällen gesetzt werden kann, und je nach Situation einen von drei verschiedenen Werten annehmen kann, sollte zunächst verstanden werden, was diesen Fall und diese Situationen ausmachen und was die entsprechenden Werte bedeuten. Die Fragestellung des Skriptes sollte auf diesem Wissen aufbauen. Man sieht, dass der Entwickler des Skriptes ein ähnlich tiefgreifendes Wissen benötigt, wie der Entwickler des Frameworks, zu dessen Verwendung es anleitet.
+
+Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt werden soll eine Archivierungsklasse für die Archivierung eines Dozenten und damit verbunden auch gleich die \FPZb-Anleitung für weitere Archivierungsklassen. Zurückgreifen können wir auf den Programmcode der Archivierungsklasse für Kurse, der schon geschrieben wurde. 
+
+Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, die dann wie folgt aussieht:
+
+\Beispiel{Archivklasse 1}
+\begin{verbatim}
+@Anleitung >> Ordner Archivierer öffnen.
+@Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
+    >|KursArchivierer.cs
+@Anleitung >> Folgenden Code einfügen:
+    >|// Klasse für die Archivierung von Kurs-Objekten
+    >|public class KursArchivierer : BasisArchivierer<Kurs>
+    >|{
+    >|    // Kennung der Archivierer-Klasse
+    >|    public override Guid ArchiviererKennung()
+    >|    {
+    >|        return Guid("14df603a-cb42-4560-bf6c-a740356532b6");
+    >|    }
+    >|
+    >|    // Methode zum Archivieren eines Kurs-Objektes
+    >|    public override void Archiviere(Kurs k)
+    >|    {
+    >|      var konflikt = PruefeAufKonflikte(k);
+    >|        if (konflikt.vorhanden)
+    >|        {
+    >|            ALogger.Note($"Konflikt für Kurs '{k}', 
+    >|                {konflikt.Details}");
+    >|            return;
+    >|        }
+    >|        base.StarteArchivierung(k);
+    >|    }
+    >|    
+    >|    // Konfliktprüfung für die Kurs-Archivierung
+    >|    private Konflikt PruefeAufKonflikte(Kurs k)
+    >|    {
+    >|        if (k.Status == KStatus.Aktiv)
+    >|            return new Konflikt("Kurs ist noch aktiv");
+    >|        
+    >|        // Ansonsten
+    >|        return Konflikt.KeinKonflikt();
+    >|    }
+    >|}
+\end{verbatim}
+
+Um einen Codeblock\index{Codeblock} auszugeben, der einen vorgegebenen Programmcode erzeugt, muss man lediglich vor jeder Zeile des Codes das Ausgabezeichen \verb=>|= einfügen. Bessere Editoren wie z.B.\ Notepad++, bzw.\ Visual Studio Code ermöglichen dies sehr einfach dadurch, dass man den Cursor mit der Tastenkombination \emph{Shift + Alt + Cursor down}, bzw.\ \emph{Strg + Alt + Cursor down} über mehrere Zeilen ausdehnen kann, so dass nachfolgend eingetippte Zeichen gleichzeitig in jeder einzelnen Zeile eingefügt werden.
+
+Da wir ja nicht die Anleitung für die schon vorhandene Kurse-Archivierungsklasse benötigen, sondern eine allgemeine Anleitung haben wollen, geht es im nächsten Schritt darum, die variablen Anteile zu identifizieren und das Skript dahingehend anzupassen.
+
+Die erste Abhängigkeit ist die Bezeichnung \emph{Kurs}, die hier gleich in verschiedenen Bedeutungen auftritt, zum einen als lesbare Bezeichnung des Objekttyps zum anderen aber auch als Name einer Klasse, die an den Generik-Parameter übergeben wird, und zuletzt auch noch als Bestandteil des Klassennamens. Letzteres ist dahingehend zu beachten, da als Objekttypbezeichnung eventuell auch Bezeichnungen mit Umlauten oder Bindestrichen auftreten können, die in einem Klassennamen nichts zu suchen haben. Ein weiterer Unterschied besteht darin, dass die Bezeichnung der Archivierungsklasse hier festgelegt werden kann, wohin gegen die Kurs-Klasse schon im System vorhanden ist und hier nur referenziert wird.
+
+Wir fragen also die Bezeichnung des Objekttyps, sowie den Namen der dazugehörenden Klasse ab und können daraus die übrigen Verwendungsvarianten ableiten.
+
+Für die Umwandlung eines Textes in eine Zeichenkette, die weder Umlaute, noch Sonderzeichen enthält gibt es in \FPZ\ den Befehl \fcmd{CamelCase}, der  die dazu notwendigen Ersetzungen durchführt. Die Zeichenkette bleibt insgesamt lesbar und kann z.B.\ als Klassenname, Eigenschaft oder Variable im Programmcode verwendet werden.
+
+Um es ganz schön zu haben, leiten wir auch die Variable \verb|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem Befehl \fcmd{ToLower} in einen Kleinbuchstaben um. Hier muss man natürlich darauf achten, dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
+
+Die in der Klasse hart codierte Guid-Kennung kann frei gewählt werden, und wird vom Skript selbst als Zufallswert vom Typ \emph{Guid} erzeugt. Dafür wird der \cidxvar{NewGuid}-Befehl verwendet.
+
+Der Programmcode in der Routine für die Konfliktprüfung ist sehr spezifisch auf die Kurs-klasse bezogen und lässt sich nicht verallgemeinern. Wir ersetzen diesen durch eine ToDo-Aufforderung\index{ToDo-Aufforderung} im Code und ergänzen die Anleitung um einen Punkt. Wir gehen sogar zusätzlich davon aus, dass es nicht in jedem Fall Konflikte geben kann und fragen diese Voraussetzung explizit ab. Für den Fall, das ist keine Konflikte geben kann, lassen wir die entsprechenden Programmzeilen und Anleitungsschritte weg. 
+
+Die beiden Stufen der Aufzählung lassen sich bei Anleitungen sehr gut so verwenden, dass man in der ersten Ebene die durchzuführenden Punkte benennt und die zweite Ebene dazu verwendet, diese genauer auszuführen und zusätzliche Informationen bereitzustellen.
+
+Am Ende bekommen wir die folgende allgemeine Anleitung:
+
+\Beispiel{Archivklasse 2}\label{Archivklasse2}
+\begin{verbatim}
+~Input Bez: Bezeichnung Objekttyp (Singular)
+    ~AddHelpLine Die Bezeichnung des Objekttyps,
+    __ für den Objekte archiviert werden sollen.
+~Input Klasse: Datenklasse für diesen Objekttyp
+    ~AddHelpLine Der Name der Datenklasse, mit der Objekte
+    __ dieses Typs im Programm abgebildet werden.
+?QKonf: Kann es Konflikte geben?
+    ~AddHelpLine Gemeint sind Konflikte, die einer Archivierung
+    __ im Wege stehen würden.
+    #j: Ja
+        ~Set KonflikteMoeglich=ja
+    #n: Nein
+~CamelCase cBez=$Bez
+~Set AKennung=$NewGuid
+~RegExMatch vmatch = $BezX|([A-Z])
+~ToLower v=$vmatch(1)
+@Anleitung >> Ordner Archivierer öffnen.
+@Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
+    >|$cBezArchivierer.cs
+@Anleitung >> Folgenden Code einfügen:
+    >|// Klasse für die Archivierung von $Bez-Objekten
+    >|public class $cBezArchivierer : BasisArchivierer<$Klasse>
+    >|{
+    >|    // Kennung der Archivierer-Klasse
+    >|    public override Guid ArchiviererKennung()
+    >|    {
+    >|        return Guid("$AKennung");
+    >|    }
+    >|
+    >|    // Methode zum Archivieren eines $Bez-Objektes
+    >|    public override void Archiviere($Klasse $v)
+    >|    {
+    ~If $KonflikteMoeglich==ja
+        >|      var konflikt = PruefeAufKonflikte($v);
+        >|        if (konflikt.vorhanden)
+        >|        {
+        >|            ALogger.Note($"Konflikt für $Bez '{$v}', 
+        >|                {konflikt.Details}");
+        >|            return;
+        >|        }
+    >|        base.StarteArchivierung($v);
+    >|    }
+    ~If $KonflikteMoeglich==ja
+        >|    
+        >|    // Konfliktprüfung für die $Bez-Archivierung
+        >|    private Konflikt PruefeAufKonflikte($Klasse $v)
+        >|    {
+        >|        //ToDo: Konfliktprüfung implementieren
+        >|        
+        >|        // Ansonsten
+        >|        return Konflikt.KeinKonflikt();
+        >|    }
+    >|}
+~If $KonflikteMoeglich==ja
+    @Anleitung >> Konfliktprüfung implementieren
+        > in $cBezArchivierer.cs in
+        ~AddCode  PruefeAufKonflikte(...)
+        > bei
+        ~AddCode  //ToDo: Konfliktprüfung implementieren
+        > Auflistung der Konflikte nach folgendem Muster:
+        >|        if (Konfliktbedingung)
+        >|            return new Konflikt("Konfliktbeschreibung");
+\end{verbatim}
+
+Beim Aufbau eines Anleitungsskriptes für eine Standardentwicklung stechen die Schwächen der eigenen Framework-Klassen besonders hervor, etwa zwingend erforderliche Methoden, die jedoch nicht erzwungen werden, unschöne Abhängigkeiten von Aufrufreihenfolgen oder generell ungewollte Codewiederholungen. Eine ideal aufgebaute Klasse vermeidet Wiederholungen und führt den Entwickler allein mit Hilfe des Compilers an allen relevanten Fragestellungen vorbei und sorgt so selbständig für einen vollständigen und mustergültigen Einbau. Da dieser Anspruch schwierig aufrecht zu halten, und noch schwieriger im Nachhinein herzustellen ist, und da die Interaktion mit einem gut gemachten Anleitungsskript gefälliger sein dürfte, als die mit dem C\#-Compiler, bleiben trotzdem genug Gründe, um solche Anleitungen zu erstellen.
+
+\section{Testvorbereitung}
+Jede Entwicklung sollte getestet werden, im Idealfall sogar durch automatisierte Tests. Standardentwicklungen sind davon nicht ausgeschlossen auch wenn sie dadurch, dass sie auf schon mehrfach genutztem Framework aufbauen, ein geringeres Fehlerrisiko aufweisen, wie neue Individualentwicklungen.
+
+Ähnlich wie die Implementierung, variieren auch die Testpunkte\index{Testpunkte} nur in Abhängigkeit der Bezeichnungen und Optionen innerhalb der Entwicklung und können so ebenfalls durch das Anleitungsskript erstellt werden. Unabhängig davon, ob die Entwickler ihre Entwicklungen gegenseitig testen, oder ob dafür eine eigene Testabteilung bereitsteht, ist letztlich der Ersteller des Programmcodes dafür verantwortlich, den Testumfang so zu formulieren, dass jede neu entwickelte oder geänderte Zeile zumindest einmal durchlaufen wird. Hierfür muss er die Perspektive des Anwenders annehmen, und die dazugehörenden Schritte der Programmbedienung so formulieren, dass im Hintergrund die Zustände und Fälle auftreten, bei denen die implementierte Funktionalität durchlaufen wird.
+
+In gleicher Weise muss er auch den Effekt der Funktionen so beschreiben, dass dieser an der Programmoberfläche überprüft werden kann. Das kann in manchen Fällen herausfordernd sein, insbesondere wenn es darum geht, bewusst Konflikte und Ausnahmezustände zu provozieren, die im normalen Ablauf eher selten auftreten.
+
+Im Anleitungsskript für den Entwickler können wir auf jeden Fall schon einmal die Integrationstests\index{Integrationstests} ausformulieren, die sich unmittelbar aus dem Programmcode aus der Anleitung ergeben. Für den Fall, dass Konflikte möglich sind, ergänzen wir im ersten Testpunkt den Zusatz \emph{sofern keine Konflikte auftreten}. Zusätzlich ergänzen wir die Anleitung dahingehend, eine Testaufgabe zu erstellen und mögliche Konfliktarten in den Testpunkten aufzuzählen. Die Testpunkte werden in einem eigenen Abschnitt aufgelistet und können so parallel zu den dazugehörenden Anleitungsschritten gesammelt werden.
+
+Damit kommen folgende Zeilen in unserer Anleitung hinzu:
+
+\Beispiel{Archivklasse 3}\label{BspArchivklasse3}
+\begin{verbatim}
+...
+@Testpunkte >> Ein $Bez-Objekt kann archiviert werden
+~If $KonflikteMoeglich==ja
+    ~AddText , sofern keine Konflikte auftreten
+~AddText .
+@Testpunkte >> Die Archivierungskennung für $Bez-Objekte 
+    __ lautet $AKennung.
+    > Kann im Protokoll nachgeschlagen werden.
+...
+@Anleitung >> Testaugabe erstellen
+    > Titel: Test der $Bez-Archivierung
+    > Testpunkte aus Abschnitt "Testpunke" übernehmen
+~If $KonflikteMoeglich==ja
+    @Anleitung >> Konflikte in Testpunkten auflisten
+        > Bei "ToDo: Konflikte auflisten"
+    @Testpunkte >> Folgende Konflikte werden erkannt:
+        > ToDo: Konflikte auflisten
+    @Testpunkte >> Wenn ein Konflikt erkannt wird,
+        ># wird die Archivierung abgebrochen,
+        ># protokolliert, wo der Konflikt aufgetreten ist,
+        ># Details zum Konflikt protokolliert.
+\end{verbatim}
+
+Was mit Integrationstests in Textform möglich ist, ist je nach Art der Entwicklung auch noch in Form von Unittests\index{Unittests} möglich. Unitest sind im Programmcode hinterlegte Klassen und Funktionen, die nur dafür da sind, die im Produktivcode verwendeten elementaren Klassen auf Korrektheit zu testen. Die Tests selbst gehören nicht zum Produkt und haben keine Funktionen in der Produktivumgebung. Unittests werden in der Regel durch spezielle Attribute gekennzeichnet und in eigenen Projekten verwaltet.
+
+Im Fall unserer Archivierungsklasse könnte z.B.\ die Archivierer-Kennung sehr einfach über einen Unittest geprüft werden. Das Skript könnte dazu wie folgt den entsprechenden Testcode erzeugen:
+
+\Beispiel{Archivklasse 4}\label{BspArchivklasse4}
+\begin{verbatim}
+...
+@Anleitung >> Ordner ArchiviererTest öffnen.
+@Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
+    >|$cBezArchiviererTests.cs
+@Anleitung >> Folgenden Code einfügen:
+    >|public class $cBezArchiviererTests
+    >|{
+    >|    [Fact]
+    >|    public void ArchiviererKennung_ShouldReturnExpectedGuid()
+    >|    {
+    >|        // Arrange
+    >|        var archivierer = new $cBezArchivierer();
+    >|
+    >|        // Act
+    >|        var result = archivierer.ArchiviererKennung();
+    >|
+    >|        // Assert
+    >|        Assert.Equal(Guid.Parse("$AKennung"), result);
+    >|    }
+    >|}
+\end{verbatim}
+
+Denkbar wäre auch ein Skript, dass direkt von den Testern verwendet wird, um sich die eigene Arbeit zu vereinfachen. Dieses müsste dann auf Basis der Informationen ausgefüllt werden, die von den Entwicklern bereitgestellt werden, und es müsste Mehrwert generieren, indem es daraus hilfreiche Informationen für die Durchführung von Tests ableitet.
+
+Es ist schwierig, in diesem Bereich Beispiele zu finden, die nicht besser in der oben genannten Form als Teil der Testvorbereitung in der Entwicklungsanleitung aufgehoben sind. Ein denkbares Anwendungsgebiet wären auf jeden Fall die automatisierten Oberflächentests. Hierbei wird mit speziellen Tools eine Programmbedienung über die Benutzeroberfläche simuliert, d.h.\ es werden Schaltflächen gedrückt und Eingaben getätigt und dabei wird immer wieder die Reaktion des Programms mit einem vorgegebenen Sollverhalten abgeglichen.
+
+Solche Oberflächentests\index{Oberflächentests} werden in der Regel ebenfalls als Programmcode verwaltet und folgen oft ähnlichen Strukturen, wie der Produktivcode, also mit wiederverwendbaren Anteilen und Mustern und einem eigenen Framework. Insbesondere das Vorbereiten einer Testsituation und das Aufräumen nach Durchführung des Tests sind meist aufwendige und oft benötigte Funktionen, die einen gut organisierten Baukasten voraussetzen.
+
+Ein Unterstützungsskript könnte sehr gut die Voraussetzungen für einen geplanten automatisierten Oberflächentest abfragen und damit schon mal den Test soweit wie möglich vorbereiten.
+
+\section{Product-Owner-Unterstützung}\label{POUnterstuetzung}
+Der Product Owner\index{Product Owner} oder kurz PO ist die zentrale Figur im Entwicklungsprozess. Er kennt das Produkt wie seine Westentasche, weiß, wie es sich entwickelt hat und wohin es sich entwickeln soll, und mit welchen Bausteinen und nach welchen Prinzipien diese Entwicklung abläuft. Er steht im direkten Austausch mit den Kunden, kennt die Anwender und hat gelernt, dass auch die schlimmsten Entscheidungen aus guten Absichten getroffen werden.
+
+Die Menge an Dingen, die bei der professionellen Softwareentwicklung zu beachten sind, sind ungeheuer vielschichtig, und die permanente Weiterentwicklung eines großen bestehenden Systems bringt noch zahlreiche eigene Aspekte dazu. Auch wenn der PO bei dieser Aufgabe nicht allein steht, und sowohl auf das ganze Entwicklungsteam, als auch auf die ihm zuarbeitenden Spezialisten für Usability und Oberflächendesign bauen kann, hängt es nachher doch an ihm, aus dem ganzen Wissen und der Erfahrung ein großes Ganzes zu machen, das individuelle Vorlieben und Wünsche zurückstellt und auf für alle nachvollziehbaren Regeln aufbaut.
+
+Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbeispiele, die mit \FPZ\ umgesetzt wurden. Gerade dort, wo Standardentwicklungen hauptsächlich in einem sehr engen Rahmen konfiguriert werden mussten, konnten entsprechende Skripte all die benötigten Punkte abfragen und daraus eine weitestgehend vollständige Beschreibung erstellen, die alle entscheidenden Aspekte der Entwicklung in hohem Detailgrad umfasste.
+
+Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle innerhalb der Anwendung, an der die Entwicklung greifen soll. Wie schon in Abschnitt~\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
+
+Wir speichern dieses Skript für die Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung\index{Dateiendung} \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Durch die andere Dateiendung wird das Skript nicht in der Auswahl von \FPZ\ angezeigt, so dass es nicht eigenständig aufgerufen werden kann. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+
+Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, schaffen wir über die Variable \verb|PHinweis| die Möglichkeit, einen Text zu übergeben, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird dann nach Ausführung über die beiden Variablen \verb|PAusw| und \verb|UAusw| an das aufrufende Skript zurück übergeben.
+
+\Beispiel{Programmauswahl.fps}\label{BspProgrammauswahl}
+\begin{verbatim}
+?P: Programmbereich $PHinweis
+    #D: Dozenten
+        ~Set PAusw=Dozenten
+        ?U: Unterbereich in Dozenten $PHinweis
+            #A: Auswahliste Dozenten
+                ~Set UAusw=Auswahliste Dozenten
+            #S: Registerblatt Stammdaten
+                ~Set UAusw=Registerblatt Stammdaten
+            #F: Registerblatt Fächer
+                ~Set UAusw=Registerblatt Fächer
+    #K: Klassen
+        ~Set PAusw=Klassen
+        ?U: Unterbereich in Klassen $PHinweis
+            #A: Auswahliste Klassen
+                ~Set UAusw=Auswahliste Klassen
+            #S: Registerblatt Schüler
+                ~Set UAusw=Registerblatt Schüler
+            #U: Registerblatt Unterricht
+                ~Set UAusw=Registerblatt Unterricht
+\end{verbatim}
+
+Unsere Anwendungsbeispiel selbst unterstützt bei der Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
+
+Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt. Genau hier liegt der Vorteil eines solchen Skiptes, das diese Punkte systematisch abfragt.
+
+\Beispiel{Listenfunktion}\label{BspListenfunktion}
+\begin{verbatim}
+~Input Bez: Bezeichnung der Funktion
+~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
+~Include Programmauswahl.fps; BaseKey=E
+
+@Story >>_ Einbau der Listenfunktion "$Bez"
+    __ in die Liste des Bereichs "$PAusw - $UAusw".
+
+@Story >> Die Funktion ist per Kontextmenü aufrufbar.
+    > Bezeichnung Menüpunkt: $Bez
+?Pos1: Gibt es schon einen Funktionen-Abschnitt im
+    __ Kontextmenü?
+    #j: Ja
+        ?Pos2: An welcher Stelle soll der Menüpunkt in
+        __ das Kontextmenü eingebaut werden?
+            #O: Ganz oben
+                ~Set wogenau=ganz oben
+            #U: Ganz unten
+                ~Set wogenau=ganz oben
+            #D: Irgendo dazwischen
+                ~Input Pos3: Einbau unterhalb von...
+                ~Set wogenau=unterhalb von "$Pos3"
+        > ...in vorhandenen Funktionen-Abschnitt $wogenau
+    #n: Nein
+        > Funktionen-Abschnitt anlegen nach Std.-funktionen
+
+@Story >> Die Funktion
+?QRechte: Welche Rechte setzt die Funktion voraus?
+    ~AddHelpLine Schreibrechte bei schreibenden Funktionen
+    #L: Leserechte auf die Liste
+        ~AddText  setzt Leserechten auf die Liste voraus.
+    #S: Schreibrechte auf die Liste
+        ~AddText  setzt Schreibrechte auf die Liste voraus.
+    #E: Die Funktion hat eigene Rechte
+        ~AddText  hat eigene Rechte.
+        > Die Berechtigungsstruktur muss erweitert werden.
+        > Eingliederung unter Listenfunktionen - $Bez
+        > Das neue Recht ist zunächst nur für Admins gesetzt.
+
+@Story >> Die Funktion ist
+?AKont: Die Funktion ist
+    #E: ...beschränkt auf Einfachauswahl
+        ~AddText  beschränkt auf Einfachauswahl.
+        > Bei Mehrfachauswahl Menüpunkt deaktivieren
+    #M: ...auch verfügbar für Mehrfachauswahl
+        ~AddText  auch verfügbar für Mehrfachauswahl.
+
+@Story >> Die Funktion
+?Wirk: Die Funktion
+    #A: ...öffnet einen Assistenten
+        ~AddText  öffnet einen Assistenten.
+        > Beschreibung und Skizze Assistent: xxx
+        @ToDo >> Assisten skizzieren und beschreiben
+    #R: ...wird nach Dialog-Rückfrage ausgeführt
+        ~AddText  wird nach Dialog-Rückfrage ausgeführt.
+        > Typ: Rückfrage-Dialog vor Ausführung
+        > Text: xxx
+        @ToDo >> Text Dialog-Rückfrage ausformulieren
+    #O: ...wird ohne Dialog-Rückfrage ausgeführt
+        ~AddText  wird ohne Dialog-Rückfrage ausgeführt.
+
+@Story >> Die Funktion bewirkt folgendes:
+        > xxx
+@ToDo >> Wirkung der Funktion beschreiben.
+
+@Story >> Das Benutzerfeedback
+?Feed: Das Benutzerfeedback
+    #E: ...ist unmittelbar erkennbar
+        ~AddText  ist unmittelbar erkennbar.
+        > Kein Feedback-Dialog notwendig.
+    #D: ...wird explizit über einen Dialog gegeben
+        ~AddText  wird explizit über einen Dialog gegeben.
+        > Typ: Feedback-Dialog nach Ausführung
+        > Text: xxx
+        @ToDo >> Text Feedback-Dialog ausformulieren
+\end{verbatim}
+
+Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Funktionsdatei ausgelagerten Auswahlfunktion schnell umgesetzt.
+
+Die Festlegung, dass eine Listenfunktion über das Kontextmenü der Liste aufgerufen wird, ist fest im Skript hinterlegt. Der Product Owner hat hier keine Auswahlmöglichkeit und soll diese auch nicht haben. Er bestimmt, was er haben möchte und das Designsystem\index{Designsystem} legt Form und Aussehen fest.
+
+Dadurch, dass die grundlegende Design-Entscheidung fest im Skript hinterlegt ist, kann diese wiederum explizit in die Beschreibung einfließen, sodass diese durchgängig berücksichtigt wird und niemand das Designsystem auswendig im Kopf haben muss.
+
+Das Designsystem legt in unserem Fall ebenfalls fest, dass innerhalb des Kontextmenüs ein Abschnitt für solche Funktionen angelegt werden muss, der beim Einbau einer neuen Funktion auch schon vorhanden sein kann. Wenn der Abschnitt schon vorhanden ist, wird der Product Owner aufgefordert, die Position für den neuen Menüpunkt explizit vorzugeben. Auch derartig kleine Details sollten nicht dem Zufall überlassen werden.
+
+Ein Funktionsaufruf erfordert Berechtigungen, die sich entweder aus den Berechtigungen für die Liste ableiten lassen oder explizit angelegt werden müssen. Wenn die Funktion Daten verändert, sollte sie in jedem Fall Schreibrechte auf die Liste voraussetzen, wenn die Daten nur lesend verwendet werden, reichen auch Leserechte. Solche Hinweise auf allgemein festgelegte Regeln sollten im Skript als Hilfezeilen bei den damit verbundenen Fragen und Texteingaben ergänzt werden.
+
+Im nächsten Schritt wird gefragt, ob die Funktion auf einzelne Zeilen beschränkt ist, oder auch für eine Mehrfachauswahl von Zeilen aufgerufen werden kann. Es ist wichtig, sich über solche Punkte im Vorfeld Gedanken zu machen, da oft beides möglich, der allgemeine Fall jedoch meist deutlich schwieriger umzusetzen ist und manchmal auch noch weitere Fragen nach sich zieht. Oft wird diese Entscheidung erst nach Rücksprache mit den Entwicklern getroffen, wenn der Mehraufwand abgeschätzt ist. Die Rücksprache mit den Entwicklern könnte bei solchen Punkten sogar als eigene Antwortoption zur Auswahl gestellt werden.
+
+Nun wird festgelegt, wie die Funktion bei Auswahl reagiert. Soll ein Assistent geöffnet werden oder soll die Funktion direkt ausgeführt werden? Soll die Ausführung der Funktion über einen Rückfrage-Dialog abgesichert werden, in Sinne von \emph{sind Sie sicher?} Auch hier bezeichnet Rückfrage-Dialog ein Element aus dem Designsystem, dessen Aussehen weitestgehend festgelegt ist. Symbol und die zur Auswahl stehenden Schaltflächen werden daher nicht abgefragt, nur der Text.
+
+In gleicher Weise wird am Ende sichergestellt dass der Benutzer auch ein Feedback für die Ausführung der Funktion bekommt. Wenn dieses unmittelbar über die Programmoberfläche erkennbar ist, muss dafür nichts zusätzliches getan werden. Ansonsten sollte eine explizite Rückmeldung in Form eines Dialogs gegeben werden.
+
+Die eigentliche Beschreibung, was die Funktion genau macht und wie der Assistent aussieht, der eventuell aufgerufen wird, ist ebenfalls Teil der Beschreibung. Wie alles, was nur einmalig in Textform beschrieben werden muss, werden diese Informationen nicht über Texteingaben abgefragt, sondern am Ende durch Platzhalter in der Beschreibung gekennzeichnet, und als noch ausstehende Punkte in einer ToDo-Liste\index{ToDo-Liste} notiert.
+
+Nachdem alles ausgefüllt ist, kann der Product Owner die Beschreibung in einen Vorgang übertragen und die noch ausstehenden Punkte dort mit Leben füllen, wobei er sich an dieser ToDo-Liste orientieren kann. Durch das Skript wurde sichergestellt, dass alle von ihm zu treffenden Entscheidungen berücksichtigt wurden und explizit als Teil des Vorgangs aufgelistet sind. 
+
+Das explizite Auflisten solcher Details ist ein wichtiger Punkt zur Sicherstellung der Qualität. Die Verschriftlichung hilft zuallererst dem Produkt Owner selbst, der dadurch nochmal eine bessere Vorstellung von der von ihm beauftragten Entwicklung bekommt. In gleicher Weise hilft sie dem Entwickler der sich bei der gesamten Entwicklung klar an diesen Punkten orientieren kann, weniger Rückfragen stellen muss und die Liste auch nach Fertigstellung zur Gegenprüfung und zum Abhaken aller Punkte verwenden kann. Auch bei der Abnahme durch den Product Owner kann die explizite Auf\-listung der einzelnen Detailanforderungen unterstützend eingesetzt werden.
+
+Diese Form von Entwicklungsunterstützung scheint alles andere als agil zu sein und passt nicht zu den blumig beschriebenen User Stories im Srum-Prozess und dem permanenten Austausch zwischen Entwicklung und Product Owner. Hier muss man wieder ganz klar unterscheiden zwischen der Entwicklung von Framework\index{Framework} und der Verwendung des entwickelten Frameworks. Die Entwicklung von neuem Framework kann und sollte agil verlaufen, da Anforderungen und technische Möglichkeiten permanent aufeinander abgestimmt werden müssen. Hier ist viel Aufwand und viel Austausch notwendig, damit das neu Geschaffene am Ende zum Bestehenden passt und systematisch, ohne großen Abstimmungsbedarf verwendet werden kann. Die Erweiterung des Designsystems, die Aufstellung von Regeln für die Verwendung und idealerweise auch die Erstellung von Unterstützungskripten sollten fester Bestandteil bei der Entwicklung neuer Framework-Komponenten sein.
+
+\section{Qualitätprotokolle}
+Qualitätsprotokolle sind ähnlich wie die Unterstützungskripte Hilfsmittel, die den am Entwicklungsprozess beteiligten Mitarbeitern helfen, ihre Arbeit einfacher und nach einer definierten Vorgehensweise durchzuführen. Letzteres steht hierbei im Vordergrund, denn das Protokoll macht Vorgaben, die zwingend einzuhalten sind, und die auch Gegenstand von internen Richtlinien sein können.
+
+Insbesondere dann, wenn man als Unternehmen eine Zertifizierung\index{Zertifizierung} nach den Normen ISO 9001\index{ISO 9001} oder ISO 25001\index{ISO 25001} anstrebt und die damit verbundenen Audits bestehen möchte, reicht es nicht, Qualität, Datenschutz und Datensicherheit einfach nur zu wollen, man muss Maßnahmen im Management zur permanenten Aufrechterhaltung diese Aspekte definieren, dokumentieren, einhalten und auch nachweisen können. Dies gelingt langfristig nur dadurch, dass man diese Dinge tatsächlich in den Arbeitsalltag integriert und lebt, und den Nutzen zu schätzen lernt, den diese für den Kunden und auch das Unternehmen selbst haben. 
+
+Je mehr man diese Integration auf den tatsächlich beabsichtigten Effekt ausrichtet, anstatt nur nach einer formalen Erfüllung der verlangten Punkte zu streben, desto einfacher fällt es am Ende, diese Dinge in der Routine zu berücksichtigen und einen wirklichen Mehrwert daraus zu generieren.
+
+Qualitätsprotokolle\index{Qualitätsprotokolle} sind ein einfaches Mittel dafür und lassen sich an vielen Stellen einrichten, am besten dort, wo regelmäßige Tätigkeiten auftreten, bei denen es wichtige Dinge zu beachten gibt.
+
+Als Fortsetzung von Abschnitt~\ref{POUnterstuetzung} beginnen wir mit einem Protokoll für den Product Owner, das dabei hilft, bestimmte Wirkungen der von ihm beauftragten Entwicklungen zu beleuchten, und sich damit auseinanderzusetzen.
+
+Mit einem Fehler im Kontext der Softwareentwicklung assoziieren wir gemeinhin eine fehlerhafte Abweichung vom Sollzustand, die bei der Entwicklung entstanden ist, aber es gibt auch Fehler die schon vorher entstehen und die als Teil der Anforderungen den gesamten Entwicklungsprozess bis hin zum Test durchlaufen können, ohne dass jemand merkt, dass es falsch ist. Oft geschieht so etwas durch einen unbedachten Umgang mit personenbezogenen Daten und führt am Ende zu einem meist kleinen, aber dennoch ungewollten Datenschutzverstoß der hätte vermieden werden können.
+
+Ein klassisches Beispiel dafür ist der Wunsch, das Geburtsdatum als Spalte für einen Auswahldialog für Personen hinzuzunehmen. Der Grund dafür ist gut nachvollziehbar, und mit Sicherheit erleichtert diese zusätzliche Information die Auswahl an verschiedenen Stellen, und hilft besonders beim Vorhandensein von gleichnamigen Personen. Andererseits wird die personenbezogene Information des Geburtsdatums an Stellen im Programm abrufbar, wo es primär nicht um die Stammdaten der Personen geht, und damit erweitert sich der Zugriff auf diese Information eventuell auf Benutzer, die diesen zuvor nicht hatten.
+
+Die Gefahr, solche Dinge zu übersehen, ist recht groß, da sie oft nebenläufig zu den eigentlich ein Anforderungen stehen. Insofern ist es gut, ein Protokoll zu haben, dass solche Aspekte einzeln und jedes mal abfragt.
+
+Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kontrollfragen aus den Bereichen Datenschutz und Datensicherheit, die der Product Owner nach Beendigung seiner Story-Formulierung durchgehen sollte.
+
+\Beispiel{PO-Assistent}\label{BspPOAssi}
+\begin{verbatim}
+?Q1: Werden durch die Entwicklung Kundendaten
+    __ außerhalb der Programmumgebung gespeichert?
+    #j: Ja
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Ja
+        @Ergänzungsmaßnahmen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung:
+        > Sicherstellen, dass der Speicherort so gewählt 
+        __ werden kann, dass kein unautorisierter Zugriff 
+        __ möglich ist
+        > Sicherstellen, dass Speichervorgang und Speicherort
+        __ für den Anwender gut erkennbar sind
+    #n: Nein
+        @Wirkungen >> Speicherung von Kundendaten 
+        __ außerhalb der Programmumgebung: Nein
+?Q2: Werden durch die Entwicklung personenbezogene Daten an 
+    __ Stellen im Programm sichtbar wo sie es bisher nicht waren? 
+    #j: Ja
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Ja
+        @Ergänzungsmaßnahmen >> Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten:
+        > Sicherstellen, dass der Zugriff auf diese Stellen durch
+        __ die Vergabe von Berechtigungen abgesichert ist
+        > Sicherstellen dass nicht mehr Daten angezeigt werden
+        __ als in diesem Bearbeitungskontext notwendig ist
+        > Ggf. Datenschutzbeauftragten mit einbeziehen
+    #n: Nein
+        @Wirkungen >>  Erweiterte Sichtbarkeit 
+        __ personenbezogener Daten: Nein
+?Q3: Werden durch die Entwicklung neue benutzerbezogene
+    __ Daten protokolliert oder verarbeitet? 
+    #j: Ja
+        @Wirkungen >> Protokollierung von Nutzerdaten: Ja
+        @Ergänzungsmaßnahmen >> Protokollierung von Nutzerdaten:
+        > Sicherstellen dass die Protokollierung zweckgebunden
+        __ und durch die Benutzervereinbarung abgedeckt ist
+        > Sicherstellen, dass die Protokollierung in das 
+        __ Datenblatt für Protokollierung aufgenommen wird
+    #n: Nein
+        @Wirkungen >> Protokollierung von Nutzerdaten: Nein
+\end{verbatim}
+
+Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt \emph{Ergänzungsmaßnahmen} beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B.\ indem entsprechende Anforderungen ergänzt werden. Der Abschnitt \emph{Wirkungen} dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweisbar sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
+
+Wie schon erwähnt, kann man solche Protokolle an vielen Stellen verankern, und natürlich gibt es auch auf technischer Ebene sehr viele Dinge, die vom Entwickler berücksichtigt werden müssen.
+
+Viele Teams praktizieren Verfahren wie das Vier-Augen-Prinzip\index{Vier-Augen-Prinzip} oder eine Form von Peer-Review\index{Peer-Review}, bei der abgeschlossene Entwicklungen einem Kollegen zur Prüfung vorgelegt werden. Die verschärfte Varianten davon nennt sich \emph{Smash It}\index{Smash It}. Hier versucht der angefragte Kollege gezielt, und unter Nutzung seines Systemwissens, Fehler und Schwachstellen der Entwicklung aufzudecken, damit diese vor Herausgabe der Version behoben werden können. Dies sind gute Ergänzungen zu den Integrationstests, die ja primär auf das Abprüfen der neuen Funktionalität ausgerichtet sind und nicht auf das Auffinden von Schwachstellen in deren Umgebung. Trotzdem hängt es am Ende hautsächlich von der Erfahrung und der investierten Zeit des Einzelnen ab, ob ein kritischer Fehler oder eine Verwundbarkeit entdeckt wird oder nicht.
+
+Im Laufe der Zeit und vor allem durch die systematische Untersuchung der leider doch nicht rechtzeitig erkannten schwerwiegenden Fehler stellt man fest, dass jedes Entwicklungsmuster seine eigenen Risikofaktoren\index{Risikofaktoren} mit sich bringt, und es in den meisten Fällen systematische Vorgehensweisen gibt, um die jeweiligen Risiken zu verringern.
+
+Das Risiko, dass Daten unbeabsichtigt gelöscht werden, wird dann auftreten, wenn überhaupt Daten gelöscht werden, Kompatibilitätsprobleme bekommt man dann, wenn man mit versionsabhängigen Formaten hantiert. Probleme mit Drittkomponenten zeigen sich oft erst Monate oder Jahre später, entstehen aber in dem Moment wo man sich nicht genügend Zeit nimmt, um den Einbau einer neuen Drittkomponente sorgsam auszuführen.
+
+Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie bestimmte Aspekte erfüllt.
+
+\Beispiel{Quali-Assistent}
+\begin{verbatim}
+?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
+    #j: Ja
+        @Wirkungen >> Löschen von Datensätzen: Ja
+        @Ergänzungsmaßnahmen >> Löschen von Datensätzen:
+        > Sicherstellen, dass keine Datensätze ungewollt 
+        __ gelöscht werden.
+        > Abgrenzungstests formulieren
+        > Löschweitergaben prüfen
+    #n: Nein
+        @Wirkungen >> Löschen von Datensätzen: Nein
+?Q2: Umfasst die Entwicklung die Verwendung
+    __ neuer Drittkomponenten?
+    #j: Ja
+        @Wirkungen >> Verwendung von Drittkomponenten: Ja
+        @Ergänzungsmaßnahmen >> Verwendung von Drittkomponenten:
+        > Checkliste für Drittkomponenten durchgehen
+        > Drittkomponente in eigene Klasse kapseln
+    #n: Nein
+        @Wirkungen >> Verwendung von Drittkomponenten: Nein
+?Q3: Umfasst die Entwicklung die Verarbeitung von 
+    __ versionsabhängigen Formaten?
+    #j: Ja
+        @Wirkungen >> Versionsabhängige Formate: Ja
+        @Ergänzungsmaßnahmen >> Versionsabhängige Formate:
+        > Sicherstellung der Versionsbestimmbarkeit
+        > Sicherstellung von Abwärtskompatibilität
+        > Sicherstellung von Aufwärtskompatibilität
+        > Kennzeichnung der Versionsabhängigkeit 
+        __ im Datenblatt.
+    #n: Nein
+        @Wirkungen >> Versionsabhängige Formate: Nein
+\end{verbatim}
+
+Bei der Implementierung einer Funktion, die Datensätze löscht, wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass eine Löschung durch festgelegte Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
+
+Der Umgang mit Drittkomponenten umfasst viele Aspekte, über die man einen eigenen Abschnitt schreiben könnte. Gerade im kommerziellen Umfeld gibt es viel zu beachten, angefangen von der Verträglichkeit der Lizenz, bis hin zur Dokumentation und Planung notwendiger Überwachungsaufgaben für die Sicherstellung der Aktualität und regelmäßige Prüfung auf Verwundbarkeiten. Komponenten, die für sicherheitsrelevante Funktionalität wie Verschlüsselung eingesetzt werden, müssen diesbezüglich besondere Ansprüche erfüllen. Im Beispiel oben wird dementsprechend auch nur auf eine Checkliste für Drittkomponenten verwiesen, die man natürlich ebenfalls mit \FPZ\ abbilden kann. 
+
+Durch die Kapselung einer Drittkomponente in eine eigenen Klasse lässt sich gut sicherstellen, dass nur die benötigte Funktionalität verwendet wird und die Konfiguration auf die Eigenschaften beschränkt bleibt, die man zulassen möchte.
+
+Beim Umgang mit versionsabhängigen Formaten sollte von Anfang an berücksichtigt werden, dass sich diese ändern können, selbst wenn sie Teil des Produktes sind. Wenn ein Format um neue Eigenschaften erweitert wird, sollten vorhandene Daten in einem älteren Format immer noch verwendbar bleiben. Insbesondere sollte ein Format immer explizit bestimmbar sein, und nicht durch das Vorhandensein oder Nicht-Vorhandensein von Eigenschaften hergeleitet werden müssen.
+
+Auch hier ist das Skript wieder so aufgebaut, dass parallel zu den ergänzenden Maßnahmen ein Protokoll mit den Wirkungen der Entwicklung ausgegeben wird, das zum Nachweis der Auseinandersetzung in der Aufgabe hinterlegt werden könnte.
+
+Die Liste solcher Aspekte ließe sich noch um viele Punkte verlängern, und man muss aufpassen, dass die Relevanzklärung noch mit überschaubarem Aufwand möglich ist. Besonders sollte man darauf achten, dass die Fragestellungen nach bestimmten Aspekten grundsätzlich unmittelbar, also ohne langes überlegen durch den Entwickler beantwortet werden kann, zumindest wenn er sich gerade ausführlich mit der Aufgabenstellung auseinandergesetzt hat.
+

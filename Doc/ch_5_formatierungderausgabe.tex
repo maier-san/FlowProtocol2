@@ -1,0 +1,78 @@
+﻿\chapter{Formatierung der Ausgabe}\label{FormatierungAusgabe}
+Dieser Abschnitt widmet sich der Formatierung der Ausgabe und beschreibt Möglichkeiten, Abschnitte zu bilden, Aufzählungen zu verschachteln, sowie Links und Code in die Ausgabe zu integrieren. 
+
+\section{Ausgabe in Abschnitten}\label{Abschnitte}
+Bis jetzt habe wir nur den Befehl \verb|>>| verwendet, um Aufzählungspunkte auszugeben, und dabei merkt man recht schnell, dass das Ergebnis zumeist nicht nur aus einer Liste besteht, oder bestehen könnte. Nehmen wir das Expertensystem aus Beispiel~\ref{Bsp04}. Die Beschreibung der Situation und der schon durchgeführten Maßnahmen ist inhaltlich betrachtet eine Liste für sich, die Handlungsempfehlung eine andere und läuft alles am Ende in eine Kontaktierung des 2nd-Level-Supports hinaus, könnte die Liste der benötigten Informationen und Materialien als dritte Liste ausgegeben werden.
+
+Dieser Anwendungsfall zeigt auch schon, dass es durchaus üblich ist, dass verschiedenen Listen in einem Skript nicht nacheinander, sondern parallel zusammengestellt werden. Dies ist auch im folgenden Beispiel der Fall, das eine sehr einfache, nicht interaktive Implementierungsanleitung darstellt, die einen Entwickler bei der Implementierung eines neuen Moduls anleitet. Da jeder Entwicklungsschritt auch einen Integrationstest nach sich ziehen sollte, und der Entwickler in diesem Fall auch für die Erstellung der Testpunkte verantwortlich ist, wird zusammen mit der Anleitung auch gleich noch eine Liste von Testpunkten ausgegeben.
+
+\Beispiel{Ausgabe in Abschnitten}
+\begin{verbatim}
+@Anleitung >> Erstelle eine neue Modul-Klasse
+@Testpunkte >> Das Modul wird korrekt gestartet
+@Anleitung >> Implementiere die Start-Methode
+@Testpunkte >> Das Modul wird korrekt beendet
+@Anleitung >> Implementiere die Beenden-Methode
+@Anleitung >> Nehme das Modul in den Modulkatalog auf
+@Anleitung >> Übernehme die Testpunkte von unten
+\end{verbatim}
+
+Die Ausführung erzeugt einen Abschnitt\index{Abschnitt} \emph{Anleitung} mit entsprechender Überschrift und den fünf Punkten der Anleitung, gefolgt von einem Abschnitt \emph{Testpunkte} mit den beiden Testpunkten. Im Gegensatz zur Zusammenstellung erfolgt die Ausgabe Abschnittsweise, wobei die Reihenfolge durch die jeweils erste Ausgabe des Abschnitts festgelegt wird.
+
+Die Erzeugung einer Ausgabe in einem Abschnitt setzt gleichzeitig diesen Abschnitt für alle darauf"|folgenden Ausgaben, sofern diese nicht explizit einem Abschnitt zugeordnet sind. Um also nur die Anleitung auszugeben, reicht eine einzige Festlegung des Abschnitts am Anfang:
+
+\Beispiel{Nur ein Abschnitt}
+\begin{verbatim}
+@Anleitung >> Erstelle eine neue Modul-Klasse
+>> Implementiere die Start-Methode
+>> Implementiere die Beenden-Methode
+>> Nehme das Modul in den Modulkatalog auf
+\end{verbatim}
+
+\section{Unterpunkte und Absatzformate}
+Eine gute Anleitung ist gleichermaßen geeignet für erfahrene und weniger erfahrene Benutzer und ergänzt die primär durchzuführenden Schritte mit einer detaillierten Beschreibung der dazugehörenden Teilschritte. \FPZ\ unterstützt generell drei Aufzählungsebenen, die mit den Befehlen \cidxfrag{>\mbox{}>}, \cidxfrag{>} und \cidxfrag{>.} angesteuert werden, jeweils mit der optional möglichen Angabe eines Abschnitts mittels \verb|@|. Ausgaben der zweiten Ebene gliedern sich der letzten Ausgabe der ersten Ebene des jeweiligen Abschnitts unter und Ausgaben der dritten Ebene dementsprechend der letzten Ausgabe der zweiten Ebene.
+
+Zusätzlich kann man für beide Ebenen angeben, ob eine Ausgabe als nummerierter Aufzählungspunkt (\verb|>>#|), nicht nummerierter Aufzählungspunkt (\verb|>>*|), einfache Textzeile (\verb|>>_|) oder Codezeile  (\verb=>>|=) ausgegeben wird.
+
+\Beispiel{Unterpunkte}
+\begin{verbatim}
+@Anleitung >>_ Geschätzter Zeitaufwand ca. 15 min
+>>* Erstelle eine neue Modul-Klasse.
+    >* Erstelle eine C#-Datei mit dem Namen des Moduls.
+>>* Füge folgenden Code ein:
+    >| public class NeuesModul : BaseModul
+    >| {
+    >| }
+>>* Implementiere die Start-Methode.
+    ># Gibt die Zeichenfolge "override" innerhalb der Klasse ein
+        >.* Der Editor bietet Methoden zur Auswahl an.
+    ># und wähle in der Auswahl des Editors die Methode Start.
+    ># Ergänze den Start-Code des Moduls wie im Wiki beschrieben.
+\end{verbatim}
+
+Die komplette Ausgabe erfolgt im Abschnitt \emph{Anleitung}, die Angabe des geschätzten Zeitaufwands erfolgt als normale Textzeile, die Aufzählungspunkte\index{Aufzählungspunkte} der ersten Ebene sind entgegen dem Standard nicht nummeriert. Unter dem ersten Aufzählungspunkt wird ein ebenfalls nicht nummerierter Unterpunkt ausgegeben, unter dem zweiten ein Codeblock\index{Codeblock} mit drei Zeilen. Unter dem dritten Aufzählungspunkt sieht man drei Unterpunkte\index{Unterpunkte}, die mit Kleinbuchstaben durchnummeriert sind, der erste davon hat wiederum einen nicht nummerierten Unterpunkt.
+
+Die drei aufeinanderfolgenden Codezeilen werden zu einem Codeblock zusammengefasst, der mit der automatisch darunter angeordneten Schaltfläche \emph{In Zwischenablage kopieren} in die Zwischenablage\index{Zwischenablage} genommen werden kann.
+
+Auf die vielfältigen Möglichkeiten der Codegenerierung kommen wir später noch zurück. Im nächsten Abschnitt bleiben wir nochmal bei der Formatierung und zeigen, wie sich Text innerhalb einer Zeile formatieren lässt.
+
+\section{Links und Inline-Code}\label{LinksInline}
+Gerade in Anleitungen wird auf Stellen im Code in Form von Klassen-, Methoden- oder Variablennamen verwiesen, und da erleichtert es den Lesefluss deutlich, wenn man diese Textelemente in der Ausgabe entsprechend hervorhebt. Dies ist mit dem Befehl \fcmd{AddCode} möglich, der der Ausgabe der letzten Zeile Text hinzufügt, der als Code\index{Code} formatiert ist. Mit dem Befehl \fcmd{AddText} kann danach wieder weiterer Text hinzugefügt werden. Man beachte das zusätzliche Leerzeichen, das immer am Anfang des angehängten Textes angefügt werden muss, wenn zwischen diesem und dem vorangegangen Text ein Leerzeichen stehen soll, da Leerraum am Zeilenende generell ignoriert wird.
+
+Als Anwendung im Browser kann \FPZ\ natürlich auch Links erzeugen, und damit den Anwender sowohl zu statischen Seiten, also auch zu anderen Anwendungen weiterleiten. Auch dieser Möglichkeit widmen wir später noch einen eigenen Abschnitt. Ein Link\index{Links} besteht dabei aus einer URL und dem anzuzeigenden Text, die in dieser Reihenfolge, getrennt von einem vertikalen Strich angegeben werden. Auch hier kann mit \fcmd{AddText} wieder weiterer Text im Anschluss angefügt werden.
+
+\Beispiel{Links und Inline-Code}\label{BspLinksUndInlineCode}
+\begin{verbatim}
+@Anleitung >> Implementiere die Start-Methode
+    > Gibt die Zeichenfolge 
+    ~AddCode  override 
+    ~AddText  innerhalb der Klasse ein
+    > und wähle in der Auswahl des Editors die Methode Start.
+    > Überschreibe die Start-Methode wie im
+    ~AddLink  https://learn.microsoft.com/de-de/dotnet/csharp
+        __/language-reference/keywords/override | Internet
+    ~AddText  beschrieben.
+\end{verbatim}
+
+Das Beispiel formatiert den Text \emph{override} als Code und den Text \emph{Internet} als Link, also blau, unterstrichen und klickbar. Sofern die Domäne der angegebenen URL in der Konfiguration nicht als sicher angegeben ist (siehe Kernelement~\ref{defLinks}), wird die URL aus Sicherheitsgründen hinter dem Anzeigen-als-Text ergänzt. Der Link wird standardmäßig immer in einem neuen Tab geöffnet.
+

@@ -1,0 +1,197 @@
+﻿\chapter{Programmierung}
+Auch wenn es ursprünglich nicht die Absicht war, aus \FPZ\ eine Programmierumgebung zu machen, gab es doch immer wieder Anforderungen, die mit den grundlegenden Befehlen einer üblichen Programmiersprache gut umsetzbar gewesen wären. Die Vorteile, den Aufbau von Anleitungen mit Programmlogik zu verknüpfen, Bedingungen abzuprüfen und Werte zu berechnen, waren insgesamt so groß, dass schließlich alle wichtigen Programmierbefehle in \FPZ\ Einzug fanden.
+
+\section{Sprünge}\label{Spruenge}
+Wir starten das Thema Programmierung mit einem Befehl, der in den höheren Programmiersprachen eher selten zum Einsatz kommt, dem \fcmd{GoTo}-Befehl. Dieser ermöglicht es einen Sprungmarke\index{Sprungmarke} anzuspringen, und die Skriptausführung dort fortzusetzen. Die Sprungmarke wird wiederum mit dem Befehl \fcmd{JumpMark} gesetzt. Eine Sprungmarke kann auch ganz normal als nächste Zeile in der Ausführung durchlaufen werden. Ihr Durchlaufen selbst hat keinen Effekt.
+
+Der \fcmd{GoTo}-Befehl ist für \FPZ\ dahingehend interessant, da er eng mit dem namensgebenden Ursprung der Anwendung zusammenhängt und sehr direkt die Abbildung von Flussdiagrammen\index{Flussdiagramm} ermöglicht. Im Gegensatz zur Verschachtelung von Abfragen kann man damit weitere Muster gut umsetzen, ohne dabei Skriptcode wiederholen zu müssen, wie etwa im folgenden Beispiel:
+
+\Beispiel{Sprünge}\label{BspSpruenge}
+\begin{verbatim}
+?Q1: Um welche Art von Entwicklung handelt es sich?
+    #F: Neues Framework
+        ~GoTo Framework
+    #I: Individuelle Einzelentwicklung
+        ~GoTo Einzelentwicklungen
+    #V: Standard-Entwicklung auf Framework-Basis
+        ~GoTo Alle Entwicklungen
+~JumpMark Framework
+>> Fragen für Framework-Entwicklungen
+~JumpMark Einzelentwicklungen
+>> Fragen für Einzelentwicklungen 
+~JumpMark Alle Entwicklungen
+>> Fragen für alle Entwicklungen 
+\end{verbatim}
+
+Zu Beginn wird nach der Kategorisierung einer Entwicklung gefragt, die entweder eine Framework-Entwicklung ist, eine individuelle Einzelentwicklung oder eine Standardentwicklung auf Basis des vorhandenen Frameworks ist. In Abhängigkeit der Antwort werden entweder alle drei Blöcke, nur die letzten beiden Blöcke oder nur der letzte Block durchlaufen.
+
+Man kann Sprungmarken auch einfach dazu verwenden, um tief verschachtelte Abfragen in übersichtlicher Art und Weise als Folgen anzuordnen.
+
+\section{Berechnungen}\label{Berechnungen}
+Aus Abschnitt~\ref{BewSysteme} kennen wir schon den \fcmd{AddTo}-Befehl, mit dem man einen Wert zu einer Variablen dazuzählen kann. Später wurde der \fcmd{Calculate}-Befehl ergänzt, der eine Berechnung\index{Berechnung} mit zwei Argumenten und einem der Operatoren \verb|+|, \verb|-|, \verb|*|, \verb|/|, und \verb|%| 
+(modulo) durchführen konnte. Umfangreichere Ausdrücke mussten dementsprechend in mehreren Zeilen zerlegt und mit entsprechend vielen Hilfsvariablen berechnet werden.
+
+Mit dem Befehl \fcmd{CalculateExpression} lassen sich inzwischen auch längere Ausdrücke auf Basis der Operatoren \verb|+|, \verb|-|, \verb|*|, \verb|/|, \verb|%| 
+und \verb|^| und den Funktionen \cidxfrag{sqrt}, \cidxfrag{sin}, \cidxfrag{cos}, \cidxfrag{tan}, \cidxfrag{exp} und \cidxfrag{ln} und einer beliebigen Klammerung in einer Zeile berechnen. Die Berechnungen erfolgen nummerisch und die Ergebnisse werden in Dezimal- oder ggf.\ auch in Exponentialschreibweise\index{Exponentialschreibweise} dargestellt.
+
+\Beispiel{Berechnungen}\label{BspBerechnungen}
+\begin{verbatim}
+~CalculateExpression U = 72 % 7
+~CalculateExpression V = (-2,5 + 1,57)*(1,3 - 0,4)/18
+~CalculateExpression W = 2^3*16^(1/2)+7
+~CalculateExpression X = exp(sin(1/4))
+~Round Z=$X|3
+@Ausgabe >> U = $U
+    >> V = $V
+    >> W = $W
+    >> X = $X
+    >> Z = $Z
+\end{verbatim}
+
+In die letzten Zeile vor der Ausgabe wird der Wert der Variablen \verb|X| mit dem \fcmd{Round}-Befehl auf drei Stellen hinter dem Komma gerundet und das Ergebnis der Variablen \verb|Z| zugewiesen.
+
+\section{Schleifen}\label{Schleifen}
+Die große Stärke von Computern liegt darin, die gleichen Dinge in leichter Variation oft zu wiederholen, ohne sich zu langweilen und ohne in der Ausführung nachlässig zu werden. Mit Hilfe von Schleifen\index{Schleifen} lassen sich solche Mehrfachausführungen einfach implementieren.
+
+Die bekannten höheren Programmiersprachen unterscheiden drei prinzipielle Arten von Schleifen: Die \emph{For-Schleife}\index{For-Schleife} wird mit einer Zählervariablen eingeleitet, die mit einem Startwert beginnt, diesen bei jedem Durchlauf um eine Schrittlänge hoch zählt, und beendet wird, wenn ein Zielwert erreicht oder eine Abbruchbedingung erfüllt wird. Die \emph{Do-While-Schleife}\index{Do-While-Schleife} läuft dagegen so lange durch, bis eine Abbruchbedingung erfüllt ist. Schließlich gibt es noch die \emph{For-Each-Schleife}\index{For-Each-Schleife}, bei der eine vorgegebene Menge von Elementen durchlaufen wird. Eine Indexvariable nimmt dabei nacheinander den Wert dieser Elemente an.
+
+In \FPZ\ gibt es die Beiden Befehle \fcmd{DoWhile} und \fcmd{ForEach} für die Einleitung von Do-While-Schleifen und For-Each-Schleifen. Reine For-Schleifen lassen sich sehr direkt auch als Do-While-Schleife abbilden, deshalb gibt es für diese keinen eigenen Befehl. Das Schleifenende, also die Stelle, an der ggf.\ ein weiterer Durchlauf gestartet wird, wird in beiden Fällen mit dem \fcmd{Loop}-Befehl gekennzeichnet, der die gleiche Einrückung wie der Beginn der Schleife haben muss. Auf diese Weise lassen sich mehrere Schleifen ineinander verschachteln. Zusätzlich gibt es noch den \fcmd{ExitLoop}-Befehl, mit dem die aktuell ausgeführte Schleife unmittelbar verlassen wird.
+
+In Beispiel~\ref{BspBugPlaner} hatten beide Schleifenvarianten schon einen kleinen Gastauftritt, aber um die Funktionsweise nochmal genauer anzuschauen ist die folgende Primzahlberechnung\index{Primzahlberechnung} gut geeignet:
+
+\Beispiel{Primzahlen}\label{BspPrimzahlen}
+\begin{verbatim}
+~Set n=2
+~Set pidx=0
+~DoWhile $n<20
+    ~Set prim=ja
+    ~ForEach p in PZ
+        ~CalculateExpression r = $n % $p
+        ~If $r==0
+            ~Set prim=nein
+            ~ExitLoop        
+    ~Loop
+    ~If $prim==ja
+        ~AddTo pidx+=1
+        >> P($pidx) = $n
+        ~Set PZ($pidx)=$n
+    ~AddTo n+=1
+~Loop
+\end{verbatim}
+
+Die äußeren Do-While-Schleife wird durchlaufen, solange die Variable \verb|n| kleiner als 20 ist. Der Wert von \verb|n| wird dabei jedes Mal vor Schleifenende um eins erhöht, was vom Prinzip her einer For-Schleife entspricht. Gestartet wird mit \verb|n=2|. Auf die Formulierung von Bedingungen gehen wir in Abschnitt~\ref{IfUndBedingungen} näher ein.
+
+Die innere For-Each-Schleife durchläuft eine Menge \verb|PZ| unter Verwendung der Variablen \verb|p|. \verb|PZ| wird hierbei als eindimensionales Feld interpretiert, das die fortlaufend nummerierten Variablen \verb|PZ(1)|, \verb|PZ(2)|, \verb|PZ(3)|, usw.\ enthält.
+Beim ersten Durchlauf der äußeren Schleife ist die Variable \verb|PZ(1)| noch nicht definiert und die Menge \verb|PZ| daher leer, d.h.\ die innere Schleife wird nicht durchlaufen.
+
+Für jede Zahl $n$, für die nach Durchlauf der inneren Schleife die Variable \verb|prim| noch auf \verb|ja| steht, wird die Menge der gefundenen Primzahlen \verb|PZ| um $n$ erweitert, weil $n$ in diesem Fall durch keine der bisher gefundenen Primzahlen teilbar ist. Ist $n$ dagegen durch eine dieser Primzahlen $p$ teilbar, also wenn der Rest bei Division durch $p$ null ergibt, dann wird die Variable \verb|prim| auf \verb|nein| gesetzt und die innere Schleife mit dem Befehl \fcmd{ExitLoop} verlassen, weil auch die folgenden Durchläufe das Ergebnis nicht mehr verändern würden.
+
+Das Programm geht also recht effizient vor und versucht soweit es geht, unnötige Schleifendurchläufe zu vermeiden. Dies ist dahingehend kein Fehler, da die Ausführung von \FPZb-Skripten, verglichen mit einer kompilierbaren Programmiersprache wie C\#, sehr langsam ist.
+
+Die Programmierung von Schleifen bringt immer auch mit sich, dass man versehentlich eine Endlosschleife durchläuft, z.B.\ wenn man das Hochzählen der Variable vergisst und so die Abbruchbedingung nie erreicht wird. Um dies und auch Endlosrekursionen frühzeitig zu erkennen, werden alle Durchläufe von Schleifen im Hintergrund mitgezählt, und die Ausführung mit dem Fehler \emph{Maximale Anzahl Schleifendurchläufe erreicht} beendet, wenn der intern gesetzte Stop-Zähler\index{Stop-Zähler} für Schleifen oder die Gesamtzahl an durchlaufenen Befehlen erreicht wird. Mit dem Befehl \fcmd{SetStopCounter} lassen sich diese beiden Werte hochsetzen, wenn man abschätzen kann, dass eine reguläre Skriptanwendung so viele Durchläufe und Befehlsausführungen mit sich bringt. Raffinierte Berechnungen mit vielen Iterationen und Rekursionen sind zwar möglich, liegen aber eher am Rand der Wohlfühlzone von \FPZ.
+
+Ein häufigerer Anwendungsfall, insbesondere wenn man Skripte schreibt, die Programmcode generieren, ist die Abfrage einer Sequenz von Elementen, z.B.\  die Variablennamen für die Parameter einer Funktion. Im Beispiel unten wird über eine Schleife wiederholt abgefragt, ob es noch einen weiteren Parameter gibt, und wenn ja, nach dem dazugehörenden Variablenname gefragt. 
+
+\Beispiel{Abfrageschleife}\label{BspAbfrageschleife}
+\begin{verbatim}
+?V1: Hat die Funktion Parameter?
+    #j: Ja
+        ~Set i=1
+        ~DoWhile $V$i==j
+            ~Input B$i: Variable für den $i. Parameter:
+            ~Set Vars($i)=$B$i
+            ~AddTo i+=1
+            ?V$i: Hat die Funktion einen $i. Parameter?
+                #j: Ja            
+                #n: Nein
+            ~Execute
+        ~Loop
+        ~ForEach v in Vars
+            @Variablen >> $v
+        ~Loop
+    #n: Nein
+\end{verbatim}
+
+Die Antworten und Eingaben werden in fortlaufend nummerierten Schlüsseln verwaltet und die Ausführung nach jedem Schleifendurchlauf angehalten. 
+
+\section{If-Abfragen und Bedingungen}\label{IfUndBedingungen}
+Zu den wichtigsten Steuermechanismen innerhalb eines Programms gehört ganz klar die Möglichkeit, Bedingungen\index{Bedingungen} auszuwerten und Fallunterscheidungen\index{Fallunterscheidungen} abzubilden.  Der dazugehörende Befand lautet \fcmd{If} und kann kombiniert werden mit den Befehlen \fcmd{ElseIf} und \fcmd{Else}. Er ist so elementar, dass wir ihn schon in zahlreichen Beispielen verwendet haben, ohne näher darauf einzugehen.
+
+\fcmd{If} führt den darunter eingerückten Skriptcode genau dann aus, wenn die hinter dem \fcmd{If}-Befehl stehende Bedingung erfüllt ist. Mit \fcmd{ElseIf} kann eine weitere Bedingung mit einem weiteren Codeblock angeschlossen werden, die aber nur dann ausgewertet, bzw.\ ausgeführt werden, wenn keine der davorstehenden Bedingungen erfüllt ist. Auf diese Weise können beliebig viele ElseIf-Bedingungen aneinandergereiht werden. Abschließend kann mit \fcmd{Else} noch ein Codeblock angehängt werden, der nur dann ausgeführt wird, wenn keiner der davorstehenden Bedingungen erfüllt wurde.
+
+\Beispiel{Bewertungsschema}\label{BspBewertungsschema}
+\begin{verbatim}
+~Input P: Wie hoch ist die Punktezahl (0-20)?
+~Execute
+~If $P>=18
+    ~Set Note=sehr gut
+~ElseIf $P>=14
+    ~Set Note=gut
+~ElseIf $P>=10
+    ~Set Note=befriedigend
+~ElseIf $P>=5
+    ~Set Note=ausreichend
+~Else
+    ~Set Note=ungenügend
+>> Ergebnis: $P Punkte (Note $Note)
+\end{verbatim}
+
+Ein klassischer Anwendungsfall für mehrstufige If-Abfragen ist die Anwendung eines Bewertungsschemas\index{Bewertungsschema}, bei der für einen vorgegebenen Wert das dazu passende Intervall gesucht werden muss, mit dem diesem Wert dann ein Zielwert zugeordnet wird. Im Beispiel oben wird so einem Punktewert von 0 bis 20 eine Note in Textform zugeordnet.
+
+Die Bedingungen im Beispiel sind einfache Größer-gleich-Vergleiche\index{Vergleiche}, aber es können auch komplexere Ausdrücke formuliert werden. Die Bedingung muss dabei in der disjunktiven Normalform\index{disjunktive Normalform} angegeben werden, also als Oder-Verknüpfung\index{Oder-Verknüpfung} (\verb=||=) von Und-Verknüpfungen\index{Und-Verknüpfung} (\verb|&&|), wobei keine Klammerung notwendig ist.
+Als Literale sind die Konstanten \verb|1| und \cidxfrag{true} (wahr\index{wahr}), sowie \verb|0| und \cidxfrag{false} (falsch\index{falsch}) verwendbar, sowie für Zeichenketten $s$ und $t$, Zahlen $x$ und $y$ und Variablen $v$ die folgenden Ausdrücke zulässig: \verb|$s==$t| ($s$ ist gleich $t$), \verb|$s!=$t| ($s$ ist ungleich $t$), \verb|$x<>$y| ($x$ ist ungleich $y$), \verb|$x<$y| ($x$ ist kleiner als $y$), \verb|$x<=$y| ($x$ ist kleiner oder gleich $y$), \verb|$x>$y| ($x$ ist größer als $y$), \verb|$x>=$y| ($x$ ist größer oder gleich $y$), \verb|$s~$t| ($s$ enthält $t$), \verb|$s!~$t| ($s$ enthält $t$ nicht), \verb|?$v| ($v$ ist gesetzt), \verb|!?$v| ($v$ ist nicht gesetzt). Siehe auch Kernelement~\ref{defBedingungen}.
+
+\section{Funktionen}\label{Funktionen}
+Viele spannende und mächtige Algorithmen gründen auf Funktionen\index{Funktionen}, die sich rekursiv selbst aufrufen. Es gibt Programmiersprachen wie Scheme, die einen dazu zwingen, so gut wie jede Problemstellung mittels Rekursion\index{Rekursion} zu lösen. Auch \FPZ\ erlaubt die Definition von Funktionen und rekursive Aufrufe, obgleich wie schon in früheren Abschnitten erwähnt, dort nicht unbedingt der Schwerpunkt dieser Skriptsprache liegt.
+
+Das nachfolgende Beispiel zeigt den Klassiker unter den rekursiv lösbaren Aufgaben, nämlich die Türme von Hanoi\index{Türme von Hanoi}. Dabei geht es darum, einen Turm von mehreren absteigend großen Schreiben von einer Stange unter Zuhilfenahme einer zweiten Stange auf eine dritte Stange umzustapeln, wobei jeweils nur eine Scheibe bewegt werden darf und niemals eine größere Scheibe auf einer kleineren Scheibe abgelegt werden darf.
+
+\Beispiel{Türme von Hanoi}\label{BspTuermeVonHanoi}
+\begin{verbatim}
+~Set MoveFromS=A
+~Set MoveToS=C
+~Set MoveCountS=4
+~GoSub Move; BaseKey=S
+~End
+
+// Bewegt n Scheiben von Stange a nach b
+// MoveFrom$BaseKey:  Ausgangsstange a (A, B, C)
+// MoveTo$BaseKey:    Zielstange b (A, B, C)
+// MoveCount$BaseKey: Anzahl Scheiben n
+~DefineSub Move
+    ~If $MoveCount$BaseKey>0
+        ~Set Q1$BaseKey=$MoveFrom$BaseKey
+        ~Set Q2$BaseKey=$MoveTo$BaseKey
+        ~Set Q3$BaseKey=ABC
+        ~Replace Q3$BaseKey=$Q3$BaseKey|$Q1$BaseKey->
+        ~Replace Q3$BaseKey=$Q3$BaseKey|$Q2$BaseKey->
+        ~Set MC$BaseKey=$MoveCount$BaseKey
+        ~AddTo MC$BaseKey+=-1
+
+        ~Set MoveFrom$BaseKeyA=$Q1$BaseKey
+        ~Set MoveTo$BaseKeyA=$Q3$BaseKey
+        ~Set MoveCount$BaseKeyA=$MC$BaseKey
+        ~GoSub Move; BaseKey=$BaseKeyA
+        
+        @Lösung >> Von $Q1$BaseKey nach $Q2$BaseKey
+            __ (BaseKey=$BaseKey)
+        
+        ~Set MoveFrom$BaseKeyB=$Q3$BaseKey
+        ~Set MoveTo$BaseKeyB=$Q2$BaseKey
+        ~Set MoveCount$BaseKeyB=$MC$BaseKey
+        ~GoSub Move; BaseKey=$BaseKeyB
+~Return
+\end{verbatim}
+
+Der Lösungsansatz besteht darin, das Umstapeln eines Turms mit $n$ Scheiben von Stange $a$ nach Stange $b$ in drei Schritte zu zerlegen: Zunächst stapelt man den oberen Teil des Turms aus $n-1$ Schreiben um auf die freie Stange $c$, bewegt dann die $n$te Schreibe auf die Zielstange $b$ und stapelt dann wieder denselben Turm von Stange $c$ auf Stange $b$ oben auf diese Scheibe drauf. Auf diese Weise hat man das Problem auf das Umstapeln eines kleineren Turms zurückgeführt und kann das wiederholt anwenden, bis man schließlich bei einem Turm mit $0$ Scheiben angekommen ist, bei dem nichts mehr zu tun ist.
+
+Die Definition der Funktionen erfolgt standardmäßig am Ende des Skriptes. Ihr Code wird nur durchlaufen, wenn sie aufgerufen werden, trotzdem wird hier zur besseren Übersichtlichkeit die Ausführung vorher mit dem Befehl \fcmd{End} beendet. Jede Funktion wird mit dem Befehl \fcmd{DefineSub} eingeleitet und mit dem Befehl \fcmd{Return} beendet. Der dazwischen liegende, eingerückte Codeblock wird bei jedem Aufruf durchlaufen. Ein Aufruf wird mit dem Befehl \fcmd{GoSub} in die Wege geleitet, bei dem auch der \cidxfrag{BaseKey}-Wert übergeben werden kann. Nach dem Aufruf wird das Skript in der nächsten Zeile fortgesetzt.
+
+In jedem Schritt muss zunächst die Stange herausgefunden werden, die aktuell weder Ausgangspunkt, noch Ziel der Umschichtung darstellt und die als Zwischenablage verwendet werden kann. Das wird dadurch bewerkstelligt, dass man im Ausdruck \verb|ABC| die Kennungen der beiden gegebenen Stangen mit dem \fcmd{Replace}-Befehl entfernt.
+
+Da es in \FPZ\ keine lokalen Variablenbereiche gibt, muss man die Variablen, die für einen bestimmten Funktionsaufruf erhalten bleiben sollen, explizit von den anderen Variablen abgrenzen. Dafür kann über die Sondervariable \cidxfrag{BaseKey} eine Zahl oder Zeichenfolge übergeben werden, die für jeden Funktionsaufruf getrennt verwaltet wird und die in den innerhalb der Funktion genutzten Variablen als Teil der Bezeichnung eingebaut werden kann, um auch diese zu trennen. In gleicherweise können auch die Funktionsargumente vor dem Funktionsaufruf als Variablen definiert werden, die sich auf den übergebenen \cidxfrag{BaseKey}-Wert beziehen. Im Beispiel wird vor dem ersten Aufruf im Skript \verb|MoveFromS=A| als einer von drei Funktionsparametern gesetzt und beim Funktionsaufruf wird \verb|BaseKey=S| übergeben. Damit wird innerhalb der Funktion \verb|$MoveFrom$BaseKey| zu \verb|$MoveFromS| und schließlich zu \verb|A| ersetzt. Bei den rekursiven Aufrufen wird der \cidxfrag{BaseKey}-Wert dann jeweils um die Buchstaben A und B erweitert, so dass am Ende Funktionsparameter zu 15 verschiedenen \cidxfrag{BaseKey}-Werten verwaltet werden.
+
+Der Umgang mit rekursiven Funktionen ist in \FPZ\ zugegebenermaßen etwas gewöhnungsbedürftig, aber er lässt sich mit einigen Debug-Ausgaben und etwas Übung doch gut hinbekommen. Analog zu den Variablen lassen sich auch die Schlüssel für Eingaben mithilfe der \cidxfrag{BaseKey}-Variablen definieren, so dass in jeder Rekursion auch Benutzerinteraktionen stattfinden können. Auf diese Weise kann zum Beispiel ein Sortieralgorithmus wie Mergesort implementiert werden, der den einzelnen Vergleich zweier Elemente an den Anwender weitergibt. Damit kann etwa die Sortierung von Projekten oder Aufgaben nach Priorität auf Einzelvergleiche heruntergebrochen werden, die sich oft mit Bauchgefühl ganz gut festlegen lassen.
+
+Natürlich kann man Funktionen auch ohne Rekursion nutzen. In diesem Fall benötigt man keine \cidxfrag{BaseKey}-Variable und kann sowohl die Funktionsargumente, als auch die Rückgabewerte ganz normal in Variablen übergeben.
+

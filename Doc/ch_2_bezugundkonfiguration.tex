@@ -1,0 +1,25 @@
+﻿\chapter{Bezug und Konfiguration}\label{BezugKonfig}
+\FPZ\ steht unter der MIT-Lizenz und ist unter folgender Adresse auf GitHub verfügbar :
+\begin{center}
+    \texttt{https://github.com/maier-san/FlowProtocol2}
+\end{center}
+
+Der Programmcode kann direkt mit Git oder der Entwicklungsumgebung Visual Studio Code in ein lokales Verzeichnis, z.B.\ \verb|D:\Apps\FlowProtocol2|, übertragen, und dort  mit dem dotnet-Befehl kompiliert werden, wobei als Zielframework\index{Zielframework} .NET 8 vorausgesetzt wird:
+\begin{verbatim}
+dotnet.exe build
+    D:\Apps\FlowProtocol2/FlowProtocol2/FlowProtocol2.csproj
+\end{verbatim}
+
+
+Die Konfiguration erfolgt über die Datei \emph{appsettings.json}\index{appsettings.json}, in der hauptsächlich der Pfad auf das Skripte-Verzeichnis\index{Skripte-Verzeichnis} mit dem Parameter \cidxfrag{ScriptPath} eingestellt werden muss. Dieses Verzeichnis enthält die Skripte und Unterverzeichnisse, die von \FPZ\ auf der Startseite angezeigt werden, und ist damit der Dreh- und Angelpunkt der Skriptverwaltung. Für die ersten Versuche kann man den Parameter auf den Scripts-Ordner innerhalb des Projektes setzen, etwa so:
+\begin{verbatim}
+"ScriptPath": "D:\\Anwendungen\\FlowProtocol2\\Scripts", 
+\end{verbatim}
+In einem Unternehmen wird man das Verzeichnis so wählen, dass die Mitarbeiter, die aktiv an den Skripten arbeiten, dort direkt Dateien editieren und erstellen können, z.B.\ indem man dieses auf einem Netzlaufwerk verfügbar macht. Zusätzlich wird man die Skripte regelmäßig sichern, idealerweise mit Hilfe einer Versionsverwaltung. Wenn man Manipulation befürchtet, kann man das Editieren auch vollständig auf den Weg über die Versionsverwaltung beschränken, verbaut sich damit aber die Möglichkeit, die Wirkung von Änderungen an einem Skript unmittelbar nach dem Speichern durch die Aktualisierung des Browser-Tabs zu überprüfen. In diesem Fall wäre dann eine getrennte Skript-Entwicklungsumgebung sinnvoll, analog zu den sonstigen Entwicklungsumgebungen im Umfeld der Softwareherstellung. \FPZ\  selbst benötigt auf dieses Verzeichnis nur Leserechte.
+
+In den Programm- und Konfigurationsdateien \emph{launchSettings.json}\index{launchSettings.json}, \emph{appsettings.json} und \emph{Program.cs}\index{Program.cs} sind die Ports\index{Ports} 5000, bzw.\ 5001 eingetragen, die man je nach Installation auch nochmal anpassen möchte.
+
+Wie schon im Vorwort beschrieben ist die Möglichkeit, Links zu generieren, ein mächtiges Mittel um die Interaktion mit anderen Anwendungen zu ermöglichen. Wie man jedoch aus jeder IT-Sicherheitsbelehrung weiß, kann das Anklicken von Links auch Gefahren mit sich bringen, und speziell in Phishing-E-Mails nutzen Angreifer vertrauenswürdig aussehende Links, um den Empfänger auf eine nachgebaute oder mit Schadcode gespickte Seite zu leiten. Auch mit den Links in einem Skript sind solche Angriffe möglich, wenn auch aufgrund der Beschränkung auf die eigenen Mitarbeiter eher unwahrscheinlich. Aus diesem Grund werden alle durch ein Skript ausgegebenen Links, deren Domäne nicht in der Auf\-lis\-tung des \cidxfrag{LinkWhitelist}-Parameters steht, zusätzlich zu dem Anzeigetext mit der vollständigen URL ausgegeben. Damit kann bei der Konfiguration entschieden werden, welche Seitenaufrufe so vertrauenswürdig sind, dass sie auch nur mit dem Anzeigetext dargestellt werden können, was zum einen die Lesbarkeit erhöht und zum anderen die Aufmerksamkeit des Anwenders auf die Links konzentriert, die nicht diese Einstufung haben.
+
+Für die regelmäßige lokale Bereitstellung von \FPZ\ ist es am einfachsten, vom Basisrepository auf GitHub mittels Fork zu verzweigen und die lokalen Anpassungen im eigen Zweig zu verwalten.
+

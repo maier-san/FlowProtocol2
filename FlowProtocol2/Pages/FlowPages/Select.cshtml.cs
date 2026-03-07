@@ -12,6 +12,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public string BreadcrumbPath => RelativePath.Replace(Path.DirectorySeparatorChar.ToString(), " - ");
         public ObjectArray<NavLink> ScriptGroups { get; set; }
         public ObjectArray<NavLink> Scripts { get; set; }
+        public List<BreadcrumbItem> Breadcrumbs { get; set; }
         private const string FlowProtocol2Extension = ".fp2";
 
         public SelectModel(IConfiguration configuration)
@@ -21,11 +22,25 @@ namespace FlowProtocol2.Pages.FlowPages
             RelativeBackPath = string.Empty;
             ScriptGroups = new ObjectArray<NavLink>();
             Scripts = new ObjectArray<NavLink>();
+            Breadcrumbs = new List<BreadcrumbItem>();
         }
         public IActionResult OnGet(string relativepath)
         {
             if (relativepath == "x") relativepath = string.Empty;
             RelativePath = relativepath.Replace('|', Path.DirectorySeparatorChar);
+            
+            // Build breadcrumbs
+            Breadcrumbs.Add(new BreadcrumbItem("Start", "x"));
+            if (!string.IsNullOrEmpty(RelativePath))
+            {
+                string[] parts = RelativePath.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+                string currentPath = string.Empty;
+                foreach (var part in parts)
+                {
+                    currentPath += Path.DirectorySeparatorChar + part;
+                    Breadcrumbs.Add(new BreadcrumbItem(part, currentPath.TrimStart(Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar.ToString(), "|")));
+                }
+            }
             string resultPath = ScriptPath + Path.DirectorySeparatorChar + RelativePath;
             if (!Directory.Exists(resultPath))
             {

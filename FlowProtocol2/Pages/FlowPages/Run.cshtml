@@ -3,6 +3,31 @@
 @{
     ViewData["Title"] = @Model.ScriptName;
 }
+<nav class="breadcrumb-nav">
+    @for (int i = 0; i < Model.Breadcrumbs.Count; i++)
+    {
+        var item = Model.Breadcrumbs[i];
+        @if (!string.IsNullOrEmpty(item.Path))
+        {
+            @if (i == 0)
+            {
+                <a asp-page="/FlowPages/SelectMain">@item.Name</a>
+            }
+            else
+            {
+                <a asp-page="./Select" asp-route-relativepath="@item.Path">@item.Name</a>
+            }
+        }
+        else
+        {
+            <a href="@Model.ScriptBaseURL">@item.Name</a>
+        }
+        @if (i < Model.Breadcrumbs.Count - 1)
+        {
+            <span class="breadcrumb-separator">·</span>
+        }
+    }
+</nav>
 @if (Model.Errors.Any())
 {
     <h2>@Model.ScriptName</h2>

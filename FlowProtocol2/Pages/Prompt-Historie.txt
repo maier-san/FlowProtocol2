@@ -55,6 +55,14 @@ Ich hab dir unter FlowProtocol2\Supplements ein FavIcon in Form der Dateien favi
 
 ----------------------------------------------------------------------------------------
 2026-03-07_Brotkrümelpfad
-Erweitere die Seiten Select und Run um einen Brotkrümelpfad, der Ebenen von der Startseite (Start) bis zum 
-aktuellen Ordner (bei SELECT) oder Skript (bsi Run) mit einem kleinen zentrierten Punkt als Trennzeichen auflistet.
+Erweitere die Seiten Select und Run um einen Brotkrümelpfad, der Ebenen von der Startseite (Start) bis zum aktuellen Ordner (bei SELECT) oder Skript (bsi Run) mit einem kleinen zentrierten Punkt als Trennzeichen auflistet.
 Alle Elemente im Brotkrümelpfad sollen anklickbar sein und auf die jeweilige SELECT-, oder Run-Seite führen.
+Wähle eine verhältnismäßig kleine Schriftgröße für den Brotkrümelpfad.
+
+Siehst schon mal gut aus. Die Elemente im Brotkrümelpfad auf der Run-Seite, die Ordner darstellen, führen fälschlicherweise auch auf Run-Seiten. 
+Richtig wären Links auf Select-Seiten.
+Der Link auf die Start-Seite solten auf die SelectMain-Seite gehen, nicht auf /FlowPages/Select/x
+
+In Run.cshtml, Zeile 22 wollte ich aus dem letzen Element im Brotkrümelpfad noch einen Link auf das Skript selbst machen,
+so wie bei der Schaltfläche "Neue Ausführung".
+Das tut soweit, allerdings werden hier die Parameter in der URL nicht zurückgesetzt. Kannst du das für mich anpassen?

@@ -1,0 +1,60 @@
+2025-12-12_Powersuche
+Ergänze die Menüleiste im Layout um eine Suchen-Funktion "Skriptsuche" mit Eingabefeld, 
+so dass man bei Eingabe eines Suchbegriffes alle *.fp2-Dateien unterhalb des 
+Skriptpfades (ScriptPath aus appsettings.json) nach diesem Suchbegriff durchsucht werden. 
+Die Ergebnisse sollen dann werden auf einer eigenen Ergebnisseite (Razor Page) 
+als Liste dargestellt werden, wobei für jede Skriptdatei, die den Suchbegriff enthält, 
+folgende Informationen angezeigt werden sollen: Name des Skriptes 
+(ohne Dateiendung ".fp2"), relativer Pfad (relativ zum Skriptpfad), 
+Anzahl des Auftretens innerhalb der Datei, sowie die maximal ersten drei Zeilen, 
+die den Suchbegriff enthalten. Der Spriptname soll als Link anklickbar sein 
+und direkt auf dir Run-Seite des jeweiligen Skriptes verweisen. 
+Als Überschrift soll der Text "Skriptsuche nach <Suchbegriff> - <Anzahl> Skripte gefunden" 
+stehen, wobei <Anzahl> im Fall von 0 durch "keine" ersetzt werden soll. Unter der 
+Trefferliste soll wie auf der Run-Seite die Schaltfläche "Zurück zur Startseite" 
+verfügbar sein.
+
+Super! Passe die Suche jetzt bitte noch so an, dass auch der Dateipfad berücksichtigt wird, 
+also dass die Skripte, deren Dateipfad den Suchbegriff enthalten, auch aufgelistet 
+werden und auch vor denen in der Liste erscheinen, bei denen das nicht der Fall ist.
+Die Aufruflinks für die Skripte in der Liste stimmen noch nicht. 
+Verwende als Trennzeichen im Pfad %7C statt %2F und lasse die Dateiendung ".fp2" weg, 
+dann sollte es passen.
+
+----------------------------------------------------------------------------------------
+2025-12-30_CamelCase-Erweiterung
+Erweitere die Ersetzung der Umlaute in Zeile 39 um weitere Ersetzungen von 
+diakritischen Zeichen in den jeweiligen Ausgangsbuchstaben, bzw. in eine Zeichenfolge, 
+die man typischerweise als Ersatz verwendet, wenn man nur die 26 Buchstaben zur 
+Verfügung hat.
+
+----------------------------------------------------------------------------------------
+2026-01-02 Sort-Erweiterung
+Erweitere den Sort-Befehl um einen weiteren optionalen Parameter "ValueType=", mit dem man die Werte 
+für die Sortierung wahlweise als ganze Zahl (int), Gleitkommazahl (double) oder Datum mit Uhrzeit (datetime) interpretieren kann. 
+Bei ValueType=datetime soll davon ausgegangen werden, dass die Werte im Format "yyyy-MM-dd HH:mm:ss" vorliegen 
+und mit einem Fehler reagiert werden, wenn dies nicht für alle Elemente der Liste der Fall ist, wobei Index und Wert 
+der ersten Abweichung genannt werden sollen. Die Implementierung kann sich an der CmdDateDiff-Klasse orientieren.
+Der Umgang mit Formatabweichungen für die Typen int und double soll analog sein.
+
+----------------------------------------------------------------------------------------
+2026-01-25 Chr-Ersetzung_neu
+Schreibe die Ersetzung der $Chr(...)-Zeichenketten neu, und zwar so, 
+dass nur die ursprünglich in input enthaltenen Auftreten ersetzt werden, 
+nicht die, die durch die Ersetzungen neu entstehen.
+
+----------------------------------------------------------------------------------------
+2026-02-08_BaseKey-Input
+Erweitere die Eigenschaft AssociatedInputElement in der Klasse CmdInputBaseCommand so, dass diese Eigenschaft zusätzlich in Abhängigkeit des gerade gesetzten rc.BaseKey-Wertes erfolgt, sowohl beim setzen, als auch beim abrufen. Passe auch alle aufrufenden Stellen an.
+
+Suche eine Lösung, bei der rc.BaseKey aus dem aufrufenden Kontext übergeben wird, denn es ist keine Eigenschaft der Klassen.
+
+----------------------------------------------------------------------------------------
+2026-02-14_Tab-Icon
+Ich hab dir unter FlowProtocol2\Supplements ein FavIcon in Form der Dateien favicon-32x32.png, icon-192x192.png, icon-512x512.png, apple-touch-icon-180x180.png und favicon.ico unter verschiedenen Auflösungen bereitgestellt. Binde dieses Icon so in die Anwendung ein, dass es im Browser-Tab angezeigt wird.
+
+----------------------------------------------------------------------------------------
+2026-03-07_Brotkrümelpfad
+Erweitere die Seiten Select und Run um einen Brotkrümelpfad, der Ebenen von der Startseite (Start) bis zum 
+aktuellen Ordner (bei SELECT) oder Skript (bsi Run) mit einem kleinen zentrierten Punkt als Trennzeichen auflistet.
+Alle Elemente im Brotkrümelpfad sollen anklickbar sein und auf die jeweilige SELECT-, oder Run-Seite führen.

@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
 
         public CmdInputBaseCommand(ReadContext readcontext) : base(readcontext)
         {
-            AssociatedInputElements = [];
+            AssociatedInputElements = new Dictionary<string, IMBaseElement?>();
         }
     }
 }

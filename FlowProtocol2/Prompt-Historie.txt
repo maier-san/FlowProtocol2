@@ -66,3 +66,14 @@ Der Link auf die Start-Seite solten auf die SelectMain-Seite gehen, nicht auf /F
 In Run.cshtml, Zeile 22 wollte ich aus dem letzen Element im Brotkrümelpfad noch einen Link auf das Skript selbst machen,
 so wie bei der Schaltfläche "Neue Ausführung".
 Das tut soweit, allerdings werden hier die Parameter in der URL nicht zurückgesetzt. Kannst du das für mich anpassen?
+
+----------------------------------------------------------------------------------------
+2026-03-08_MultiLineInput
+Implementiere die Run-Methode der schon vorbereiteten CmdMultiLineInput-Klasse aus.
+Orientiere dich dabei an der CmdInputText-Klasse und baue die Funktionalität möglichst analog auf.
+Der damit umzusetzende MultiLineInput-Befehl soll ähnlich wie der Input-Befehl einen Text über ein Eingabefeld abfragen und unter dem angegebenen Key in der URL speichern.
+Es gibt folgende Unterschiede:
+- Der MultiLineInput-Befehl soll ein mehrzeiliges Eingabefeld erzeugen, in dem falls notwendig auch ein vertikaler Scrollbalen erscheint.
+- Die Länge des Eingabetextes wird nicht explizit beschränkt.
+- Für die Speicherung des Textes in der URL wird der Text in geeigneter Weise komprimiert, so dass der Verbrauch an Zeichen möglichst gering gehalten wird.
+Mit dem optionalen ShowLines-Parameter kann die Anzahl an sichtbaren Zeilen angegeben werden, also die Höhe des Textfeldes in Zeilen.

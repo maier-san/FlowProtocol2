@@ -1,6 +1,7 @@
 using FlowProtocol2.Commands;
 using FlowProtocol2.Core;
 using FlowProtocol2.Helper;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -66,6 +67,22 @@ namespace FlowProtocol2.Pages.FlowPages
             var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);
             RunContext.ScriptRepository[ScriptFilePath] = sinfo;
             ScriptRunner sr = new ScriptRunner();
+            // Decompress any compressed values in the query string
+            foreach (var k in BoundVars.Keys.ToList())
+            {
+                var v = BoundVars[k] ?? string.Empty;
+                if (v.StartsWith(Core.UrlCompressor.Marker))
+                {
+                    try
+                    {
+                        BoundVars[k] = Core.UrlCompressor.DecompressFromUrl(v);
+                    }
+                    catch
+                    {
+                        // on error leave as-is
+                    }
+                }
+            }
             RunContext.BoundVars = BoundVars;
             RunContext.MyDomain = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host;
             RunContext.MyBaseURL = RunContext.MyDomain + this.HttpContext.Request.Path;
@@ -94,6 +111,24 @@ namespace FlowProtocol2.Pages.FlowPages
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+            // Compress long or multiline values to keep the URL compact
+            foreach (var k in BoundVars.Keys.ToList())
+            {
+                var v = BoundVars[k] ?? string.Empty;
+                if (string.IsNullOrEmpty(v)) continue;
+                if (v.StartsWith(Core.UrlCompressor.Marker)) continue; // already compressed
+                if (v.Contains('\n') || v.Contains('\r') || v.Length > 200)
+                {
+                    try
+                    {
+                        BoundVars[k] = Core.UrlCompressor.CompressToUrl(v);
+                    }
+                    catch
+                    {
+                        // on error leave original
+                    }
+                }
             }
             return RedirectToPage("./Run", BoundVars);
         }

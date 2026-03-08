@@ -88,6 +88,21 @@
                 </div>
                 <br>
             }
+            var tarea = inidx as Core.IMTextAreaElement;
+            @if (tarea != null)
+            {
+                <div class="rendered-form">
+                    <div class="formbuilder-text form-group">
+                        <label for="@inidx.Key" class="formbuilder-text-label">@inidx.Prompt<br></label>
+                        @if (tarea.HelpInfoBlock.HelpInfoLines.Any())
+                        {
+                            @await Html.PartialAsync("_IMHelpInfoBlock", tarea.HelpInfoBlock)
+                        }
+                        <textarea class="form-control" id="@inidx.Key" asp-for="BoundVars[inidx.Key]" rows="@tarea.ShowLines"></textarea>
+                    </div>
+                </div>
+                <br>
+            }
             var ogidx = inidx as Core.IMOptionGroupElement;
             @if (ogidx != null)
             {

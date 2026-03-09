@@ -3,6 +3,31 @@
 @{
     ViewData["Title"] = @Model.ScriptName;
 }
+<nav class="breadcrumb-nav">
+    @for (int i = 0; i < Model.Breadcrumbs.Count; i++)
+    {
+        var item = Model.Breadcrumbs[i];
+        @if (!string.IsNullOrEmpty(item.Path))
+        {
+            @if (i == 0)
+            {
+                <a asp-page="/FlowPages/SelectMain">@item.Name</a>
+            }
+            else
+            {
+                <a asp-page="./Select" asp-route-relativepath="@item.Path">@item.Name</a>
+            }
+        }
+        else
+        {
+            <a href="@Model.ScriptBaseURL">@item.Name</a>
+        }
+        @if (i < Model.Breadcrumbs.Count - 1)
+        {
+            <span class="breadcrumb-separator">·</span>
+        }
+    }
+</nav>
 @if (Model.Errors.Any())
 {
     <h2>@Model.ScriptName</h2>
@@ -59,6 +84,21 @@
                         }
                         <input type="text" class="form-control" access="false" id="@inidx.Key" asp-for="BoundVars[inidx.Key]"
                             maxlength="1000">
+                    </div>
+                </div>
+                <br>
+            }
+            var tarea = inidx as Core.IMTextAreaElement;
+            @if (tarea != null)
+            {
+                <div class="rendered-form">
+                    <div class="formbuilder-text form-group">
+                        <label for="@inidx.Key" class="formbuilder-text-label">@inidx.Prompt<br></label>
+                        @if (tarea.HelpInfoBlock.HelpInfoLines.Any())
+                        {
+                            @await Html.PartialAsync("_IMHelpInfoBlock", tarea.HelpInfoBlock)
+                        }
+                        <textarea class="form-control" id="@inidx.Key" asp-for="BoundVars[inidx.Key]" rows="@tarea.ShowLines"></textarea>
                     </div>
                 </div>
                 <br>

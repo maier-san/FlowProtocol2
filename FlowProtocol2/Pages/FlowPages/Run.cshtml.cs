@@ -1,5 +1,7 @@
 using FlowProtocol2.Commands;
 using FlowProtocol2.Core;
+using FlowProtocol2.Helper;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -17,6 +19,7 @@ namespace FlowProtocol2.Pages.FlowPages
         public IMForm InputForm => RunContext.InputForm;
         public OMDocument Document => RunContext.DocumentBuilder.Document;
         public List<ErrorElement> Errors => RunContext.ErrorItems;
+        public List<BreadcrumbItem> Breadcrumbs { get; set; }
         private const string FlowProtocol2Extension = ".fp2";
 
         public RunModel(IConfiguration configuration)
@@ -27,11 +30,26 @@ namespace FlowProtocol2.Pages.FlowPages
             ScriptBaseURL = string.Empty;
             BoundVars = new Dictionary<string, string>();
             RunContext = new RunContext();
+            Breadcrumbs = new List<BreadcrumbItem>();
             RunContext.LinkWhitelist = configuration.GetSection("LinkWhitelist").Get<List<string>>() ?? throw new InvalidOperationException();
         }
         public IActionResult OnGet(string relativepath)
         {
             relativepath = relativepath.Replace('|', Path.DirectorySeparatorChar);
+            
+            // Build breadcrumbs using local variable
+            Breadcrumbs.Add(new BreadcrumbItem("Start", "x"));
+            if (!string.IsNullOrEmpty(relativepath))
+            {
+                string[] parts = relativepath.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < parts.Length - 1; i++)
+                {
+                    string pathUpToHere = string.Join(Path.DirectorySeparatorChar.ToString(), parts, 0, i + 1);
+                    Breadcrumbs.Add(new BreadcrumbItem(parts[i], pathUpToHere.Replace(Path.DirectorySeparatorChar.ToString(), "|")));
+                }
+                // Add the script name as the last item (not a link)
+                Breadcrumbs.Add(new BreadcrumbItem(parts[parts.Length - 1], string.Empty));
+            }
             ScriptBaseURL = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host + this.HttpContext.Request.Path;
             ScriptFilePath = ScriptPath + Path.DirectorySeparatorChar + relativepath + FlowProtocol2Extension;
             System.IO.FileInfo fi = new System.IO.FileInfo(ScriptFilePath);
@@ -49,6 +67,22 @@ namespace FlowProtocol2.Pages.FlowPages
             var sinfo = sp.ReadScript(RunContext, ScriptFilePath, 0);
             RunContext.ScriptRepository[ScriptFilePath] = sinfo;
             ScriptRunner sr = new ScriptRunner();
+            // Decompress any compressed values in the query string
+            foreach (var k in BoundVars.Keys.ToList())
+            {
+                var v = BoundVars[k] ?? string.Empty;
+                if (v.StartsWith(Core.UrlCompressor.Marker))
+                {
+                    try
+                    {
+                        BoundVars[k] = Core.UrlCompressor.DecompressFromUrl(v);
+                    }
+                    catch
+                    {
+                        // on error leave as-is
+                    }
+                }
+            }
             RunContext.BoundVars = BoundVars;
             RunContext.MyDomain = this.HttpContext.Request.Scheme + "://" + this.HttpContext.Request.Host;
             RunContext.MyBaseURL = RunContext.MyDomain + this.HttpContext.Request.Path;
@@ -77,6 +111,24 @@ namespace FlowProtocol2.Pages.FlowPages
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+            // Compress long or multiline values to keep the URL compact
+            foreach (var k in BoundVars.Keys.ToList())
+            {
+                var v = BoundVars[k] ?? string.Empty;
+                if (string.IsNullOrEmpty(v)) continue;
+                if (v.StartsWith(Core.UrlCompressor.Marker)) continue; // already compressed
+                if (v.Contains('\n') || v.Contains('\r') || v.Length > 200)
+                {
+                    try
+                    {
+                        BoundVars[k] = Core.UrlCompressor.CompressToUrl(v);
+                    }
+                    catch
+                    {
+                        // on error leave original
+                    }
+                }
             }
             return RedirectToPage("./Run", BoundVars);
         }

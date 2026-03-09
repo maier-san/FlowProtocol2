@@ -1,0 +1,21 @@
+~SetTitle MultiLineInput-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~MultiLineInput <Key>: <Prompt>[;ShowLines=<ShowLines>]
+~AddText  fragt einen mehrzeiligen Text vom Anwender ab.
+@Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
+    >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel ...
+>>|~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7
+>>|	&> Erzähl doch mal, lang und breit
+>>|	&> Und nimm dir richtig Zeit
+>>|~Set text=$Chr(36)ML
+>>|~ToUpper text=$Chr(36)text
+>>|@Ausgabe >>* Meine Osterferien
+>>|	>| $Chr(36)text
+~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7
+	&> Erzähl doch mal, lang und breit
+	&> Und nimm dir richtig Zeit
+~Set text=$ML
+~ToUpper text=$text
+@Ausgabe >>* Meine Osterferien
+	>|$text

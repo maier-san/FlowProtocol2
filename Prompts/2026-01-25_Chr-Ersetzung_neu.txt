@@ -1,3 +1,0 @@
-Schreibe die Ersetzung der $Chr(...)-Zeichenketten neu, und zwar so, 
-dass nur die ursprünglich in input enthaltenen Auftreten ersetzt werden, 
-nicht die, die durch die Ersetzungen neu entstehen.

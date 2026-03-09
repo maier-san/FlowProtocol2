@@ -303,8 +303,8 @@
 @Dokumentation >> Fertiges Beispiel in Codeblock übernehmen
 @Dokumentation >> Speichern unter
 	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Scripts\FP2-Tutorial\$CommandName.fp2
-@Buch erweitern >> FP2Inhalt.tex öffnen
-	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\FP2Inhalt.tex
+@Buch erweitern >> ch_13_befehlsreferenz.tex öffnen
+	>|D:\Entwicklung\MSanGitDev\FlowProtocol2\Doc\ch_13_befehlsreferenz.tex
 @Buch erweitern >> Zu Abschnitt Befehle gehen
 		>|\subsection{Befehle}\label{Befehle}
 @Buch erweitern >> An der für 

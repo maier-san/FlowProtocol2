@@ -287,6 +287,11 @@ Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{
 Ist der Zielabschnitt noch nicht vorhanden, so wird dieser am Ende angelegt. Ist der Ausgangsabschnitt nicht vorhanden, so bleibt der Aufruf ohne Wirkung. Sind Ausgangsabschnitt und Zielabschnitt identisch, so wird dieser Aschnitt entfernt. Die beien aufeinandertreffenden Textblöcke werden zusammengeführt, wenn sie die gleiche Formatierung haben.\\
 Siehe Abschnitte~\ref{AusgabetitelUndAbschnittsverschiebungen} und \ref{AssetDokumentation}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
 
+\item[\fcmd{MultiLineInput}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext} $[$ \verb|; ShowLines =| \synvar{Anzahl Zeilen} $]$\\
+Fragt eine mehrzeilige Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Mit dem optionalen Parameter kann angegeben werden, mit welcher Höhe in Zeilen das Eingabefeld angezeigt werden soll. Die Eingabe wird komprimiert in der URL gespeichert um möglichst wenig Zeichen zu verbrauchen.
+%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+
 \item[\fcmd{Random}] \synvar{Variable} \verb|=| \synvar{Untergrenze} \verb|..| \synvar{Obergrenze}\\
 Erzeugt eine ganze Zufallszahl im Bereich von Untergrenze bis Obergrenze und speichert diese in einer Variablen.
 Bei Aktualisierung der Seite wird jeweils ein neuer Zufallswert generiert.\\

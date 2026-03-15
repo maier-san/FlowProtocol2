@@ -6,7 +6,7 @@
 ~XmlEncode xPatchCode=$PatchCode
 @Anleitung >> Erstelle eine neue Datei im Editor.
 >> Gib den folgenden Code ein:
-	>|<?xml version="1.0"?>
+	>|<?xml version="1.0" encoding="ISO-8859-1"?>
 	>|<PATCHSCRIPT>
 	>|  <NAME>$AKennung</NAME>
 	>|  <CODE>$xPatchCode</CODE>

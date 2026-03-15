@@ -1,6 +1,5 @@
-~Set n=2
 ~Set pidx=0
-~DoWhile $n<20
+~For n=2 To 20
 	~Set prim=ja
 	~ForEach p in PZ
 		~CalculateExpression r = $n % $p
@@ -12,5 +11,4 @@
 		~AddTo pidx+=1
 		>> P($pidx) = $n
 		~Set PZ($pidx)=$n
-	~AddTo n+=1
 ~Loop

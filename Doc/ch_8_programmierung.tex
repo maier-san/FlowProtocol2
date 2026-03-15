@@ -55,15 +55,14 @@ Die große Stärke von Computern liegt darin, die gleichen Dinge in leichter Var
 
 Die bekannten höheren Programmiersprachen unterscheiden drei prinzipielle Arten von Schleifen: Die \emph{For-Schleife}\index{For-Schleife} wird mit einer Zählervariablen eingeleitet, die mit einem Startwert beginnt, diesen bei jedem Durchlauf um eine Schrittlänge hoch zählt, und beendet wird, wenn ein Zielwert erreicht oder eine Abbruchbedingung erfüllt wird. Die \emph{Do-While-Schleife}\index{Do-While-Schleife} läuft dagegen so lange durch, bis eine Abbruchbedingung erfüllt ist. Schließlich gibt es noch die \emph{For-Each-Schleife}\index{For-Each-Schleife}, bei der eine vorgegebene Menge von Elementen durchlaufen wird. Eine Indexvariable nimmt dabei nacheinander den Wert dieser Elemente an.
 
-In \FPZ\ gibt es die Beiden Befehle \fcmd{DoWhile} und \fcmd{ForEach} für die Einleitung von Do-While-Schleifen und For-Each-Schleifen. Reine For-Schleifen lassen sich sehr direkt auch als Do-While-Schleife abbilden, deshalb gibt es für diese keinen eigenen Befehl. Das Schleifenende, also die Stelle, an der ggf.\ ein weiterer Durchlauf gestartet wird, wird in beiden Fällen mit dem \fcmd{Loop}-Befehl gekennzeichnet, der die gleiche Einrückung wie der Beginn der Schleife haben muss. Auf diese Weise lassen sich mehrere Schleifen ineinander verschachteln. Zusätzlich gibt es noch den \fcmd{ExitLoop}-Befehl, mit dem die aktuell ausgeführte Schleife unmittelbar verlassen wird.
+In \FPZ\ gibt es alle drei Varianten in Form der drei Befehle \fcmd{DoWhile}, \fcmd{ForEach} und \fcmd{For}. For-Schleifen lassen sich auch sehr einfach als Do-While-Schleife abbilden, deshalb sind sie in den Beispielen seltener vertreten. Das Schleifenende, also die Stelle, an der ggf.\ ein weiterer Durchlauf gestartet wird, wird in allen drei Fällen mit dem \fcmd{Loop}-Befehl gekennzeichnet, der die gleiche Einrückung wie der Beginn der Schleife haben muss. Auf diese Weise lassen sich mehrere Schleifen ineinander verschachteln. Zusätzlich gibt es noch den \fcmd{ExitLoop}-Befehl, mit dem die aktuell ausgeführte Schleife unmittelbar verlassen wird.
 
-In Beispiel~\ref{BspBugPlaner} hatten beide Schleifenvarianten schon einen kleinen Gastauftritt, aber um die Funktionsweise nochmal genauer anzuschauen ist die folgende Primzahlberechnung\index{Primzahlberechnung} gut geeignet:
+In Beispiel~\ref{BspBugPlaner} hatten die ersten beide Schleifenvarianten schon einen kleinen Gastauftritt, aber um die Funktionsweise nochmal genauer anzuschauen ist die folgende Primzahlberechnung\index{Primzahlberechnung} gut geeignet:
 
 \Beispiel{Primzahlen}\label{BspPrimzahlen}
 \begin{verbatim}
-~Set n=2
 ~Set pidx=0
-~DoWhile $n<20
+~For n=2 To 20
     ~Set prim=ja
     ~ForEach p in PZ
         ~CalculateExpression r = $n % $p
@@ -75,13 +74,11 @@ In Beispiel~\ref{BspBugPlaner} hatten beide Schleifenvarianten schon einen klein
         ~AddTo pidx+=1
         >> P($pidx) = $n
         ~Set PZ($pidx)=$n
-    ~AddTo n+=1
 ~Loop
 \end{verbatim}
 
-Die äußeren Do-While-Schleife wird durchlaufen, solange die Variable \verb|n| kleiner als 20 ist. Der Wert von \verb|n| wird dabei jedes Mal vor Schleifenende um eins erhöht, was vom Prinzip her einer For-Schleife entspricht. Gestartet wird mit \verb|n=2|. Auf die Formulierung von Bedingungen gehen wir in Abschnitt~\ref{IfUndBedingungen} näher ein.
+Die äußeren For-Schleife durchläuft für die Variable \verb|n| die Werte 2 bis 20. Die innere For-Each-Schleife durchläuft eine Menge \verb|PZ| unter Verwendung der Variablen \verb|p|. \verb|PZ| wird hierbei als eindimensionales Feld interpretiert, das die fortlaufend nummerierten Variablen \verb|PZ(1)|, \verb|PZ(2)|, \verb|PZ(3)|, usw.\ enthält. Auf die If-Abfragen und die Formulierung von Bedingungen gehen wir in Abschnitt~\ref{IfUndBedingungen} näher ein.
 
-Die innere For-Each-Schleife durchläuft eine Menge \verb|PZ| unter Verwendung der Variablen \verb|p|. \verb|PZ| wird hierbei als eindimensionales Feld interpretiert, das die fortlaufend nummerierten Variablen \verb|PZ(1)|, \verb|PZ(2)|, \verb|PZ(3)|, usw.\ enthält.
 Beim ersten Durchlauf der äußeren Schleife ist die Variable \verb|PZ(1)| noch nicht definiert und die Menge \verb|PZ| daher leer, d.h.\ die innere Schleife wird nicht durchlaufen.
 
 Für jede Zahl $n$, für die nach Durchlauf der inneren Schleife die Variable \verb|prim| noch auf \verb|ja| steht, wird die Menge der gefundenen Primzahlen \verb|PZ| um $n$ erweitert, weil $n$ in diesem Fall durch keine der bisher gefundenen Primzahlen teilbar ist. Ist $n$ dagegen durch eine dieser Primzahlen $p$ teilbar, also wenn der Rest bei Division durch $p$ null ergibt, dann wird die Variable \verb|prim| auf \verb|nein| gesetzt und die innere Schleife mit dem Befehl \fcmd{ExitLoop} verlassen, weil auch die folgenden Durchläufe das Ergebnis nicht mehr verändern würden.

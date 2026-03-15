@@ -77,3 +77,26 @@ Es gibt folgende Unterschiede:
 - Die Länge des Eingabetextes wird nicht explizit beschränkt.
 - Für die Speicherung des Textes in der URL wird der Text in geeigneter Weise komprimiert, so dass der Verbrauch an Zeichen möglichst gering gehalten wird.
 Mit dem optionalen ShowLines-Parameter kann die Anzahl an sichtbaren Zeilen angegeben werden, also die Höhe des Textfeldes in Zeilen.
+
+----------------------------------------------------------------------------------------
+2026-03-14_SetCopyBlock (nicht umgesetzt)
+Implementiere die Run-Methode der schon vorbereiteten CmdSetCopyBlock-Klasse aus.
+Der implementierte SetCopyBlock-Befehl soll mit Hilfe der DocumentBuilder-Klasse eine neue Eigenschaft "CopyBlock" 
+für den aktuellen Abschnitt (CurrentSection) auf den Wert expandedBlockName setzen.
+Bei der Ausgabe soll dann hinter jeder Abschnittsüberschrift, mit der ein neuer
+CopyBlock-Wert beginnt, eine Schaltfäche vorhanden sein, mit der der Inhalt des Abschnitts und
+der darauffolgenden Abschnitte mit gleichem CopyBlock-Wert in die Zwischenablage übernommen werden kann.
+Dabei soll auch die Formatierung des Textes mit berücksichtigt werden.
+Die Schaltflächen unter den Code-Blöcken sollen dabei weggelassen werden.
+Die zu implementierende Schaltfäche soll standardmäßig nicht sichtbar sein und nur dann erscheinen,
+wenn man mit der Maus über den Bereich hinter der Überschrift geht. 
+Sie soll ein "Kopieren in Zwischenablage"-Symbol zeigen.
+Die zu kopierenden Abschnitte sollen farblich hervorgehoben werden, wenn man mit der Maus auf der Schaltfläche ist.
+
+Das Ergebnis in der Zwischenablage ist noch nicht wie gewünscht. 
+Dort werden noch HTML-Steuerzeichen ausgegeben. 
+Angestrebt wird, dass das Ergebnis direkt in Outlook oder Word eingefügt werden kann 
+und dort Überschriften und Aufzählungen dargestellt werden. 
+Lass dich nicht von der vorhandenen Routine für das Kopieren von Codeblöcken irritieren. 
+Mach die Highligt-Farbe bitte noch kräftiger.
+

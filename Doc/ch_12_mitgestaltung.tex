@@ -338,6 +338,7 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
     >|  <CREATOR>$BenVarKuerzel</CREATOR>
     >|  <CREATIONDATE>$Datum</CREATIONDATE>
     >|</PATCHSCRIPT>
+    ~SetBlockSaveFile $AKennung.xml; Encoding=iso-8859-1
 >> Speichere die Datei ab unter
     >|$DatBasis\$AKennung.xml
 >> Rufe den Patch-Converter für die Datei auf:
@@ -356,4 +357,6 @@ Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte 
 Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
 
 Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|,  sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
+
+Der Befehl \fcmd{SetBlockSaveFile} unterhalb der Code-Zeilen, die die XML-Datei ausmachen, führt dazu, dass neben der \emph{In Zwischenablage kopieren}-Schaltfläche noch eine weitere Schaltfläche mit der Beschriftung \emph{Als \dots speichern} angezeigt wird, wobei anstelle der drei Punkte später der Wert der Variable \verb|$AKennung.xml| angezeigt wird. Durch die Betätigung dieser Schaltfläche im Browerfenster lässt sich der Textblock direkt und ohne Umweg über die Zwischenablage als Datei speichern. Mit dem optionalen Parameter \cidxfrag{Take} lässt sich hierbei die Codierung\index{Codierung} der Datei festlegen, wobei \emph{UFT-8} als Standard festgelegt ist.
 

@@ -177,7 +177,7 @@ Siehe Abschnitt~\ref{Funktionen}, verwendet in Beispiel~\ref{BspTuermeVonHanoi},
  
 \item[\fcmd{DoWhile}] \synvar{Bedingung}\\
 Führt die nachfolgenden eingerückten Befehle wiederholt aus, solange die Bedingung erfüllt ist. Die Schleife wird mit dem Befehl \fcmd{Loop} auf gleicher Ebene abgeschlossen. Siehe auch Kernelement~\ref{defBedingungen}.\\
-Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspPrimzahlen}, \ref{BspAbfrageschleife}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspTerminplaner}.
+Siehe Abschnitte~\ref{FormatierungDerEingabe} und \ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{BspAbfrageschleife}, \ref{Passwortgenerator}, \ref{BspZeitmesser}, \ref{BspJourFixePlaner} und \ref{BspTerminplaner}.
 
 \item[\fcmd{DynamicOptionGroup}] \synvar{Schlüssel} \verb|:| \synvar{Optionenliste} \verb|;| \synvar{Fragestellung}\\
 Erzeugt eine Auswahlabfrage mit einem Schlüssel, einer Fragestellung und einer Menge von Optionen, von denen genau eine ausgewählt werden kann. Im Unterschied zum \verb|?|-Befehl werden die Optionen hier zur Laufzeit aus einer Liste ausgelesen, siehe auch Kernelement~\ref{defListen}.
@@ -221,8 +221,8 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{MeetingVorbereitung}, verwendet in Bei
 Prüft, ob eine entsprechende Datei existiert und speichert das Ergebnis als Wahrheitswert in einer Variablen. Siehe auch Kernelement~\ref{defDateipfad}.
 
 \item[\fcmd{For}] \synvar{Variable} \verb|=| \synvar{Von} \verb|To| \synvar{Bis} $[$\verb|Step| \synvar{Schrittweite}$]$\\
-Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.
-%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.\\
+Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel \ref{BspPrimzahlen}.
 
 \item[\fcmd{ForEach}] \synvar{Variable} \verb|in| \synvar{Liste}\\
 Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jedes Element der Liste aus, siehe auch Kernelement~\ref{defListen}. Bei jedem Durchlauf wird das jeweilige Element der Variablen zugewiesen.\\ 
@@ -263,7 +263,7 @@ Siehe Abschnitt~\ref{POUnterstuetzung}, verwendet in Beispiel~\ref{BspListenfunk
 
 \item[\fcmd{Input}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext}\\
 Fragt eine Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
-Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden.\\
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Die Länge des Eingabetextes ist auf 1000 Zeichen begrenzt.\\
 Siehe Abschnitte~\ref{Texteingaben} und \ref{TexteAufteilen}, verwendet in Beispiel~\ref{BspTextersetzung}, \ref{BspAbschnittsverschiebung}, \ref{BspBugPlaner}, \ref{BspHilfezeilen}, \ref{BspAbfrageschleife}, \ref{BspBewertungsschema}, \ref{BspKombinator}, \ref{BspTerminologiepruefer}, \ref{BspSuchlink}, \ref{Archivklasse2}, \ref{BspListenfunktion}, \ref{BspZeitmesser}, \ref{BspTerminplaner}, \ref{BspLizenzabfrage}, \ref{BspMetaErweiterung}, \ref{BspWissensreflektion} und \ref{BspPatchskript}.
 
 \item[\fcmd{JumpMark}] \synvar{Sprungmarke}\\
@@ -289,8 +289,8 @@ Siehe Abschnitte~\ref{AusgabetitelUndAbschnittsverschiebungen} und \ref{AssetDok
 
 \item[\fcmd{MultiLineInput}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext} $[$ \verb|; ShowLines =| \synvar{Anzahl Zeilen} $]$\\
 Fragt eine mehrzeilige Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
-Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Mit dem optionalen Parameter kann angegeben werden, mit welcher Höhe in Zeilen das Eingabefeld angezeigt werden soll. Die Eingabe wird komprimiert in der URL gespeichert um möglichst wenig Zeichen zu verbrauchen.
-%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Mit dem optionalen Parameter kann angegeben werden, mit welcher Höhe in Zeilen das Eingabefeld angezeigt werden soll. Die Eingabe wird komprimiert in der URL gespeichert um möglichst wenig Zeichen zu verbrauchen\\
+Siehe Abschnitt~\ref{Texteingaben}, verwendet in Beispiel~\ref{BspTextersetzung}.
 
 \item[\fcmd{Random}] \synvar{Variable} \verb|=| \synvar{Untergrenze} \verb|..| \synvar{Obergrenze}\\
 Erzeugt eine ganze Zufallszahl im Bereich von Untergrenze bis Obergrenze und speichert diese in einer Variablen.
@@ -322,8 +322,8 @@ Siehe Abschnitt~\ref{VariablenSetzenUndVerwenden}, verwendet in Beispiel~\ref{Bs
 
 \item[\fcmd{SetBlockSaveFile}] \synvar{Dateiname} $[ $\verb|; Encoding =| \synvar{Codierung} $]$\\
 Legt einen Dateinamen fest, unter dem der aktuelle Codeblock gespeichert werden kann. Diese Festlegung bewirkt, dass in der Ausgabe zusätzlich zu der Schaltfläche \emph{In Zwischenablage kopieren} auch noch die Schaltfläche \emph{Als \dots speichern} angezeigt wird, mit den angegebenen Dateinamen. Bei Betätigung der Schaltfläche wird dann ein Dateiauswahldialog geöffnet, in dem man den passenden Dateipfad festlegen kann. Optional kann auch noch die Codierung\index{Codierung} festgelegt werden, mit der die Datei gespeichert werden soll. Zu Auswahl stehen \emph{utf-16}, \emph{ascii}, \emph{windows-1252}, \emph{latin1}, \emph{iso-8859-1} und \emph{utf-8}\index{UTF-8}, was der Standardwert ist. \\
-Das Öffnen des Dateiauswahldialogs funktioniert leider nicht bei allen Browsern, da die hierzu verwendete \emph{File System Access API} nicht immer implementier ist. Bei Firefox etwa erfolgt deshalb ersatzweise das direkte Herunterladen in den Download-Ordner.
-%Siehe Abschnitt~\ref{Hilfezeilen}, verwendet in Beispiel~\ref{BspHilfezeilen}.
+Das Öffnen des Dateiauswahldialogs funktioniert leider nicht bei allen Browsern, da die hierzu verwendete \emph{File System Access API} nicht immer implementier ist. Bei Firefox etwa erfolgt deshalb ersatzweise das direkte Herunterladen in den Download-Ordner.\\
+Siehe Abschnitt~\ref{Personalisierung}, verwendet in Beispiel~\ref{BspPatchskript}.
 
 \item[\fcmd{SetCulture}] \synvar{Variable} \verb|=| \synvar{Kultur-Kennzeichen}\\
 Setzt die Kultureinstellungen anhand des angegebenen Kultur-Kennzeichens, z.B.\ "de-DE". Diese werden z.B.\ bei formatierten Datumsausgaben angewendet wie der Ausgabe von Wochentagen.\\

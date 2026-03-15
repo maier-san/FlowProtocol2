@@ -57,7 +57,6 @@ namespace FlowProtocol2.Commands
                         $"Der Ausdruck '{expandedShowLines}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
                     return null;
                 }
-                // ToDo: Befehl hier implementieren
                 var textarea = new IMTextAreaElement();
 
                 string plainKey = expandedKey;

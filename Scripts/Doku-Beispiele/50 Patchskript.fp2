@@ -13,6 +13,7 @@
 	>|  <CREATOR>$BenVarKuerzel</CREATOR>
 	>|  <CREATIONDATE>$Datum</CREATIONDATE>
 	>|</PATCHSCRIPT>
+	~SetBlockSaveFile $AKennung.xml; Encoding=iso-8859-1
 >> Speichere die Datei ab unter
 	>|$DatBasis\$AKennung.xml
 >> Rufe den Patch-Converter für die Datei auf:

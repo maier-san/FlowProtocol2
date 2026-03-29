@@ -135,8 +135,10 @@
         }
         <button type="submit" class="btn btn-primary">Weiter</button>
     </form>
-    <script>
-        async function UploadFileFunction(textareaID, filterString) {
+    @if (Model.NeedsUploadFunction)
+    {
+        <script>
+            async function UploadFileFunction(textareaID, filterString) {
             // Versuche File System Access API zu verwenden
             if (window.showOpenFilePicker) {
                 try {
@@ -266,7 +268,8 @@
                 return false;
             }
         }
-    </script>
+        </script>
+    }
 }
 else
 {
@@ -293,24 +296,30 @@ else
         <a href=@Model.ScriptBaseURL class="btn btn-primary">Neue Ausführung</a>
         <a asp-page="/FlowPages/SelectMain" class="btn btn-primary">Zurück zur Startseite</a>
     </p>
-    <script>
-        function CopyFunction(blockID) {
-            const element = document.querySelector('#' + blockID);
-            const storage = document.createElement('textarea');
-            var cc = element.innerHTML;
-            cc = cc.replaceAll('&lt;', String.fromCharCode(60));
-            cc = cc.replaceAll('&gt;', String.fromCharCode(62));
-            cc = cc.replaceAll('&quot;', String.fromCharCode(34));
-            cc = cc.replaceAll('&amp;', String.fromCharCode(38));
-            storage.value = cc;
-            element.appendChild(storage);
-            storage.select();
-            storage.setSelectionRange(0, 99999);
-            document.execCommand('copy');
-            element.removeChild(storage);
-        }
-
-        async function SaveFunction(blockID, suggestedFilename, suggestedEncoding) {
+    @if (Model.NeedsCopyFunction)
+    {
+        <script>
+            function CopyFunction(blockID) {
+                const element = document.querySelector('#' + blockID);
+                const storage = document.createElement('textarea');
+                var cc = element.innerHTML;
+                cc = cc.replaceAll('&lt;', String.fromCharCode(60));
+                cc = cc.replaceAll('&gt;', String.fromCharCode(62));
+                cc = cc.replaceAll('&quot;', String.fromCharCode(34));
+                cc = cc.replaceAll('&amp;', String.fromCharCode(38));
+                storage.value = cc;
+                element.appendChild(storage);
+                storage.select();
+                storage.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                element.removeChild(storage);
+            }
+        </script>
+    }
+    @if (Model.NeedsSaveFunction)
+    {
+        <script>
+            async function SaveFunction(blockID, suggestedFilename, suggestedEncoding) {
             const element = document.querySelector('#' + blockID);
             var cc = element.innerHTML;
             cc = cc.replaceAll('&lt;', String.fromCharCode(60));
@@ -371,6 +380,7 @@ else
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-    </script>
+            }
+        </script>
+    }
 }

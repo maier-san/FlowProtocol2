@@ -6,10 +6,23 @@ namespace FlowProtocol2.Core
     {
         public string Title { get; set; }
         public List<OMSection> Sections { get; set; }
+        
+        /// <summary>
+        /// Flag wird auf true gesetzt, wenn ein Code-Block hinzugefügt wird.
+        /// </summary>
+        public bool NeedsCopyFunction { get; set; }
+        
+        /// <summary>
+        /// Flag wird auf true gesetzt, wenn ein Code-Block mit SuggestedFilename hinzugefügt wird.
+        /// </summary>
+        public bool NeedsSaveFunction { get; set; }
+        
         public OMDocument()
         {
             Title = string.Empty;
             Sections = new List<OMSection>();
+            NeedsCopyFunction = false;
+            NeedsSaveFunction = false;
         }
     }
     public class OMSection

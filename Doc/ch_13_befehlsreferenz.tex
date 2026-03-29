@@ -221,7 +221,7 @@ Siehe Abschnitte~\ref{Schleifen} und \ref{MeetingVorbereitung}, verwendet in Bei
 Prüft, ob eine entsprechende Datei existiert und speichert das Ergebnis als Wahrheitswert in einer Variablen. Siehe auch Kernelement~\ref{defDateipfad}.
 
 \item[\fcmd{For}] \synvar{Variable} \verb|=| \synvar{Von} \verb|To| \synvar{Bis} $[$\verb|Step| \synvar{Schrittweite}$]$\\
-Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.\\
+Führt die nachfolgenden, bis zum dazugehörenden \fcmd{Loop}-Befehl eingerückten Befehle für jeden Schleifenwert aus, der sich aus dem Hochzählen, bzw.\ Runterzählen des Variablenwertes in dem mit mit \synvar{Von} und \synvar{Bis} angegebenen Intervall und der mit \cidxfrag{Step} angegegbenen Schrittweite ergibt. Wird keine Schrittweite angegeben, so wird die Schrittweite $1$ zugrunde gelegt.\\
 Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel \ref{BspPrimzahlen}.
 
 \item[\fcmd{ForEach}] \synvar{Variable} \verb|in| \synvar{Liste}\\
@@ -271,11 +271,11 @@ Setzt eine Sprungmarke, die mit dem \fcmd{GoTo}-Befehl angesprungen werden kann.
 Siehe Abschnitt~\ref{Spruenge}, verwendet in Beispiel~\ref{BspSpruenge}.
 
 \item[\fcmd{ListDirectories}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
-Listet alle Verzeichnisnamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
+Listet alle Verzeichnisnamen im angegebenen Pfad auf, die dem mit \cidxfrag{Pattern} angegebenen Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Verzeichnisse zurück.\\
 Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
 
 \item[\fcmd{ListFiles}] \synvar{Listenvariable} \verb|=| \synvar{Pfad} $[$\verb|; Pattern=| \synvar{Suchmuster}$]$\\
-Listet alle Dateinamen im angegebenen Pfad auf, die dem Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
+Listet alle Dateinamen im angegebenen Pfad auf, die dem mit \cidxfrag{Pattern} angegebenen Suchmuster entsprechen (siehe Kernelement~\ref{defDateipfad}). Das Ergebnis wird als Liste zu der Listenvariable gespeichert (siehe Kernelement~\ref{defListen}). Der Eintrag mit dem Index $0$ gibt die Anzahl der gefundenen Dateien zurück.\\
 Siehe Abschnitt~\ref{Wissensdokumentation}, verwendet in Beispiel~\ref{BspWissensreflektion}.
 
 \item[\fcmd{Loop}]\mbox{}\\
@@ -287,9 +287,9 @@ Siehe Abschnitt~\ref{Schleifen}, verwendet in Beispiel~\ref{BspBugPlaner}, \ref{
 Ist der Zielabschnitt noch nicht vorhanden, so wird dieser am Ende angelegt. Ist der Ausgangsabschnitt nicht vorhanden, so bleibt der Aufruf ohne Wirkung. Sind Ausgangsabschnitt und Zielabschnitt identisch, so wird dieser Aschnitt entfernt. Die beien aufeinandertreffenden Textblöcke werden zusammengeführt, wenn sie die gleiche Formatierung haben.\\
 Siehe Abschnitte~\ref{AusgabetitelUndAbschnittsverschiebungen} und \ref{AssetDokumentation}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung}, \ref{BspMetaErweiterung} und \ref{BspWissensreflektion}.
 
-\item[\fcmd{MultiLineInput}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext} $[$ \verb|; ShowLines =| \synvar{Anzahl Zeilen} $]$\\
+\item[\fcmd{MultiLineInput}] \synvar{Schlüssel} \verb|:| \synvar{Anzeigetext} $[$ \verb|; ShowLines =| \synvar{Anzahl Zeilen} $]$ $[$ \verb|; UploadFilter =| \synvar{Dateiauswahlfilter} $]$\\
 Fragt eine mehrzeilige Texteingabe ab und verwaltet diese unter dem angegebenen Schlüssel. Der Anzeigetext wird oberhalb des Eingabefeldes angezeigt.
-Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Mit dem optionalen Parameter kann angegeben werden, mit welcher Höhe in Zeilen das Eingabefeld angezeigt werden soll. Die Eingabe wird komprimiert in der URL gespeichert um möglichst wenig Zeichen zu verbrauchen\\
+Der Schlüssel wird verwendet, um die Eingabe in der URL zu speichern, und innerhalb des Skriptes abzufragen. Er muss eindeutig sein, bzw. wird bei Wiederholung als schon gesetzt betrachtet. Innerhalb einer Datei können die Schlüssel durch Anhängen des \verb|'|-Zeichens automatisch durchnummeriert werden. Mit dem optionalen Parameter \cidxfrag{ShowLines} kann angegeben werden, mit welcher Höhe in Zeilen das Eingabefeld angezeigt werden soll. Diese wirkt sich jedoch nicht auf die Eingabemöglichkeit aus und kann auch noch vom Benutzer angepasst werden. Mit dem optionalen Parameter \cidxfrag{UploadFilter} kann ein Filter für die Auswahl von Dateien angegeben, und damit gleichzeitig die Option zum Einfügen von Text aus einer Datei aktiviert werden. Die Eingabe wird komprimiert in der URL gespeichert um möglichst wenig Zeichen zu verbrauchen\\
 Siehe Abschnitt~\ref{Texteingaben}, verwendet in Beispiel~\ref{BspTextersetzung}.
 
 \item[\fcmd{Random}] \synvar{Variable} \verb|=| \synvar{Untergrenze} \verb|..| \synvar{Obergrenze}\\
@@ -349,7 +349,7 @@ Siehe Abschnitt~\ref{FormatierungDerEingabe}, verwendet in Beispiel~\ref{BspBugP
 Setzt die Abschnittsüberschrift für die nachfolgenden Ausgabebefehle. Der Befehl ist eine Alternative zu der \verb|@|-Syntax der Ausgabebebefehle.
 
 \item[\fcmd{SetStopCounter}] \synvar{Schleifengrenze} \verb|;| \synvar{Befehlsgrenze} $[$ \verb|MaxLength=| \synvar{max. Zeichenkettenlänge}$]$\\
-Setzt die Obergrenzen für die Anzahl der Schleifendurchläufe und der durchlaufenenen Befehle pro Seitenaufruf. Zusätzlich kann die maximale Zeichenkettenlänge festgelegt werden, die jeweils nach dem Ersetzen von Variablen geprüft wird.
+Setzt die Obergrenzen für die Anzahl der Schleifendurchläufe und der durchlaufenenen Befehle pro Seitenaufruf. Zusätzlich kann mit \cidxfrag{MaxLength} die maximale Zeichenkettenlänge festgelegt werden, die jeweils nach dem Ersetzen von Variablen geprüft wird.
 Beim Überschreiten der Grenzen bricht das Programm mit einer Fehlermeldung ab.
 Die Grenzen dienen zur Verhinderung von Endlosschleifen und Endlosrekursionen und stehen Werksseitig auf $5000$, $50000$ und $100000$, was für die meisten Skripte ausreichen sollte.
 Ist für ein komplexes Skript absehbar, dass diese Grenzen im regulären Betrieb überschritten werden, können die Grenzen mit dem o.g.\ Befehl hochgesetzt werden.\\
@@ -360,7 +360,7 @@ Setzt den Titel für die Ausgabeseite.\\
 Siehe Abschnitt~\ref{AusgabetitelUndAbschnittsverschiebungen}, verwendet in Beispiel~\ref{BspAbschnittsverschiebung} und \ref{BspBugPlaner}.
 
 \item[\fcmd{Sort}] \synvar{Ergebnisliste} \verb|=| \synvar{Ausgangsliste} $[$\verb|->| \synvar{Indexliste}$] [$\verb|; ValueType=| \synvar{Wertetyp}$]$\\
-Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann. Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann als Wertetyp \verb|int|, \verb|double| oder \verb|datetime| angegeben werden. 
+Sortiert eine Ausgangsliste alphanumerisch aufteigend und speichert das Ergebnis als Ergebnisliste (siehe Kernelement~\ref{defListen}). Wird eine Indexliste angegeben, so wird dort die Indexzuordung eingetragen, mit der die Umsortierung auf weitere Listen übertragen werden kann. Enthält das Feld Zahlen oder Datumswerte, die typbezogen sortiert werden sollen, so kann mit \cidxfrag{ValueType} der entsprechende Wertetyp\index{Wertetyp} \verb|int|, \verb|double| oder \verb|datetime| angegeben werden. 
 
 \item[\fcmd{Split}] \synvar{Variable} \verb|=| \synvar{Text} \verb=|= \synvar{Trennzeichen}\\
 Teilt einen Text anhand eines Trennzeichens auf und speichert das Ergebnis als Liste (siehe Kernelement~\ref{defListen}). Als Trennzeichen sind auch längere Zeichenkombinationen zulässig.

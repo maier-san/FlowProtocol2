@@ -119,4 +119,10 @@ Ein schon im Eingabefeld vorhandener Text wird ohne Rückfrage überschrieben.
 Beachte, dass es mehrere Eingabefelder mit dieser Option geben kann. 
 Orientiere dich auch hier an der "In Zwischenablage kopieren"-Option und erstelle eine zentrale Funktion im Script-Block der Run-Seite.
 
+Erweitere das Run-Model so, dass die Notwendigkeit der clientseitigen Skript-Befehle über bool-Eigenschaften abgefraget werden kann
+und dass die Skripte nur dann eingefügt werden, wenn es auch Funktionsaufrufe dafür gibt.
 
+Die dynamische Ermittlung der Eigenschaften ist recht komplex.
+Schreibe das um in eine Variante mit bool-Variablen in den Strukturen IMForm und OMDocument, 
+die bei jedem Einfügen entsprechender Elemente auf true gesetzt werden und am Ende einfach abgefragt werden.
+Trenne dann bitten noch die SaveFunction von der CopyFunction, weil erstere viel seltener verwendet wird.

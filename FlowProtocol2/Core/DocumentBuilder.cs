@@ -27,6 +27,13 @@ namespace FlowProtocol2.Core
         public void AddNewTextLine(Level l, OutputType t, string text)
         {
             if (t == OutputType.None) return;
+            
+            // Setze das NeedsCopyFunction-Flag, wenn ein Code-Block hinzugefügt wird
+            if (t == OutputType.Code)
+            {
+                Document.NeedsCopyFunction = true;
+            }
+            
             var section = Document.Sections.Find(s => s.Headline == CurrentSection);
             if (section == null)
             {
@@ -172,6 +179,8 @@ namespace FlowProtocol2.Core
                 if (!string.IsNullOrEmpty(filepath))
                 {
                     CurrentTextBlock.SuggestedFilename = filepath;
+                    // Setze das NeedsSaveFunction-Flag, wenn eine SuggestedFilename gesetzt wird
+                    Document.NeedsSaveFunction = true;
                 }
                 else
                 {

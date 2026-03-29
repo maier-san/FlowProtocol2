@@ -100,6 +100,12 @@
                         }
                         <textarea class="form-control" id="@inidx.Key" asp-for="BoundVars[inidx.Key]" rows="@tarea.ShowLines"></textarea>
                     </div>
+                    @if (!string.IsNullOrEmpty(tarea.UploadFilter))
+                    {
+                        <div style="margin-bottom: 10px; margin-top: 5px;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="UploadFileFunction('@inidx.Key', '@tarea.UploadFilter')">Aus Datei einfügen</button>
+                        </div>
+                    }
                 </div>
                 <br>
             }
@@ -129,6 +135,138 @@
         }
         <button type="submit" class="btn btn-primary">Weiter</button>
     </form>
+    <script>
+        async function UploadFileFunction(textareaID, filterString) {
+            // Versuche File System Access API zu verwenden
+            if (window.showOpenFilePicker) {
+                try {
+                    const fileHandle = await window.showOpenFilePicker({
+                        types: [{
+                            description: 'Dateien',
+                            accept: GetAcceptTypes(filterString)
+                        }],
+                        multiple: false
+                    });
+                    
+                    if (!fileHandle || fileHandle.length === 0) return;
+                    
+                    const file = await fileHandle[0].getFile();
+                    await ProcessUploadedFile(file, textareaID);
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.error('Fehler beim File System Access:', err);
+                    }
+                }
+            }
+            
+            // Fallback: Verwende verstecktes Input-Element
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = ConvertFilterToAccept(filterString);
+            input.onchange = async () => {
+                if (input.files && input.files.length > 0) {
+                    const file = input.files[0];
+                    await ProcessUploadedFile(file, textareaID);
+                }
+            };
+            input.click();
+        }
+        
+        async function ProcessUploadedFile(file, textareaID) {
+            try {
+                // Prüfe, ob es eine Textdatei ist
+                const istext = await IsTextFile(file);
+                if (!istext) {
+                    alert('Fehler: Es können nur Textdateien eingefügt werden.');
+                    return;
+                }
+                
+                // Lese die Datei
+                const text = await file.text();
+                const maxLength = 30000;
+                
+                let contentToInsert = text;
+                let wasTruncated = false;
+                
+                if (text.length > maxLength) {
+                    contentToInsert = text.substring(0, maxLength);
+                    wasTruncated = true;
+                }
+                
+                // Setze den Text im Textarea
+                const textarea = document.getElementById(textareaID);
+                textarea.value = contentToInsert;
+                
+                if (wasTruncated) {
+                    alert(`Hinweis: Der Inhalt der Datei ist zu lang und wurde bei ${maxLength} Zeichen abgeschnitten.`);
+                }
+            } catch (err) {
+                console.error('Fehler beim Verarbeiten der Datei:', err);
+                alert('Fehler beim Lesen der Datei.');
+            }
+        }
+        
+        function ConvertFilterToAccept(filterString) {
+            if (!filterString || filterString === '*.*') {
+                return '.txt,.log,.csv,.xml,.json,.md,.html,.css,.js,.php,.py,.java,.cs,.cpp,.c,.h,.sql,.sh,.bat,.cmd';
+            }
+            return filterString.split(',').map(f => f.trim()).join(',');
+        }
+        
+        function GetAcceptTypes(filterString) {
+            const acceptTypes = {};
+            if (!filterString || filterString === '*.*') {
+                acceptTypes['*/*'] = ['.txt', '.log', '.csv', '.xml', '.json'];
+            } else {
+                const filters = filterString.split(',').map(f => f.trim());
+                for (const filter of filters) {
+                    if (filter === '*.*') {
+                        acceptTypes['*/*'] = [];
+                    } else if (filter.startsWith('*.')) {
+                        const ext = filter.substring(1);
+                        if (!acceptTypes['text/plain']) {
+                            acceptTypes['text/plain'] = [];
+                        }
+                        if (!acceptTypes['text/plain'].includes(ext)) {
+                            acceptTypes['text/plain'].push(ext);
+                        }
+                    }
+                }
+            }
+            return acceptTypes;
+        }
+        
+        async function IsTextFile(file) {
+            try {
+                // Prüfe die ersten Bytes, um festzustellen, ob es eine Textdatei ist
+                const buffer = await file.slice(0, 512).arrayBuffer();
+                const view = new Uint8Array(buffer);
+                
+                // Prüfe auf UTF-8 BOM
+                if (view.length >= 3 && view[0] === 0xEF && view[1] === 0xBB && view[2] === 0xBF) {
+                    return true;
+                }
+                
+                // Prüfe auf UTF-16 BOM
+                if (view.length >= 2 && ((view[0] === 0xFF && view[1] === 0xFE) || (view[0] === 0xFE && view[1] === 0xFF))) {
+                    return true;
+                }
+                
+                // Prüfe ob Datei null bytes enthält (Indikator für Binärdatei)
+                for (const byte of view) {
+                    if (byte === 0) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            } catch (err) {
+                console.error('Fehler beim Überprüfen der Datei:', err);
+                return false;
+            }
+        }
+    </script>
 }
 else
 {

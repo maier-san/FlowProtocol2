@@ -100,3 +100,23 @@ und dort Überschriften und Aufzählungen dargestellt werden.
 Lass dich nicht von der vorhandenen Routine für das Kopieren von Codeblöcken irritieren. 
 Mach die Highligt-Farbe bitte noch kräftiger.
 
+----------------------------------------------------------------------------------------
+2026-03-29_MultiLineInput - UploadFilter
+Implementiere die schon vorbereitete UploadFilter-Option in der CmdMultiLineInput-Klasse aus.
+In diesem Argument (konkret expandedUploadFilter) wird später ein Filter für die Auswahl von Dateien übergeben, z.B "*.*" oder "*.txt, *.log".
+Die Auflistung erfolgt kommagetrennt.
+Erweitere die Run-Page so, dass bei unter den über ~MultiLineInput erzeugten Eingabefelder eine Schaltfläche 
+mit Beschriftung "Aus Datei einfügen" angezeigt wird, wenn die UploadFilter-Option gesetzt ist. Sonst nicht.
+Orientiere dich bei Position und Aussehen der Schaltfläche an der Schaltfläche "In Zwischenablage kopieren" in _OMTextBlock.cshtml.
+Der Klick auf die Schaltfläche soll clientseitig verarbeitet werden.
+Es soll ein Dateiauswahldialog für die Auswahl einer lokal vorhandenen Datei geöffnet werden.
+DIm Dialog soll der Filter aus der Option voreingestellt sein.
+Nach Auswahl einer Datei und Bestätigung des Dialogs wird geprüft, ob es sich um eine Textdatei oder Binärdatei handelt.
+Das Einlesen von Binärdateien wird mit einem Hinweis abgelehnt.
+Bei einer Textdatei wird der Inhalt in das Eingabefeld übertragen, sofern er die Länge von 30000 Zeichen nicht überschreitet.
+Längere Texte werden bei 30000 Zeichen abgeschnitten und es wird eine Hinweismeldung dazu ausgegeben.
+Ein schon im Eingabefeld vorhandener Text wird ohne Rückfrage überschrieben.
+Beachte, dass es mehrere Eingabefelder mit dieser Option geben kann. 
+Orientiere dich auch hier an der "In Zwischenablage kopieren"-Option und erstelle eine zentrale Funktion im Script-Block der Run-Seite.
+
+

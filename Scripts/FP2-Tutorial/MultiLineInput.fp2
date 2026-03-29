@@ -1,18 +1,26 @@
 ~SetTitle MultiLineInput-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~MultiLineInput <Key>: <Prompt>[;ShowLines=<ShowLines>]
+~AddCode  ~MultiLineInput <Key>: <Prompt>[; ShowLines=<Anzahl Zeilen>][; UploadFilter=<Dateiauswahlfilter>]
 ~AddText  fragt einen mehrzeiligen Text vom Anwender ab.
+	>>* Mit der Option 
+	~AddCode  ShowLines
+	~AddText  kann die Höhe des Eingabefensters in Anzahl der Zeilen angegeben werden. 
+		__ Diese wirkt sich jedoch nicht auf die Eingabemöglichkeit aus und die Höhe kann auch noch vom Benutzer angepasst werden.
+		__ Die Höhe besträgt standardmäßig fünf Zeilen.
+	>>* Mit der Option 
+	~AddCode  UploadFilter
+	~AddText  kann ein Filter für die Auswahl von Dateien angegeben, und damit gleichzeitig die Option zum Einfügen von Text aus einer Datei aktiviert werden.
 @Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
     >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
 @Codebeispiel >>_ Das nachfolgende Beispiel ...
->>|~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7
+>>|~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7; UploadFilter=*.tex, *.txt
 >>|	&> Erzähl doch mal, lang und breit
 >>|	&> Und nimm dir richtig Zeit
 >>|~Set text=$Chr(36)ML
 >>|~ToUpper text=$Chr(36)text
 >>|@Ausgabe >>* Meine Osterferien
 >>|	>| $Chr(36)text
-~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7
+~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7; UploadFilter=*.tex, *.txt
 	&> Erzähl doch mal, lang und breit
 	&> Und nimm dir richtig Zeit
 ~Set text=$ML

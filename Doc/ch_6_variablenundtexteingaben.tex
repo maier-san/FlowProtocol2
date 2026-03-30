@@ -120,22 +120,25 @@ Viele zumeist abstrakte Fragestellungen lassen sich auf derartige Bewertungssyst
 In der Regel sind es viele kleine Faktoren, wie die Abhängigkeit von Drittanbieter-Komponenten oder externen Diensten die Länge der Kommunikationswege, der Grad der Konfigurierbarkeit, das Hinzukommen neuer Strukturen mit Semantik und Bedienkonzepten und die allgemeine Komplexität und Fehlertoleranz, die dauerhaft Aufwand verursachen. Die Identifikation dieser Faktoren kann zum einen schon bei der Planung der Entwicklung helfen, die Kosten-Nutzen-Verteilung besser einzuschätzen, zum anderen können durch ein geeignetes Skript aber auch direkt geeignete Maßnahmen abgeleitet werden, um diese Dinge bestmöglich und systematisch in den Griff zu bekommen.
 
 \section{Texteingaben}\label{Texteingaben}
-Schon bei der Erstellung der ersten Skripte gab es die Assoziation zu den zahlreichen Konfigurationsportalen, mit denen man im Internet sein Fahrrad oder Auto nach Wunsch zusammenstellen konnte, und daran angelehnt auch die ersten Versuche, die Konfiguration rund um die vielfach wiederkehrenden Standardentwicklungen in gleicher Weise abzufragen, um es so dem Product Owner zu erleichtern, die passende Konfiguration zu wählen. Da die Auswahl schon technisch auf auf die Menge der möglichen Konfigurationen beschränkt blieb, gleichzeitig aber alle notwendigen Entscheidungen abgefragt wurden, konnte man so Aufgabenbeschreibungen generieren, die fast alle wesentlichen Konfigurationsaspekte auf\-listeten. Manuell nachgearbeitet werden mussten individuelle Beschreibungstexte und eben Begriffe und Benennungen, die dafür meist mit einem gut erkennbaren Platzhalter \emph{xxx} in der Ausgabe ersetzt wurden, was insbesondere bei den wiederholt vorkommenden Begriffen den Komfort schmälerte.
+Schon bei der Erstellung der ersten Skripte gab es die Assoziation zu den zahlreichen Konfigurationsportalen, mit denen man im Internet sein Fahrrad oder Auto nach Wunsch zusammenstellen konnte, und daran angelehnt auch die ersten Versuche, die Konfiguration rund um die vielfach wiederkehrenden Standardentwicklungen in gleicher Weise abzufragen, um es so dem Product Owner zu erleichtern, die passende Konfiguration zu wählen. Da die Auswahl schon technisch auf die Menge der möglichen Konfigurationen beschränkt blieb, gleichzeitig aber alle notwendigen Entscheidungen abgefragt wurden, konnte man so Aufgabenbeschreibungen generieren, die fast alle wesentlichen Konfigurationsaspekte auf\-listeten. Manuell nachgearbeitet werden mussten individuelle Beschreibungstexte und eben Begriffe und Benennungen, die dafür meist mit einem gut erkennbaren Platzhalter \emph{xxx} oder dem prägnanteren Füllhalter-Emoji in der Ausgabe ersetzt wurden, was insbesondere bei den wiederholt vorkommenden Begriffen den Komfort schmälerte.
 
 Inzwischen gehören Texteingaben\index{Texteingaben} zum Grundumfang von \FPZ\ und zusammen damit wurden auch zahlreiche Befehle hinzugefügt, um Texteingaben zu verarbeiten.
 
 \Beispiel{Textersetzung}\label{BspTextersetzung}
 \begin{verbatim}
-~Input si: Suche in
+~MultiLineInput si: Suche in; ShowLines=7
 ~Input sn: Suche nach
 ~Input ed: Ersetze durch
 ~Execute
 ~Replace erg=$si|$sn->$ed
-@Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
-@Ergebnis >> $erg
+@Aufgabe >>_ Ersetze "$sn" durch "$ed" in
+    >>|$si
+@Ergebnis >>|$erg
 \end{verbatim}
 
-In diesem Beispiel werden die drei Texte für eine einfache Ersetzungsaufgabe mit dem \fcmd{Input}-Befehl abgefragt und über die zu den Schlüsseln gehörenden Variablen \verb|si|, \verb|sn| und \verb|ed| an den \fcmd{Replace}-Befehl übergeben, der das Ergebnis über die Variablen \verb|erg| bereitstellt.
+In diesem Beispiel werden die drei Texte für eine einfache Ersetzungsaufgabe mit dem \fcmd{Input}- und dem \fcmd{MultiLineInput}-Befehl abgefragt und über die zu den Schlüsseln gehörenden Variablen \verb|si|, \verb|sn| und \verb|ed| an den \fcmd{Replace}-Befehl übergeben, der das Ergebnis über die Variablen \verb|erg| bereitstellt.
+
+Der \fcmd{MultiLineInput} ist für die Eingabe längerer, und mehrere Zeilen umfassender Texte gedacht und wird dementsprechend auch mit einem fünfzeiligen Eingabefeld abgefragt, wobei man die Höhe des Feldes über den optionalen Parameter \cidxfrag{ShowLines} auch variieren kann. Die Länge des Eingabetextes ist anwednungsseitig nicht begrenzt und der Befehl nutzt für die Speicherung in der URL eine Komprimierung, so dass man aus der im System nutzbaren \index{URL-Länge} das bestmögliche herausholen kann.
 
 Der Befehl \fcmd{Execute} sorgt dafür, dass das Skript bis zu dieser Stelle ausgeführt wird, solange, bis alle darüber stehenden Eingabebefehle abgearbeitet wurden, und die Eingabewerte in den Variablen zur Verfügung stehen. Er ist an dieser Stelle notwendig, da Variablen ohne Wert beim \fcmd{Replace}-Befehl zu Fehlern führen würden. Der Befehl kann auch bewusst zu Formatierung der Eingabe genutzt werden wie in Abschnitt~\ref{FormatierungDerEingabe} beschrieben wird.
 

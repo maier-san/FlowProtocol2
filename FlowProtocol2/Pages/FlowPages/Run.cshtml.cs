@@ -20,6 +20,12 @@ namespace FlowProtocol2.Pages.FlowPages
         public OMDocument Document => RunContext.DocumentBuilder.Document;
         public List<ErrorElement> Errors => RunContext.ErrorItems;
         public List<BreadcrumbItem> Breadcrumbs { get; set; }
+        
+        // Properties zur Steuerung der clientseitigen Skripte
+        public bool NeedsUploadFunction { get; set; }
+        public bool NeedsCopyFunction { get; set; }
+        public bool NeedsSaveFunction { get; set; }
+        
         private const string FlowProtocol2Extension = ".fp2";
 
         public RunModel(IConfiguration configuration)
@@ -103,6 +109,9 @@ namespace FlowProtocol2.Pages.FlowPages
                 .Select(x => x.Key)
                 .ToList());
 
+            // Bestimme, welche clientseitigen Skripte benötigt werden
+            DetermineRequiredScripts();
+
             return Page();
         }
 
@@ -131,6 +140,17 @@ namespace FlowProtocol2.Pages.FlowPages
                 }
             }
             return RedirectToPage("./Run", BoundVars);
+        }
+
+        /// <summary>
+        /// Bestimmt, welche clientseitigen Skripte benötigt werden.
+        /// Die Flags werden automatisch von InputForm und Document gesetzt.
+        /// </summary>
+        private void DetermineRequiredScripts()
+        {
+            NeedsUploadFunction = InputForm.NeedsUploadFunction;
+            NeedsCopyFunction = Document.NeedsCopyFunction;
+            NeedsSaveFunction = Document.NeedsSaveFunction;
         }
     }
 }

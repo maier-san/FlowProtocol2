@@ -7,18 +7,19 @@ namespace FlowProtocol2.Commands
     /// <summary>
     /// Implementiert den MultiLineInput-Befehl
     /// </summary>
-    /// <remarks>
-    /// Erstellt mit NewCC.fp2, Eingabe: ~MultiLineInput (kKey): (sPrompt)[; ShowLines=(iShowLines)]
+    /// <remarks>    
+    /// Erstellt mit NewCC.fp2, Eingabe: ~MultiLineInput (kKey): (sPrompt)[; ShowLines=(iShowLines)][; UploadFilter=(sUploadFilter)]
     /// </remarks>
     public class CmdMultiLineInput : CmdInputBaseCommand
     {
         public string Key { get; set; }
         public string Prompt { get; set; }
         public string ShowLines { get; set; }
+        public string UploadFilter { get; set; }
 
         public static CommandParser GetComandParser()
         {
-            return new CommandParser(@"^~MultiLineInput\s+([A-Za-z0-9\$\(\)]*'?):\s*([^;]*)(\s*;\s*ShowLines\s*=\s*([A-Za-z0-9\$\(\)]+))?",
+            return new CommandParser(@"^~MultiLineInput\s+([A-Za-z0-9\$\(\)]*'?):\s*([^;]*)(\s*;\s*ShowLines\s*=\s*(-?[A-Za-z0-9\$\(\)]+))?(\s*;\s*UploadFilter\s*=\s*([^;]*))?",
                                      (rc, m) => CreateMultiLineInputCommand(rc, m));
         }
 
@@ -28,6 +29,7 @@ namespace FlowProtocol2.Commands
             cmd.Key = m.Groups[1].Value.Trim();
             cmd.Prompt = m.Groups[2].Value.Trim();
             cmd.ShowLines = m.Groups[4].Value.Trim();
+            cmd.UploadFilter = m.Groups[6].Value.Trim();
             return cmd;
         }
 
@@ -36,6 +38,7 @@ namespace FlowProtocol2.Commands
             Key = string.Empty;
             Prompt = string.Empty;
             ShowLines = string.Empty;
+            UploadFilter = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
@@ -43,6 +46,7 @@ namespace FlowProtocol2.Commands
             string expandedKey = ReplaceVars(rc, Key);
             string expandedPrompt = ReplaceVars(rc, Prompt);
             string expandedShowLines = ReplaceVars(rc, ShowLines);
+            string expandedUploadFilter = ReplaceVars(rc, UploadFilter);
             try
             {
                 if (string.IsNullOrWhiteSpace(expandedShowLines))
@@ -57,7 +61,11 @@ namespace FlowProtocol2.Commands
                         $"Der Ausdruck '{expandedShowLines}' kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.");
                     return null;
                 }
-                // ToDo: Befehl hier implementieren
+                if (string.IsNullOrWhiteSpace(expandedUploadFilter))
+                {
+                    // Optionales Argument mit Variable UploadFilter wurde weggelassen
+                    expandedUploadFilter = string.Empty; // Standardwert verwenden
+                }
                 var textarea = new IMTextAreaElement();
 
                 string plainKey = expandedKey;
@@ -69,6 +77,7 @@ namespace FlowProtocol2.Commands
                 textarea.Key = expandedKey;
                 textarea.Prompt = expandedPrompt;
                 textarea.ShowLines = resultShowLines;
+                textarea.UploadFilter = expandedUploadFilter;
 
                 if (rc.BoundVars.ContainsKey(expandedKey) && !string.IsNullOrEmpty(rc.BoundVars[expandedKey]))
                 {
@@ -89,7 +98,7 @@ namespace FlowProtocol2.Commands
             {
                 rc.SetError(ReadContext, "Verarbeitungsfehler",
                     $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
-                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedPrompt='{expandedPrompt}' expandedShowLines='{expandedShowLines}'");
+                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedPrompt='{expandedPrompt}' expandedShowLines='{expandedShowLines}' expandedUploadFilter='{expandedUploadFilter}'");
                 return null;
             }
             return NextCommand;

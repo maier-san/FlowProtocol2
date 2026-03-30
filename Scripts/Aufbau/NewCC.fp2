@@ -34,7 +34,7 @@
 // Dezimalwert (inklusive Variablen)
 ~Set reporeg(f)=-?[A-Za-z0-9\$\(\)\.\,]+
 // beliebiger Text
-~Set reporeg(x)=.*
+~Set reporeg(x)=.+
 // beliebiger Text ohne Strichpunkt
 ~Set reporeg(s)=[^;]*
 // Key
@@ -245,6 +245,17 @@
 	~If $argtype(1)==v
 		># Variablenzuweisung vervollständigen oder entfernen bei
 			~AddCode  // Ergebnis der Variablen zuweisen
+@Implementierung >> ... oder Run-Methode ausimplementieren lassen mit KI:
+	># Prompt vorformulieren in
+		>.|D:\Entwicklung\MSanGitDev\FlowProtocol2\FlowProtocol2\Prompt-Historie.txt
+	># ... beginnend mit
+	~SetDateTime Zeitstempel = yyyy-MM-dd
+		>.|----------------------------------------------------------------------------------------
+		>.|$Zeitstempel_$CommandName
+		>.|Implementiere die Run-Methode der schon vorbereiteten Cmd$CommandName-Klasse aus.
+		>.|Orientiere dich dabei an der Cmd...-Klasse
+		>.|$UseVarList
+		>.|✒
 @Implementierung >> Allgemeine Regeln überprüfen
 	>* Regel 1: Die in
 	~AddCode  Create$CommandNameCommand

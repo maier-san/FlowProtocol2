@@ -1,7 +1,8 @@
-~Input si: Suche in
+~MultiLineInput si: Suche in; ShowLines=7
 ~Input sn: Suche nach
 ~Input ed: Ersetze durch
 ~Execute
 ~Replace erg=$si|$sn->$ed
-@Aufgabe >> Ersetze "$sn" in "$si" durch "$ed".
-@Ergebnis >> $erg
+@Aufgabe >>_ Ersetze "$sn" durch "$ed" in
+	>>|$si
+@Ergebnis >>|$erg

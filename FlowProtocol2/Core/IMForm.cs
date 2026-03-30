@@ -9,6 +9,12 @@ namespace FlowProtocol2.Core
         public List<IMBaseElement> InputItems { get; private set; }
         public string CurrentSection { get; set; }
         private string LastSection { get; set; }
+        
+        /// <summary>
+        /// Flag wird auf true gesetzt, wenn ein TextArea-Element mit UploadFilter hinzugefügt wird.
+        /// </summary>
+        public bool NeedsUploadFunction { get; set; }
+        
         public IMForm()
         {
             Title = string.Empty;
@@ -16,6 +22,7 @@ namespace FlowProtocol2.Core
             InputItems = new List<IMBaseElement>();
             CurrentSection = string.Empty;
             LastSection = string.Empty;
+            NeedsUploadFunction = false;
         }
 
         public void AddInputItem(IMBaseElement inputitem)
@@ -26,6 +33,13 @@ namespace FlowProtocol2.Core
                 LastSection = CurrentSection;
             }
             InputItems.Add(inputitem);
+            
+            // Setze NeedsUploadFunction auf true, wenn ein TextArea mit UploadFilter hinzugefügt wird
+            var textArea = inputitem as IMTextAreaElement;
+            if (textArea != null && !string.IsNullOrEmpty(textArea.UploadFilter))
+            {
+                NeedsUploadFunction = true;
+            }
         }
     }
 

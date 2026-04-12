@@ -1,11 +1,11 @@
-﻿\chapter{Grundlagen}
+\chapter{Grundlagen}
 \section{Das erste Beispiel}
 In diesem Abschnitt bleibt der Bezug zur Softwareentwicklung erst einmal darauf beschränkt, dass wohl jeder, der in dieser Branche tätig ist, schon an dem einen oder anderen Hallo-Welt-Beispiel vorbeigekommen ist. In dieser Tradition starten auch wir und beginnen mit dem einfachsten aller Beispiele:
 
 \Beispiel{Hallo Welt}
-\begin{verbatim}
+\begin{codeblock}
 >> Hallo Welt!
-\end{verbatim}
+\end{codeblock}
 
 Das bedeutet, wir erstellen eine neue Textdatei mit dem Dateinamen \emph{Hallo Welt.fp2} und speichern diese direkt, oder in einem Unterordner im Skripte-Verzeichnis der \FPZb-Installation (vgl.\ Abschnitt \ref{BezugKonfig}).  Und ja, spätestens jetzt ist es Zeit, \FPZ\ in einer eigenen Umgebungen zum Laufen zu bringen, denn nur durch Ausführen der gezeigten Beispiele und viel eigenem Rumprobieren ist es möglich, den bestmöglichen Nutzen aus dieser Anleitung zu ziehen. Natürlich sind alle Beispiele aus dieser Anleitung auch als Textdatei im Projekt enthalten, so dass man diese nur auszuwählen braucht.
 
@@ -21,19 +21,19 @@ Die Schaltflächen \emph{Neue Ausführung} und \emph{Zurück zur Startseite} wer
 Bis jetzt haben wir nur Text in Form gebracht und in einem Browser-Fenster ausgegeben, was in Anbetracht der recht einfachen Syntax und der schönen Formatierungsmöglichkeiten auch schon Mehrwerte bieten kann, aber der Hauptnutzen von \FPZ\ liegt ganz klar in der Interaktion. Diese lässt sich umsetzen mit Hilfe von Auswahlabfragen und Texteingaben. Das nachfolgende Beispiel zeigt eine einfache Auswahlabfrage.
 
 \Beispiel{Hallo Welt mit Auswahl}
-\begin{verbatim}
+\begin{codeblock}
 ?Q: Wie soll die Welt begrüßt werden?
     #h: Mit "Hallo Welt!"
         >> Hallo Welt!
     #a: Mit "Aloah Welt!"
         >> Aloah Welt!
-\end{verbatim}
+\end{codeblock}
 
 Beim Ausführen dieses Skriptes wird man als Anwender zuerst mit der Frage \emph{Wie soll die Welt begrüßt werden?} konfrontiert, mit den beiden Antwortmöglichkeiten \emph{Mit ''Hallo Welt!''} und \emph{Mit ''Aloah Welt!''}. Es muss einer der beiden vorgegebenen Auswahlmöglichkeiten gewählt werden, denn wenn man die Skriptausführung mit \emph{Weiter} fortsetzt, werden die nicht beantworten Fragen einfach erneut gestellt und man gelangt nicht zur Ausgabeseite.  Nach getroffener Wahl wird auf der Ausgabeseite dann entweder \emph{1.\ Hallo Welt!} oder \emph{1.\ Aloah Welt!} ausgegeben. Dort hat man dann die Möglichkeit, das eben ausgeführte Skript mittels \emph{Neue Ausführung} erneut auszuführen oder zur Startseite der Skriptauswahl zu wechseln.
 
 Das Grundprinzip, dass auf einer oder mehreren Eingabeseiten\index{Eingabeseiten} die eventuell auch voneinander abhängigen Eingaben abgefragt werden, um dann am Ende die daraus resultierenden Ausgaben auf einer Ausgabeseite anzuzeigen, gilt für alle Skripte.
 
-Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \verb|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \verb|Q| und \verb|h|, bzw.\ \verb|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel\index{Schlüssel}. 
+Ein Blick in der Adresszeile des Browsers zeigt, dass die Antwort auf die Frage bei Wahl von \emph{Hallo Welt} als Parametersequenz \lstinline|Q=h| in der URL gespeichert wurde. Das ist auch der einzige Ort, wo sich diese Information wiederfindet, denn \FPZ\ selbst speichert keine Eingabedaten auf Serverseite. Die beiden Buchstaben \lstinline|Q| und \lstinline|h|, bzw.\ \lstinline|a| sind hierbei durch den Skriptcode festgelegt und heißen Schlüssel\index{Schlüssel}. 
 Die Auswahlabfrage wird durch das \cidxfrag{?}-Zeichen eingeleitet, unmittelbar gefolgt vom Schlüssel der Frage, gefolgt von einem Doppelpunkt an den sich die als Text ausformulierte Fragestellung oder Eingabeaufforderung anschließt. Eingerückt auf erster Ebene stehen unter der Frage die verschiedenen Antwortmöglichkeiten, die jeweils mit dem \cidxfrag{\#}-Zeichen beginnen, analog gefolgt vom Schlüssel der Antwort, einem Doppelpunkt und der Ausformulierung der jeweiligen Antwortmöglichkeit oder Option. 
 
 Der wiederum unterhalb einer Antwortmöglichkeit eingerückte Skriptcode kann wieder aus Befehlen bestehen, die auch für sich alleine stehen können, Dieser Code wird wird nur dann ausgeführt, wenn die dazugehörende Antwortmöglichkeit ausgewählt wurde.
@@ -50,18 +50,18 @@ Die Zeichenfolge \cidxfrag{//} leitet einen Kommentar\index{Kommentar} ein, jedo
 Lange Zeilen können auf mehrere Zeilen umgebrochen werden, wobei der Umbruch\index{Umbruch} durch die Zeichenfolge \cidxfrag{\_\_} zu Beginn jeder Folgezeile kenntlich gemacht werden muss.
 
 \Beispiel{Syntaxergänzungen}
-\begin{verbatim}
+\begin{codeblock}
 // Das ist ein Kommentar
 
 >> Das ist eine Ausgabe,
     __ die im Scriptcode
     __ auf drei Zeilen verteilt wird.
-\end{verbatim}
+\end{codeblock}
 
 \section{Die FlowProtocol-2-Befehlsreferenz}
 Um einen Überblick über alle in \FPZ\ vorhandenen Befehle zu bekommen und für jeden die genaue Syntax, die dabei möglichen Fehler und die Verwendung anhand eines kleinen Beispiels nachschlagen zu können, ist die \FPZb-Befehlsreferenz\index{Befehlsreferenz} der richtige Ort. Gemeint ist der Ordner \emph{FP2-Tutorial}, der im \emph{Scipts}-Ordner zusammen mit der Anwendung bereitgestellt wird. Dort ist für jeden Befehl ein Skript vorhanden, das diesen soweit es möglich ist, von anderen Befehlen unabhängig beschreibt. In vielen Fällen erzeugt das Skript direkt eine Ausgabe, die auch das Beispiel mit einschließt. Bei Befehlen die sich auf den Eingabeseiten auswirken, muss zuerst eine Eingabe durchlaufen werden, sodass man die Wirkung des dokumentierten Befehls direkt in der Programmoberfläche sehen kann.
 
-Ergänzend dazu gibt es in Abschnitt~\ref{Befehlsreferenz} ebenfalls eine Befehlsreferenz, die alle Befehle auf\-listet, und auch auf deren Verwendung in dieser Dokumentation hier verweist.
+Ergänzend dazu gibt es in Kapitel~\ref{Befehlsreferenz} ebenfalls eine Befehlsreferenz, die alle Befehle auf\-listet, und auch auf deren Verwendung in dieser Dokumentation hier verweist.
 
 \section{Fehlermeldungen und Debug-Techniken}
 Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie auch? Wichtig ist, dass man diese schnell erkennt und korrigieren kann, und zielsicher an sein Ergebnis kommt.
@@ -71,13 +71,13 @@ Das Entwickeln von Skripten wird nicht ohne Fehler\index{Fehler} ablaufen, wie a
 Hier ein Beispiel für so einen Fehler:
 
 \Beispiel{Fehler im Skript}
-\begin{verbatim}
+\begin{codeblock}
 ?W: Wo ist der Fehler?
     #A: In Antwort A
         >> Antwort A
     #B: In Antwort B
         Antwort B
-\end{verbatim}
+\end{codeblock}
 
 Laufzeitfehler\index{Laufzeitfehler} treten dagegen meist im Zusammenhang mit Variablen auf, z.B.\ wenn mit diesen Rechenoperationen durchgeführt werden sollen, diese aber keinen Zahlenwert enthalten. Auch hier kann man anhand der Angaben in der Fehlermeldung die Stelle lokalisieren und sich an die Klärung der Ursache machen.
 

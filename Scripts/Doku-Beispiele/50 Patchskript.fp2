@@ -1,4 +1,6 @@
-~Include Benutzervariablen.fps
+~Set BenVarListe=BenVarKuerzel,BenVarPfadAufgabenmappen
+	__,BenVarPfadTools
+~Include Benutzervariablen2.fps
 ~Input AKennung: Gib die Aufgabenkennung ein:
 ~Input PatchCode: Gib den Korrekturcode ein:
 ~SetDateTime Datum=yyyy-MM-dd

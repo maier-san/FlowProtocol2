@@ -1,4 +1,4 @@
-﻿\chapter{Verarbeitung von Texten}
+\chapter{Verarbeitung von Texten}
 Der Zweck eines Skriptes ist es, eine Ausgabe zu erzeugen und der Zweck von Texteingaben liegt meist darin, diese Texte in irgendeiner Form in der Ausgabe einzuarbeiten. Sofern die Eingabe unverändert in der Ausgabe erscheinen soll, reicht es, einfach die entsprechende Variable in der Ausgabe zu verwenden. In manchen Fällen möchte man jedoch einen Text in einer bestimmten Form abwandeln oder entsprechend einer vorgegebenen Struktur zerlegen. Mit den in diesem Abschnitt beschriebenen Befehlen lassen sich die meisten Textveränderungen hinbekommen.
 
 \section{Texte aufteilen und neu kombinieren}\label{TexteAufteilen}
@@ -7,7 +7,7 @@ Wie wir schon in Beispiel~\ref{BspBugPlaner} gesehen haben, Kann man mit Schleif
 Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste von Listen\index{Listen!von Listen} als Eingabe abgefragt und verarbeitet. Der \fcmd{Split}-Befehl funktioniert so, dass er den übergebenen Text anhand des angegebenen Trennzeichens aufteilt und in einer indizierten Liste speichert. 
 
 \Beispiel{Kombinator}\label{BspKombinator}
-\begin{verbatim}
+\begin{codeblock}
 ~Input C: Kombinierbare Eigenschaften
     __ (z.B.: A,B,C : X,Y,Z)
 ~Split A=$C|:
@@ -29,7 +29,7 @@ Im nachfolgenden Beispiel wird sogar eine verschachtelte Liste, also eine Liste 
 ~ForEach q in Q($aidx)
     @Kombinationen >> $q
 ~Loop
-\end{verbatim}
+\end{codeblock}
 
 Der \emph{Kombinator}\index{Kombinator} nimmt eine Liste von kombinierbaren Eigenschaften entgegen, die jeweils verschiedene Werte annehmen können, z.B.\ \emph{Farbe gleich blau, Farbe gleich grün} und \emph{Material gleich Holz, Material gleich Metall}. Die Werte jeder Eigenschaft werden dabei durch Kommata getrennt, die einzelnen Wertlisten wiederum durch einen Doppelpunkt. Bei Ausführung des Skriptes werden alle Kombinationen aus den Werten jeder Eigenschaft gebildet und aufgelistet. In unserem Beispiel ergibt das vier Kombinationen, angefangen mit \emph{Farbe gleich blau und Material gleich Holz}.
 
@@ -57,7 +57,7 @@ Mit der in Abschnitt~\ref{RegUndDaten} beschriebenen Funktion zur Anwendung regu
 Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, etwa in Beispiel~\ref{BspTextersetzung}. Die Ersetzung\index{Ersetzung} von Texten in anderen Texten ist für viele Zwecke einsetzbar. Im nachfolgende Beispiel wird die Textersetzung dazu verwendet um systematisch einen Text aufzubauen. Hierbei kommt auch der Befehl \fcmd{Random} zum Einsatz, mit dem eine Zufallszahl\index{Zufallszahl} in einem Zahlenbereich generiert werden kann.
 
 \Beispiel{Passwortgenerator}\label{Passwortgenerator}
-\begin{verbatim}
+\begin{codeblock}
 ~Set L=12
 ~Random AnzZiffer=1..2
 ~Random AnzGross=1..2
@@ -93,36 +93,36 @@ Den Ersetzungsbefehl \fcmd{Replace} haben wir schon in vielen Skripten gesehen, 
 ~Replace PW=$M|"->
 @Ausgabe >>* Passwortvorschlag
     >|$PW
-\end{verbatim}
+\end{codeblock}
 
 Das Beispiel zeigt einen Passwortgenerator\index{Passwortgenerator}, der für eine vorgegebene Länge ein Passwort aus zufälligen Zeichen erzeugt. Die von den meisten Passwortrichtlinien geforderten Zusatzbedingungen, dass das Passwort auch Ziffern, Großbuchstaben und Sonderzeichen enthalten muss, sind ebenfalls berücksichtigt. Da diese Zeichen zum Eintippen oftmals lästig sind, kann ihre Anzahl hier beschränkt werden. Ebenso kann die Menge der Sonderzeichen festgelegt werden, die zum Einsatz kommen soll.
 
 Im ersten Teil des Skriptes wird eine Zeichenkette aus den einzelnen Zahlen $1$ bis $L$ für die gewünschte Länge $L$ des Passworts und einigen Trennzeichen erstellt. Diese wird bereits bei der Erstellung permutiert, indem das Einfügen an einer beliebigen Stelle mit dem Ersetzungsbefehl durchgeführt wird. Im zweiten Teil wird für jede Zahl von $1$ bis $L$ ein Zeichen aus den verschiedenen Zeichengruppe per Zufallsgenerator bestimmt und die Zahl durch das entsprechende Zeichen ersetzt. Hierbei wird der \cidxvar{Chr(...)}-Befehl verwendet der das Zeichen mit dem dazu gehörenden ANSI-Code\index{ANSI-Code} erzeugt. Nacheinander wird so die geforderte Anzahl an Ziffern, Großbuchstaben und Sonderzeichen eingefügt. Die restlichen Zeichen werden mit Kleinbuchstaben aufgefüllt. Am Ende werden die Trennzeichen entfernt, sodass nur noch die Zeichen übrig bleiben, die das Passwort bilden.
 
-Für die Erzeugung der Sonderzeichen wird zunächst eine Zufallszahl von $1$ bis zur Länge der Liste \verb|SZ| generiert, wobei diese mit \verb|$SZ(0)| abgerufen wird. Mit dieser Zahl wird der entsprechende Listeneintrag ausgelesen, der dann in gleicher Weise wie die anderen Codes in ein Zeichen umgewandelt wird. Damit kann die Liste um weitere Codes ergänzt werden, ohne dass an anderer Stelle die Anzahl der Liste angepasst werden muss.
+Für die Erzeugung der Sonderzeichen wird zunächst eine Zufallszahl von $1$ bis zur Länge der Liste \lstinline|SZ| generiert, wobei diese mit \lstinline|$SZ(0)| abgerufen wird. Mit dieser Zahl wird der entsprechende Listeneintrag ausgelesen, der dann in gleicher Weise wie die anderen Codes in ein Zeichen umgewandelt wird. Damit kann die Liste um weitere Codes ergänzt werden, ohne dass an anderer Stelle die Anzahl der Liste angepasst werden muss.
 
 \section{Reguläre Ausdrücke und Datenabfragen}\label{RegUndDaten}
-Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \verb|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich auch die Chatbots der großen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
+Dieser Abschnitt demonstriert zwei der wohl mächtigsten Befehle im Besteckkasten von \FPZ: reguläre Ausdrücke\index{reguläre Ausdrücke} und Datenabfragen. Reguläre Ausdrücke dienen dazu, Textmuster zu beschreiben, so dass man diese innerhalb von Texten auffinden kann, z.B.\ \emph{ein Großbuchstabe gefolgt von zwei Ziffern} was mit \lstinline|[A-Z]\d{2}| beschrieben wird. Zur Formulierung von regulären Ausdrücken gibt es zahlreiche Hilfsseiten und Online-Tools und natürlich auch die Chatbots der großen Sprachmodelle, denen man den gewünschten Ausdruck umgangssprachlich beschreiben kann. Ein von mir gerne genutztes Tool zur Überprüfung regulärer Ausdrücke ist \emph{https://regex101.com}. 
 
 Datenabfragen\index{Datenabfragen} sind Zugriffe auf Dateien, die irgendwo im Skripte-Verzeichnis liegen, wie die Skripte, die sich über das Menü von \FPZ\ auswählen lassen. Es ist zwar nicht möglich, schreibend auf diese Dateien zuzugreifen, aber man kann sie auslesen. Entsprechend gibt es mit \fcmd{ForEachLine} einen noch nicht genannten Schleifen-Befehl, mit dem man über die Zeilen einer beliebigen Datei iterieren kann. Kombiniert man nun das Einlesen einer Datei mit den Möglichkeiten der regulären Ausdrücke, so kann man mehr oder weniger jedes beliebige textbasierte Dateiformat verarbeiten. 
 
 Das nachfolgende Beispiel ist ein einfaches Werkzeug zur Anwendung einer Terminologie\index{Terminologie} auf einen Eingabetext. Die Terminologie für einen bestimmten Kontext beschreibt die dort relevanten Begriffe und gibt an, welche der jeweils möglichen Benennungen innerhalb des Kontextes zulässig sind und welche nicht. In der Regel einigt man sich für jeden Begriff auf eine zulässige Benennung und schließt mehrere andere aus. So entsteht mit der Zeit eine Terminologiedatenbank aus Begriffen, Benennungen, Definitionen, Beschreibungen und Ausschlussbegründungen, die in einem sehr einfachen Fall so aussehen könnte:
 
 \Beispiel{Terminologieliste.txt}
-\begin{verbatim}
+\begin{codeblock}
 1    Passwort    ja  Zeichenfolge, deren Kenntnis Zugang...
 1    Kennwort    nein    Weniger üblich.
 2    Schaltfläche    ja  Steuerelement, das bei Klick eine...
 2    Button  nein    Anglizismus.
 2    Knopf   nein    Wird eher mit Geräten assoziiert.
-\end{verbatim}
+\end{codeblock}
 
 Jede Zeile hat vier Einträge, die durch Tabulatoren getrennt sind. In der ersten Spalte wird die ID des Begriffes angegeben, und da ein Begriff mehrere Benennungen haben kann, können auch mehrere Zeilen zur selben ID vorhanden sein. Die zweite Spalte gibt eine Benennung an. Die dritte Spalte enthält entweder den Inhalt \emph{ja} oder \emph{nein} und gibt an, ob die jeweilige Benennung zulässig ist oder nicht. Im ersten Fall gibt die vierte Spalte die Definition oder Beschreibung des Begriffs an, im zweiten Fall enthält sie die Begründung, warum die entsprechende Benennung nicht verwendet werden soll. Für die Verarbeitung ist es wichtig, dass die zulässige Benennung immer in der ersten Zeile für jede ID steht und dass alle Zeilen zur selben ID aufeinander folgen.
 
 Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Terminologie-Tool und sieht so aus:
 
 \Beispiel{Terminologieprüfer}\label{BspTerminologiepruefer}
-\begin{verbatim}
+\begin{codeblock}
 ~Input T:Text
 @Eingabetext >>_ $T
 ~ForEachLine z in Terminologieliste.txt; NoFormat
@@ -142,11 +142,11 @@ Der Terminologieprüfer\index{Terminologieprüfer} ist das dazu gehörende Termi
                 > Definition: $DefBegr
                 > Begründung: $ti(4)
 ~Loop
-\end{verbatim}
+\end{codeblock}
 
 Der Terminologieprüfer durchläuft alle Benennungen aus der Terminologiedatenbank und prüft, ob diese im eingegebenen Text vorhanden sind. Je nachdem ob es sich um eine zulässige Benennung handelt oder nicht, wird diese dann in einem entsprechenden Abschnitt aufgelistet. Bei einer nicht zulässigen Benennung wird die zum entsprechenden Begriff empfohlene Benennung samt Definition ausgegeben, ebenso die Begründung warum die Benennung nicht verwendet werden soll. Für die Eingabe \emph{nach Eingabe des Passworts muss der Button gedrückt werden} wird \emph{Passwort} als zulässige Benennung bestätigt und \emph{Button} mit Hinweis auf \emph{Schaltfläche} und der Begründung, dass es sich um einen Anglizismus handelt, als nicht zulässige Benennung abgelehnt. 
 
-Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \verb|ti| eine Liste zurück. Das nullte Element \verb|ti(0)| gibt an, ob für den Ausdruck ein Treffer gefunden wurde, die nachfolgenden Elemente enthalten die Teiltexte des gefundenen Ausdrucks, die über die runden Klammern im Ausdruck als Gruppen angegeben wurden.
+Der Befehl \fcmd{RegExMatch} liefert in der Ergebnisvariablen \lstinline|ti| eine Liste zurück. Das nullte Element \lstinline|ti(0)| gibt an, ob für den Ausdruck ein Treffer gefunden wurde, die nachfolgenden Elemente enthalten die Teiltexte des gefundenen Ausdrucks, die über die runden Klammern im Ausdruck als Gruppen angegeben wurden.
 
 Das \cidxfrag{NoFormat}-Argument gibt an, dass die Datei nicht das Dateilisten-Format hat und daher alle Zeilen unverändert zurückgegeben werden sollen. Beispiele für Dateilisten findet man in Beispiel~\ref{BspBasisbefehle} und \ref{BspProgrammierung}.
 
@@ -158,7 +158,7 @@ Der große Vorteil von Webanwendungen liegt darin, dass man innerhalb der Progra
 Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInline} schon gesehen. Um jedoch beliebigen Text als Parameter in einem Link einzufügen, muss man diesen in einer speziellen Form kodieren. Hierfür gibt es in \FPZ\ den Befehl \fcmd{UrlEncode}. Das nachfolgende Beispiel zeigt die Verwendung von URL-Parametern\index{URL-Parametern} am Beispiel eines Suchbegriffs, den man als Parameter an eine Suchmaschine übergeben kann, hier am Beispiel von Google und Bing.
 
 \Beispiel{Suchlink-E-Mail}\label{BspSuchlink}
-\begin{verbatim}
+\begin{codeblock}
 ~Input S:Suchbegriff
 ~UrlEncode uS=$S
 @Suchanfragen >>
@@ -176,9 +176,9 @@ Wie man Links in die Ausgabe einbauen kann, haben wir in Abschnitt~\ref{LinksInl
 >> Suchanfragen
     ~AddLink mailto:a@bc.de?subject=$usub&body=$ubody |
     __ per E-Mail verschicken
-\end{verbatim}
+\end{codeblock}
 
-Zuerst wird ein Suchbegriff abgefragt. Dieser wird mittels \fcmd{UrlEncode} in die Variable \verb|uS| in codierter Form abgelegt. Für den mailto-Link\index{mailto-Link} werden nacheinander Betreff (\emph{subject}) und Inhalt (\emph{body}) der E-Mail\index{E-Mail} in gleicher Weise in die beiden Variablen \verb|usub| und \verb|ubody| codiert und am Ende in den Link eingebaut.
+Zuerst wird ein Suchbegriff abgefragt. Dieser wird mittels \fcmd{UrlEncode} in die Variable \lstinline|uS| in codierter Form abgelegt. Für den mailto-Link\index{mailto-Link} werden nacheinander Betreff (\emph{subject}) und Inhalt (\emph{body}) der E-Mail\index{E-Mail} in gleicher Weise in die beiden Variablen \lstinline|usub| und \lstinline|ubody| codiert und am Ende in den Link eingebaut.
 
 Das Beispiel zeigt zum einen den Einsatz von Zeilenumbrüche\index{Zeilenumbrüche}, die man mit dem Befehl \cidxvar{CRLF} erzeugen kann, was die Zeichenkombination \emph{Carriage Return + Line Feed} ausgibt, und zum anderen, dass auch kodierte Texte wie die Suchlinks wieder Bestandteil von Codierungen sein können. 
 

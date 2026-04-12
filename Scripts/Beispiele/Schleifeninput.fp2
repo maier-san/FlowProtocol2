@@ -1,0 +1,10 @@
+~For i=1 To 3
+	?Q$i: Was ist deine $ite Eissorten-Wahl?
+		&> Wähle einfach das Eis aus, das du als $ites nehmen würdest.
+		#1: Vanille
+		#2: Banane
+		#3: Stracciatella
+		#4: Zimt
+~Loop
+@Ergebnis >> Deine Wahl ist gut!
+		

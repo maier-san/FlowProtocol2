@@ -1,4 +1,4 @@
-﻿\chapter{Systementwicklung}
+\chapter{Systementwicklung}
 In diesem Abschnitt kommen wir endlich an die Kerntätigkeit der professionellen Softwareentwicklung, also das Schreiben von Programmcode. Auch wenn man den Eindruck bekommt, dass hier die KI-Systeme, insbesondere die LLM-Chatbots zukünftig alles dominieren werden, gibt es trotzdem noch Fälle, in denen das nicht so bald der Fall sein wird.
 
 \section{Zielsetzung der Systementwicklung}
@@ -30,7 +30,7 @@ Nähern  wir uns dieser Vorgehensweise mit einem einfachen Beispiel. Entwickelt 
 Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, die dann wie folgt aussieht:
 
 \Beispiel{Archivklasse 1}
-\begin{verbatim}
+\begin{codeblock}
 @Anleitung >> Ordner Archivierer öffnen.
 @Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
     >|KursArchivierer.cs
@@ -67,9 +67,9 @@ Wir beginnen also damit, eine Anleitung für genau diese Klasse zu schreiben, di
     >|        return Konflikt.KeinKonflikt();
     >|    }
     >|}
-\end{verbatim}
+\end{codeblock}
 
-Um einen Codeblock\index{Codeblock} auszugeben, der einen vorgegebenen Programmcode erzeugt, muss man lediglich vor jeder Zeile des Codes das Ausgabezeichen \verb=>|= einfügen. Bessere Editoren wie z.B.\ Notepad++, bzw.\ Visual Studio Code ermöglichen dies sehr einfach dadurch, dass man den Cursor mit der Tastenkombination \emph{Shift + Alt + Cursor down}, bzw.\ \emph{Strg + Alt + Cursor down} über mehrere Zeilen ausdehnen kann, so dass nachfolgend eingetippte Zeichen gleichzeitig in jeder einzelnen Zeile eingefügt werden.
+Um einen Codeblock\index{Codeblock} auszugeben, der einen vorgegebenen Programmcode erzeugt, muss man lediglich vor jeder Zeile des Codes das Ausgabezeichen \lstinline=>|= einfügen. Bessere Editoren wie z.B.\ Notepad++, bzw.\ Visual Studio Code ermöglichen dies sehr einfach dadurch, dass man den Cursor mit der Tastenkombination \emph{Shift + Alt + Cursor down}, bzw.\ \emph{Strg + Alt + Cursor down} über mehrere Zeilen ausdehnen kann, so dass nachfolgend eingetippte Zeichen gleichzeitig in jeder einzelnen Zeile eingefügt werden.
 
 Da wir ja nicht die Anleitung für die schon vorhandene Kurse-Archivierungsklasse benötigen, sondern eine allgemeine Anleitung haben wollen, geht es im nächsten Schritt darum, die variablen Anteile zu identifizieren und das Skript dahingehend anzupassen.
 
@@ -79,7 +79,7 @@ Wir fragen also die Bezeichnung des Objekttyps, sowie den Namen der dazugehören
 
 Für die Umwandlung eines Textes in eine Zeichenkette, die weder Umlaute, noch Sonderzeichen enthält gibt es in \FPZ\ den Befehl \fcmd{CamelCase}, der  die dazu notwendigen Ersetzungen durchführt. Die Zeichenkette bleibt insgesamt lesbar und kann z.B.\ als Klassenname, Eigenschaft oder Variable im Programmcode verwendet werden.
 
-Um es ganz schön zu haben, leiten wir auch die Variable \verb|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem Befehl \fcmd{ToLower} in einen Kleinbuchstaben um. Hier muss man natürlich darauf achten, dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
+Um es ganz schön zu haben, leiten wir auch die Variable \lstinline|k| aus dem Objekttyp ab und ersetzen diese an den verschiedenen Stellen. Dazu suchen wir mit einem regulären Ausdruck den ersten Großbuchstaben in der Bezeichnung und wandeln diesen mit dem Befehl \fcmd{ToLower} in einen Kleinbuchstaben um. Hier muss man natürlich darauf achten, dass die Variable nicht in Konflikt mit anderen Variablen kommen kann. Die Umwandlung einer Zeichenkette in Großbuchstaben wäre analog mit dem Befehl \fcmd{ToUpper} möglich.
 
 Die in der Klasse hart codierte Guid-Kennung kann frei gewählt werden, und wird vom Skript selbst als Zufallswert vom Typ \emph{Guid} erzeugt. Dafür wird der \cidxvar{NewGuid}-Befehl verwendet.
 
@@ -90,7 +90,7 @@ Die beiden Stufen der Aufzählung lassen sich bei Anleitungen sehr gut so verwen
 Am Ende bekommen wir die folgende allgemeine Anleitung:
 
 \Beispiel{Archivklasse 2}\label{Archivklasse2}
-\begin{verbatim}
+\begin{codeblock}
 ~Input Bez: Bezeichnung Objekttyp (Singular)
     ~AddHelpLine Die Bezeichnung des Objekttyps,
     __ für den Objekte archiviert werden sollen.
@@ -153,7 +153,7 @@ Am Ende bekommen wir die folgende allgemeine Anleitung:
         > Auflistung der Konflikte nach folgendem Muster:
         >|        if (Konfliktbedingung)
         >|            return new Konflikt("Konfliktbeschreibung");
-\end{verbatim}
+\end{codeblock}
 
 Beim Aufbau eines Anleitungsskriptes für eine Standardentwicklung stechen die Schwächen der eigenen Framework-Klassen besonders hervor, etwa zwingend erforderliche Methoden, die jedoch nicht erzwungen werden, unschöne Abhängigkeiten von Aufrufreihenfolgen oder generell ungewollte Codewiederholungen. Eine ideal aufgebaute Klasse vermeidet Wiederholungen und führt den Entwickler allein mit Hilfe des Compilers an allen relevanten Fragestellungen vorbei und sorgt so selbständig für einen vollständigen und mustergültigen Einbau. Da dieser Anspruch schwierig aufrecht zu halten, und noch schwieriger im Nachhinein herzustellen ist, und da die Interaktion mit einem gut gemachten Anleitungsskript gefälliger sein dürfte, als die mit dem C\#-Compiler, bleiben trotzdem genug Gründe, um solche Anleitungen zu erstellen.
 
@@ -169,7 +169,7 @@ Im Anleitungsskript für den Entwickler können wir auf jeden Fall schon einmal 
 Damit kommen folgende Zeilen in unserer Anleitung hinzu:
 
 \Beispiel{Archivklasse 3}\label{BspArchivklasse3}
-\begin{verbatim}
+\begin{codeblock}
 ...
 @Testpunkte >> Ein $Bez-Objekt kann archiviert werden
 ~If $KonflikteMoeglich==ja
@@ -191,14 +191,14 @@ Damit kommen folgende Zeilen in unserer Anleitung hinzu:
         ># wird die Archivierung abgebrochen,
         ># protokolliert, wo der Konflikt aufgetreten ist,
         ># Details zum Konflikt protokolliert.
-\end{verbatim}
+\end{codeblock}
 
 Was mit Integrationstests in Textform möglich ist, ist je nach Art der Entwicklung auch noch in Form von Unittests\index{Unittests} möglich. Unitest sind im Programmcode hinterlegte Klassen und Funktionen, die nur dafür da sind, die im Produktivcode verwendeten elementaren Klassen auf Korrektheit zu testen. Die Tests selbst gehören nicht zum Produkt und haben keine Funktionen in der Produktivumgebung. Unittests werden in der Regel durch spezielle Attribute gekennzeichnet und in eigenen Projekten verwaltet.
 
 Im Fall unserer Archivierungsklasse könnte z.B.\ die Archivierer-Kennung sehr einfach über einen Unittest geprüft werden. Das Skript könnte dazu wie folgt den entsprechenden Testcode erzeugen:
 
 \Beispiel{Archivklasse 4}\label{BspArchivklasse4}
-\begin{verbatim}
+\begin{codeblock}
 ...
 @Anleitung >> Ordner ArchiviererTest öffnen.
 @Anleitung >> Neue cs-Datei erstellen mit Bezeichnung
@@ -219,7 +219,7 @@ Im Fall unserer Archivierungsklasse könnte z.B.\ die Archivierer-Kennung sehr e
     >|        Assert.Equal(Guid.Parse("$AKennung"), result);
     >|    }
     >|}
-\end{verbatim}
+\end{codeblock}
 
 Denkbar wäre auch ein Skript, dass direkt von den Testern verwendet wird, um sich die eigene Arbeit zu vereinfachen. Dieses müsste dann auf Basis der Informationen ausgefüllt werden, die von den Entwicklern bereitgestellt werden, und es müsste Mehrwert generieren, indem es daraus hilfreiche Informationen für die Durchführung von Tests ableitet.
 
@@ -238,12 +238,12 @@ Unterstützungssysteme für die Product Owner waren mit die ersten Anwendungsbei
 
 Wir bauen nun ein Beispiel für ein solches System auf und beginnen mit einem Teilaspekt, der in vielen PO-Unterstützungssystemen benötigt wird, nämlich der Beschreibung der Stelle innerhalb der Anwendung, an der die Entwicklung greifen soll. Wie schon in Abschnitt~\ref{Strukturabbildung} beschrieben, lässt sich die Struktur einer Anwendung gut als Entscheidungsbaum aufbauen, so dass sich ein beliebiger Programmbereich oder ein Registerblatt mit wenigen Klicks auswählen lässt.
 
-Wir speichern dieses Skript für die Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung\index{Dateiendung} \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Durch die andere Dateiendung wird das Skript nicht in der Auswahl von \FPZ\ angezeigt, so dass es nicht eigenständig aufgerufen werden kann. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \verb|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
+Wir speichern dieses Skript für die Auswahl in einer eigenen Funktionsdatei\index{Funktionsdatei} mit der Dateiendung\index{Dateiendung} \emph{.fps} und können diese dann in verschiedenen anderen Skripten mit Hilfe des \fcmd{Include}-Befehls aufrufen. Durch die andere Dateiendung wird das Skript nicht in der Auswahl von \FPZ\ angezeigt, so dass es nicht eigenständig aufgerufen werden kann. Der Befehl verfügt ähnlich wie der \fcmd{GoSub}-Befehl über einen \cidxfrag{BaseKey}-Parameter, so dass man in der Datei die \lstinline|$BaseKey|-Variable nutzen kann und mehrere Aufrufe innerhalb desselben Skriptes möglich sind, ohne dass es zu Konflikten bei den Schlüsseln für Auswahlabfragen und Eingaben kommt.
 
-Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, schaffen wir über die Variable \verb|PHinweis| die Möglichkeit, einen Text zu übergeben, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird dann nach Ausführung über die beiden Variablen \verb|PAusw| und \verb|UAusw| an das aufrufende Skript zurück übergeben.
+Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden kann, schaffen wir über die Variable \lstinline|PHinweis| die Möglichkeit, einen Text zu übergeben, der die Fragestellung um den Verwendungszweck erweitert. Die getroffene Auswahl wird dann nach Ausführung über die beiden Variablen \lstinline|PAusw| und \lstinline|UAusw| an das aufrufende Skript zurück übergeben.
 
 \Beispiel{Programmauswahl.fps}\label{BspProgrammauswahl}
-\begin{verbatim}
+\begin{codeblock}
 ?P: Programmbereich $PHinweis
     #D: Dozenten
         ~Set PAusw=Dozenten
@@ -263,14 +263,14 @@ Da die Auswahl eines Programmbereichs für verschiedene Zwecke verwendet werden 
                 ~Set UAusw=Registerblatt Schüler
             #U: Registerblatt Unterricht
                 ~Set UAusw=Registerblatt Unterricht
-\end{verbatim}
+\end{codeblock}
 
 Unsere Anwendungsbeispiel selbst unterstützt bei der Beschreibung einer Listenfunktion, womit in diesem Zusammenhang eine Programmfunktion gemeint ist, die für ausgewählte Zeilen einer Liste aufgerufen werden kann.
 
 Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden, gibt es viel zu beachten, an das man nicht unmittelbar denkt. Genau hier liegt der Vorteil eines solchen Skiptes, das diese Punkte systematisch abfragt.
 
 \Beispiel{Listenfunktion}\label{BspListenfunktion}
-\begin{verbatim}
+\begin{codeblock}
 ~Input Bez: Bezeichnung der Funktion
 ~Set PHinweis= (Wo soll die Funktion eingebaut werden?)
 ~Include Programmauswahl.fps; BaseKey=E
@@ -345,7 +345,7 @@ Diese Aufgabenstellung klingt zunächst recht einfach, aber wie wir sehen werden
         > Typ: Feedback-Dialog nach Ausführung
         > Text: xxx
         @ToDo >> Text Feedback-Dialog ausformulieren
-\end{verbatim}
+\end{codeblock}
 
 Zunächst muss die Funktion benannt werden und dann muss die Liste beschrieben werden, für die die Funktion eingebaut werden soll. Dies ist mit einer Texteingabe und dem Aufruf der als Funktionsdatei ausgelagerten Auswahlfunktion schnell umgesetzt.
 
@@ -391,7 +391,7 @@ Die Gefahr, solche Dinge zu übersehen, ist recht groß, da sie oft nebenläufig
 Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kontrollfragen aus den Bereichen Datenschutz und Datensicherheit, die der Product Owner nach Beendigung seiner Story-Formulierung durchgehen sollte.
 
 \Beispiel{PO-Assistent}\label{BspPOAssi}
-\begin{verbatim}
+\begin{codeblock}
 ?Q1: Werden durch die Entwicklung Kundendaten
     __ außerhalb der Programmumgebung gespeichert?
     #j: Ja
@@ -433,7 +433,7 @@ Der nachfolgende PO-Assistent\index{PO-Assistent} enthält beispielhaft drei Kon
         __ Datenblatt für Protokollierung aufgenommen wird
     #n: Nein
         @Wirkungen >> Protokollierung von Nutzerdaten: Nein
-\end{verbatim}
+\end{codeblock}
 
 Die Ausgabe besteht aus zwei Abschnitten. Der Abschnitt \emph{Ergänzungsmaßnahmen} beschreibt Maßnahmen, die im Zusammenhang mit der Story sichergestellt werden sollten, z.B.\ indem entsprechende Anforderungen ergänzt werden. Der Abschnitt \emph{Wirkungen} dient als Protokoll, dass in jedem Fall in der Story hinterlegt wird. Damit wird nachweisbar sichergestellt, dass der Assistent für alle eingeplanten Stories durchlaufen wurde, und man kann im Falle eines Fehlers besser nachvollziehen, wo dieser entstanden ist, und wie man diesem zukünftig vorbeugen kann.
 
@@ -448,7 +448,7 @@ Das Risiko, dass Daten unbeabsichtigt gelöscht werden, wird dann auftreten, wen
 Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich aufgebaut wie Beispiel~\ref{BspPOAssi} und zeigt anhand der oben genannten Punkte, wie ein Entwickler seine Entwicklung durch zusätzliche Maßnahmen absichern kann, wenn sie bestimmte Aspekte erfüllt.
 
 \Beispiel{Quali-Assistent}
-\begin{verbatim}
+\begin{codeblock}
 ?Q1: Umfasst die Entwicklung Funktionen, die Datensätze löschen?
     #j: Ja
         @Wirkungen >> Löschen von Datensätzen: Ja
@@ -480,7 +480,7 @@ Das nachfolgende Quali-Assistent\index{Quali-Assistent}-Protokoll ist ähnlich a
         __ im Datenblatt.
     #n: Nein
         @Wirkungen >> Versionsabhängige Formate: Nein
-\end{verbatim}
+\end{codeblock}
 
 Bei der Implementierung einer Funktion, die Datensätze löscht, wird meist nur geprüft, ob das zu Löschende auch wirklich gelöscht wird. Viel wichtiger ist die Überprüfung, ob das, was nicht gelöscht werden soll, auch wirklich nicht gelöscht wird. Hierfür kann man Abgrenzungstests\index{Abgrenzungstests} formulieren und man kann man sich -- auch mit \FPZ\ -- einfache Werkzeuge bauen, die Abweichungen der Datensatz-Anzahl tabellenübergreifend erkennbar machen. Oft wird auch übersehen, dass eine Löschung durch festgelegte Löschweitergaben weitere Löschungen nach sich zieht. Diese sollten immer explizit geprüft werden.
 

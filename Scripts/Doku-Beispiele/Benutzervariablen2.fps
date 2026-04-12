@@ -1,0 +1,32 @@
+// BenVarListe: Kommagetrennte Liste der benötigten Variablen
+?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
+	#AB: Anton Barium
+		~Set BenVarKuerzel=AB
+		~Set BenVarPfadAufgabenmappen=H:\Aufgabenmappen
+		~Set BenVarPfadTools=C:\Work\Tools
+	#CD: Christian Deuterium
+	#EF: Ernst Flour
+~Execute
+~Set HelpBenVarKuerzel=Dein Benutzerkürzel, z.B. WM
+~Set HelpBenVarPfadAufgabenmappen=Der Pfad auf die Aufgabenmappen
+~Set HelpBenVarPfadTools=Der Pfad auf die Tools-Arbeitskopie
+~Split BenVarElements=$BenVarListe|,
+~ForEach BenVarIdx in BenVarElements
+	~If !?$$BenVarIdx
+		~Input I$BenVarIdx: Wert der Variablen $BenVarIdx
+		~If ?$Help$BenVarIdx
+			&> $Help$BenVarIdx		
+		~GoSub BenVarEditInfo
+			>.|$Chr(9)$Chr(9)~Set $BenVarIdx=$I$BenVarIdx
+		~Set $BenVarIdx=$I$BenVarIdx		
+~Loop
+~DefineSub BenVarEditInfo
+	~If $BenVarEditInfo!=ja
+		@Skript-Erweiterung >>* Hinterlege die Benutzervariablen
+			__ fest im Benutzervariablen-Skript:
+			> Öffne die Skriptdatei im Texteditor
+				>.|$ScriptFilePath
+			> Füge für deinen Benutzer folgende Zeilen ein:			
+		~Set BenVarEditInfo=ja
+~Return
+~ClearVar HelpBenVar*

@@ -126,3 +126,19 @@ Die dynamische Ermittlung der Eigenschaften ist recht komplex.
 Schreibe das um in eine Variante mit bool-Variablen in den Strukturen IMForm und OMDocument, 
 die bei jedem Einfügen entsprechender Elemente auf true gesetzt werden und am Ende einfach abgefragt werden.
 Trenne dann bitten noch die SaveFunction von der CopyFunction, weil erstere viel seltener verwendet wird.
+
+----------------------------------------------------------------------------------------
+2026-04-12_Schleifeninput
+Der Zugriff auf das mit dem Eingabebefehl assoziierte Eingabeelement über AssociatedInputElements[]
+von den Klassen CmdAddHelpLine, CmdAddHelpLink und CmdAddHelpText führt noch zu Problemen, 
+da derselbe Befehl auch mehrmals in einer Schleife aufgerufen werden kann und mehrere Eingabeelemente erzeugt,
+die sich jedoch nicht in der BaseKey-Eigenschaft unterscheiden.
+Stelle den Code so um, dass jeder von CmdInputBaseCommand abgeleitete Eingabebefehl 
+sein Eingabeelement in Abhängigkeit der expandedKey-Eigenschaft in AssociatedInputElements speichert
+und bei jedem Run-Aufruf das zum aktuellen Key passende in einer zusätzlichen Eigenschaft
+CurrentAssociatedInputElement als Verweis vorhält, so dass die Klassen CmdAddHelpLine, 
+CmdAddHelpLink und CmdAddHelpText nur noch diese Eigenschaft verwenden müssen.
+
+Ist gut, aber passt noch nicht ganz. Die Eigenschaft CurrentAssociatedInputElement 
+muss bei jedem Run-Aufruf gesetzt werden, auch wenn das Eingabeelement schon 
+in einem vorherigen Run-Aufruf erzeugt und im Dictionary abgelegt wurde.

@@ -38,7 +38,7 @@ namespace FlowProtocol2.Commands
                 rc.SetError(ReadContext, "Hilfelink ohne Eingabebefehl",
                     "Der Hilfelink-Befehl kann keinem Eingabebefehl zugeordnet werden.");
             }
-            else if (parentInputCommand.AssociatedInputElements.ContainsKey(rc.BaseKey) && parentInputCommand.AssociatedInputElements[rc.BaseKey] != null)
+            else if (parentInputCommand.CurrentAssociatedInputElement != null)
             {
                 string expandedLink = ReplaceVars(rc, Link);
                 string expandedText = ReplaceVars(rc, Text);
@@ -46,7 +46,7 @@ namespace FlowProtocol2.Commands
                 {
                     bool isonwhitelist = rc.IsOnWhitelist(expandedLink);
                     if (string.IsNullOrWhiteSpace(expandedText)) expandedText = expandedLink;
-                    parentInputCommand.AssociatedInputElements[rc.BaseKey]?.HelpInfoBlock.AddHelpText(expandedText, expandedLink, isonwhitelist);
+                    parentInputCommand.CurrentAssociatedInputElement?.HelpInfoBlock.AddHelpText(expandedText, expandedLink, isonwhitelist);
                 }
                 catch (Exception ex)
                 {

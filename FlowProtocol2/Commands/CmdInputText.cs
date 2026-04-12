@@ -31,6 +31,7 @@ namespace FlowProtocol2.Commands
         {
             string expandedKey = ReplaceVars(rc, Key).Trim();
             string expandedPrompt = ReplaceVars(rc, Prompt).Trim();
+            CurrentAssociatedInputElement = null;
             try
             {
                 var inputtext = new IMTextInputElement();
@@ -50,7 +51,11 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(inputtext);
-                    AssociatedInputElements[rc.BaseKey] = inputtext;
+                    AssociatedInputElements[expandedKey] = inputtext;
+                }
+                if (AssociatedInputElements.ContainsKey(expandedKey))
+                {
+                    CurrentAssociatedInputElement = AssociatedInputElements[expandedKey];
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

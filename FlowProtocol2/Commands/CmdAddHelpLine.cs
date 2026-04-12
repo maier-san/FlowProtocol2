@@ -34,12 +34,12 @@ namespace FlowProtocol2.Commands
                 rc.SetError(ReadContext, "Hilfetext ohne Eingabebefehl",
                     "Der Hilfetext-Befehl kann keinem Eingabebefehl zugeordnet werden.");
             }
-            else if (parentInputCommand.AssociatedInputElements.ContainsKey(rc.BaseKey) && parentInputCommand.AssociatedInputElements[rc.BaseKey] != null)
+            else if (parentInputCommand.CurrentAssociatedInputElement != null)
             {                
                 string expandedText = ReplaceVars(rc, Text);
                 try
                 {
-                    parentInputCommand.AssociatedInputElements[rc.BaseKey]?.HelpInfoBlock.AddHelpLine(expandedText);
+                    parentInputCommand.CurrentAssociatedInputElement?.HelpInfoBlock.AddHelpLine(expandedText);
                 }
                 catch (Exception ex)
                 {

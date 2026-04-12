@@ -38,6 +38,7 @@ namespace FlowProtocol2.Commands
             string expandedKey = ReplaceVars(rc, Key);
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedPrompt = ReplaceVars(rc, Prompt);
+            CurrentAssociatedInputElement = null;
             try
             {
                 IMOptionGroupElement ogroup = new IMOptionGroupElement();
@@ -91,7 +92,11 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(ogroup);
-                    AssociatedInputElements[rc.BaseKey] = ogroup;
+                    AssociatedInputElements[expandedKey] = ogroup;
+                }
+                if (AssociatedInputElements.ContainsKey(expandedKey))
+                {
+                    CurrentAssociatedInputElement = AssociatedInputElements[expandedKey];
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

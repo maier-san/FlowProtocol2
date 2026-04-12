@@ -296,38 +296,78 @@ Umgekehrt gibt es auch gesetzliche Nachweispflichten, die man in Bezug auf seine
 Sowohl die Berechnung der Quote, als auch das optionale Hinterlegen eventueller Antworten und Informations-Verweise direkt bei den Reflektionsaussagen lässt sich sehr einfach im Skript umsetzen. Ersteres ist eine einfache Berechnung und für den zweiten Punkt kann man für das Hinterlegen von Antwort-Informationen eine bestimmte Syntax vorgeben, die man mit Hilfe eines regulären Ausdrucks verarbeiten kann.
 
 \section{Personalisierung}\label{Personalisierung}
-Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen, die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Dazu gehören in erster Linie Datei- und Ordnerpfade, mit denen sich  etwa parametrisierte Kommandozeilenaufrufe vorbereiten lassen, so dass der Anwender diese über eine Konsole oder die  Tastenkombination \emph{Win-R}\index{Win-R} ausführen kann. Dazu kommen Benutzerkürzel oder andere Kennzeichen, die sich z.B.\ in erzeugten Programmcode einarbeiten lassen. 
+Bei vielen Arten von interaktiven Anleitungen wird man zwangsläufig auf Elemente verweisen wollen, die lokal von der jeweiligen Umgebung des Mitarbeiters abhängig sind. Dazu gehören in erster Linie Datei- und Ordnerpfade, mit denen sich etwa parametrisierte Kommandozeilenaufrufe vorbereiten lassen, so dass der Anwender diese über eine Konsole oder in Windows mit der Tastenkombination \emph{Win-R}\index{Win-R} ausführen kann. Dazu kommen Benutzerkürzel oder andere Kennzeichen, die sich z.B.\ in erzeugten Programmcode einarbeiten lassen. 
 
-Die Pfadstruktur könnte man vereinheitlichen, was allerdings mühsam und einschränkend ist, und die ansonsten benötigten Werte kann man abfragen, allerdings ist es gleichermaßen für Ersteller und Anwender mit viel  Aufwand verbunden, wenn dies in jedem Skript geschieht.
+Die Pfadstruktur könnte man vereinheitlichen, was allerdings mühsam und einschränkend ist, und die ansonsten benötigten Werte kann man abfragen, allerdings ist es gleichermaßen für Ersteller und Anwender mit viel Aufwand verbunden, wenn dies in jedem Skript geschieht.
 
-Die Lösung besteht darin, eine einzelne Funktionsdatei zu erstellen, die bei Auswahl eines Benutzers eine definierte Menge von Variablen benutzerbezogen setzt, so dass diese im ganzen Skript verfügbar sind. Diese könnte so aussehen:
+Die Lösung diees Problems besteht darin, eine einzelne Funktionsdatei zu erstellen, die bei Auswahl eines Benutzers die vom Skript benötigten Variablen benutzerbezogen setzt, so dass diese im ganzen Skript verfügbar sind. 
 
-\Beispiel{Benutzervariablen.fps}
+Auch hier kann man davon ausgehen, dass mit der Zeit weitere Benutzer und auch weitere Variablen hinzukommen, und idealerweise kann die Funktionsdatei auch dann ihre Aufgabe erfüllen, wenn für einen Benutzer noch keine Daten eingetragen wurden. Dies kann wie folgt realisiert werden:
+
+\Beispiel{Benutzervariablen.fps}\label{BspBenutzervariablen}
 \begin{codeblock}
+// BVListe: Kommagetrennte Liste der benötigten Variablen
+~SetInputSection Benutzervariablen
 ?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
-    #AB: Anton Barium
-        ~Set BenVarKuerzel=AB
-        ~Set BenVarPfadAufgabenmappen=H:\Aufgabenmappen
-        ~Set BenVarPfadTools=C:\Work\Tools
-    #CD: Christian Deuterium
-    #EF: Ernst Flour
+    #WM: Wolfgang Maier
+        ~Set BVName=Wolfgang Maier
+        ~Set BVKuerzel=WM
+        ~Set BVPfadAufgabenmappen=H:\Aufgabenmappen
+        ~Set BVPfadTools=C:\Projekte\Tools
+    #x: Nicht in Liste
+        ~Input IBK: Gibt deinen Namen ein
+        ~Input IBVKuerzel: Gib dein Kürzel ein        
+        ~Set BVEditIntro=Füge vor Zeile $LineNumber-3 folgenden Code ein:            
+        ~GoSub BVEditInfo
+            >.|$Chr(9)#$IBVKuerzel: $IBK
+            >.|$Chr(9)$Chr(9)~Set BVName=$IBK
+            >.|$Chr(9)$Chr(9)~Set BVKuerzel=$IBVKuerzel
+        ~Set BVName=$IBK
+        ~Set BVKuerzel=$IBVKuerzel
+~Execute
+~Set BVEditIntro=Füge für deinen Benutzer folgende Zeilen ein:
+~Set HelpBVKuerzel=Dein Benutzerkürzel, z.B. WM
+~Set HelpBVPfadAufgabenmappen=Der Pfad auf die Aufgabenmappen
+~Set HelpBVPfadTools=Der Pfad auf die Tools-Arbeitskopie
+~Split BVElements=$BVListe|,
+~ForEach BVIdx in BVElements
+    ~If !?$$BVIdx
+        ~Input I$BVIdx: Wert der Variablen $BVIdx
+        ~If ?$Help$BVIdx
+            &> Erklärung: $Help$BVIdx
+        ~GoSub BVEditInfo
+            >.|$Chr(9)$Chr(9)~Set $BVIdx=$I$BVIdx
+        ~Set $BVIdx=$I$BVIdx        
+~Loop
+~DefineSub BVEditInfo
+    ~If $BVEditInfo!=ja
+        @Skript-Erweiterung >>* Hinterlege die Benutzervariablen
+            __ fest im Benutzervariablen-Skript:
+            > Öffne die Skriptdatei im Texteditor
+                >.|$ScriptFilePath
+            > $BVEditIntro
+        ~Set BVEditInfo=ja
+~Return
+~ClearVar HelpBV*
 \end{codeblock}
 
-Im Beispiel sind exemplarisch die Variablen für den Benutzer AB ausformuliert, und in einer im Echtbetrieb eingesetzten Variante würde es vermutlich noch viel mehr benutzerbezogene Variablen geben. 
+Im Beispiel gibt es einen Eintrag für den Benutzer WM mit vier gesetzten Variablen und den schon aus Abschnitt~{AngeleiteteSkriptErweiterungen} bekannten Eintrag \emph{Nicht in Liste}, der Namen und Kürzel eines neuen Benutzers abfragt. Für die Abfrage der Variablenwerte wird zusätzlicher Aufwand betrieben, denn schließlich möchte man nur die Werte abfragen, die noch nicht bekannt sind und die vom aufrufenden Skript auch benötigt werden. Zu diesem Zweck übermittelt das aufrufende Skript in der Variablen \lstinline|BVListe| kommagetrennt die Namen der benötigten Variablen. Diese werden durchlaufen und falls noch nicht gesetzt, vom Benutzer abgefragt.
 
-Mit den Hilfsmitteln aus Abschnitt~\ref{Metaskripting} könnte man auch dieses Skript ohne Mühe selbst-erweiterbar machen, so dass ein Mitarbeiter, der erstmalig mit dieser Abfrage konfrontiert wird, bei den Eingaben angeleitet und unterstützt wird.
+Bei der Abfrage wird geschaut, ob für eine benötigte Variable ein Erklärungstext hinterlegt ist, und falls ja, wird dieser in einer Hilfezeile ausgegeben. Die Erklärungstexte werden dabei einfach vor der Abfrageschleiche in Variablen geschrieben, die man durch das Voranstellen von \lstinline|Help| aus der zu erklärenden Variablen bekommt. Diese Variablen, genauer alle Variablen, die mit \lstinline|HelpBV| beginnen, werden am Ende der Funktionsdatei wieder mit dem \fcmd{ClearVar}-Befehl gelöscht. Da die Ersetzung der Variablen den größten Lastfaktor in \FPZ\ ausmacht, ist so eine Bereinigung in einer Funktionsdatei auf jeden Fall kein Fehler, besonders wenn diese Datei von vielen Skripten am Anfang aufgerufen wird. Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentliche Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
 
-Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentliche Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
+Die Einleitung der Skript-Erweiterung, also der Teil de Ausgabe, der den Benutzer dazu auffordert, den Erweiterungscode mit seinen Eingaben fest im Skript zu hinterlegen, ist in einer Funktion \lstinline|BVEditInfo| ausgelagert, die von verschiedenen Stellen aus aufgerufen wird. Die Funktion verwaltet in einer Variablen, ob sie schon aufgerufen wurde, so dass die Auf\-for\-derung nur einmal in der Ausgabe erscheint.
 
 Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 
 \Beispiel{Patchskript}\label{BspPatchskript}
 \begin{codeblock}
+~Set BVListe=BVKuerzel,BVPfadAufgabenmappen,BVPfadTools
 ~Include Benutzervariablen.fps
+~SetInputSection Patch-Daten
 ~Input AKennung: Gib die Aufgabenkennung ein:
 ~Input PatchCode: Gib den Korrekturcode ein:
 ~SetDateTime Datum=yyyy-MM-dd
-~Set DatBasis=$BenVarPfadAufgabenmappen\$Datum_$AKennung
+~Set DatBasis=$BVPfadAufgabenmappen\$Datum_$AKennung
 ~XmlEncode xPatchCode=$PatchCode
 @Anleitung >> Erstelle eine neue Datei im Editor.
 >> Gib den folgenden Code ein:
@@ -335,14 +375,14 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
     >|<PATCHSCRIPT>
     >|  <NAME>$AKennung</NAME>
     >|  <CODE>$xPatchCode</CODE>
-    >|  <CREATOR>$BenVarKuerzel</CREATOR>
+    >|  <CREATOR>$BVKuerzel</CREATOR>
     >|  <CREATIONDATE>$Datum</CREATIONDATE>
     >|</PATCHSCRIPT>
     ~SetBlockSaveFile $AKennung.xml; Encoding=iso-8859-1
 >> Speichere die Datei ab unter
     >|$DatBasis\$AKennung.xml
 >> Rufe den Patch-Converter für die Datei auf:
-    >|$BenVarPfadTools\PatchConverter\Bin\PatchConverter.exe
+    >|$BVPfadTools\PatchConverter\Bin\PatchConverter.exe
         __ "$DatBasis\$AKennung.xml"
 >>  Das fertige Patchscript
     ~AddCode  $AKennung.psc
@@ -353,8 +393,9 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe einer internen Hilfsanwendung in ein anderes Format konvertiert wird.
 
 Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
+Vor dem Aufruf werden die drei im Skript benötigten Benutzervariablen als Auflistung in der Variablen \lstinline|BVListe| notiert.
 
-Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \lstinline|BK=AB| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
+Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \lstinline|BK=XY| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
 
 Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \lstinline|<|, \lstinline|>| und \lstinline|&|, sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
 

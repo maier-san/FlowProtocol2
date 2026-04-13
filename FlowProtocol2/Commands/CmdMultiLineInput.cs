@@ -47,6 +47,7 @@ namespace FlowProtocol2.Commands
             string expandedPrompt = ReplaceVars(rc, Prompt);
             string expandedShowLines = ReplaceVars(rc, ShowLines);
             string expandedUploadFilter = ReplaceVars(rc, UploadFilter);
+            CurrentAssociatedInputElement = null;
             try
             {
                 if (string.IsNullOrWhiteSpace(expandedShowLines))
@@ -87,7 +88,11 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(textarea);
-                    AssociatedInputElements[rc.BaseKey] = textarea;
+                    AssociatedInputElements[expandedKey] = textarea;
+                }
+                if (AssociatedInputElements.ContainsKey(expandedKey))
+                {
+                    CurrentAssociatedInputElement = AssociatedInputElements[expandedKey];
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

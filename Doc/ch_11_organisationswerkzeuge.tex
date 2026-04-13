@@ -1,4 +1,4 @@
-﻿\chapter{Organisationswerkzeuge}
+\chapter{Organisationswerkzeuge}
 Im Drumherum der täglichen Arbeit gibt es viele kleine Aufgaben, die sich oft mehrfach täglich wiederholen, und bei denen man froh ist, wenn man auf passende Hilfswerkzeuge zurückgreifen kann. In diesem Abschnitt beschreiben wir einige solche Werkzeuge, die sich mit wenig Aufwand als \FPZb-Skript anfertigen lassen.
 
 \section{Zeitmessung}\label{Zeitmessung}
@@ -13,7 +13,7 @@ Aufgrund der großen Bedeutung ist Zeitmessung in vielen Systemen fest integrier
 Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kann man so auch zwischen der Zeitmessung für verschiedenen Aufgaben hin und her wechseln.
 
 \Beispiel{Zeitmesser}\label{BspZeitmesser}
-\begin{verbatim}
+\begin{codeblock}
 ~Input A: Aufgabe
 ~SetInputTitle Zeitmessung für Aufgabe $A
 ~Set idx=0
@@ -49,15 +49,15 @@ Dadurch, dass man das Skript parallel in mehreren Browser-Tabs öffnen kann, kan
     ~SetDateTime Zeit = HH:mm
     ~AddNewKey ZP($idx) = $Zeit
 ~Return
-\end{verbatim}
+\end{codeblock}
 
 Das Skript funktioniert wie folgt: nach Abfrage der Aufgabe, damit diese als Titel dargestellt werden kann, wird wiederholt eine Schleife durchlaufen, bis die Zeitmessung abgeschlossen wird. In jedem Schleifendurchlauf hat man die Wahl zwischen \emph{Zeitmessung pausieren} und \emph{Zeitmessung abschließen} oder \emph{Zeitmessung fortsetzen} und \emph{Zeitmessung abschließen}, je nachdem ob die Zeitmessung gerade läuft oder pausiert. Die Implementierung entspricht also einem Kippschalter\index{Kippschalter} mit dem zwischen diesen beiden Zuständen hin und her geschaltet werden kann.
 
-Bei jeder Aktion wird die Funktion \verb|NotiereZeit| durchlaufen, die mit Hilfe des Befehls \fcmd{SetDateTime} die Uhrzeit notiert und diese mit \fcmd{AddNewKey} als Teil der URL speichert, wobei der fortlaufenden Schlüssel \verb|ZP(...)| verwendet wird.
+Bei jeder Aktion wird die Funktion \lstinline|NotiereZeit| durchlaufen, die mit Hilfe des Befehls \fcmd{SetDateTime} die Uhrzeit notiert und diese mit \fcmd{AddNewKey} als Teil der URL speichert, wobei der fortlaufenden Schlüssel \lstinline|ZP(...)| verwendet wird.
 
 Der Befehl \fcmd{SetDateTime} speichert die Systemzeit\index{Systemzeit} in einem vorgegebenen Format in einer Variable und der Befehl \fcmd{AddNewKey} funktioniert so, dass er den Wert nur dann als Teil der URL speichert, wenn dort noch kein Wert für diesen Schlüssel vorhanden ist. Er verhält sich damit analog zu den Auswahlabfragen und Texteingaben, die auch nur dann eine Eingabe verlangen, wenn der Wert noch nicht in der URL vorhanden ist. Die Zeitpunkte aller Aktionen werden damit in der URL gespeichert.
 
-Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und aktueller Aktion die Zeitdifferenz in Minuten berechnet und zu einer Summe aufaddiert. Für die Differenzberechnung wird dabei etwas trickreich der Doppelpunkt der Uhrzeiten einfach durch die Zeichenfolge \verb|* 60 +| ersetzt, sodass sich beispielsweise aus dem Ausdruck \verb|12:36 - (11:51)| der Rechenterm $12\cdot 60+36 -(11\cdot 60+51)$ ergibt, der die Differenz der Uhrzeiten in Minuten, also $45$ berechnet.
+Bei aktuell laufender Zeitmessung wird aus den Uhrzeiten zwischen letzter und aktueller Aktion die Zeitdifferenz in Minuten berechnet und zu einer Summe aufaddiert. Für die Differenzberechnung wird dabei etwas trickreich der Doppelpunkt der Uhrzeiten einfach durch die Zeichenfolge \lstinline|* 60 +| ersetzt, sodass sich beispielsweise aus dem Ausdruck \lstinline|12:36 - (11:51)| der Rechenterm $12\cdot 60+36 -(11\cdot 60+51)$ ergibt, der die Differenz der Uhrzeiten in Minuten, also $45$ berechnet.
 
 Bei Beendigung des Skriptes mittels \emph{Zeitmessung abschließen} wird dann das vollständige Zeitprotokoll mit den Uhrzeiten, den Differenzminuten und der Gesamtzeitdauer ausgegeben.
 
@@ -69,7 +69,7 @@ Es ist sinnvoll, Themen für regelmäßige Besprechungen im Vorfeld zu sammeln, 
 Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting dort notieren möchte, muss dort gegebenenfalls zuerst die entsprechende Seite mit Überschrift angelegt werden. Das dazugehörende Datum findet man sicher im Kalender, wo das nächste Meeting als Teil einer Terminserie eingetragen ist, und für die Konvention der Überschrift kann man sich an den letzten Einträgen im Wiki orientieren. Einfacher ist es jedoch, das nachfolgen des Skript aufzurufen, das Datum und Überschrift für das aus heutiger Sicht nächste Meeting anhand der Terminregeln automatisch berechnet und bei Bedarf auch noch direkt auf den entsprechenden Wiki-Bereich verlinken könnte.
 
 \Beispiel{Jour-fixe-Planer}\label{BspJourFixePlaner}
-\begin{verbatim}
+\begin{codeblock}
 ~SetCulture de-DE
 ~SetDateTime dheute=yyyy-MM-dd
 ~SetDateTime Jahr = yyyy
@@ -97,15 +97,15 @@ Wenn einem nun aktuell ein Thema einfällt, das man für das kommende Meeting do
 >>* Falls nicht vorhanden, neue Seite anlegen:
     >|$erg - Jour fixe WM-XX (Nr. $nr/$Jahr)
 >>* (findet an jedem 3ten Dienstag statt)
-\end{verbatim}
+\end{codeblock}
 
 Das Beispiel des \emph{Jour-fixe-Planers}\index{Jour-fixe-Planer} zeigt auch noch weitere Befehle für den Umgang mit Datumsangaben\index{Datumsangaben}, angefangen mit \fcmd{SetCulture}, mit dem man die Lokalisierungseinstellungen\index{Lokalisierungseinstellungen} für die Ausführung setzen kann, die sich insbesondere auch auf die Datums\index{Datumsformate}- und Uhrzeitformate\index{Uhrzeitformate} auswirken.
 
-In unserem Beispiel werden mit \verb|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \verb|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
+In unserem Beispiel werden mit \lstinline|de-DE| deutschsprachige Einstellungen gesetzt. Danach wird aus der Systemzeit das heutige Datum und zusätzlich auch noch die Jahreszahl abgeleitet. Im Anschluss wird mit dem \fcmd{SetDateTime}-Befehl die Variable \lstinline|tag| auf den 06.01.\ des aktuellen Jahres gesetzt, wobei das Format, in dem der zu setzende Wert vorliegt, ebenfalls angegeben werden muss.
 
-Die eigentliche Berechnung erfolgt in einer Schleife, in der die \verb|tag|-Variable mit dem Befehl \fcmd{DateAdd} sukzessive um einen Tag hochgezählt wird. Für den Vergleicht wird dieses Datum mit dem \fcmd{DateFormat}-Befehl auf das gleiche Format gebracht wie \verb|dheute|. Sobald das aktuelle Datum erreicht wird, wird die Variable \verb|zukunft| auf \verb|ja| gesetzt, danach wird der Wochentag über das Format \verb|ddd| bestimmt.
+Die eigentliche Berechnung erfolgt in einer Schleife, in der die \lstinline|tag|-Variable mit dem Befehl \fcmd{DateAdd} sukzessive um einen Tag hochgezählt wird. Für den Vergleicht wird dieses Datum mit dem \fcmd{DateFormat}-Befehl auf das gleiche Format gebracht wie \lstinline|dheute|. Sobald das aktuelle Datum erreicht wird, wird die Variable \lstinline|zukunft| auf \lstinline|ja| gesetzt, danach wird der Wochentag über das Format \lstinline|ddd| bestimmt.
 
-In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Dienstag handelt, und wenn ja, wird ein Zähler \verb|z| bis auf maximal drei hochgezählt. Sobald ein dritter Dienstag gefunden ist, der in der Zukunft liegt, wird die Schleife mit \fcmd{ExitLoop} verlassen. Die Termine werden zusätzlich über das Jahr hinweg durchgezählt.
+In der verschachtelten If-Abfrage wird zuerst geprüft, ob es sich um einen Dienstag handelt, und wenn ja, wird ein Zähler \lstinline|z| bis auf maximal drei hochgezählt. Sobald ein dritter Dienstag gefunden ist, der in der Zukunft liegt, wird die Schleife mit \fcmd{ExitLoop} verlassen. Die Termine werden zusätzlich über das Jahr hinweg durchgezählt.
 
 Das gefundene Datum wird dann zusammen mit der laufenden Nummer in die Überschrift für die Protokollseite eingebaut und als Codeblock ausgegeben, so dass alles direkt in die Zwischenablage kopiert werden kann.
 
@@ -121,7 +121,7 @@ Sofern dafür nicht eine spezialisierte Asset-Datenbank verwendet wird, ist das 
 Das dazugehörende Beispiel beginnt mit der Abfrage der allgemeinen Rahmendaten des Assets, zu denen Bezeichnung, Verwendungszweck und vor allem die Art gehören, von der die Menge der weiteren Eigenschaften abhängt. Das am Ende erstellte Dokument wird Teil des integrierten Managementsystems\index{integriertes Managementsystems} (IMS\index{IMS}) und sollte demzufolge auch einen Dokumenteigentümer haben, der das Dokument regelmäßig sichtet und aktuell hält.
 
 \Beispiel{Asset-Dokumentation (Teil 1)}\label{BspAsset1}
-\begin{verbatim}
+\begin{codeblock}
 ~Input Bez: Bezeichnung des neuen Assets
 ?Asset: Welche Art von Asset soll dokumentiert werden?        
     #: Drittanbieterkomponente
@@ -157,16 +157,16 @@ Das dazugehörende Beispiel beginnt mit der Abfrage der allgemeinen Rahmendaten 
 @Jährl. Aufgaben >> Verwendung/Bedarf prüfen
 @Außerbetriebenahme >> Asset-Dokumentation archivieren
 ~Execute
-\end{verbatim}
+\end{codeblock}
 
 Je nach Art gibt es bestimmte Eigenschaften oder Aspekte, die für die Dokumentation relevant sind oder sein können, und die abgefragt werden müssen. Ob eine Eigenschaften für eine Art relevant ist oder nicht, wird über eine entsprechend benannte Variable gesetzt, die im späteren Verlauf abgefragt werden. Durch die Verwendung dieser Schalter\index{Schalter} muss jede Eigenschaft oder jeder Aspekt nur einmalig im Skript implementiert werden und die Reihenfolge bleibt einheitlich.
 
-Im Beispiel oben ist nur der Fall des intern genutzten Dienstes ausimplementiert. Für alle anderen Typen würde man entsprechende Schalter setzen, z.B.\ für den Typ \emph{Software} die Eigenschaft \verb|HatLokaleInstallation=Ja|.
+Im Beispiel oben ist nur der Fall des intern genutzten Dienstes ausimplementiert. Für alle anderen Typen würde man entsprechende Schalter setzen, z.B.\ für den Typ \emph{Software} die Eigenschaft \lstinline|HatLokaleInstallation=Ja|.
 
 Die Implementierung der einzelnen Aspekte sieht prinzipiell so aus, dass man die dafür benötigten Eigenschaften abfragt und im Datenblatt auflistet. Hier können wieder untergeordnete Aspekte eine Rolle spielen, wie z.B.\ verschiedene Arten von Lizenzen, die man ebenfalls mit Schaltern abbilden kann. Für Assets mit Lizenz sind im Beispiel schon mal zwei Arten hinterlegt:
 
 \Beispiel{Asset-Dokumentation (Teil 2)}\label{BspAsset2}
-\begin{verbatim}
+\begin{codeblock}
 ~If $HatLizenz==Ja    
     ?Liz: Welche Art von Lizenz liegt vor?
         #: Frei, kommerziell nutzbar
@@ -193,12 +193,12 @@ Die Implementierung der einzelnen Aspekte sieht prinzipiell so aus, dass man die
         ~Set ALGegenstand=Lizenzverwaltung
         ~Set ALKey=LIV
         ~GoSub AssetLink
-\end{verbatim}
+\end{codeblock}
 
-Die meisten Informationen landen im Datenblatt. Bei benutzerbezogenen und kostenpflichtigen Lizenzen leiten sich zusätzlich Aufgaben für die jährliche Überprüfung, das Offboarding und die Außerbetriebnahme ab. So kann z.B.\ eine Lizenz zurückgegeben oder stillgelegt werden, wenn der nutzende Mitarbeiter das Unternehmen verlässt. Der Funktionsaufruf \verb|AssetLink| am Ende wird in diesem Skript noch häufiger verwendet. Er ruft die folgende Funktion auf:
+Die meisten Informationen landen im Datenblatt. Bei benutzerbezogenen und kostenpflichtigen Lizenzen leiten sich zusätzlich Aufgaben für die jährliche Überprüfung, das Offboarding und die Außerbetriebnahme ab. So kann z.B.\ eine Lizenz zurückgegeben oder stillgelegt werden, wenn der nutzende Mitarbeiter das Unternehmen verlässt. Der Funktionsaufruf \lstinline|AssetLink| am Ende wird in diesem Skript noch häufiger verwendet. Er ruft die folgende Funktion auf:
 
 \Beispiel{Asset-Dokumentation (Teil 3)}
-\begin{verbatim}
+\begin{codeblock}
 ~DefineSub AssetLink
     ?QAL$ALKey: Ist ein Asset für "$ALGegenstand" vorhanden?
     #j: Ja
@@ -209,7 +209,7 @@ Die meisten Informationen landen im Datenblatt. Bei benutzerbezogenen und kosten
         @Datenblatt > $ALGegenstand:
         @ToDos >> Asset für $ALGegenstand erfassen
 ~Return
-\end{verbatim}
+\end{codeblock}
 
 Diese fragt eine bestimmte variable Eigenschaft des Assets ab, die vorzugsweise wieder als eigenes Asset angelegt sein sollte, so dass mittels Link darauf verwiesen werden kann. In diesem Fall ist es die Lizenzverwaltung, also die Information über die Anzahl, Art und Zuteilung der vorhandenen, kostenpflichtigen Lizenzen. Um die Komplexität überschaubar zu halten, ist es sinnvoll, möglichst viele Teilsysteme als eigene Assets zu erfassen und jeweils darauf zu verweisen. Auf diese Weise spart man sich die verschachtelte Abfrage der damit verbundenen Eigenschaften und Aufgaben und bekommt eine sehr homogene Dokumentation.
 
@@ -218,7 +218,7 @@ Wenn man mit einer derartigen Dokumentation beginnt, muss man davon ausgehen, da
 Für die restlichen oben gesetzten Schalter könnte die Erfassung in sehr vereinfachter Form so aussehen:
 
 \Beispiel{Asset-Dokumentation (Teil 4)}\label{BspAsset4}
-\begin{verbatim}
+\begin{codeblock}
 ~If $HatAufrufURL==Ja
     ~Input AufrufURL: Unter welcher URL wird der Dienst aufgerufen?
     @Datenblatt >>* Aufruf
@@ -258,7 +258,7 @@ Für die restlichen oben gesetzten Schalter könnte die Erfassung in sehr verein
 ~MoveSection Offboarding->Offboarding-Aufgaben
 ~MoveSection Außerbetriebenahme->Aufgaben bei Außerbetriebenahme
 ~MoveSection ToDos->Aktuelle ToDos
-\end{verbatim}
+\end{codeblock}
 
 Die Menge der abgefragten Informationen sollte sich primär daran orientieren, was in Ausnahmesituationen benötigt wird, um den Kernbetrieb am Laufen zu halten. Auch das Ausfallrisiko auf Mitarbeiterseite ist nicht zu unterschätzen. Mitarbeiter, die zentrales Wissen oder Zugänge zu essentiellen Diensten haben, können verunfallen und für längere Zeit vollständig ausfallen. Insofern sollte immer darauf geachtet werden, dass relevantes Wissen festgehalten wird und dass essentielle Zugänge notfallmäßig hinterlegt werden.
 
@@ -303,7 +303,7 @@ In diesem Fall hat der Mitarbeiter AB nur zwei Termine angegeben und GH nur eine
 Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingabefelder des folgenden Skriptes übertragen:
 
 \Beispiel{Terminplaner}\label{BspTerminplaner}
-\begin{verbatim}
+\begin{codeblock}
 ~SetStopCounter 100000; 3000000
 ~Input Anz: Anzahl Termine
 ~Execute
@@ -370,17 +370,17 @@ Nach Ablauf der Wahlfrist werden nun einfach die gemachten Angaben in die Eingab
                 ~Set FErg($idx)=$Erg($idx)
             ~Loop        
 ~Return
-\end{verbatim}
+\end{codeblock}
 
 Da das Skript zur Lösungsfindung exponentiell viele Variationen durchprobiert, werden gleich zu Beginn die Stop-Zähler\index{Stop-Zähler} für die maximale Anzahl an Schleifendurchläufen und Befehlsausführungen mit dem Befehls \fcmd{SetStopCounter} auf sehr große Werte gesetzt.
 
 Zuerst wird die Anzahl der Termine abgefragt, dann für jeden Termin die Präferenzen, wie üblich kommagetrennt.
 
-Die Suche nach der passenden Lösung erfolgt mit Hilfe der Funktion \verb|SucheLoesung|, die als Übergabeparameter den Index des nächsten zu planenden Termins, die Liste der schon verplanten Mitarbeiter und die Zwischensumme der Präferenzwerte übergeben bekommt.  Die Anzahl der schon verplanten Termine wird mit Hilfe des \fcmd{Split}-Befehls aus der Aufzählung der schon verplanten Mitarbeiter berechnet. 
+Die Suche nach der passenden Lösung erfolgt mit Hilfe der Funktion \lstinline|SucheLoesung|, die als Übergabeparameter den Index des nächsten zu planenden Termins, die Liste der schon verplanten Mitarbeiter und die Zwischensumme der Präferenzwerte übergeben bekommt.  Die Anzahl der schon verplanten Termine wird mit Hilfe des \fcmd{Split}-Befehls aus der Aufzählung der schon verplanten Mitarbeiter berechnet. 
 
-Immer wenn der Index des letzten Termins erreicht ist, wird die aktuelle Lösung mit der bisher besten Lösung verglichen, wobei primär die Anzahl der geplanten Termine zählt, und bei gleicher Anzahl eine möglichst geringe Präferenzsumme. Ist eine neue beste Lösung gefunden, wird diese in das Feld \verb|FErg(...)| übertragen.
+Immer wenn der Index des letzten Termins erreicht ist, wird die aktuelle Lösung mit der bisher besten Lösung verglichen, wobei primär die Anzahl der geplanten Termine zählt, und bei gleicher Anzahl eine möglichst geringe Präferenzsumme. Ist eine neue beste Lösung gefunden, wird diese in das Feld \lstinline|FErg(...)| übertragen.
 
-Ansonsten werden alle Mitarbeiter durchlaufen die sich für den als nächstes zur Planung anstehenden Termin eingetragen haben. Die Kürzel werden mit Hilfe eines regulären Ausdrucks vom Präferenzwert getrennt. Wenn keiner angegeben ist, wird der Wert 1 gesetzt. Mit Hilfe des Enthält-nicht-Operators\index{Enthält-nicht-Operator} \verb|!~| wird dann geprüft, ob der entsprechende Mitarbeiter noch nicht in der Menge der bisher verplanten Mitarbeiter enthalten ist, wobei das Trennzeichen \verb|/| verwendet wird. In diesem Fall werden die Parameter für einen weiteren Funktionsaufruf gesetzt, wobei die \verb|BaseKey|-Variable um den Buchstaben X und das Mitarbeiterkürzel erweitert werden.
+Ansonsten werden alle Mitarbeiter durchlaufen die sich für den als nächstes zur Planung anstehenden Termin eingetragen haben. Die Kürzel werden mit Hilfe eines regulären Ausdrucks vom Präferenzwert getrennt. Wenn keiner angegeben ist, wird der Wert 1 gesetzt. Mit Hilfe des Enthält-nicht-Operators\index{Enthält-nicht-Operator} \lstinline|!~| wird dann geprüft, ob der entsprechende Mitarbeiter noch nicht in der Menge der bisher verplanten Mitarbeiter enthalten ist, wobei das Trennzeichen \lstinline|/| verwendet wird. In diesem Fall werden die Parameter für einen weiteren Funktionsaufruf gesetzt, wobei die \lstinline|BaseKey|-Variable um den Buchstaben X und das Mitarbeiterkürzel erweitert werden.
 
 Nach Durchlauf aller Mitarbeiter wird auch noch die Variante geprüft, bei der der anstehende Termin nicht besetzt wird. Gerade wenn mehr Termine angeboten werden, als Mitarbeiter vorhanden sind, müssen Termine unbesetzt bleiben.
 

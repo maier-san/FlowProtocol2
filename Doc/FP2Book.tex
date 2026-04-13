@@ -1,17 +1,17 @@
-\documentclass[10pt, twoside]{scrbook}
+\documentclass[10pt, parskip=half, twoside]{scrbook}
 \usepackage[german]{babel}
 \usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{scrlayer-scrpage}
 \usepackage{palatino}
-%
-\usepackage{lmodern}
+%\usepackage{libertinus}
 \usepackage{microtype}
+\usepackage{listings}
+\usepackage{inconsolata}
 \usepackage{graphicx}
 \usepackage{makeidx}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{amsmath, amssymb}
 \usepackage{theorem}
 \title{Softwareentwicklung mit FlowProtocol 2}
 \author{Wolfgang Maier}
@@ -22,8 +22,6 @@
 %% Layout
 %%
 \setlength{\parindent}{0mm}
-\setlength{\parskip}{0.7ex plus0.2ex minus0.1ex}
-\addtolength{\headheight}{2.5pt}
 %%
 %% ensure header text is not italicized
 %%
@@ -34,11 +32,34 @@
 %% scrlayer-scrpage-Einstellungen
 %%
 \clearpairofpagestyles
-% Kopfzeilen normal formatieren (nicht kursiv)
 \renewcommand*{\headfont}{\normalfont}
-\ohead*{\headmark}  % Section title on outer headers
-\ofoot*{\pagemark}  % Page number on outer footers
-\renewcommand{\chapterpagestyle}{empty}  % No headers on chapter pages
+\ihead{\headmark}
+\ohead{\pagemark}
+\setheadsepline{0.4pt}
+\pagestyle{scrheadings}
+\renewcommand*{\chapterpagestyle}{plain}
+%%
+%% Einstellungen für die Listings
+%%
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,   % WICHTIG für kompakte Darstellung
+  keepspaces=true,
+  breaklines=false,
+  showstringspaces=false,
+  upquote=true,
+  literate=
+    {ä}{{\"a}}1
+    {ö}{{\"o}}1
+    {ü}{{\"u}}1
+    {Ä}{{\"A}}1
+    {Ö}{{\"O}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}1
+}
+\lstnewenvironment{codeblock}
+  {\lstset{basicstyle=\ttfamily\small}}
+  {}
 %%
 %% Variablen
 %%
@@ -59,9 +80,8 @@
 \newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
 \newcommand{\synvar}[1]{\ensuremath{\langle\text{#1}\rangle}}
 \theorembodyfont{\rmfamily}
-\newtheorem{grundelement}{Kernelement}[section]
+\newtheorem{basisformat}{Basisformat}[chapter]
 \makeindex
-\pagestyle{empty}
 
 \begin{document}
 \frontmatter
@@ -99,8 +119,8 @@
    	FlowProtocol 2}\\[1cm]
    {\Large\sffamily  2.~Auf\-lage}\\[0.7cm]
    {\large von}\\[0.3cm]
-   {\Large\authorname}\\[0.5cm]
-   {\large\releasedate }\\[0.7cm]
+   {\Large\authorname}\\[0.3cm]
+   {\large\releasedate }\\[0.8cm]
     \includegraphics[width=0.6\textwidth]{FlowLogoHigh}
  \end{center}
  \vspace*{\fill}
@@ -127,7 +147,6 @@ ISBN: \isbn
 %-------------------------
 % Ab hier: Buchtext
 %-------------------------
-\pagestyle{plain} % Ab hier wieder normal
 \setcounter{page}{1}
 
 \newpage
@@ -135,7 +154,7 @@ ISBN: \isbn
 \include{ch_1_vorwort}
 \include{ch_2_bezugundkonfiguration}
 \include{ch_3_grundlagen}
-\include{ch_4_entscheidungsbume}
+\include{ch_4_entscheidungsbaeume}
 \include{ch_5_formatierungderausgabe}
 \include{ch_6_variablenundtexteingaben}
 \include{ch_7_weitereformatierungsmglichkeiten}

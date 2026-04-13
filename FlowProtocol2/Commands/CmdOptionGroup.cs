@@ -38,6 +38,7 @@ namespace FlowProtocol2.Commands
         {
             string expandedKey = ReplaceVars(rc, Key).Trim();            
             string expandedPrompt = ReplaceVars(rc, Prompt).Trim();
+            CurrentAssociatedInputElement = null;
             try
             {            
                 CmdOptionValue? firstOptionValue = GetNextCommand<CmdOptionValue>(c => true, c => c.Indent < this.Indent);
@@ -117,7 +118,11 @@ namespace FlowProtocol2.Commands
                 {
                     rc.BoundVars[expandedKey] = string.Empty;
                     rc.InputForm.AddInputItem(ogroup);
-                    AssociatedInputElements[rc.BaseKey] = ogroup;
+                    AssociatedInputElements[expandedKey] = ogroup;
+                }
+                if (AssociatedInputElements.ContainsKey(expandedKey))
+                {
+                    CurrentAssociatedInputElement = AssociatedInputElements[expandedKey];
                 }
                 if (rc.BoundVars.ContainsKey(expandedKey))
                 {

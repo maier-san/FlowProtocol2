@@ -14,9 +14,11 @@
 >>|~ForEach rt in Radtypen
 >>|	@Ausgabe > $rt
 >>|~Loop
+>>|@Ausgabe >> Anzahl: $Radtypen(0)
 ~Split Radtypen = Rennrad, MTB, Crosser|,
 ~AddToList Radtypen+=Gravel
 @Ausgabe >> Meine $Radtypen(0) Radtypen
 ~ForEach rt in Radtypen
 	@Ausgabe > $rt
 ~Loop
+@Ausgabe >> Anzahl: $Radtypen(0)

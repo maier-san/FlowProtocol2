@@ -1,7 +1,43 @@
+// BVListe: Kommagetrennte Liste der benötigten Variablen
+~SetInputSection Benutzervariablen
 ?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
-	#AB: Anton Barium
-		~Set BenVarKuerzel=AB
-		~Set BenVarPfadAufgabenmappen=H:\Aufgabenmappen
-		~Set BenVarPfadTools=C:\Work\Tools
-	#CD: Christian Deuterium
-	#EF: Ernst Flour
+	#WM: Wolfgang Maier
+		~Set BVName=Wolfgang Maier
+		~Set BVKuerzel=WM
+		~Set BVPfadAufgabenmappen=F:\Aufgabenmappen
+		~Set BVPfadTools=C:\Projekte\Tools
+	#x: Nicht in Liste
+		~Input IBK: Gibt deinen Namen ein
+		~Input IBVKuerzel: Gib dein Kürzel ein		
+		~Set BVEditIntro=Füge vor Zeile $LineNumber-3 folgenden Code ein:			
+		~GoSub BVEditInfo
+			>.|$Chr(9)#$IBVKuerzel: $IBK
+			>.|$Chr(9)$Chr(9)~Set BVName=$IBK
+			>.|$Chr(9)$Chr(9)~Set BVKuerzel=$IBVKuerzel
+		~Set BVName=$IBK
+		~Set BVKuerzel=$IBVKuerzel
+~Execute
+~Set BVEditIntro=Füge für deinen Benutzer folgende Zeilen ein:
+~Set HelpBVKuerzel=Dein Benutzerkürzel, z.B. WM
+~Set HelpBVPfadAufgabenmappen=Der Pfad auf die Aufgabenmappen
+~Set HelpBVPfadTools=Der Pfad auf die Tools-Arbeitskopie
+~Split BVElements=$BVListe|,
+~ForEach BVIdx in BVElements
+	~If !?$$BVIdx
+		~Input I$BVIdx: Wert der Variablen $BVIdx
+		~If ?$Help$BVIdx
+			&> Erklärung: $Help$BVIdx
+		~GoSub BVEditInfo
+			>.|$Chr(9)$Chr(9)~Set $BVIdx=$I$BVIdx
+		~Set $BVIdx=$I$BVIdx		
+~Loop
+~DefineSub BVEditInfo
+	~If $BVEditInfo!=ja
+		@Skript-Erweiterung >>* Hinterlege die Benutzervariablen
+			__ fest im Benutzervariablen-Skript:
+			> Öffne die Skriptdatei im Texteditor
+				>.|$ScriptFilePath
+			> $BVEditIntro
+		~Set BVEditInfo=ja
+~Return
+~ClearVar HelpBV*

@@ -1,13 +1,11 @@
 \documentclass[10pt, parskip=half, twoside]{scrbook}
 \usepackage[german]{babel}
-\usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{scrlayer-scrpage}
-\usepackage{palatino}
-%\usepackage{libertinus}
+%\usepackage{palatino}
+\usepackage{libertinus}
 \usepackage{microtype}
-\usepackage{listings}
 \usepackage{inconsolata}
 \usepackage{graphicx}
 \usepackage{makeidx}
@@ -19,15 +17,18 @@
 %% LaTeX Template for Books: Essential Guide for Self-Publishers
 %% https://www.lode.de/blog/latex-template-for-books-essential-guide-for-self-publishers
 %%
-%% Layout
-%%
-\setlength{\parindent}{0mm}
-%%
 %% ensure header text is not italicized
 %%
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 \renewcommand{\subsectionmark}[1]{\markleft{\thesubsection\ #1}}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%%
+%% Seitenränder statt \usepackage[paperwidth=170mm, paperheight=220mm, top=25mm, bottom=25mm, inner=25mm, outer=20mm]{geometry}
+\KOMAoptions{
+  paper=170mm:220mm,
+  DIV=12,
+  BCOR=8mm
+}
 %%
 %% scrlayer-scrpage-Einstellungen
 %%
@@ -38,28 +39,6 @@
 \setheadsepline{0.4pt}
 \pagestyle{scrheadings}
 \renewcommand*{\chapterpagestyle}{plain}
-%%
-%% Einstellungen für die Listings
-%%
-\lstset{
-  basicstyle=\ttfamily,
-  columns=fullflexible,   % WICHTIG für kompakte Darstellung
-  keepspaces=true,
-  breaklines=false,
-  showstringspaces=false,
-  upquote=true,
-  literate=
-    {ä}{{\"a}}1
-    {ö}{{\"o}}1
-    {ü}{{\"u}}1
-    {Ä}{{\"A}}1
-    {Ö}{{\"O}}1
-    {Ü}{{\"U}}1
-    {ß}{{\ss}}1
-}
-\lstnewenvironment{codeblock}
-  {\lstset{basicstyle=\ttfamily\small}}
-  {}
 %%
 %% Variablen
 %%
@@ -77,7 +56,7 @@
 \newcommand{\cidxvar}[1]{\texttt{\$#1}\index{#1@\texttt{\$#1}}}
 \newcommand{\cidxfrag}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
 \newcounter{bspcount}
-\newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}}
+\newcommand{\Beispiel}[1]{\refstepcounter{bspcount}\subsubsection*{Beispiel~\arabic{bspcount} -- #1}\vspace*{-1.5ex}}
 \newcommand{\synvar}[1]{\ensuremath{\langle\text{#1}\rangle}}
 \theorembodyfont{\rmfamily}
 \newtheorem{basisformat}{Basisformat}[chapter]
@@ -90,42 +69,43 @@
 % Schmutztitel (rechts)
 %-------------------------
 \begin{titlepage}
- \vspace*{\fill}
- \begin{center}
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}   
     \sffamily
    {\Large Softwareentwicklung\\[0.4ex]
    	mit\\[1.4ex]
    	FlowProtocol 2}
- \end{center}
- \vspace*{\fill}
+\end{center}
+\vspace*{\fill}
 \end{titlepage}
-\clearpage
+\newpage
 
 %-------------------------
 % Frontispiz (links)
 %-------------------------
 \thispagestyle{empty}
-\vspace*{\fill}
+\null
 \newpage
 
 %-------------------------
 % Titelblatt (rechts)
 %-------------------------
 \begin{titlepage}
- \vspace*{\fill}
- \begin{center}
-   {\Huge\sffamily  Softwareentwicklung\\[0.4ex]
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+       {\Huge\sffamily  Softwareentwicklung\\[0.4ex]
    	mit\\[1.4ex]
    	FlowProtocol 2}\\[1cm]
    {\Large\sffamily  2.~Auf\-lage}\\[0.7cm]
-   {\large von}\\[0.3cm]
    {\Large\authorname}\\[0.3cm]
    {\large\releasedate }\\[0.8cm]
-    \includegraphics[width=0.6\textwidth]{FlowLogoHigh}
- \end{center}
- \vspace*{\fill}
+   \includegraphics[width=0.5\textwidth]{FlowLogoHigh}
+    \end{center}
+    \vspace*{\fill}
 \end{titlepage}
-\clearpage
+\newpage
 
 %-------------------------
 % Impressum (links)
@@ -144,13 +124,11 @@ ISBN: \isbn
 
 \tableofcontents
 \mainmatter
+
 %-------------------------
 % Ab hier: Buchtext
 %-------------------------
 \setcounter{page}{1}
-
-\newpage
-\thispagestyle{empty}
 \include{ch_1_vorwort}
 \include{ch_2_bezugundkonfiguration}
 \include{ch_3_grundlagen}

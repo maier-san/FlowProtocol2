@@ -6,9 +6,11 @@ namespace FlowProtocol2.Core
         {
             ShowLines = 5;
             UploadFilter = string.Empty;
+            ReadRegEx = string.Empty;
         }
 
         public int ShowLines { get; set; }
         public string UploadFilter { get; set; }
+        public string ReadRegEx { get; set; }
     }
 }

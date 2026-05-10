@@ -22,7 +22,7 @@ Eine wohl in allen Softwarehäusern stattfindende Kategorisierung\index{Kategori
 Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt damit, explizit nach Kriterien für die höchste Einstufung zu fragen und geht weiter zu den Kriterien der zweiten Stufe, wenn diese nicht zutreffen. Nach der zweiten Stufe wird direkt nach Kriterien für die unterste Stufe gefragt, so dass automatisch für alles die Zuordnung zu Stufe 3 erfolgt, was auch dort nicht zugeordnet werden kann. Das macht die Aufstellung der Kriterien leichter, da sich einfacher Kriterien für die ganz niedrige Priorität finden lassen, als für die vorgelagerte Stufe.
 
 \Beispiel{Schweregradeinstufung}
-\begin{codeblock}
+\begin{verbatim}
 ?S1: Treffen die Kriterien für einen Stufe-1-Fehler zu?    
     #k1: Ausgegebene Werte entsprechen nicht der Spezifikation.
         >> Stufe-1-Fehler: Spezifikationsverletzung
@@ -48,7 +48,7 @@ Die nachfolgende Schweregradeinstufung\index{Schweregradeinstufung} beginnt dami
                         >> Stufe-4-Fehler: unsinnige Eingaben
                     #no: Nein, die o.g. Kriterien treffen nicht zu.
                         >> Stufe-3-Fehler
-\end{codeblock}
+\end{verbatim}
 
 Für die Abarbeitung der Fehler-Aufgaben der verschiedenen Schweregradstufen kann man dann klare Regeln definieren, wie z.B.\ dass Stufe-1-Fehler umgehend behoben werden und dass die Lösung aller Stufe-2-Fehler zumindest in das nächste Service Release einfließen muss.
 
@@ -69,7 +69,7 @@ Der Umfang solcher Entscheidungsbäume\index{Entscheidungsbäume} kann riesig we
 
 Hier ist ein sehr vereinfachtes Beispiel für ein Expertensystem, das eine Problemsituation analysiert und eine Handlungsempfehlung gibt:
 \Beispiel{Mini-Expertensystem}\label{Bsp04}
-\begin{codeblock}
+\begin{verbatim}
 ?: Startet die Anwendung?
     #: Ja
         >> Anwendung startet
@@ -89,11 +89,11 @@ Hier ist ein sehr vereinfachtes Beispiel für ein Expertensystem, das eine Probl
             #: Nein
                 >> System wurde noch nicht neu gestartet.
                 >> Empfehlung: System neu starten
-\end{codeblock}
+\end{verbatim}
 
 Zuerst fällt auf, dass hier keine Schlüssel\index{Schlüssel} angegeben sind, weder für die Auswahlabfragen, noch für die Antwortmöglichkeiten. Tatsächlich sind diese nicht zwingend erforderlich und werden von \FPZ\ selbständig anhand der Reihenfolge im Code vergeben, wenn sie im Skript weggelassen werden. Dies ist dann möglich, wenn man sich nicht an einer anderen Stelle im Skript auf eine Auswahl beziehen oder dieses wiederholen möchte, und es ist dann besonders vorteilhaft, wenn der Baum sehr groß werden kann und permanent erweitert wird und man den Überblick über die schon vergebenen Schlüssel zu verlieren droht. Der Nachteil der impliziten Schlüsselvergabe liegt darin, dass sich durch das Einfügen einer weiteren Auswahlabfrage am Anfang alle darunter liegenden Schlüssel verschieben, und so eine URL, die die Antworten in Bezug auf die Vorversion enthält, in der neuen Version falsch interpretiert wird. 
 
-Die automatische Nummerierung\index{automatische Nummerierung} von Schlüsseln für Auswahlabfragen und Texteingabe ist auch explizit möglich, in dem man einem selbstgewählten Basisschlüssel das \lstinline|'|-Zeichen anschließt. Mehrere nacheinander im Scriptcode vorkommenden Schlüsselangaben \lstinline|Q'| werden dann intern zu \lstinline|Q_1|, \lstinline|Q_2|, \lstinline|Q_3| usw.\ expandiert. Durch den Unterstrich werden Übereinstimmungen mit explizit vergebenen Schlüsseln vermieden.
+Die automatische Nummerierung\index{automatische Nummerierung} von Schlüsseln für Auswahlabfragen und Texteingabe ist auch explizit möglich, in dem man einem selbstgewählten Basisschlüssel das \verb|'|-Zeichen anschließt. Mehrere nacheinander im Scriptcode vorkommenden Schlüsselangaben \verb|Q'| werden dann intern zu \verb|Q_1|, \verb|Q_2|, \verb|Q_3| usw.\ expandiert. Durch den Unterstrich werden Übereinstimmungen mit explizit vergebenen Schlüsseln vermieden.
 
 Die Ausführung dieses Beispiels zeigt darüber hinaus, wie das System mit ineinander verschachtelten Fragestellungen umgeht. In jedem Schritt werden immer genau die Fragen gestellt, die noch offen sind, und die aufgrund der vorangegangenen Schritte durchlaufen werden müssen. Sobald alle Fragen beantwortet sind, werden die gesammelten Ausgaben ausgegeben und die Ausführung des Skriptes ist abgeschlossen.
 

@@ -15,7 +15,7 @@ Betrachten wir die Fragestellung, unter welcher Lizenz ein Softwareprodukt berei
 Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen, und weitere Lizenzen dann hinzuzunehmen, wenn sie tatsächlich benötigt werden. Diese Abfrage könnte man wie folgt aufbauen:
 
 \Beispiel{Lizenzabfrage}\label{BspLizenzabfrage}
-\begin{codeblock}
+\begin{verbatim}
 ?Lizenz: Unter welcher Lizenz wird die Software bereitgestellt?
     #: MIT-Lizenz
         ~Set BezLizenz=MIT-Lizenz
@@ -61,7 +61,7 @@ Hier bietet es sich an, die Auswahlabfrage zunächst mit einem Wert zu beginnen,
     ~AddLink $LinkLizenzbeschreibung | $LinkLizenzbeschreibung
     >* Kommerzielle Verwendung möglich? - $ErlaubtKomVerw
     >* Kostenpflichtig? - $IstKostenpflichtig
-\end{codeblock}
+\end{verbatim}
 
 Die Auswahl von \emph{Nicht in Liste} fragt die benötigen Werte ab und setzt die Variablen in der gleichen Weise, wie es die anderen Einträge machen, so dass das Skript seine Aufgabe erfüllen kann, z.B.\ die Dokumentation der abgefragten Lizenz mit den ganzen Eigenschaften.
 
@@ -85,7 +85,7 @@ Die Abfrage erfolgt entsprechend mit vier Texteingaben, wobei die Menge der abzu
 Das Ergebnis sieht wie folgt aus:
 
 \Beispiel{Meta-Erweiterung}\label{BspMetaErweiterung}
-\begin{codeblock}
+\begin{verbatim}
 ~Input Frage: Welche Frage soll ausgegeben werden?
 ~Input Key: Schlüssel für die Frage
 ~Input WListe: Abzufragende Werte (kommagetrennt, @ wenn leer)
@@ -138,9 +138,9 @@ Das Ergebnis sieht wie folgt aus:
     ~Loop
 @Erweiterung >|$EE$T$T>> Speichere die Datei ab.
 ~MoveSection IfBlocks->Erweiterung
-\end{codeblock}
+\end{verbatim}
 
-Um den Code schmal zu halten, werden am Anfang die Hilfsvariablen \lstinline|T| und \lstinline|ST| mit den häufig benötigten Sequenzen belegt. Damit die Tabulatorzeichen (\cidxvar{Chr(9)}) im innersten Code bis zum letztendlichen Einfügen in das Zielskript noch maskiert bleiben, wird das \lstinline|$|-Zeichen der \cidxvar{Chr(...)}-Sequenzen teilweise wiederholt durch \cidxvar{Chr(36)} ersetzt. In gleicher Weise werden auch die \lstinline|$|-Zeichen in den Aufrufen der Systemvariablen \cidxvar{ScriptFilePath} und \cidxvar{LineNumber} durch \cidxvar{Chr(36)} ersetzt, so dass diese erst bei der Ausführung im Zielskript aufgelöst werden und nicht bereits in der Ausgabe dieses Skriptes.
+Um den Code schmal zu halten, werden am Anfang die Hilfsvariablen \verb|T| und \verb|ST| mit den häufig benötigten Sequenzen belegt. Damit die Tabulatorzeichen (\cidxvar{Chr(9)}) im innersten Code bis zum letztendlichen Einfügen in das Zielskript noch maskiert bleiben, wird das \verb|$|-Zeichen der \cidxvar{Chr(...)}-Sequenzen teilweise wiederholt durch \cidxvar{Chr(36)} ersetzt. In gleicher Weise werden auch die \verb|$|-Zeichen in den Aufrufen der Systemvariablen \cidxvar{ScriptFilePath} und \cidxvar{LineNumber} durch \cidxvar{Chr(36)} ersetzt, so dass diese erst bei der Ausführung im Zielskript aufgelöst werden und nicht bereits in der Ausgabe dieses Skriptes.
 
 Für die Schalter, also die Werte, die mit einem Fragezeichen gekennzeichnet wurden, werden in einem zweiten Codeblock noch If-Abfragen erstellt. Damit kann man, ähnlich wie in den Beispielen~\ref{BspAsset1} bis \ref{BspAsset4}, für jeden Schalter individuellen Code ausführen, wenn dieser gesetzt ist.
 
@@ -176,7 +176,7 @@ Diese Praktik lässt sich recht gut mit \FPZ\ anwenden. Die Listen mit den Refle
 Im Ordner \emph{Wissen für FlowProtocol2} sind die beiden Textdateien \emph{Basisbefehle.txt} und \emph{Programmierung.txt} hinterlegt, die wie die Skripte auch, mit einem einfachen Texteditor erstellt wurden. Diese haben folgenden Inhalt:
 
 \Beispiel{Basisbefehle.txt}\label{BspBasisbefehle}
-\begin{codeblock}
+\begin{verbatim}
 [Ausgabe]
 Ich weiß, wie man eine Ausgabe erzeugt.
 Ich weiß, wie man eine zweistufige Ausgabe erzeugt.
@@ -190,10 +190,10 @@ Ich weiß, wie man eine Auswahlabfrage erstellt.
 Ich weiß, wie man eine Texteingabe abfragt.
 Ich weiß, wie man einen eingegebenen Text wieder ausgibt.
 Ich weiß, wie man Auswahlabfragen ineinander verschachtelt.
-\end{codeblock}
+\end{verbatim}
 
 \Beispiel{Programmierung.txt}\label{BspProgrammierung}
-\begin{codeblock}
+\begin{verbatim}
 [Strukturen]
 Ich weiß, wie eine If-Abfrage aufgebaut ist. 
 Ich weiß, wie eine Bedingung aufgebaut ist.
@@ -207,14 +207,14 @@ Ich weiß, wie man Variablen setzt und verwendet.
 Ich weiß, wie man Texte ersetzen kann.
 Ich weiß, wie man reguläre Ausdrücke verwenden kann.
 Ich weiß, wie man Berechnungen durchführen kann.
-\end{codeblock}
+\end{verbatim}
 
-Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \lstinline|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauf"|folgenden Zeilen interpretiert.
+Beide Dateien haben das Dateilisten-Format\index{Dateilisten}, d.h.\ Leerzeilen und mit \verb|\\| beginnende Kommentarzeilen werden ignoriert und Zeilen, die mit eckigen Klammern beginnen und enden werden als Abschnittsüberschriften für die darauf"|folgenden Zeilen interpretiert.
 
 Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
 
 \Beispiel{Wissensreflektion}\label{BspWissensreflektion}
-\begin{codeblock}
+\begin{verbatim}
 ~ListDirectories wdir = .Wissensgebiete; Pattern=Wissen *
 ~DynamicOptionGroup WGeb:wdir;Wähle das Wissensgebiet
 ~Execute
@@ -261,7 +261,7 @@ Das Skript, mit dem man auf diese Daten zugreift sieht wie folgt aus:
         >> Füge neue Reflektionsaussagen ein
             > Diese sollten mit "Ich weiß, " beginnen
             > ... und nach Möglichkeit nicht die Antwort enthalten
-\end{codeblock}
+\end{verbatim}
 
 Es beginnt mit einer Abfrage aller Verzeichnisse im Ordner \emph{.Wissensgebiete} die mit \emph{Wissen} beginnen. Dazu wird der Befehl \fcmd{ListDirectories} verwendet, der das Ergebnis in einem Feld abspeichert.
 
@@ -269,9 +269,9 @@ Durch den Befehl \fcmd{DynamicOptionGroup} wird diese Auf\-lis\-tung als Auswahl
 
 Im nächsten Schritt werden mit dem Befehl \fcmd{ListFiles} die Dateien innerhalb des gewählten Ordners abgefragt, die auf \emph{.txt} enden. Ähnlich wie oben wird hier eine Auswahlabfrage generiert, zuvor wird jedoch in einer Schleife eine Auf\-lis\-tung ohne die txt-Endungen erzeugt. Wenn in dem gewählten Ordner keine Dateien vorhanden sind, wird die Ausführung mit einer Hinweismeldung abgebrochen.
 
-Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auf\-lis\-tung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \lstinline|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
+Nach Auswahl einer Wissenspaket-Datei hat der Anwender nun drei Möglichkeiten, diese zu verwenden. Er kann \emph{Alle Reflektionsaustragen durchgehen}, wobei diese mit den Antwortmöglichkeiten Ja und Nein abgefragt werden. Am Ende werden dann die beiden Listen mit den Überschriften \emph{Was ich weiß} und \emph{Was ich nicht weiß} ausgegeben. Diese Auf\-lis\-tung wird mit dem schon in Abschnitt~\ref{RegUndDaten} verwendeten Befehl \fcmd{ForEachLine} erzeugt, der jeder Zeile der ausgewählten Datei durchläuft. Die Zeile selbst wird dabei in der \verb|ref|-Variablen zurückgegeben. Zusätzlich können Variablen für den Zeilenzähler über das \cidxfrag{IndexVar}-, und für die Abschnittsüberschrift über das \cidxfrag{SectionVar}-Argument angegeben werden. Bei jedem Schleifendurchlauf wird überprüft ob der Zähler durch vier teilbar ist und wenn ja, der \fcmd{Execute}-Befehl ausgeführt, sodass die Reflektionsaussagen in Viererpaketen abgefragt werden.
 
-Bei \emph{Drei Reflektionsaussagen als Stichprobe} werden zufällig drei Zeilen aus der Datei ausgewählt. Die Zahl drei wird mit dem \cidxfrag{Take}-Argument angegeben. Der Seed-Wert\index{Seed-Wert} des Zufallsgenerators\index{Zufallsgenerator} wird dabei als Parameter \lstinline|_rseed| in der URL notiert, so dass beim erneuten Aufrufen oder einer Aktualisierung der Seite wieder die genau gleiche Zufallsfolge entsteht. Hier werden nur die mit Nein beantworteten Punkte unter der Überschrift \emph{Heute sollte ich rausfinden\dots} in leicht angepasster Form aufgelistet.
+Bei \emph{Drei Reflektionsaussagen als Stichprobe} werden zufällig drei Zeilen aus der Datei ausgewählt. Die Zahl drei wird mit dem \cidxfrag{Take}-Argument angegeben. Der Seed-Wert\index{Seed-Wert} des Zufallsgenerators\index{Zufallsgenerator} wird dabei als Parameter \verb|_rseed| in der URL notiert, so dass beim erneuten Aufrufen oder einer Aktualisierung der Seite wieder die genau gleiche Zufallsfolge entsteht. Hier werden nur die mit Nein beantworteten Punkte unter der Überschrift \emph{Heute sollte ich rausfinden\dots} in leicht angepasster Form aufgelistet.
 
 Bei \emph{Weitere Reflektionsaussagen erfassen} wird eine Anleitung ausgegeben, die dabei unterstützt, die richtige Datei zu finden und dort weitere Aussagen einzufügen. Hierbei wird für die Zusammensetzung des Pfades die Systemvariable \cidxvar{CurrentScriptPath} verwendet, die den Pfad des aktuell ausgeführten Skriptes ausgibt.
 
@@ -305,7 +305,7 @@ Die Lösung diees Problems besteht darin, eine einzelne Funktionsdatei zu erstel
 Auch hier kann man davon ausgehen, dass mit der Zeit weitere Benutzer und auch weitere Variablen hinzukommen, und idealerweise kann die Funktionsdatei auch dann ihre Aufgabe erfüllen, wenn für einen Benutzer noch keine Daten eingetragen wurden. Dies kann wie folgt realisiert werden:
 
 \Beispiel{Benutzervariablen.fps}\label{BspBenutzervariablen}
-\begin{codeblock}
+\begin{verbatim}
 // BVListe: Kommagetrennte Liste der benötigten Variablen
 ~SetInputSection Benutzervariablen
 ?BK: Welche Benutzer-/Umgebungsvariablen sollen genutzt werden?
@@ -349,18 +349,18 @@ Auch hier kann man davon ausgehen, dass mit der Zeit weitere Benutzer und auch w
         ~Set BVEditInfo=ja
 ~Return
 ~ClearVar HelpBV*
-\end{codeblock}
+\end{verbatim}
 
-Im Beispiel gibt es einen Eintrag für den Benutzer WM mit vier gesetzten Variablen und den schon aus Abschnitt~{AngeleiteteSkriptErweiterungen} bekannten Eintrag \emph{Nicht in Liste}, der Namen und Kürzel eines neuen Benutzers abfragt. Für die Abfrage der Variablenwerte wird zusätzlicher Aufwand betrieben, denn schließlich möchte man nur die Werte abfragen, die noch nicht bekannt sind und die vom aufrufenden Skript auch benötigt werden. Zu diesem Zweck übermittelt das aufrufende Skript in der Variablen \lstinline|BVListe| kommagetrennt die Namen der benötigten Variablen. Diese werden durchlaufen und falls noch nicht gesetzt, vom Benutzer abgefragt.
+Im Beispiel gibt es einen Eintrag für den Benutzer WM mit vier gesetzten Variablen und den schon aus Abschnitt~{AngeleiteteSkriptErweiterungen} bekannten Eintrag \emph{Nicht in Liste}, der Namen und Kürzel eines neuen Benutzers abfragt. Für die Abfrage der Variablenwerte wird zusätzlicher Aufwand betrieben, denn schließlich möchte man nur die Werte abfragen, die noch nicht bekannt sind und die vom aufrufenden Skript auch benötigt werden. Zu diesem Zweck übermittelt das aufrufende Skript in der Variablen \verb|BVListe| kommagetrennt die Namen der benötigten Variablen. Diese werden durchlaufen und falls noch nicht gesetzt, vom Benutzer abgefragt.
 
-Bei der Abfrage wird geschaut, ob für eine benötigte Variable ein Erklärungstext hinterlegt ist, und falls ja, wird dieser in einer Hilfezeile ausgegeben. Die Erklärungstexte werden dabei einfach vor der Abfrageschleiche in Variablen geschrieben, die man durch das Voranstellen von \lstinline|Help| aus der zu erklärenden Variablen bekommt. Diese Variablen, genauer alle Variablen, die mit \lstinline|HelpBV| beginnen, werden am Ende der Funktionsdatei wieder mit dem \fcmd{ClearVar}-Befehl gelöscht. Da die Ersetzung der Variablen den größten Lastfaktor in \FPZ\ ausmacht, ist so eine Bereinigung in einer Funktionsdatei auf jeden Fall kein Fehler, besonders wenn diese Datei von vielen Skripten am Anfang aufgerufen wird. Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentliche Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
+Bei der Abfrage wird geschaut, ob für eine benötigte Variable ein Erklärungstext hinterlegt ist, und falls ja, wird dieser in einer Hilfezeile ausgegeben. Die Erklärungstexte werden dabei einfach vor der Abfrageschleiche in Variablen geschrieben, die man durch das Voranstellen von \verb|Help| aus der zu erklärenden Variablen bekommt. Diese Variablen, genauer alle Variablen, die mit \verb|HelpBV| beginnen, werden am Ende der Funktionsdatei wieder mit dem \fcmd{ClearVar}-Befehl gelöscht. Da die Ersetzung der Variablen den größten Lastfaktor in \FPZ\ ausmacht, ist so eine Bereinigung in einer Funktionsdatei auf jeden Fall kein Fehler, besonders wenn diese Datei von vielen Skripten am Anfang aufgerufen wird. Zu beachten ist auch, dass alle Variablen mit einem einheitlichen Präfix benannt wurden, sodass versehentliche Namenskonflikte mit den im Skript selbst gesetzten Variablen ausgeschlossen werden können.
 
-Die Einleitung der Skript-Erweiterung, also der Teil de Ausgabe, der den Benutzer dazu auffordert, den Erweiterungscode mit seinen Eingaben fest im Skript zu hinterlegen, ist in einer Funktion \lstinline|BVEditInfo| ausgelagert, die von verschiedenen Stellen aus aufgerufen wird. Die Funktion verwaltet in einer Variablen, ob sie schon aufgerufen wurde, so dass die Auf\-for\-derung nur einmal in der Ausgabe erscheint.
+Die Einleitung der Skript-Erweiterung, also der Teil de Ausgabe, der den Benutzer dazu auffordert, den Erweiterungscode mit seinen Eingaben fest im Skript zu hinterlegen, ist in einer Funktion \verb|BVEditInfo| ausgelagert, die von verschiedenen Stellen aus aufgerufen wird. Die Funktion verwaltet in einer Variablen, ob sie schon aufgerufen wurde, so dass die Auf\-for\-derung nur einmal in der Ausgabe erscheint.
 
 Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
 
 \Beispiel{Patchskript}\label{BspPatchskript}
-\begin{codeblock}
+\begin{verbatim}
 ~Set BVListe=BVKuerzel,BVPfadAufgabenmappen,BVPfadTools
 ~Include Benutzervariablen.fps
 ~SetInputSection Patch-Daten
@@ -388,16 +388,16 @@ Ein Skript, das auf solchen Variablen aufbaut, könnte wie folgt aussehen:
     ~AddCode  $AKennung.psc
     ~AddText  liegt unter
     >|$DatBasis
-\end{codeblock}
+\end{verbatim}
 
 In diesem Beispiel wird die Erstellung eines einfachen Patchskriptes angeleitet, das in einer nach Standardkonventionen benannten Aufgabenmappe als XML-Datei erstellt und mit Hilfe einer internen Hilfsanwendung in ein anderes Format konvertiert wird.
 
 Die Anleitung kombiniert dafür verschiedene innerhalb der Anleitung abgefragte und berechnete Eigenschaften mit den benutzerabhängigen Variablen. Dazu wird die Funktionsdatei \emph{Benutzervariablen.fps} gleich zu Beginn eingelesen, womit die Auswahlabfrage nach den Benutzervariablen als Teil des Skriptes erscheint.
-Vor dem Aufruf werden die drei im Skript benötigten Benutzervariablen als Auflistung in der Variablen \lstinline|BVListe| notiert.
+Vor dem Aufruf werden die drei im Skript benötigten Benutzervariablen als Auflistung in der Variablen \verb|BVListe| notiert.
 
-Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \lstinline|BK=XY| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
+Ein Anwender kann den Link auf das Skript in den Lesezeichen seines Browsers nun auch so abspeichern, dass diese erste Abfrage dort schon beantwortet ist. Die URL dafür bekommt er, indem er nur die Auswahlabfrage nach den Benutzervariablen beantwortet und auf \emph{Weiter} klickt. In unserem Fall wird dabei der URL-Parameter \verb|BK=XY| angefügt. Damit ist beim Aufruf gar nicht mehr erkennbar, dass das Skript benutzerabhängige Anteile hat.
 
-Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \lstinline|<|, \lstinline|>| und \lstinline|&|, sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
+Mit dem Befehl \fcmd{XmlEncode} wird im Beispiel der eingegebene Patchcode in die XML-Codierung\index{XML-Codierung} umgewandelt, so dass die für die Verwendung innerhalb eines XML-Tags kritischen Zeichen wie \verb|<|, \verb|>| und \verb|&|, sowie die Anführungszeichen maskiert werden. Bei den anderen Elementen lässt sich das Vorhandensein dieser Zeichen semantisch ausschließen.
 
-Der Befehl \fcmd{SetBlockSaveFile} unterhalb der Code-Zeilen, die die XML-Datei ausmachen, führt dazu, dass neben der \emph{In Zwischenablage kopieren}-Schaltfläche noch eine weitere Schaltfläche mit der Beschriftung \emph{Als \dots speichern} angezeigt wird, wobei anstelle der drei Punkte später der Wert der Variable \lstinline|$AKennung.xml| angezeigt wird. Durch die Betätigung dieser Schaltfläche im Browerfenster lässt sich der Textblock direkt und ohne Umweg über die Zwischenablage als Datei speichern. Mit dem optionalen Parameter \cidxfrag{Take} lässt sich hierbei die Codierung\index{Codierung} der Datei festlegen, wobei \emph{UFT-8} als Standard festgelegt ist.
+Der Befehl \fcmd{SetBlockSaveFile} unterhalb der Code-Zeilen, die die XML-Datei ausmachen, führt dazu, dass neben der \emph{In Zwischenablage kopieren}-Schaltfläche noch eine weitere Schaltfläche mit der Beschriftung \emph{Als \dots speichern} angezeigt wird, wobei anstelle der drei Punkte später der Wert der Variable \verb|$AKennung.xml| angezeigt wird. Durch die Betätigung dieser Schaltfläche im Browerfenster lässt sich der Textblock direkt und ohne Umweg über die Zwischenablage als Datei speichern. Mit dem optionalen Parameter \cidxfrag{Take} lässt sich hierbei die Codierung\index{Codierung} der Datei festlegen, wobei \emph{UFT-8} als Standard festgelegt ist.
 

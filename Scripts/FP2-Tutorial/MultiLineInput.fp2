@@ -1,6 +1,6 @@
 ~SetTitle MultiLineInput-Befehl
 @Beschreibung >>_ Der Befehl
-~AddCode  ~MultiLineInput <Key>: <Prompt>[; ShowLines=<Anzahl Zeilen>][; UploadFilter=<Dateiauswahlfilter>]
+~AddCode  ~MultiLineInput <Key>: <Prompt>[; ShowLines=<Anzahl Zeilen>][; UploadFilter=<Dateiauswahlfilter>][; ReadRegEx=<R-Ausdruck>]
 ~AddText  fragt einen mehrzeiligen Text vom Anwender ab.
 	>>* Mit der Option 
 	~AddCode  ShowLines
@@ -10,9 +10,13 @@
 	>>* Mit der Option 
 	~AddCode  UploadFilter
 	~AddText  kann ein Filter für die Auswahl von Dateien angegeben, und damit gleichzeitig die Option zum Einfügen von Text aus einer Datei aktiviert werden.
+	>>* Mit
+	~AddCode  R-Ausdruck
+	~AddText  kann ein regulärer Ausdruck angegeben werden, der beim einlesen der Datei verwendet wird.
+		__ Diese bewirkt, dass nur die Treffer des Ausdrucks als zeilen mit den Gruppenwerten, getrennt durch $Chr(182), aufgelistet werden.
 @Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
     >>* Ungültiger numerischer Ausdruck: Der Ausdruck ... kann nicht als ganze Zahl interpretiert werden. Die Ausführung wird abgebrochen.
-@Codebeispiel >>_ Das nachfolgende Beispiel ...
+@Codebeispiel >>_ Das nachfolgende Beispiel fragt zwei längere Texte ab, die auch aus Dateien eingelesen werden können. Bei der zweiten
 >>|~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7; UploadFilter=*.tex, *.txt
 >>|	&> Erzähl doch mal, lang und breit
 >>|	&> Und nimm dir richtig Zeit
@@ -20,6 +24,15 @@
 >>|~ToUpper text=$Chr(36)text
 >>|@Ausgabe >>* Meine Osterferien
 >>|	>| $Chr(36)text
+>>|~MultiLineInput CP: Abschnittswerte; UploadFilter=*.fp2, *.fp2; ReadRegEx=@([A-Za-z]*) >>([\*_ ])
+>>|	&> Lies .\FP2-Tutorial\MultiLineInput.fp2 über die bereitgestellte Funktion ein.
+>>|	&> Es werden nur die Abschnittbezeichnungen und die Aufzählungsoptionswerte aus der Datei ausgelesen.
+>>|~Split Trefferliste=$CP|$CRLF
+>>|~ForEach t in Trefferliste
+>>|	~Split Gruppenwert=$t|$Chr(36)Chr(182)
+>>|	>>* Abschnitt $Gruppenwert(1) mit Aufzählungsoptionswert
+>>|	~AddCode  $Gruppenwert(2)
+>>|~Loop
 ~MultiLineInput ML: Erzähl do mal, klipp und klar, wie's in den Osterferien war; ShowLines=7; UploadFilter=*.tex, *.txt
 	&> Erzähl doch mal, lang und breit
 	&> Und nimm dir richtig Zeit
@@ -27,3 +40,13 @@
 ~ToUpper text=$text
 @Ausgabe >>* Meine Osterferien
 	>|$text
+~MultiLineInput CP: Abschnittswerte; UploadFilter=*.fp2, *.fp2; ReadRegEx=@([A-Za-z]*) >>([\*_ ])
+	&> Lies .\FP2-Tutorial\MultiLineInput.fp2 über die bereitgestellte Funktion ein.
+	&> Es werden nur die Abschnittbezeichnungen und die Aufzählungsoptionswerte aus der Datei ausgelesen.
+~Split Trefferliste=$CP|$CRLF
+~ForEach t in Trefferliste
+	~Split Gruppenwert=$t|$Chr(182)
+	>>* Abschnitt $Gruppenwert(1) mit Aufzählungsoptionswert
+	~AddCode  $Gruppenwert(2)
+~Loop
+	

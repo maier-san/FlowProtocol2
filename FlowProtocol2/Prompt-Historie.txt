@@ -142,3 +142,20 @@ CmdAddHelpLink und CmdAddHelpText nur noch diese Eigenschaft verwenden müssen.
 Ist gut, aber passt noch nicht ganz. Die Eigenschaft CurrentAssociatedInputElement 
 muss bei jedem Run-Aufruf gesetzt werden, auch wenn das Eingabeelement schon 
 in einem vorherigen Run-Aufruf erzeugt und im Dictionary abgelegt wurde.
+
+----------------------------------------------------------------------------------------
+2026-05-10_MultiLineInput
+Erweitere die Run-Methode der schon bestehenden und vorbereiteten CmdMultiLineInput-Klasse so,
+dass der ReadRegEx-Parameter berücksichtigt wird.
+Dieser steht in der Variablen expandedReadRegEx bereit und enthält zur Laufzeit einen regulären Ausdruck, 
+der beim Einlesen einer Datei in das Textfeld verwendet werden soll.
+Ist ein regulärer Ausdruck angegeben, sollen beim Einlesen nur die Treffer des Ausdrucks bei Anwendung auf den Dateiinhalt 
+in das Feld übernommen werden, genauer die Werte, die zu den Gruppen (.Groups[1], .Groups[2], usw.) im Ausdruck passen.
+Die Treffer sollen dabei mit dem Zeichen Chr(182) getrennt werden, die Werte der Gruppen mit dem Zeichen Chr(183). 
+Innerhalb der Werte werden diese Zeichen entfernt.
+Wenn expandedReadRegEx leer ist, bleibt das Verhalten gegenüber jetzt unverändert, d.h. der ganze Dateiinhalt wird in das Feld eingelesen.
+Die schon vorhandene Längenbegrenzung bleibt bestehen, gilt für den Text, der in das Feld eingefügt wird, nicht für den gesamten Dateiinhalt.
+Alle anderen Parameter bleiben ebenfalls wirksam.
+Die Gültigkeit des regulären Ausdrucks soll soweit wie möglich in der Run-Methode validiert werden, nicht erst im Skriptcode der Razor Page.
+
+Stelle sicher, dass auch Reguläre Ausdrücke verarbeitet werden, die mehrzeiligen Text beschreiben.

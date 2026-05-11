@@ -103,7 +103,7 @@
                     @if (!string.IsNullOrEmpty(tarea.UploadFilter))
                     {
                         <div style="margin-bottom: 10px; margin-top: 5px;">
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="UploadFileFunction('@inidx.Key', '@tarea.UploadFilter')">Aus Datei einfügen</button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="UploadFileFunction('@inidx.Key', '@tarea.UploadFilter', @Html.Raw(string.IsNullOrEmpty(tarea.ReadRegEx) ? "null" : $"'{tarea.ReadRegEx.Replace("'", "\\'")}'"))">Aus Datei einfügen</button>
                         </div>
                     }
                 </div>
@@ -138,7 +138,7 @@
     @if (Model.NeedsUploadFunction)
     {
         <script>
-            async function UploadFileFunction(textareaID, filterString) {
+            async function UploadFileFunction(textareaID, filterString, readRegex) {
             // Versuche File System Access API zu verwenden
             if (window.showOpenFilePicker) {
                 try {
@@ -153,7 +153,7 @@
                     if (!fileHandle || fileHandle.length === 0) return;
                     
                     const file = await fileHandle[0].getFile();
-                    await ProcessUploadedFile(file, textareaID);
+                    await ProcessUploadedFile(file, textareaID, readRegex);
                     return;
                 } catch (err) {
                     if (err.name !== 'AbortError') {
@@ -169,13 +169,13 @@
             input.onchange = async () => {
                 if (input.files && input.files.length > 0) {
                     const file = input.files[0];
-                    await ProcessUploadedFile(file, textareaID);
+                    await ProcessUploadedFile(file, textareaID, readRegex);
                 }
             };
             input.click();
         }
         
-        async function ProcessUploadedFile(file, textareaID) {
+        async function ProcessUploadedFile(file, textareaID, readRegex) {
             try {
                 // Prüfe, ob es eine Textdatei ist
                 const istext = await IsTextFile(file);
@@ -191,8 +191,18 @@
                 let contentToInsert = text;
                 let wasTruncated = false;
                 
-                if (text.length > maxLength) {
-                    contentToInsert = text.substring(0, maxLength);
+                // Wende RegEx an, falls vorhanden
+                if (readRegex && readRegex.trim() !== '') {
+                    try {
+                        contentToInsert = ApplyReadRegEx(text, readRegex);
+                    } catch (err) {
+                        alert(`Fehler beim Anwenden des Filters: ${err.message}`);
+                        return;
+                    }
+                }
+                
+                if (contentToInsert.length > maxLength) {
+                    contentToInsert = contentToInsert.substring(0, maxLength);
                     wasTruncated = true;
                 }
                 
@@ -206,6 +216,34 @@
             } catch (err) {
                 console.error('Fehler beim Verarbeiten der Datei:', err);
                 alert('Fehler beim Lesen der Datei.');
+            }
+        }
+        
+        function ApplyReadRegEx(text, regexPattern) {
+            try {
+                const regex = new RegExp(regexPattern, 'g');
+                const results = [];
+                let match;
+                
+                while ((match = regex.exec(text)) !== null) {
+                    if (match.length > 1) {
+                        // Es gibt Gruppen
+                        const groupValues = [];
+                        for (let i = 1; i < match.length; i++) {
+                            let groupValue = match[i] || '';
+                            groupValues.push(groupValue);
+                        }
+                        results.push(groupValues.join('¶')); // Verwende ein seltenes Zeichen als Trenner für Gruppen
+                    } else {
+                        // Kein match.groups, verwende die gesamte Übereinstimmung
+                        let matchValue = match[0] || '';
+                        results.push(matchValue);
+                    }
+                }
+                
+                return results.join('\n');
+            } catch (err) {
+                throw new Error(`Ungültiger regulärer Ausdruck: ${err.message}`);
             }
         }
         

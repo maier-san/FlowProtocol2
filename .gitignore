@@ -397,3 +397,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 Scripts/Temp/FlowProtocol2.tex
+Scripts/WM/
+Doc/FP2Book.synctex.gz
+Doc/FP2Book.aux
+Doc/FP2Book.pdf
+Doc/FP2Book.idx
+Doc/ch_1_vorwort.aux
+Doc/ch_2_bezugundkonfiguration.aux

@@ -8,7 +8,7 @@ namespace FlowProtocol2.Commands
     /// Implementiert den MultiLineInput-Befehl
     /// </summary>
     /// <remarks>    
-    /// Erstellt mit NewCC.fp2, Eingabe: ~MultiLineInput (kKey): (sPrompt)[; ShowLines=(iShowLines)][; UploadFilter=(sUploadFilter)]
+    /// Erstellt mit NewCC.fp2, Eingabe: ~MultiLineInput (kKey): (sPrompt)[; ShowLines=(iShowLines)][; UploadFilter=(sUploadFilter)][; ReadRegEx=(sReadRegEx)]
     /// </remarks>
     public class CmdMultiLineInput : CmdInputBaseCommand
     {
@@ -16,10 +16,10 @@ namespace FlowProtocol2.Commands
         public string Prompt { get; set; }
         public string ShowLines { get; set; }
         public string UploadFilter { get; set; }
-
+        public string ReadRegEx { get; set; }
         public static CommandParser GetComandParser()
-        {
-            return new CommandParser(@"^~MultiLineInput\s+([A-Za-z0-9\$\(\)]*'?):\s*([^;]*)(\s*;\s*ShowLines\s*=\s*(-?[A-Za-z0-9\$\(\)]+))?(\s*;\s*UploadFilter\s*=\s*([^;]*))?",
+        {            
+            return new CommandParser(@"^~MultiLineInput\s+([A-Za-z0-9\$\(\)]*'?):\s*([^;]*)(\s*;\s*ShowLines\s*=\s*(-?[A-Za-z0-9\$\(\)]+))?(\s*;\s*UploadFilter\s*=\s*([^;]*))?(\s*;\s*ReadRegEx\s*=\s*([^;]*))?",
                                      (rc, m) => CreateMultiLineInputCommand(rc, m));
         }
 
@@ -30,6 +30,7 @@ namespace FlowProtocol2.Commands
             cmd.Prompt = m.Groups[2].Value.Trim();
             cmd.ShowLines = m.Groups[4].Value.Trim();
             cmd.UploadFilter = m.Groups[6].Value.Trim();
+            cmd.ReadRegEx = m.Groups[8].Value.Trim();
             return cmd;
         }
 
@@ -39,6 +40,7 @@ namespace FlowProtocol2.Commands
             Prompt = string.Empty;
             ShowLines = string.Empty;
             UploadFilter = string.Empty;
+            ReadRegEx = string.Empty;
         }
 
         public override CmdBaseCommand? Run(RunContext rc)
@@ -47,6 +49,7 @@ namespace FlowProtocol2.Commands
             string expandedPrompt = ReplaceVars(rc, Prompt);
             string expandedShowLines = ReplaceVars(rc, ShowLines);
             string expandedUploadFilter = ReplaceVars(rc, UploadFilter);
+            string expandedReadRegEx = ReplaceVars(rc, ReadRegEx);
             CurrentAssociatedInputElement = null;
             try
             {
@@ -67,6 +70,25 @@ namespace FlowProtocol2.Commands
                     // Optionales Argument mit Variable UploadFilter wurde weggelassen
                     expandedUploadFilter = string.Empty; // Standardwert verwenden
                 }
+                if (string.IsNullOrWhiteSpace(expandedReadRegEx))
+                {
+                    // Optionales Argument mit Variable ReadRegEx wurde weggelassen
+                    expandedReadRegEx = string.Empty; // Standardwert verwenden
+                }
+                else
+                {
+                    // Validiere den regulären Ausdruck
+                    try
+                    {
+                        _ = new Regex(expandedReadRegEx);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        rc.SetError(ReadContext, "Ungültiger regulärer Ausdruck",
+                            $"Der reguläre Ausdruck '{expandedReadRegEx}' ist ungültig: {ex.Message}. Die Ausführung wird abgebrochen.");
+                        return null;
+                    }
+                }
                 var textarea = new IMTextAreaElement();
 
                 string plainKey = expandedKey;
@@ -79,6 +101,7 @@ namespace FlowProtocol2.Commands
                 textarea.Prompt = expandedPrompt;
                 textarea.ShowLines = resultShowLines;
                 textarea.UploadFilter = expandedUploadFilter;
+                textarea.ReadRegEx = expandedReadRegEx;                
 
                 if (rc.BoundVars.ContainsKey(expandedKey) && !string.IsNullOrEmpty(rc.BoundVars[expandedKey]))
                 {
@@ -103,8 +126,7 @@ namespace FlowProtocol2.Commands
             {
                 rc.SetError(ReadContext, "Verarbeitungsfehler",
                     $"Beim Ausführen des Skriptes ist ein Fehler aufgetreten '{ex.Message}'. Die Ausführung wird abgebrochen."
-                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedPrompt='{expandedPrompt}' expandedShowLines='{expandedShowLines}' expandedUploadFilter='{expandedUploadFilter}'");
-                return null;
+                    + $"Variablenwerte: expandedKey='{expandedKey}' expandedPrompt='{expandedPrompt}' expandedShowLines='{expandedShowLines}' expandedUploadFilter='{expandedUploadFilter}' expandedReadRegEx='{expandedReadRegEx}'");                return null;
             }
             return NextCommand;
         }

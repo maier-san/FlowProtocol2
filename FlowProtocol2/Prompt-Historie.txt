@@ -159,3 +159,12 @@ Alle anderen Parameter bleiben ebenfalls wirksam.
 Die Gültigkeit des regulären Ausdrucks soll soweit wie möglich in der Run-Methode validiert werden, nicht erst im Skriptcode der Razor Page.
 
 Stelle sicher, dass auch Reguläre Ausdrücke verarbeitet werden, die mehrzeiligen Text beschreiben.
+
+----------------------------------------------------------------------------------------
+2026-05-16_RegEx-Tuning
+Eine CmdRegExMatch-Instanz wird oft vielfach hintereinander mit dem gleichen
+expandedExpression-Wert ausgeführt, so dass es sich lohnen könnte, das Regex-Objekt
+als Member-Variable zu verwalten und nur dann neu zu instanziieren, wenn sich der 
+String expandedExpression gegenüber dem letzten Aufruf geändert hat.
+Wenn zu zustimmst, setze diesen Vorschlag um.
+

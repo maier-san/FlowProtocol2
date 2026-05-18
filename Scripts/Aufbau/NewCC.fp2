@@ -8,12 +8,19 @@
 ~AddHelpLine Variablennamen, die "File" oder "Path" enthalten werden, werden um Pfadtrennzeichenersetzungen ergänzt.
 ~AddHelpLine Beispiel: ~Tralala (vVarName) = (dDatum)[; Range=(iVon)..(iBis)][; BaseKey=(vBaseKey)]
 @Eingabe >>|$cmdline
+?BClass: Von welcher Basisklasse soll abgeleitet werden?
+	#BC: CmdBaseCommand
+		~Set BasicClassName=CmdBaseCommand
+	#IC: CmdInputBaseCommand
+		~Set BasicClassName=CmdInputBaseCommand
+	#LC: CmdLoopBaseCommand
+		~Set BasicClassName=CmdLoopBaseCommand
 ?NCD: Soll in der Doku auf ein anderes Codebeispiel verwiesen werden?
-#j: Ja
-	~Input RefCB: Auf welches Codebeispiel soll verwiesen werden?
-	~Set MitCB=ja
-#n: Nein
-	~Set MitCB=nein
+	#j: Ja
+		~Input RefCB: Auf welches Codebeispiel soll verwiesen werden?
+		~Set MitCB=ja
+	#n: Nein
+		~Set MitCB=nein
 ~Execute
 
 // Name des Befehls notieren
@@ -117,7 +124,7 @@
 	>|    /// <remarks>
 	>|    /// Erstellt mit NewCC.fp2, Eingabe: $cmdline
 	>|    /// </remarks>
-	>|    public class Cmd$CommandName : CmdBaseCommand
+	>|    public class Cmd$CommandName : $BasicClassName
 	>|    {
 ~ForEach idx in argindex
 	>|        public string $argname($idx) { get; set; }
@@ -154,6 +161,8 @@
 	~Else
 		>|            string expanded$argname($idx) = ReplaceVars(rc, $argname($idx));
 ~Loop
+	~If $BasicClassName==CmdInputBaseCommand
+		>|            CurrentAssociatedInputElement = null;
 	>|            try
 	>|            {
 ~Set UseVarList=...verwende folgende Variablen:
@@ -197,6 +206,14 @@
 	~Else
 		~Set UseVarList=$UseVarList, expanded$argname($idx)
 ~Loop
+	~If $BasicClassName==CmdLoopBaseCommand
+		>|                LinkAssociatedLoopCommand(rc, "$CommandName");
+		>|                if (AssociatedLoopCommand == null)
+		>|                {
+		>|                    rc.SetError(ReadContext, "$CommandName ohne Loop",
+		>|                        "Dem $CommandName-Befehl kann kein Loop-Befehl auf gleicher Ebene zugeordnet werden. Die Bearbeitung wird abgebrochen.");
+		>|                    return null;
+		>|                }
 	>|                // ToDo: Befehl hier implementieren
 	~Replace UseVarList=$UseVarList|:,->:
 	>|                // $UseVarList

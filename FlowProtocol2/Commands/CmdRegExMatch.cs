@@ -12,6 +12,9 @@ namespace FlowProtocol2.Commands
         public string Text { get; set; }
         public string Expression { get; set; }
 
+        private Regex? cachedRegex = null;
+        private string? lastExpandedExpression = null;
+
         public static CommandParser GetComandParser()
         {
             return new CommandParser(@"^~RegExMatch ([A-Za-z0-9\$\(\)]*)\s*=([^\|]*)\|(.*)", (rc, m) => CreateRegExMatchCommand(rc, m));
@@ -40,11 +43,17 @@ namespace FlowProtocol2.Commands
             string expandedExpression = ReplaceVars(rc, Expression);            
             try
             {
-                Regex userExp = new Regex(expandedExpression);
-                if (userExp.IsMatch(expandedText))
+                // Regex-Objekt nur neu erstellen, wenn sich die Expression geändert hat
+                if (cachedRegex == null || lastExpandedExpression != expandedExpression)
+                {
+                    cachedRegex = new Regex(expandedExpression);
+                    lastExpandedExpression = expandedExpression;
+                }
+
+                if (cachedRegex.IsMatch(expandedText))
                 {
                     rc.InternalVars[expandedVarName + "(0)"] = "true";
-                    Match m = userExp.Match(expandedText);
+                    Match m = cachedRegex.Match(expandedText);
                     for (var g = 1; g < m.Groups.Count; g++)
                     {
                         rc.InternalVars[expandedVarName + "(" + g.ToString() + ")"] = m.Groups[g].Value;

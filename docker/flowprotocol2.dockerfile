@@ -10,10 +10,12 @@ WORKDIR /source
 WORKDIR /source
 COPY *.sln .
 COPY FlowProtocol2/*.csproj ./FlowProtocol2/
+COPY FlowProtocol2.Tests/*.csproj ./FlowProtocol2.Tests/
 RUN dotnet restore
 
 # copy everything else and build app
 COPY FlowProtocol2/. ./FlowProtocol2
+COPY FlowProtocol2.Tests/. ./FlowProtocol2.Tests
 WORKDIR /source
 RUN dotnet publish ./FlowProtocol2.sln -c release -o /app --no-restore
 

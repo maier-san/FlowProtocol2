@@ -40,7 +40,7 @@ namespace FlowProtocol2.Commands
         {
             string expandedVarName = ReplaceVars(rc, VarName);
             string expandedText = ReplaceVars(rc, Text);
-            string expandedExpression = ReplaceVars(rc, Expression);
+            string expandedExpression = ReplaceVars(rc, Expression);            
             try
             {
                 // Regex-Objekt nur neu erstellen, wenn sich die Expression geändert hat

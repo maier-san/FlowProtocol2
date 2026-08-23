@@ -190,3 +190,9 @@ Die ReadRegEx-Option wird weiterhin umgesetzt.
 Implementiere die Run-Methode der schon vorbereiteten CmdNumFormat-Klasse aus.
 Orientiere dich dabei an der CmdDateFormat-Klasse
 verwende folgende Variablen: expandedVarName, resultNumber, expandedFormat
+
+----------------------------------------------------------------------------------------
+2026-08-23_SectionExists
+Implementiere die Run-Methode der schon vorbereiteten CmdSectionExists-Klasse aus.
+Orientiere dich dabei an der CmdFileExists-Klasse und verwende folgende Variablen: expandedVarName, expandedSection
+Der damit implementierte Befehl soll true zurückgeben, wenn die angegebene Section schon angelegt wurde und false sonst.

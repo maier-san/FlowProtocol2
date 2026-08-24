@@ -91,6 +91,7 @@ namespace FlowProtocol2.Core
             CmdParser.Add(CmdSort.GetComandParser());
             CmdParser.Add(CmdRegExReplace.GetComandParser());
             CmdParser.Add(CmdXmlEncode.GetComandParser());
+            CmdParser.Add(CmdSectionExists.GetComandParser());
             // Hier weitere Parser hinzufügen
         }
 

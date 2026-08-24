@@ -1,0 +1,24 @@
+~SetTitle SectionExists-Befehl
+@Beschreibung >>_ Der Befehl
+~AddCode  ~SectionExists <VarName> = <Section>
+~AddText  prüft, ob bereits ein mit 
+~AddCode  <Section>
+~AddText  benannter Abschnitt angelegt wurde und gibt das Ergebnis in
+~AddCode  <VarName>
+~AddText  zurück.
+@Ausnahmen >>* Verarbeitungsfehler: Beim Ausführen des Skriptes ist ein Fehler aufgetreten ... . Die Ausführung wird abgebrochen.
+@Codebeispiel >>_ Das nachfolgende Beispiel durchläuft zweimal eine Scheife und prüft, ob der Abschnitt "Ausgabe" schon existiert.
+>>|~For i=1 To 2
+>>|	~SectionExists A1 = Ausgabe
+>>|	~If $A1
+>>|		@Ausgabe >> Runde $i: Der Abschnitt Ausgabe existiert schon.
+>>|	~Else
+>>|		@Ausgabe >> Runde $i:  Der Abschnitt Ausgabe existiert noch nicht.
+>>|~Loop
+~For i=1 To 2
+	~SectionExists A1 = Ausgabe
+	~If $A1
+		@Ausgabe >> Runde $i: Der Abschnitt Ausgabe existiert schon.
+	~Else
+		@Ausgabe >> Runde $i:  Der Abschnitt Ausgabe existiert noch nicht.
+~Loop

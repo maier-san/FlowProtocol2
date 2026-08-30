@@ -196,3 +196,8 @@ verwende folgende Variablen: expandedVarName, resultNumber, expandedFormat
 Implementiere die Run-Methode der schon vorbereiteten CmdSectionExists-Klasse aus.
 Orientiere dich dabei an der CmdFileExists-Klasse und verwende folgende Variablen: expandedVarName, expandedSection
 Der damit implementierte Befehl soll true zurückgeben, wenn die angegebene Section schon angelegt wurde und false sonst.
+
+----------------------------------------------------------------------------------------
+2026-08-30_DropDatei-anfügen
+Erweitere die mit dem CmdMultiLineInput-Befehl verbundene "Aus Datei anfügen"-Funktion so, 
+dass sie auch dadurch aufgerufen werden kann, dass man die anzufügende Datei auf das Textfeld zieht und fallen lässt.

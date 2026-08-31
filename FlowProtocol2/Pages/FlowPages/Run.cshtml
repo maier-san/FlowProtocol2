@@ -98,7 +98,8 @@
                         {
                             @await Html.PartialAsync("_IMHelpInfoBlock", tarea.HelpInfoBlock)
                         }
-                        <textarea class="form-control" id="@inidx.Key" asp-for="BoundVars[inidx.Key]" rows="@tarea.ShowLines"></textarea>
+                        <textarea class="form-control" id="@inidx.Key" asp-for="BoundVars[inidx.Key]" rows="@tarea.ShowLines"
+                                  data-upload-filter="@tarea.UploadFilter" data-read-regex="@(!string.IsNullOrEmpty(tarea.ReadRegEx) ? tarea.ReadRegEx : string.Empty)"></textarea>
                     </div>
                     @if (!string.IsNullOrEmpty(tarea.UploadFilter))
                     {
@@ -138,6 +139,44 @@
     @if (Model.NeedsUploadFunction)
     {
         <script>
+            function RegisterFileDropTarget(textarea) {
+                if (!textarea || !textarea.dataset.uploadFilter) {
+                    return;
+                }
+
+                const filterString = textarea.dataset.uploadFilter || '';
+                const readRegex = textarea.dataset.readRegex || null;
+
+                textarea.addEventListener('dragover', (event) => {
+                    event.preventDefault();
+                    textarea.classList.add('border-primary');
+                });
+
+                textarea.addEventListener('dragleave', (event) => {
+                    if (!textarea.contains(event.relatedTarget)) {
+                        textarea.classList.remove('border-primary');
+                    }
+                });
+
+                textarea.addEventListener('drop', async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    textarea.classList.remove('border-primary');
+
+                    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length > 0
+                        ? event.dataTransfer.files[0]
+                        : null;
+
+                    if (!file) {
+                        return;
+                    }
+
+                    await ProcessUploadedFile(file, textarea.id, readRegex, filterString);
+                });
+            }
+
+            document.querySelectorAll('textarea[data-upload-filter]').forEach(RegisterFileDropTarget);
+
             async function UploadFileFunction(textareaID, filterString, readRegex) {
             // Versuche File System Access API zu verwenden
             if (window.showOpenFilePicker) {
@@ -153,7 +192,7 @@
                     if (!fileHandle || fileHandle.length === 0) return;
                     
                     const file = await fileHandle[0].getFile();
-                    await ProcessUploadedFile(file, textareaID, readRegex);
+                    await ProcessUploadedFile(file, textareaID, readRegex, filterString);
                     return;
                 } catch (err) {
                     if (err.name !== 'AbortError') {
@@ -169,14 +208,39 @@
             input.onchange = async () => {
                 if (input.files && input.files.length > 0) {
                     const file = input.files[0];
-                    await ProcessUploadedFile(file, textareaID, readRegex);
+                    await ProcessUploadedFile(file, textareaID, readRegex, filterString);
                 }
             };
             input.click();
         }
         
-        async function ProcessUploadedFile(file, textareaID, readRegex) {
+        function MatchesUploadFilter(file, filterString) {
+            if (!filterString || filterString.trim() === '' || filterString === '*.*') {
+                return true;
+            }
+
+            const allowedFilters = filterString.split(',').map(f => f.trim().toLowerCase()).filter(Boolean);
+            if (allowedFilters.includes('*.*')) {
+                return true;
+            }
+
+            const fileName = (file && file.name ? file.name.toLowerCase() : '');
+            const extension = fileName.includes('.') ? fileName.substring(fileName.lastIndexOf('.')) : '';
+
+            return allowedFilters.some(filter => {
+                const normalized = filter.startsWith('*.') ? filter : filter.startsWith('.') ? `*.${filter.substring(1)}` : filter;
+                const targetExt = normalized.startsWith('*.') ? normalized.substring(1) : normalized;
+                return normalized === '*.*' || fileName.endsWith(targetExt) || extension === targetExt || fileName === normalized;
+            });
+        }
+        
+        async function ProcessUploadedFile(file, textareaID, readRegex, filterString) {
             try {
+                if (filterString && !MatchesUploadFilter(file, filterString)) {
+                    alert('Fehler: Die Datei entspricht nicht dem erlaubten Dateityp.');
+                    return;
+                }
+
                 // Prüfe, ob es eine Textdatei ist
                 const istext = await IsTextFile(file);
                 if (!istext) {

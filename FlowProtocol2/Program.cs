@@ -6,11 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.HttpsPort = 5001; // Port anpassen, falls notwendig
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
